@@ -1,0 +1,954 @@
+Workunit 35,056 started @ 01/01/2026 11:16:44.414 PM
+	Landmark version: 2025.12.02.
+	Service name: (blank)
+	Process name: GLOutgoing_13_SummaryExtract
+	Process version: 18
+	JVM Name: BG_LPA
+	Host Name:tam-pa-202-007f-i-04563295d726b007f
+	Auto Restart: Disabled
+Activity name:Start type:START id:1 started @ 01/01/2026 11:16:44.414 PM
+	 Executing Start Activity...
+	 queryID = 
+	 auth = 
+	 getStatus = 
+	 sourceDirectory = 
+	 InterfaceDirectory = 
+	 req = 
+	 accessTokenResp = 
+	 OauthCreds = 
+	 x = 
+	 Counter = 0
+	 RecordCount = 
+	 Tenant = 
+	 Webroot = 
+	 WebrootAccessToken = 
+	 WebrootAccessTokenWebProgram = 
+	 loopCount = 0
+	 tempCount = 0
+	 rowCount = 0
+	 limit = 50000
+	 offset = 0
+	 GetResultOut = 
+	 OutputRecords = 
+	 Delimiter = ,
+	 retryCount = 0
+	 FEG = 
+	 ErrorDir = 
+	 ArchiveDir = 
+	 FileName = FCE_FACT_EXTRACTS_20260101.TXT
+	 FileExtension = .csv
+	 ErrMsg = 
+	 PrevOrCurr = CURR
+	 OutputFileNameBal = FCE_GL_Summary_
+	 Header = 
+	 RunDate = 
+	 DateFilter = 
+	 DateFilterJulian = 
+	 DateFilterJulianJan = 
+	 newExt = .flg
+	 Ctr = 0
+	 FlagFilesLoc = 
+	 InvalidDate = 
+	 ACACode = 
+	 Account = 
+	 BalResultStr = 
+	 OutputDir = 
+	 withDetail = 0
+	 BIApiResult = 
+	 NewDateFilter = 
+	 DeleteBODFilter = 
+	 DeleteBodRes = 
+	 WithError = false
+	 TriggerDate = 
+	 Directory = 
+	 FlagFileName = 
+	 ExtractYear = 
+	 ExtractMonth = 
+	 RunDateTime = 260101174231
+	 RanNow = true
+	 BodType = FPI_FCE_IDL_GLTotals
+	 Quarter = 4
+	 ApiName = FCE_IDL_GeneralLedgerBalancesByPeriod
+	 QuarterLoaded = false
+	 BI_RetryCount = 0
+	 RetryFull = false
+	 SQL_QuarterFilter = 
+Activity name:Start id:1 completed @ 01/01/2026 11:16:44.421 PM
+
+Activity name:ReadDate type:ACCFIL id:1 started @ 01/01/2026 11:16:44.421 PM
+	 ReadDate_errorCode = 0
+	 ReadDate_informationCode = 0
+	 ReadDate_returnMessage = File Access ReadDate: 17 Bytes read from file FCE_FACT_EXTRACTS_20260101.TXT
+	 ReadDate_outputData = 260101174231|2026
+	 File Access ReadDate: 17 Bytes read from file FCE_FACT_EXTRACTS_20260101.TXT
+Activity name:ReadDate id:1 completed @ 01/01/2026 11:16:44.430 PM
+
+Activity name:Assign1540 type:ASSGN id:1 started @ 01/01/2026 11:16:44.430 PM
+	 Evaluating JavaScript expression FEG = _configuration.Interface.GLOutgoing_13_FEG.toString();
+var arr = _configuration.Interface.GLOutgoing_13_Directory.toString().split("/");
+//arr.pop();
+var dir = arr.join("/");
+ErrorDir = dir + "/Error";
+ArchiveDir = dir + "/Archive";
+OutputDir = dir + "/Output";
+FlagFilesLoc = _configuration.Interface.GLOutgoing_13_FlagFilesLocation;
+
+FlagFilesLoc = FlagFilesLoc.toString().replace("ACA",FEG);
+ArchiveDir = ArchiveDir.toString().replace("ACA",FEG);
+ErrorDir = ErrorDir.toString().replace("ACA",FEG);
+OutputDir = OutputDir.toString().replace("ACA",FEG);
+
+
+OauthCreds = FEG == "AGW" ? _configuration.Interface.API_AuthCred_AGW : 
+				FEG == "AGC" ? _configuration.Interface.API_AuthCred_AGC :
+				FEG == "FCIL" ? _configuration.Interface.API_AuthCred_FCIL :
+				FEG == "FMFC" ? _configuration.Interface.API_AuthCred_FMFC :
+				FEG == "FCE" ? _configuration.Interface.API_AuthCred_FCE : "";; to value class org.mozilla.javascript.xmlimpl.XMLList
+	 Evaluating JavaScript expression var Oauth2Data = JSON.parse(OauthCreds.toString());
+
+var ClientID = Oauth2Data.ci;
+var ClientUsername = Oauth2Data.saak;
+var ClientPassword = Oauth2Data.sask;
+var ClientSecret = Oauth2Data.cs;
+
+var str = Oauth2Data.pu;
+WebrootAccessToken = str.substring(0,str.indexOf("3")+1);
+WebrootAccessTokenWebProgram = str.substring(str.indexOf("3")+2,str.length) + Oauth2Data.ot + "?";
+Webroot = Oauth2Data.iu;
+Tenant = Oauth2Data.ti;
+
+
+
+req = "grant_type=password&username=" + ClientUsername + "&password=" + ClientPassword + "&scope=&client_id=" + ClientID + "&client_secret=" + ClientSecret;; to value grant_type=password&username=CV6W2RCMM3EZ2355_PRD#SAJ0zh-0wG-L7n9imQswRTqmrvNw4wMzyqv4tF8GwOEo8v4gS37fHG8NI_tll7oW0XYBtTTU7fVGnt4QhLVPeg&password=AwUssZTJt2yfX7x3EcDhsnyK7yhIuZAV5FU8bQOz8YKaiU4vHbLnDiH5rwgn7n2OW_6YduQUQV7xkJsCni2EZA&scope=&client_id=CV6W2RCMM3EZ2355_PRD~JuMuW-5tXaWPzSfJ0KoZQRmqQEU-DkTjHe8A-VT6os8&client_secret=DVrvfvEJwXA1Rd9xHtKmcgiK5KY4APYProFoSWu55TkCCneL3Il4LtLYf6LRkuPgjwQSZC0crirvCL5dpFQzkA
+	 Evaluating JavaScript expression //format date to MM/DD/YYYY format
+function formatDate2(dt) {
+	var d = new Date(dt);
+	var padMonth = (d.getMonth()+1).toString().length == 1 ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+	var padDay = d.getDate().toString().length == 1 ? '0' + d.getDate().toString() : d.getDate().toString();
+	return padMonth + "/" + padDay + "/" + d.getFullYear().toString();
+}
+
+//format date to YYYY/MM/DD format
+function formatDate3(dt) {
+	var d = new Date(dt);
+	var padMonth = (d.getMonth()+1).toString().length == 1 ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+	var padDay = d.getDate().toString().length == 1 ? '0' + d.getDate().toString() : d.getDate().toString();
+	return d.getFullYear().toString() + "-" + padMonth + "-" + padDay;
+}
+
+function getDayOfYear(date) {
+    var startOfYear = new Date(date.getFullYear(), 0, 0);
+    var diff = date - startOfYear;
+    var oneDayMilliseconds = 1000 * 60 * 60 * 24;
+    var dayOfYear = Math.floor(diff / oneDayMilliseconds);
+    return dayOfYear;
+}
+
+function DaysInMonth(Mo, Yr) {
+    if(Mo == 1 || Mo == 3 || Mo == 5 || Mo == 7 || Mo == 8 || Mo == 10 || Mo == 12) {
+        return 31;
+    }
+    else if(Mo == 4 || Mo == 6 || Mo == 9 || Mo == 11){
+        return 30;
+    }
+    else {
+        var f = new Date(Yr, 2, 0);
+        return f.getDate();
+    }
+}
+
+function yearValidation(year) {
+    var text = /^[0-9]+$/;
+    if (year != 0) {
+        if ((year != "") && (!text.test(year))) {
+            return false;
+        }
+    
+        if (year.length != 4) {
+            return false;
+        }
+        // var current_year=new Date().getFullYear();
+        if((year < 1900)) {
+            return false;
+        }
+        return true;
+    }
+}
+
+
+DateFilter = ReadDate_outputData.toString().trim().split("\n")[0];
+var DatePart = DateFilter.split("|")[0];
+var YearPart = DateFilter.split("|")[1];
+ExtractYear = PrevOrCurr == "PREV" ? (parseInt(YearPart)-1).toString() : YearPart;
+RunDate = DateFilter;
+DateFilter = DatePart;
+
+var p = DateFilter.split("/");
+if(p.length == 3) {
+    var a = p[0].length == 2;
+    var b = p[1].length == 2;
+    var c = p[2].length == 4;
+    
+    if ((isNaN(Date.parse(DateFilter)) == false) && a && b && c) {
+      var Mo = parseInt(p[0]-0);
+      var Yr = parseInt(p[2]-0);
+      var Dy = DaysInMonth(Mo, Yr);
+    
+      if(parseInt(p[1]-0) <= Dy) {
+          DateFilter = DateFilter;
+          	var today = new Date(DateFilter);
+		    var todayMinus1 = new Date(new Date(DateFilter)-1);
+        	var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);
+		    var lastDayOfMonthPrev = new Date(today.getFullYear(), today.getMonth(), 0);
+        	DateFilter = new Date(formatDate2(lastDayOfMonth));
+        	
+        	
+        	//var dayOfYear = getDayOfYear(DateFilter);
+        	//dayOfYear = dayOfYear.toString().length == 2 ? '0' + dayOfYear : dayOfYear;
+        	//DateFilterJulian = DateFilter.getFullYear().toString() + dayOfYear.toString();
+        	//DateFilterJulianJan = DateFilter.getFullYear().toString() + "000";
+		//NewDateFilter =  PrevOrCurr == "PREV" ? formatDate3(lastDayOfMonthPrev) : formatDate3(lastDayOfMonth);
+		//RunDate = PrevOrCurr == "PREV" ? formatDate2(lastDayOfMonthPrev) : formatDate2(lastDayOfMonth);
+		ExtractYear = PrevOrCurr == "PREV" ? (parseInt(YearPart)-1).toString() : YearPart;
+      }
+      else {
+          InvalidDate = "invalid";
+      }
+    }
+    else {
+        InvalidDate = "invalid";
+    }
+}
+else {
+    InvalidDate = "invalid";
+}
+
+if (!yearValidation(YearPart)) {
+    InvalidDate = "invalid";
+}; to value invalid
+	 RunDate = 260101174231|2026
+	 DateFilterJulian = 
+	 FlagFileName = FCE_GL_260101174231.flg
+Activity name:Assign1540 id:1 completed @ 01/01/2026 11:16:44.431 PM
+
+Activity name:Branch4660 type:BRANCH id:1 started @ 01/01/2026 11:16:44.431 PM
+	 Evaluating rule: InvalidDate != "invalid" to node GetAccessToken
+	 Evaluating rule: true to node Assign8580
+	 Next activity: Assign8580
+Activity name:Branch4660 id:1 completed @ 01/01/2026 11:16:44.431 PM
+
+Activity name:Assign8580 type:ASSGN id:1 started @ 01/01/2026 11:16:44.431 PM
+	 ErrMsg = Invalid Date from the Input file. Kindly check workunit 35056 for more details.
+Activity name:Assign8580 id:1 completed @ 01/01/2026 11:16:44.431 PM
+
+Activity name:GetAccessToken type:WEBRN id:1 started @ 01/01/2026 11:16:44.431 PM
+	 WebRun GetAccessToken: Executing WebRun activity node
+	 WebRun GetAccessToken: call type Standard HTTP Call
+	 WebRun GetAccessToken: Posting directly host https://mingle-sso.inforcloudsuite.com:443 (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/as/token.oauth2?
+	 WebRun GetAccessToken: Post string grant_type=password&username=CV6W2RCMM3EZ2355_PRD#SAJ0zh-0wG-L7n9imQswRTqmrvNw4wMzyqv4tF8GwOEo8v4gS37fHG8NI_tll7oW0XYBtTTU7fVGnt4QhLVPeg&password=AwUssZTJt2yfX7x3EcDhsnyK7yhIuZAV5FU8bQOz8YKaiU4vHbLnDiH5rwgn7n2OW_6YduQUQV7xkJsCni2EZA&scope=&client_id=CV6W2RCMM3EZ2355_PRD~JuMuW-5tXaWPzSfJ0KoZQRmqQEU-DkTjHe8A-VT6os8&client_secret=DVrvfvEJwXA1Rd9xHtKmcgiK5KY4APYProFoSWu55TkCCneL3Il4LtLYf6LRkuPgjwQSZC0crirvCL5dpFQzkA
+	 WebRun GetAccessToken: Request header - {accept=[application/json], Content-Type=[application/x-www-form-urlencoded]}
+	 WebRun GetAccessToken: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 200 OK], X-Cache=[Miss from cloudfront], X-STS-Trace-ID=[Root=1-6957005c-36d088a44e1911eb2b036d7e], X-Content-Type-Options=[nosniff], X-Amz-Cf-Pop=[IAD61-P12], Connection=[keep-alive], Pragma=[no-cache], P3P=[Infor does not have P3P policies], Date=[Thu, 01 Jan 2026 23:16:44 GMT], Via=[1.1 753d61558f619a020e3a24f8c564f65a.cloudfront.net (CloudFront)], Strict-Transport-Security=[max-age=31536000; includeSubDomains], X-Robots-Tag=[noindex, nofollow], Cache-Control=[no-store, no-cache, must-revalidate, private, proxy-revalidate], Content-Security-Policy=[script-src 'nonce-XAoLSG2Zj3J0jz7CliGSziAER7DI9NwEMROiPFumCik='; img-src data: 'self' https://*.s3.amazonaws.com/; frame-ancestors * 'self'], X-Amz-Cf-Id=[JgWGrORvIio4DhSb9mxUiu7v78QL_BUJSEmklx_7FjjXgI36F1T82A==], Vary=[Accept-Encoding], X-XSS-Protection=[1; mode=block], Content-Type=[application/json]}
+	 WebRun GetAccessToken: WebRun result size: 0.00 MiB
+	 GetAccessToken_result = {"access_token":"eyJraWQiOiJrZzo0NjA4ZjE5NC03NTM1LTRmYzMtYTNiNC1mNDEwNmRmYzIyOTMiLCJhbGciOiJSUzI1NiJ9.eyJTZXJ2aWNlQWNjb3VudCI6IkNWNlcyUkNNTTNFWjIzNTVfUFJEI1NBSjB6aC0wd0ctTDduOWltUXN3UlRxbXJ2Tnc0d016eX
+	 WebRun GetAccessToken: Success string  found
+	 GetAccessToken_errorCode = 0
+	 GetAccessToken_informationCode = 0
+	 GetAccessToken_returnMessage = 
+	 GetAccessToken_outputData = 
+Activity name:GetAccessToken id:1 completed @ 01/01/2026 11:16:44.613 PM
+
+Activity name:Assign9280 type:ASSGN id:1 started @ 01/01/2026 11:16:44.614 PM
+	 Evaluating JavaScript expression function dateTime () {
+  now = new Date();
+  year = "" + now.getFullYear();
+  month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+  day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+  hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+  minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+  second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+  return year + "-" + month + "-" + day + "-" + minute + "-" + hour + "-" + second;
+}
+
+vDateToday = dateTime();; to value 2026-01-01-16-23-44
+	 Evaluating JavaScript expression var obj = JSON.parse(GetAccessToken_result);
+
+accessTokenResp = obj.access_token;
+
+auth = "Authorization:Bearer " +accessTokenResp;; to value Authorization:Bearer eyJraWQiOiJrZzo0NjA4ZjE5NC03NTM1LTRmYzMtYTNiNC1mNDEwNmRmYzIyOTMiLCJhbGciOiJSUzI1NiJ9.eyJTZXJ2aWNlQWNjb3VudCI6IkNWNlcyUkNNTTNFWjIzNTVfUFJEI1NBSjB6aC0wd0ctTDduOWltUXN3UlRxbXJ2Tnc0d016eXF2NHRGOEd3T0VvOHY0Z1MzN2ZIRzhOSV90bGw3b1cwWFlCdFRUVTdmVkdudDRRaExWUGVnIiwiVGVuYW50IjoiQ1Y2VzJSQ01NM0VaMjM1NV9QUkQiLCJJZGVudGl0eTIiOiJlZTY4Y2QzMi1lMDk3LTRmZWUtYWY5NC1hMTEwODFlZDUwZDMiLCJFbmZvcmNlU2NvcGVzRm9yQ2xpZW50IjoiMCIsImdyYW50X2lkIjoiNDIxOWNjMWYtZWE5Zi00N2IxLWFkMDMtZjViODBjNzk2MTc5IiwiSW5mb3JTVFNJc3N1ZWRUeXBlIjoiQVMiLCJjbGllbnRfaWQiOiJDVjZXMlJDTU0zRVoyMzU1X1BSRH5KdU11Vy01dFhhV1B6U2ZKMEtvWlFSbXFRRVUtRGtUakhlOEEtVlQ2b3M4IiwianRpIjoiNmUxOTg3NDEtNjkxNC00MDI3LTllZWQtZjU5YjMxNjg1N2U5IiwiaWF0IjoxNzY3MzA5NDA0LCJuYmYiOjE3NjczMDk0MDQsImV4cCI6MTc2NzMxMzAwNCwiaXNzIjoiaHR0cHM6Ly9taW5nbGUtc3NvLmluZm9yY2xvdWRzdWl0ZS5jb206NDQzIiwiYXVkIjoiaHR0cHM6Ly9taW5nbGUtaW9uYXBpLmluZm9yY2xvdWRzdWl0ZS5jb20ifQ.nmv6jyA7hznRvLlVkU-lIjsKh41Dw9oUobHCY8KFUaojf1BAXOifFSbjNHlDJ2S2NkmyHXrvrWz-80jlrt5K4yOjRuzcuQxIsf23ypLVGc07H1IJNmTLwp0ZqtTAZQt9RrQN_TkvI77qRSkBdQodR1r_QNrD7nBbIT8yg_Y39Ah0xEcKSOYKITTGPlr3XqdjI756Wt6-NJWj3JmONF3_Oaw4ZudB1NFEGZhBzYJKckkbMNb8yNx9I645v8I3JcBE-XAQ58t5l20VxEm3yYONm02_kxwzcI8abDXvSuf9tJF0Z_EAkuSmtunJzG4hPxiRxWO9SNKRLLlLOTpfj0pPpg
+	 Evaluating JavaScript expression if(Quarter == 1) {
+    SQL_QuarterFilter = " WHERE EntityYearPeriod IN ('" + ExtractYear + "01','" + ExtractYear + "02','" + ExtractYear + "03')";
+}
+else if(Quarter == 2) {
+    SQL_QuarterFilter = " WHERE EntityYearPeriod IN ('" + ExtractYear + "04','" + ExtractYear + "05','" + ExtractYear + "06')";
+}
+else if(Quarter == 3) {
+    SQL_QuarterFilter = " WHERE EntityYearPeriod IN ('" + ExtractYear + "07','" + ExtractYear + "08','" + ExtractYear + "09')";
+}
+else if(Quarter == 4) {
+    SQL_QuarterFilter = " WHERE EntityYearPeriod IN ('" + ExtractYear + "10','" + ExtractYear + "11','" + ExtractYear + "12')";
+}; to value  WHERE EntityYearPeriod IN ('202610','202611','202612')
+	 SQL_QuarterFilter =  WHERE EntityYearPeriod IN ('202610','202611','202612')
+Activity name:Assign9280 id:1 completed @ 01/01/2026 11:16:44.614 PM
+	 Message Builder:MsgBuilder7360 Executing this activity...
+
+Activity name:MsgBuilder7360 type:MSGBD id:1 started @ 01/01/2026 11:16:44.614 PM
+Activity name:MsgBuilder7360 id:1 completed @ 01/01/2026 11:16:44.614 PM
+
+Activity name:Assign1010 type:ASSGN id:1 started @ 01/01/2026 11:16:44.614 PM
+	 Evaluating JavaScript expression DeleteBODFilter = "(dl_document_name eq '" + BodType + "') and dl_document_date range ";
+
+var dtNow = new Date();
+var dtFrom = new Date(dtNow.getFullYear()-1,dtNow.getMonth(),dtNow.getDate());
+var dtTo = (new Date());
+ dtTo.setDate(dtTo.getDate() + 2);
+
+DeleteBODFilter = DeleteBODFilter + "[" + dtFrom.toISOString() + ", " + dtTo.toISOString() + "]";; to value (dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:16:44.614Z]
+	 DeleteBODFilter = (dl_document_name%20eq%20'FPI_FCE_IDL_GLTotals')%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z,%202026-01-03T23:16:44.614Z%5D
+	 RetryFull = false
+Activity name:Assign1010 id:1 completed @ 01/01/2026 11:16:44.614 PM
+
+Activity name:PurgeBODs type:WEBRN id:1 started @ 01/01/2026 11:16:44.615 PM
+	 WebRun PurgeBODs: Executing WebRun activity node
+	 WebRun PurgeBODs: call type Standard HTTP Call
+	 WebRun PurgeBODs: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/datalake/v2/dataobjects/filter?filter=%28dl_document_name%20eq%20%27FPI_FCE_IDL_GLTotals%27%29%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z%2C%202026-01-03T23:16:44.614Z%5D&includeArchived=true
+	 WebRun PurgeBODs: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun PurgeBODs: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 200 OK], server=[ionapi-2025.12.16120920.16120920], expires=[0], access-control-allow-headers=[origin, content-type, accept, authorization], x-frame-options=[DENY], Connection=[keep-alive], p3p=[CP=Infor doesn't have any p3p policies.], access-control-allow-methods=[GET, POST, PUT, DELETE, HEAD], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:16:44 GMT], set-cookie=[useractivity_cookie_mingle=1767309404; Domain=inforcloudsuite.com; Path=/; Secure; HttpOnly], x-transaction-id=[1767309404630-e161a23b-6955-43df-b7d0-eb1d2c64c6dd], access-control-max-age=[1209600], content-security-policy=[frame-ancestors 'self' https://mingle-portal.inforcloudsuite.com https://mingle-portal.inforcloudsuite.com:443 https://mingle-extensions.inforcloudsuite.com https://mingle-extensions.inforcloudsuite.com:443 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91:443], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Type=[application/json]}
+	 WebRun PurgeBODs: WebRun result size: 0.00 MiB
+	 PurgeBODs_result = {"message":"Nothing purged","usedFilter":"(dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:16:44.614Z]","purgedAllByFilter":true,"purged
+	 WebRun PurgeBODs: Success string  found
+	 PurgeBODs_errorCode = 0
+	 PurgeBODs_informationCode = 0
+	 PurgeBODs_returnMessage = 
+	 PurgeBODs_outputData = 
+Activity name:PurgeBODs id:1 completed @ 01/01/2026 11:16:44.838 PM
+
+Activity name:Assign2080 type:ASSGN id:1 started @ 01/01/2026 11:16:44.838 PM
+	 Evaluating JavaScript expression var objDel = JSON.parse(PurgeBODs_result);
+
+DeleteBodRes = objDel.message;; to value Nothing purged
+Activity name:Assign2080 id:1 completed @ 01/01/2026 11:16:44.838 PM
+
+Activity name:Branch9310 type:BRANCH id:1 started @ 01/01/2026 11:16:44.838 PM
+	 Evaluating rule: DeleteBodRes.toString().toUpperCase() == "SUCCESSFULLY PURGED" || DeleteBodRes.toString().toUpperCase() == "NOTHING PURGED" to node Wait9940
+	 Next activity: Wait9940
+Activity name:Branch9310 id:1 completed @ 01/01/2026 11:16:44.839 PM
+
+Activity name:Wait9940 type:Timer id:1 started @ 01/01/2026 11:16:44.839 PM
+	 Timer Wait9940: Executing Timer activity node
+	 Timer Wait9940: Process will proceed in 5 seconds.
+Activity name:Wait9940 id:1 completed @ 01/01/2026 11:16:49.839 PM
+	 Timer Wait9940: Proceeding with the process
+	 Wait9940_errorCode = 0
+	 Wait9940_informationCode = 0
+	 Wait9940_returnMessage = Timer Wait9940: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait9940_outputData = 
+
+Activity name:ExecClearTbl type:WEBRN id:1 started @ 01/01/2026 11:16:49.839 PM
+	 WebRun ExecClearTbl: Executing WebRun activity node
+	 WebRun ExecClearTbl: call type Standard HTTP Call
+	 WebRun ExecClearTbl: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/
+	 WebRun ExecClearTbl: Post string EXEC INFOR.CLEAR_TABLE('FPI_FCE_IDL_GLTotals', 'True')
+
+	 WebRun ExecClearTbl: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun ExecClearTbl: Response header - {null=[HTTP/1.1 202 Accepted], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[100], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[98], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:16:49 GMT], set-cookie=[JSESSIONID=F36FC4A8A5BF64C24467BE9CD4D41689; Path=/; Secure; HttpOnly], x-transaction-id=[1767309409852-57d92664-b1a5-42d0-8a5e-3b3bcf3d1fed], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[99], x-ratelimit-window=[60 second], Content-Type=[application/json]}
+	 WebRun ExecClearTbl: WebRun result size: 0.00 MiB
+	 ExecClearTbl_result = {"status":"RUNNING","location":"jobs/xLzbfsMSBvX5m5kppt5s/status","queryId":"xLzbfsMSBvX5m5kppt5s"}
+	 WebRun ExecClearTbl: Success string  found
+	 ExecClearTbl_errorCode = 0
+	 ExecClearTbl_informationCode = 0
+	 ExecClearTbl_returnMessage = 
+	 ExecClearTbl_outputData = 
+Activity name:ExecClearTbl id:1 completed @ 01/01/2026 11:16:49.936 PM
+
+Activity name:Wait7110 type:Timer id:1 started @ 01/01/2026 11:16:49.937 PM
+	 Timer Wait7110: Executing Timer activity node
+	 Timer Wait7110: Process will proceed in 5 seconds.
+Activity name:Wait7110 id:1 completed @ 01/01/2026 11:16:54.937 PM
+	 Timer Wait7110: Proceeding with the process
+	 Wait7110_errorCode = 0
+	 Wait7110_informationCode = 0
+	 Wait7110_returnMessage = Timer Wait7110: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait7110_outputData = 
+
+Activity name:ForEachPeriod type:LOOP id:1 started @ 01/01/2026 11:16:54.937 PM
+	 ForLoop ForEachPeriod: Executing
+	 ForEachPeriod_iterationNumber = 1
+	 ForLoop ForEachPeriod: Iteration 1
+
+Activity name:Assign3970 type:ASSGN id:1 started @ 01/01/2026 11:16:54.937 PM
+	 Evaluating JavaScript expression ExtractMonth = Quarter == "1" ? (ForEachPeriod_iterationNumber == "1" ? "1" :
+                                ForEachPeriod_iterationNumber == "2" ? "2" : "3") :
+               Quarter == "2" ? (ForEachPeriod_iterationNumber == "1" ? "4" :
+                                ForEachPeriod_iterationNumber == "2" ? "5" : "6") :
+               Quarter == "3" ? (ForEachPeriod_iterationNumber == "1" ? "7" :
+                                ForEachPeriod_iterationNumber == "2" ? "8" : "9") :
+               Quarter == "4" ? (ForEachPeriod_iterationNumber == "1" ? "10" :
+                                ForEachPeriod_iterationNumber == "2" ? "11" : "12") : "";; to value 10
+	 ExtractMonth = 10
+Activity name:Assign3970 id:1 completed @ 01/01/2026 11:16:54.937 PM
+
+Activity name:BIFSM_LoadApi type:WEBRN id:1 started @ 01/01/2026 11:16:54.938 PM
+	 WebRun BIFSM_LoadApi: Executing WebRun activity node
+	 WebRun BIFSM_LoadApi: call type Standard HTTP Call
+	 WebRun BIFSM_LoadApi: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/BI/ApplicationEngine/BI/api/rest/ColemanAIService/v1/BIFSM/FCE_IDL_GeneralLedgerBalancesByPeriod/v1
+	 WebRun BIFSM_LoadApi: Post string {
+  "FEG": "FCE",
+  "CurrentYear": "2026",
+  "CurrentMonth": "10"
+}
+	 WebRun BIFSM_LoadApi: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun BIFSM_LoadApi: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 500 Internal Server Error], server=[ionapi-2025.12.16120920.16120920], x-bi-manager-error=[WorkerUnavailable], x-frame-options=[SAMEORIGIN], Connection=[keep-alive], x-bi-manager-error-detail=[Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable], pragma=[no-cache], strict-transport-security=[max-age=31536000; includeSubDomains], Date=[Thu, 01 Jan 2026 23:16:54 GMT], x-transaction-id=[1767309414951-d07cfd48-45b1-4bbe-8ec9-bdaf5d715ee3], x-content-type-options=[nosniff], cache-control=[no-cache], Content-Type=[text/html]}
+	 WebRun BIFSM_LoadApi: WebRun result size: 0.00 MiB
+	 BIFSM_LoadApi_result = Error: [WorkerUnavailable], Detail: Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable
+	 WebRun BIFSM_LoadApi: Success string  found
+	 BIFSM_LoadApi_errorCode = 1
+	 BIFSM_LoadApi_informationCode = 0
+	 BIFSM_LoadApi_returnMessage = WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+	 BIFSM_LoadApi_outputData = 
+Activity name:BIFSM_LoadApi id:1 failed @ 01/01/2026 11:16:54.968 PM
+	 
+Error encountered executing process
+
+Process: GLOutgoing_13_SummaryExtract
+Workunit: 35056
+Activity id: BIFSM_LoadApi
+
+Error code: 1
+Information code: 0
+
+Return message: WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+
+Output data:
+
+
+
+
+	 Executing Wait2160 because activity BIFSM_LoadApi encountered an error
+
+Activity name:Wait2160 type:Timer id:2 started @ 01/01/2026 11:16:55.003 PM
+	 Timer Wait2160: Executing Timer activity node
+	 Timer Wait2160: Process will proceed in 30 seconds.
+Activity name:Wait2160 id:2 completed @ 01/01/2026 11:17:25.003 PM
+	 Timer Wait2160: Proceeding with the process
+	 Wait2160_errorCode = 0
+	 Wait2160_informationCode = 0
+	 Wait2160_returnMessage = Timer Wait2160: Created Timer Queue record for and the process will proceed in 30 seconds.
+	 Wait2160_outputData = 
+
+Activity name:Assign4980 type:ASSGN id:2 started @ 01/01/2026 11:17:25.003 PM
+	 BI_RetryCount = 1
+	 RetryFull = true
+Activity name:Assign4980 id:2 completed @ 01/01/2026 11:17:25.003 PM
+
+Activity name:Branch2240 type:BRANCH id:2 started @ 01/01/2026 11:17:25.003 PM
+	 Evaluating rule: BI_RetryCount <= 3 to node End-ForEachPeriod
+	 Next activity: End-ForEachPeriod
+Activity name:Branch2240 id:2 completed @ 01/01/2026 11:17:25.003 PM
+Activity name:ForEachPeriod id:1 completed @ 01/01/2026 11:17:25.003 PM
+
+Activity name:Branch2320 type:BRANCH id:2 started @ 01/01/2026 11:17:25.003 PM
+	 Evaluating rule: RetryFull to node Assign1010
+	 Next activity: Assign1010
+Activity name:Branch2320 id:2 completed @ 01/01/2026 11:17:25.003 PM
+
+Activity name:Assign1010 type:ASSGN id:2 started @ 01/01/2026 11:17:25.003 PM
+	 Evaluating JavaScript expression DeleteBODFilter = "(dl_document_name eq '" + BodType + "') and dl_document_date range ";
+
+var dtNow = new Date();
+var dtFrom = new Date(dtNow.getFullYear()-1,dtNow.getMonth(),dtNow.getDate());
+var dtTo = (new Date());
+ dtTo.setDate(dtTo.getDate() + 2);
+
+DeleteBODFilter = DeleteBODFilter + "[" + dtFrom.toISOString() + ", " + dtTo.toISOString() + "]";; to value (dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:17:25.004Z]
+	 DeleteBODFilter = (dl_document_name%20eq%20'FPI_FCE_IDL_GLTotals')%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z,%202026-01-03T23:17:25.004Z%5D
+	 RetryFull = false
+Activity name:Assign1010 id:2 completed @ 01/01/2026 11:17:25.004 PM
+
+Activity name:PurgeBODs type:WEBRN id:2 started @ 01/01/2026 11:17:25.004 PM
+	 WebRun PurgeBODs: Executing WebRun activity node
+	 WebRun PurgeBODs: call type Standard HTTP Call
+	 WebRun PurgeBODs: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/datalake/v2/dataobjects/filter?filter=%28dl_document_name%20eq%20%27FPI_FCE_IDL_GLTotals%27%29%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z%2C%202026-01-03T23:17:25.004Z%5D&includeArchived=true
+	 WebRun PurgeBODs: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun PurgeBODs: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 200 OK], server=[ionapi-2025.12.16120920.16120920], expires=[0], access-control-allow-headers=[origin, content-type, accept, authorization], x-frame-options=[DENY], Connection=[keep-alive], p3p=[CP=Infor doesn't have any p3p policies.], access-control-allow-methods=[GET, POST, PUT, DELETE, HEAD], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:17:26 GMT], set-cookie=[useractivity_cookie_mingle=1767309445; Domain=inforcloudsuite.com; Path=/; Secure; HttpOnly], x-transaction-id=[1767309445019-4d7caa5f-3bbd-405f-86f1-70d0484e586b], access-control-max-age=[1209600], content-security-policy=[frame-ancestors 'self' https://mingle-portal.inforcloudsuite.com https://mingle-portal.inforcloudsuite.com:443 https://mingle-extensions.inforcloudsuite.com https://mingle-extensions.inforcloudsuite.com:443 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91:443], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Type=[application/json]}
+	 WebRun PurgeBODs: WebRun result size: 0.00 MiB
+	 PurgeBODs_result = {"message":"Nothing purged","usedFilter":"(dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:17:25.004Z]","purgedAllByFilter":true,"purged
+	 WebRun PurgeBODs: Success string  found
+	 PurgeBODs_errorCode = 0
+	 PurgeBODs_informationCode = 0
+	 PurgeBODs_returnMessage = 
+	 PurgeBODs_outputData = 
+Activity name:PurgeBODs id:2 completed @ 01/01/2026 11:17:26.209 PM
+
+Activity name:Assign2080 type:ASSGN id:2 started @ 01/01/2026 11:17:26.210 PM
+	 Evaluating JavaScript expression var objDel = JSON.parse(PurgeBODs_result);
+
+DeleteBodRes = objDel.message;; to value Nothing purged
+Activity name:Assign2080 id:2 completed @ 01/01/2026 11:17:26.210 PM
+
+Activity name:Branch9310 type:BRANCH id:2 started @ 01/01/2026 11:17:26.210 PM
+	 Evaluating rule: DeleteBodRes.toString().toUpperCase() == "SUCCESSFULLY PURGED" || DeleteBodRes.toString().toUpperCase() == "NOTHING PURGED" to node Wait9940
+	 Next activity: Wait9940
+Activity name:Branch9310 id:2 completed @ 01/01/2026 11:17:26.210 PM
+
+Activity name:Wait9940 type:Timer id:2 started @ 01/01/2026 11:17:26.210 PM
+	 Timer Wait9940: Executing Timer activity node
+	 Timer Wait9940: Process will proceed in 5 seconds.
+Activity name:Wait9940 id:2 completed @ 01/01/2026 11:17:31.210 PM
+	 Timer Wait9940: Proceeding with the process
+	 Wait9940_errorCode = 0
+	 Wait9940_informationCode = 0
+	 Wait9940_returnMessage = Timer Wait9940: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait9940_outputData = 
+
+Activity name:ExecClearTbl type:WEBRN id:2 started @ 01/01/2026 11:17:31.211 PM
+	 WebRun ExecClearTbl: Executing WebRun activity node
+	 WebRun ExecClearTbl: call type Standard HTTP Call
+	 WebRun ExecClearTbl: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/
+	 WebRun ExecClearTbl: Post string EXEC INFOR.CLEAR_TABLE('FPI_FCE_IDL_GLTotals', 'True')
+
+	 WebRun ExecClearTbl: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun ExecClearTbl: Response header - {null=[HTTP/1.1 202 Accepted], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[100], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[99], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:17:31 GMT], set-cookie=[JSESSIONID=17CE0130F362F0F55A9FBF1A10D22654; Path=/; Secure; HttpOnly], x-transaction-id=[1767309451225-9f9e2635-6e17-4a6c-b541-370d0aaf6415], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[99], x-ratelimit-window=[60 second], Content-Type=[application/json]}
+	 WebRun ExecClearTbl: WebRun result size: 0.00 MiB
+	 ExecClearTbl_result = {"status":"RUNNING","location":"jobs/PcPfQQT0Rpf4w3PxbGTt/status","queryId":"PcPfQQT0Rpf4w3PxbGTt"}
+	 WebRun ExecClearTbl: Success string  found
+	 ExecClearTbl_errorCode = 0
+	 ExecClearTbl_informationCode = 0
+	 ExecClearTbl_returnMessage = 
+	 ExecClearTbl_outputData = 
+Activity name:ExecClearTbl id:2 completed @ 01/01/2026 11:17:31.296 PM
+
+Activity name:Wait7110 type:Timer id:2 started @ 01/01/2026 11:17:31.297 PM
+	 Timer Wait7110: Executing Timer activity node
+	 Timer Wait7110: Process will proceed in 5 seconds.
+Activity name:Wait7110 id:2 completed @ 01/01/2026 11:17:36.297 PM
+	 Timer Wait7110: Proceeding with the process
+	 Wait7110_errorCode = 0
+	 Wait7110_informationCode = 0
+	 Wait7110_returnMessage = Timer Wait7110: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait7110_outputData = 
+
+Activity name:ForEachPeriod type:LOOP id:2 started @ 01/01/2026 11:17:36.297 PM
+	 ForLoop ForEachPeriod: Executing
+	 ForEachPeriod_iterationNumber = 1
+	 ForLoop ForEachPeriod: Iteration 1
+
+Activity name:Assign3970 type:ASSGN id:2 started @ 01/01/2026 11:17:36.297 PM
+	 Evaluating JavaScript expression ExtractMonth = Quarter == "1" ? (ForEachPeriod_iterationNumber == "1" ? "1" :
+                                ForEachPeriod_iterationNumber == "2" ? "2" : "3") :
+               Quarter == "2" ? (ForEachPeriod_iterationNumber == "1" ? "4" :
+                                ForEachPeriod_iterationNumber == "2" ? "5" : "6") :
+               Quarter == "3" ? (ForEachPeriod_iterationNumber == "1" ? "7" :
+                                ForEachPeriod_iterationNumber == "2" ? "8" : "9") :
+               Quarter == "4" ? (ForEachPeriod_iterationNumber == "1" ? "10" :
+                                ForEachPeriod_iterationNumber == "2" ? "11" : "12") : "";; to value 10
+	 ExtractMonth = 10
+Activity name:Assign3970 id:2 completed @ 01/01/2026 11:17:36.297 PM
+
+Activity name:BIFSM_LoadApi type:WEBRN id:2 started @ 01/01/2026 11:17:36.298 PM
+	 WebRun BIFSM_LoadApi: Executing WebRun activity node
+	 WebRun BIFSM_LoadApi: call type Standard HTTP Call
+	 WebRun BIFSM_LoadApi: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/BI/ApplicationEngine/BI/api/rest/ColemanAIService/v1/BIFSM/FCE_IDL_GeneralLedgerBalancesByPeriod/v1
+	 WebRun BIFSM_LoadApi: Post string {
+  "FEG": "FCE",
+  "CurrentYear": "2026",
+  "CurrentMonth": "10"
+}
+	 WebRun BIFSM_LoadApi: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun BIFSM_LoadApi: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 500 Internal Server Error], server=[ionapi-2025.12.16120920.16120920], x-bi-manager-error=[WorkerUnavailable], x-frame-options=[SAMEORIGIN], Connection=[keep-alive], x-bi-manager-error-detail=[Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable], pragma=[no-cache], strict-transport-security=[max-age=31536000; includeSubDomains], Date=[Thu, 01 Jan 2026 23:17:36 GMT], x-transaction-id=[1767309456312-764e0112-4424-4ded-b402-3f79dd789e9e], x-content-type-options=[nosniff], cache-control=[no-cache], Content-Type=[text/html]}
+	 WebRun BIFSM_LoadApi: WebRun result size: 0.00 MiB
+	 BIFSM_LoadApi_result = Error: [WorkerUnavailable], Detail: Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable
+	 WebRun BIFSM_LoadApi: Success string  found
+	 BIFSM_LoadApi_errorCode = 1
+	 BIFSM_LoadApi_informationCode = 0
+	 BIFSM_LoadApi_returnMessage = WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+	 BIFSM_LoadApi_outputData = 
+Activity name:BIFSM_LoadApi id:2 failed @ 01/01/2026 11:17:36.339 PM
+	 
+Error encountered executing process
+
+Process: GLOutgoing_13_SummaryExtract
+Workunit: 35056
+Activity id: BIFSM_LoadApi
+
+Error code: 1
+Information code: 0
+
+Return message: WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+
+Output data:
+
+
+
+
+	 Executing Wait2160 because activity BIFSM_LoadApi encountered an error
+
+Activity name:Wait2160 type:Timer id:3 started @ 01/01/2026 11:17:36.372 PM
+	 Timer Wait2160: Executing Timer activity node
+	 Timer Wait2160: Process will proceed in 30 seconds.
+Activity name:Wait2160 id:3 completed @ 01/01/2026 11:18:06.372 PM
+	 Timer Wait2160: Proceeding with the process
+	 Wait2160_errorCode = 0
+	 Wait2160_informationCode = 0
+	 Wait2160_returnMessage = Timer Wait2160: Created Timer Queue record for and the process will proceed in 30 seconds.
+	 Wait2160_outputData = 
+
+Activity name:Assign4980 type:ASSGN id:3 started @ 01/01/2026 11:18:06.372 PM
+	 BI_RetryCount = 2
+	 RetryFull = true
+Activity name:Assign4980 id:3 completed @ 01/01/2026 11:18:06.372 PM
+
+Activity name:Branch2240 type:BRANCH id:3 started @ 01/01/2026 11:18:06.372 PM
+	 Evaluating rule: BI_RetryCount <= 3 to node End-ForEachPeriod
+	 Next activity: End-ForEachPeriod
+Activity name:Branch2240 id:3 completed @ 01/01/2026 11:18:06.372 PM
+Activity name:ForEachPeriod id:2 completed @ 01/01/2026 11:18:06.372 PM
+
+Activity name:Branch2320 type:BRANCH id:3 started @ 01/01/2026 11:18:06.372 PM
+	 Evaluating rule: RetryFull to node Assign1010
+	 Next activity: Assign1010
+Activity name:Branch2320 id:3 completed @ 01/01/2026 11:18:06.372 PM
+
+Activity name:Assign1010 type:ASSGN id:3 started @ 01/01/2026 11:18:06.372 PM
+	 Evaluating JavaScript expression DeleteBODFilter = "(dl_document_name eq '" + BodType + "') and dl_document_date range ";
+
+var dtNow = new Date();
+var dtFrom = new Date(dtNow.getFullYear()-1,dtNow.getMonth(),dtNow.getDate());
+var dtTo = (new Date());
+ dtTo.setDate(dtTo.getDate() + 2);
+
+DeleteBODFilter = DeleteBODFilter + "[" + dtFrom.toISOString() + ", " + dtTo.toISOString() + "]";; to value (dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:18:06.372Z]
+	 DeleteBODFilter = (dl_document_name%20eq%20'FPI_FCE_IDL_GLTotals')%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z,%202026-01-03T23:18:06.372Z%5D
+	 RetryFull = false
+Activity name:Assign1010 id:3 completed @ 01/01/2026 11:18:06.372 PM
+
+Activity name:PurgeBODs type:WEBRN id:3 started @ 01/01/2026 11:18:06.373 PM
+	 WebRun PurgeBODs: Executing WebRun activity node
+	 WebRun PurgeBODs: call type Standard HTTP Call
+	 WebRun PurgeBODs: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/datalake/v2/dataobjects/filter?filter=%28dl_document_name%20eq%20%27FPI_FCE_IDL_GLTotals%27%29%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z%2C%202026-01-03T23:18:06.372Z%5D&includeArchived=true
+	 WebRun PurgeBODs: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun PurgeBODs: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 200 OK], server=[ionapi-2025.12.16120920.16120920], expires=[0], access-control-allow-headers=[origin, content-type, accept, authorization], x-frame-options=[DENY], Connection=[keep-alive], p3p=[CP=Infor doesn't have any p3p policies.], access-control-allow-methods=[GET, POST, PUT, DELETE, HEAD], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:18:06 GMT], set-cookie=[useractivity_cookie_mingle=1767309486; Domain=inforcloudsuite.com; Path=/; Secure; HttpOnly], x-transaction-id=[1767309486389-acd8b237-77fa-4488-8a1f-895b6602618a], access-control-max-age=[1209600], content-security-policy=[frame-ancestors 'self' https://mingle-portal.inforcloudsuite.com https://mingle-portal.inforcloudsuite.com:443 https://mingle-extensions.inforcloudsuite.com https://mingle-extensions.inforcloudsuite.com:443 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91:443], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Type=[application/json]}
+	 WebRun PurgeBODs: WebRun result size: 0.00 MiB
+	 PurgeBODs_result = {"message":"Nothing purged","usedFilter":"(dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:18:06.372Z]","purgedAllByFilter":true,"purged
+	 WebRun PurgeBODs: Success string  found
+	 PurgeBODs_errorCode = 0
+	 PurgeBODs_informationCode = 0
+	 PurgeBODs_returnMessage = 
+	 PurgeBODs_outputData = 
+Activity name:PurgeBODs id:3 completed @ 01/01/2026 11:18:06.630 PM
+
+Activity name:Assign2080 type:ASSGN id:3 started @ 01/01/2026 11:18:06.631 PM
+	 Evaluating JavaScript expression var objDel = JSON.parse(PurgeBODs_result);
+
+DeleteBodRes = objDel.message;; to value Nothing purged
+Activity name:Assign2080 id:3 completed @ 01/01/2026 11:18:06.631 PM
+
+Activity name:Branch9310 type:BRANCH id:3 started @ 01/01/2026 11:18:06.631 PM
+	 Evaluating rule: DeleteBodRes.toString().toUpperCase() == "SUCCESSFULLY PURGED" || DeleteBodRes.toString().toUpperCase() == "NOTHING PURGED" to node Wait9940
+	 Next activity: Wait9940
+Activity name:Branch9310 id:3 completed @ 01/01/2026 11:18:06.631 PM
+
+Activity name:Wait9940 type:Timer id:3 started @ 01/01/2026 11:18:06.631 PM
+	 Timer Wait9940: Executing Timer activity node
+	 Timer Wait9940: Process will proceed in 5 seconds.
+Activity name:Wait9940 id:3 completed @ 01/01/2026 11:18:11.631 PM
+	 Timer Wait9940: Proceeding with the process
+	 Wait9940_errorCode = 0
+	 Wait9940_informationCode = 0
+	 Wait9940_returnMessage = Timer Wait9940: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait9940_outputData = 
+
+Activity name:ExecClearTbl type:WEBRN id:3 started @ 01/01/2026 11:18:11.631 PM
+	 WebRun ExecClearTbl: Executing WebRun activity node
+	 WebRun ExecClearTbl: call type Standard HTTP Call
+	 WebRun ExecClearTbl: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/
+	 WebRun ExecClearTbl: Post string EXEC INFOR.CLEAR_TABLE('FPI_FCE_IDL_GLTotals', 'True')
+
+	 WebRun ExecClearTbl: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun ExecClearTbl: Response header - {null=[HTTP/1.1 202 Accepted], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[100], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[98], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:18:11 GMT], set-cookie=[JSESSIONID=D8C37E3CB0405BA28608D02F5C211BE3; Path=/; Secure; HttpOnly], x-transaction-id=[1767309491644-f8a75b53-dfe1-44c3-b602-d7c4224ca71a], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[99], x-ratelimit-window=[60 second], Content-Type=[application/json]}
+	 WebRun ExecClearTbl: WebRun result size: 0.00 MiB
+	 ExecClearTbl_result = {"status":"RUNNING","location":"jobs/1p2G4Ffl7Vgk70B7W6sj/status","queryId":"1p2G4Ffl7Vgk70B7W6sj"}
+	 WebRun ExecClearTbl: Success string  found
+	 ExecClearTbl_errorCode = 0
+	 ExecClearTbl_informationCode = 0
+	 ExecClearTbl_returnMessage = 
+	 ExecClearTbl_outputData = 
+Activity name:ExecClearTbl id:3 completed @ 01/01/2026 11:18:11.737 PM
+
+Activity name:Wait7110 type:Timer id:3 started @ 01/01/2026 11:18:11.737 PM
+	 Timer Wait7110: Executing Timer activity node
+	 Timer Wait7110: Process will proceed in 5 seconds.
+Activity name:Wait7110 id:3 completed @ 01/01/2026 11:18:16.737 PM
+	 Timer Wait7110: Proceeding with the process
+	 Wait7110_errorCode = 0
+	 Wait7110_informationCode = 0
+	 Wait7110_returnMessage = Timer Wait7110: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait7110_outputData = 
+
+Activity name:ForEachPeriod type:LOOP id:3 started @ 01/01/2026 11:18:16.738 PM
+	 ForLoop ForEachPeriod: Executing
+	 ForEachPeriod_iterationNumber = 1
+	 ForLoop ForEachPeriod: Iteration 1
+
+Activity name:Assign3970 type:ASSGN id:3 started @ 01/01/2026 11:18:16.738 PM
+	 Evaluating JavaScript expression ExtractMonth = Quarter == "1" ? (ForEachPeriod_iterationNumber == "1" ? "1" :
+                                ForEachPeriod_iterationNumber == "2" ? "2" : "3") :
+               Quarter == "2" ? (ForEachPeriod_iterationNumber == "1" ? "4" :
+                                ForEachPeriod_iterationNumber == "2" ? "5" : "6") :
+               Quarter == "3" ? (ForEachPeriod_iterationNumber == "1" ? "7" :
+                                ForEachPeriod_iterationNumber == "2" ? "8" : "9") :
+               Quarter == "4" ? (ForEachPeriod_iterationNumber == "1" ? "10" :
+                                ForEachPeriod_iterationNumber == "2" ? "11" : "12") : "";; to value 10
+	 ExtractMonth = 10
+Activity name:Assign3970 id:3 completed @ 01/01/2026 11:18:16.738 PM
+
+Activity name:BIFSM_LoadApi type:WEBRN id:3 started @ 01/01/2026 11:18:16.738 PM
+	 WebRun BIFSM_LoadApi: Executing WebRun activity node
+	 WebRun BIFSM_LoadApi: call type Standard HTTP Call
+	 WebRun BIFSM_LoadApi: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/BI/ApplicationEngine/BI/api/rest/ColemanAIService/v1/BIFSM/FCE_IDL_GeneralLedgerBalancesByPeriod/v1
+	 WebRun BIFSM_LoadApi: Post string {
+  "FEG": "FCE",
+  "CurrentYear": "2026",
+  "CurrentMonth": "10"
+}
+	 WebRun BIFSM_LoadApi: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun BIFSM_LoadApi: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 500 Internal Server Error], server=[ionapi-2025.12.16120920.16120920], x-bi-manager-error=[WorkerUnavailable], x-frame-options=[SAMEORIGIN], Connection=[keep-alive], x-bi-manager-error-detail=[Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable], pragma=[no-cache], strict-transport-security=[max-age=31536000; includeSubDomains], Date=[Thu, 01 Jan 2026 23:18:16 GMT], x-transaction-id=[1767309496751-7cb8b491-c98e-405c-89ee-4c4c69a90ce3], x-content-type-options=[nosniff], cache-control=[no-cache], Content-Type=[text/html]}
+	 WebRun BIFSM_LoadApi: WebRun result size: 0.00 MiB
+	 BIFSM_LoadApi_result = Error: [WorkerUnavailable], Detail: Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable
+	 WebRun BIFSM_LoadApi: Success string  found
+	 BIFSM_LoadApi_errorCode = 1
+	 BIFSM_LoadApi_informationCode = 0
+	 BIFSM_LoadApi_returnMessage = WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+	 BIFSM_LoadApi_outputData = 
+Activity name:BIFSM_LoadApi id:3 failed @ 01/01/2026 11:18:16.779 PM
+	 
+Error encountered executing process
+
+Process: GLOutgoing_13_SummaryExtract
+Workunit: 35056
+Activity id: BIFSM_LoadApi
+
+Error code: 1
+Information code: 0
+
+Return message: WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+
+Output data:
+
+
+
+
+	 Executing Wait2160 because activity BIFSM_LoadApi encountered an error
+
+Activity name:Wait2160 type:Timer id:4 started @ 01/01/2026 11:18:16.810 PM
+	 Timer Wait2160: Executing Timer activity node
+	 Timer Wait2160: Process will proceed in 30 seconds.
+Activity name:Wait2160 id:4 completed @ 01/01/2026 11:18:46.810 PM
+	 Timer Wait2160: Proceeding with the process
+	 Wait2160_errorCode = 0
+	 Wait2160_informationCode = 0
+	 Wait2160_returnMessage = Timer Wait2160: Created Timer Queue record for and the process will proceed in 30 seconds.
+	 Wait2160_outputData = 
+
+Activity name:Assign4980 type:ASSGN id:4 started @ 01/01/2026 11:18:46.811 PM
+	 BI_RetryCount = 3
+	 RetryFull = true
+Activity name:Assign4980 id:4 completed @ 01/01/2026 11:18:46.811 PM
+
+Activity name:Branch2240 type:BRANCH id:4 started @ 01/01/2026 11:18:46.811 PM
+	 Evaluating rule: BI_RetryCount <= 3 to node End-ForEachPeriod
+	 Next activity: End-ForEachPeriod
+Activity name:Branch2240 id:4 completed @ 01/01/2026 11:18:46.811 PM
+Activity name:ForEachPeriod id:3 completed @ 01/01/2026 11:18:46.811 PM
+
+Activity name:Branch2320 type:BRANCH id:4 started @ 01/01/2026 11:18:46.811 PM
+	 Evaluating rule: RetryFull to node Assign1010
+	 Next activity: Assign1010
+Activity name:Branch2320 id:4 completed @ 01/01/2026 11:18:46.811 PM
+
+Activity name:Assign1010 type:ASSGN id:4 started @ 01/01/2026 11:18:46.811 PM
+	 Evaluating JavaScript expression DeleteBODFilter = "(dl_document_name eq '" + BodType + "') and dl_document_date range ";
+
+var dtNow = new Date();
+var dtFrom = new Date(dtNow.getFullYear()-1,dtNow.getMonth(),dtNow.getDate());
+var dtTo = (new Date());
+ dtTo.setDate(dtTo.getDate() + 2);
+
+DeleteBODFilter = DeleteBODFilter + "[" + dtFrom.toISOString() + ", " + dtTo.toISOString() + "]";; to value (dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:18:46.811Z]
+	 DeleteBODFilter = (dl_document_name%20eq%20'FPI_FCE_IDL_GLTotals')%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z,%202026-01-03T23:18:46.811Z%5D
+	 RetryFull = false
+Activity name:Assign1010 id:4 completed @ 01/01/2026 11:18:46.811 PM
+
+Activity name:PurgeBODs type:WEBRN id:4 started @ 01/01/2026 11:18:46.812 PM
+	 WebRun PurgeBODs: Executing WebRun activity node
+	 WebRun PurgeBODs: call type Standard HTTP Call
+	 WebRun PurgeBODs: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/datalake/v2/dataobjects/filter?filter=%28dl_document_name%20eq%20%27FPI_FCE_IDL_GLTotals%27%29%20and%20dl_document_date%20range%20%5B2025-01-01T00:00:00.000Z%2C%202026-01-03T23:18:46.811Z%5D&includeArchived=true
+	 WebRun PurgeBODs: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun PurgeBODs: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 200 OK], server=[ionapi-2025.12.16120920.16120920], expires=[0], access-control-allow-headers=[origin, content-type, accept, authorization], x-frame-options=[DENY], Connection=[keep-alive], p3p=[CP=Infor doesn't have any p3p policies.], access-control-allow-methods=[GET, POST, PUT, DELETE, HEAD], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:18:47 GMT], set-cookie=[useractivity_cookie_mingle=1767309526; Domain=inforcloudsuite.com; Path=/; Secure; HttpOnly], x-transaction-id=[1767309526824-de851382-12a4-42b4-be71-8497d6a60312], access-control-max-age=[1209600], content-security-policy=[frame-ancestors 'self' https://mingle-portal.inforcloudsuite.com https://mingle-portal.inforcloudsuite.com:443 https://mingle-extensions.inforcloudsuite.com https://mingle-extensions.inforcloudsuite.com:443 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91 https://mingle-alb-stsruntimesvc.inforcloudsuite.com/inforsts/CA36EAEA58A44430A8E41F56DC5ABC91:443], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Type=[application/json]}
+	 WebRun PurgeBODs: WebRun result size: 0.00 MiB
+	 PurgeBODs_result = {"message":"Nothing purged","usedFilter":"(dl_document_name eq 'FPI_FCE_IDL_GLTotals') and dl_document_date range [2025-01-01T00:00:00.000Z, 2026-01-03T23:18:46.811Z]","purgedAllByFilter":true,"purged
+	 WebRun PurgeBODs: Success string  found
+	 PurgeBODs_errorCode = 0
+	 PurgeBODs_informationCode = 0
+	 PurgeBODs_returnMessage = 
+	 PurgeBODs_outputData = 
+Activity name:PurgeBODs id:4 completed @ 01/01/2026 11:18:47.153 PM
+
+Activity name:Assign2080 type:ASSGN id:4 started @ 01/01/2026 11:18:47.153 PM
+	 Evaluating JavaScript expression var objDel = JSON.parse(PurgeBODs_result);
+
+DeleteBodRes = objDel.message;; to value Nothing purged
+Activity name:Assign2080 id:4 completed @ 01/01/2026 11:18:47.153 PM
+
+Activity name:Branch9310 type:BRANCH id:4 started @ 01/01/2026 11:18:47.153 PM
+	 Evaluating rule: DeleteBodRes.toString().toUpperCase() == "SUCCESSFULLY PURGED" || DeleteBodRes.toString().toUpperCase() == "NOTHING PURGED" to node Wait9940
+	 Next activity: Wait9940
+Activity name:Branch9310 id:4 completed @ 01/01/2026 11:18:47.154 PM
+
+Activity name:Wait9940 type:Timer id:4 started @ 01/01/2026 11:18:47.154 PM
+	 Timer Wait9940: Executing Timer activity node
+	 Timer Wait9940: Process will proceed in 5 seconds.
+Activity name:Wait9940 id:4 completed @ 01/01/2026 11:18:52.154 PM
+	 Timer Wait9940: Proceeding with the process
+	 Wait9940_errorCode = 0
+	 Wait9940_informationCode = 0
+	 Wait9940_returnMessage = Timer Wait9940: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait9940_outputData = 
+
+Activity name:ExecClearTbl type:WEBRN id:4 started @ 01/01/2026 11:18:52.154 PM
+	 WebRun ExecClearTbl: Executing WebRun activity node
+	 WebRun ExecClearTbl: call type Standard HTTP Call
+	 WebRun ExecClearTbl: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/
+	 WebRun ExecClearTbl: Post string EXEC INFOR.CLEAR_TABLE('FPI_FCE_IDL_GLTotals', 'True')
+
+	 WebRun ExecClearTbl: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun ExecClearTbl: Response header - {null=[HTTP/1.1 202 Accepted], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[100], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[99], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Thu, 01 Jan 2026 23:18:52 GMT], set-cookie=[JSESSIONID=83B0BAE66FB4609BFE8F4FA2A74F7AED; Path=/; Secure; HttpOnly], x-transaction-id=[1767309532168-b954bed1-1242-44fc-89c7-67ec4f27a9f7], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[99], x-ratelimit-window=[60 second], Content-Type=[application/json]}
+	 WebRun ExecClearTbl: WebRun result size: 0.00 MiB
+	 ExecClearTbl_result = {"status":"RUNNING","location":"jobs/0rj1DtdH84hq01V63QmN/status","queryId":"0rj1DtdH84hq01V63QmN"}
+	 WebRun ExecClearTbl: Success string  found
+	 ExecClearTbl_errorCode = 0
+	 ExecClearTbl_informationCode = 0
+	 ExecClearTbl_returnMessage = 
+	 ExecClearTbl_outputData = 
+Activity name:ExecClearTbl id:4 completed @ 01/01/2026 11:18:52.266 PM
+
+Activity name:Wait7110 type:Timer id:4 started @ 01/01/2026 11:18:52.266 PM
+	 Timer Wait7110: Executing Timer activity node
+	 Timer Wait7110: Process will proceed in 5 seconds.
+Activity name:Wait7110 id:4 completed @ 01/01/2026 11:18:57.266 PM
+	 Timer Wait7110: Proceeding with the process
+	 Wait7110_errorCode = 0
+	 Wait7110_informationCode = 0
+	 Wait7110_returnMessage = Timer Wait7110: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait7110_outputData = 
+
+Activity name:ForEachPeriod type:LOOP id:4 started @ 01/01/2026 11:18:57.267 PM
+	 ForLoop ForEachPeriod: Executing
+	 ForEachPeriod_iterationNumber = 1
+	 ForLoop ForEachPeriod: Iteration 1
+
+Activity name:Assign3970 type:ASSGN id:4 started @ 01/01/2026 11:18:57.267 PM
+	 Evaluating JavaScript expression ExtractMonth = Quarter == "1" ? (ForEachPeriod_iterationNumber == "1" ? "1" :
+                                ForEachPeriod_iterationNumber == "2" ? "2" : "3") :
+               Quarter == "2" ? (ForEachPeriod_iterationNumber == "1" ? "4" :
+                                ForEachPeriod_iterationNumber == "2" ? "5" : "6") :
+               Quarter == "3" ? (ForEachPeriod_iterationNumber == "1" ? "7" :
+                                ForEachPeriod_iterationNumber == "2" ? "8" : "9") :
+               Quarter == "4" ? (ForEachPeriod_iterationNumber == "1" ? "10" :
+                                ForEachPeriod_iterationNumber == "2" ? "11" : "12") : "";; to value 10
+	 ExtractMonth = 10
+Activity name:Assign3970 id:4 completed @ 01/01/2026 11:18:57.267 PM
+
+Activity name:BIFSM_LoadApi type:WEBRN id:4 started @ 01/01/2026 11:18:57.267 PM
+	 WebRun BIFSM_LoadApi: Executing WebRun activity node
+	 WebRun BIFSM_LoadApi: call type Standard HTTP Call
+	 WebRun BIFSM_LoadApi: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/BI/ApplicationEngine/BI/api/rest/ColemanAIService/v1/BIFSM/FCE_IDL_GeneralLedgerBalancesByPeriod/v1
+	 WebRun BIFSM_LoadApi: Post string {
+  "FEG": "FCE",
+  "CurrentYear": "2026",
+  "CurrentMonth": "10"
+}
+	 WebRun BIFSM_LoadApi: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun BIFSM_LoadApi: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 500 Internal Server Error], server=[ionapi-2025.12.16120920.16120920], x-bi-manager-error=[WorkerUnavailable], x-frame-options=[SAMEORIGIN], Connection=[keep-alive], x-bi-manager-error-detail=[Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable], pragma=[no-cache], strict-transport-security=[max-age=31536000; includeSubDomains], Date=[Thu, 01 Jan 2026 23:18:57 GMT], x-transaction-id=[1767309537280-d173f807-e3a3-41f9-855f-007ed94a9aca], x-content-type-options=[nosniff], cache-control=[no-cache], Content-Type=[text/html]}
+	 WebRun BIFSM_LoadApi: WebRun result size: 0.00 MiB
+	 BIFSM_LoadApi_result = Error: [WorkerUnavailable], Detail: Load balancing error occurred. Infor.BI.Service.Manager.Exceptions.NoAvailableWorkersException. Error: WorkerUnavailable
+	 WebRun BIFSM_LoadApi: Success string  found
+	 BIFSM_LoadApi_errorCode = 1
+	 BIFSM_LoadApi_informationCode = 0
+	 BIFSM_LoadApi_returnMessage = WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+	 BIFSM_LoadApi_outputData = 
+Activity name:BIFSM_LoadApi id:4 failed @ 01/01/2026 11:18:57.304 PM
+	 
+Error encountered executing process
+
+Process: GLOutgoing_13_SummaryExtract
+Workunit: 35056
+Activity id: BIFSM_LoadApi
+
+Error code: 1
+Information code: 0
+
+Return message: WebRun BIFSM_LoadApi: Server returned HTTP response code - 500
+
+Output data:
+
+
+
+
+	 Executing Wait2160 because activity BIFSM_LoadApi encountered an error
+
+Activity name:Wait2160 type:Timer id:5 started @ 01/01/2026 11:18:57.336 PM
+	 Timer Wait2160: Executing Timer activity node
+	 Timer Wait2160: Process will proceed in 30 seconds.
+Activity name:Wait2160 id:5 completed @ 01/01/2026 11:19:27.336 PM
+	 Timer Wait2160: Proceeding with the process
+	 Wait2160_errorCode = 0
+	 Wait2160_informationCode = 0
+	 Wait2160_returnMessage = Timer Wait2160: Created Timer Queue record for and the process will proceed in 30 seconds.
+	 Wait2160_outputData = 
+
+Activity name:Assign4980 type:ASSGN id:5 started @ 01/01/2026 11:19:27.336 PM
+	 BI_RetryCount = 4
+	 RetryFull = true
+Activity name:Assign4980 id:5 completed @ 01/01/2026 11:19:27.336 PM
+
+Activity name:Branch2240 type:BRANCH id:5 started @ 01/01/2026 11:19:27.336 PM
+	 Evaluating rule: BI_RetryCount <= 3 to node End-ForEachPeriod
+	 Evaluating rule: true to node Assign2100
+	 Next activity: Assign2100
+Activity name:Branch2240 id:5 completed @ 01/01/2026 11:19:27.336 PM
+
+Activity name:Assign2100 type:ASSGN id:5 started @ 01/01/2026 11:19:27.336 PM
+	 ErrMsg = An error has occured in running the BIFSM API. Kindly check workunit 35056 for more details.
+Activity name:Assign2100 id:5 completed @ 01/01/2026 11:19:27.336 PM
+
+Activity name:CheckErrorFileExists type:ACCFIL id:5 started @ 01/01/2026 11:19:27.337 PM
+	 CheckErrorFileExists_errorCode = 0
+	 CheckErrorFileExists_informationCode = 0
+	 CheckErrorFileExists_returnMessage = File Access CheckErrorFileExists: File /FCE/FCE_FACT_EXTRACTS_20260101.TXT.flg exists
+	 CheckErrorFileExists_outputData = 
+	 File Access CheckErrorFileExists: File /FCE/FCE_FACT_EXTRACTS_20260101.TXT.flg exists
+Activity name:CheckErrorFileExists id:5 completed @ 01/01/2026 11:19:27.340 PM
+
+Activity name:Branch4060 type:BRANCH id:5 started @ 01/01/2026 11:19:27.340 PM
+	 Evaluating rule: CheckErrorFileExists_returnMessage.toString().toLowerCase().indexOf("not found") != -1 to node WriteError
+	 Evaluating rule: true to node AppendError
+	 Next activity: AppendError
+Activity name:Branch4060 id:5 completed @ 01/01/2026 11:19:27.340 PM
+
+Activity name:AppendError type:ACCFIL id:5 started @ 01/01/2026 11:19:27.340 PM
+Activity name:AppendError id:5 completed @ 01/01/2026 11:19:27.342 PM
+
+Activity name:Assign3890 type:ASSGN id:5 started @ 01/01/2026 11:19:27.342 PM
+	 WithError = true
+Activity name:Assign3890 id:5 completed @ 01/01/2026 11:19:27.342 PM
+
+Activity name:Branch5180 type:BRANCH id:5 started @ 01/01/2026 11:19:27.342 PM
+	 Evaluating rule: PrevOrCurr == "PREV" to node ErrMsg
+	 Evaluating rule: true to node End
+	 Next activity: End
+Activity name:Branch5180 id:5 completed @ 01/01/2026 11:19:27.342 PM
+
+Activity name:End type:END id:5 started @ 01/01/2026 11:19:27.343 PM
+	 Activity End: Executing End activity
+	 [Metrics - Workunit] WU Total Cpu:[47 ms] WU Total User:[40 ms] WU Total Duration:[162994 ms] WU Total Alloc:[17.73 MiB]
+	 [Metrics - Top list: Memory] WUDuration:[162994 ms] [#1 - |End|End|1x|3.28 MiB|9 ms|10 ms|32 ms] [#2 - |Start|Start|1x|2.72 MiB|5 ms|0 ms|11 ms] [#3 - |ReadDate|FileAccess|1x|0.65 MiB|2 ms|0 ms|9 ms] [#4 - |Assign1540|Assign|1x|0.53 MiB|0 ms|0 ms|1 ms] [#5 - |Assign1010|Assign|4x|0.44 MiB|0 ms|0 ms|1 ms]

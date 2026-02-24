@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "IPA Steering Files Reminder",
+  "description": "Reminds to load relevant steering files before IPA analysis tasks",
+  "version": "4",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "📚 IPA STEERING FILES REMINDER\n\nBefore starting IPA analysis, load the relevant steering files:\n\n🔍 CODING STANDARDS REVIEW:\nreadMultipleFiles([\n    '.kiro/steering/01_IPA_and_IPD_Complete_Guide.md',\n    '.kiro/steering/02_Work_Unit_Analysis.md',\n    '.kiro/steering/03_Process_Patterns_Library.md',\n    '.kiro/steering/05_Compass_SQL_CheatSheet.md',\n    '.kiro/steering/10_IPA_Report_Generation.md',\n    '.kiro/steering/11_RICE_Methodology_and_Specifications.md'\n])\n\n📊 WORK UNIT ANALYSIS:\nreadMultipleFiles([\n    '.kiro/steering/02_Work_Unit_Analysis.md',\n    '.kiro/steering/04_WU_Report_Generation.md'\n])\n\n📋 CLIENT HANDOVER:\nreadMultipleFiles([\n    '.kiro/steering/01_IPA_and_IPD_Complete_Guide.md',\n    '.kiro/steering/10_IPA_Report_Generation.md',\n    '.kiro/steering/11_RICE_Methodology_and_Specifications.md'\n])\n\nLoad the appropriate set based on the task type."
+  }
+}

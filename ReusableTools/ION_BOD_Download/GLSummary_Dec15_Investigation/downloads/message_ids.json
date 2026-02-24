@@ -1,0 +1,3488 @@
+[
+  {
+    "message_id": "lid://infor.bice.bice_9B659835-0D5C-4A59-A64A-65325B8A3B16:-ION-:76861a4feb964b35ad19b26cbef072a2",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:33.478Z",
+    "document_size": 7725
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3FCF8BA8-B8DC-43F3-878F-5A7F91532792:-ION-:d4c9b8b964d142ceac0158320245c783",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:33.588Z",
+    "document_size": 7821
+  },
+  {
+    "message_id": "lid://infor.bice.bice_528A65D5-DABA-4FEA-A609-C8C54F5E83D0:-ION-:7f658ceeb6b6462b8eb13a749838f749",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:33.700Z",
+    "document_size": 8058
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E380130C-D845-4F4F-82FC-752C412A8769:-ION-:75ab773f6a0a4cceb3790d77e405bc48",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:33.805Z",
+    "document_size": 7583
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2FE16DB7-B2DA-4877-AE64-99489264A6DA:-ION-:6341d96b31fc4c30a9894a15a4d78dd5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:33.921Z",
+    "document_size": 7901
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F0D3AD6C-5AA2-444E-931B-9B6522BBA0C2:-ION-:39ce8e93afc74b6b8611fcda6a539c65",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.048Z",
+    "document_size": 7552
+  },
+  {
+    "message_id": "lid://infor.bice.bice_ECCCDA59-6966-438C-9FEB-627716211FA9:-ION-:7af615f0e3574795b3855dcaca3e3605",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.151Z",
+    "document_size": 7689
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6DB4A39C-8056-4D8F-8DDE-1BB1CD55A008:-ION-:67cdb9fecc8940d1ba69e759ce48b463",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.279Z",
+    "document_size": 7721
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BCC37092-F2DF-4906-AD82-FA108FB7B9CB:-ION-:6002f8064a6343da9dcbb3513654e150",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.369Z",
+    "document_size": 7417
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7D38B148-5A33-4C4F-8B9F-2A76976DA4ED:-ION-:3dc7d831e4994d23a959cc70dbd4ade5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.541Z",
+    "document_size": 7510
+  },
+  {
+    "message_id": "lid://infor.bice.bice_430BBC28-52A5-4AD8-A18F-448860454C8F:-ION-:4b96901cbbc748049b41bfc83005418b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.651Z",
+    "document_size": 7240
+  },
+  {
+    "message_id": "lid://infor.bice.bice_77521459-4AF3-457F-8999-B49329FF2D36:-ION-:af737ad115954b24b6ee7f5482006986",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.785Z",
+    "document_size": 7867
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4EE55057-86AC-4051-A221-21A5A4C03B1A:-ION-:849b24a0abf74edfacd05fe1e79795df",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.881Z",
+    "document_size": 7714
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E082AE93-D406-46B2-8789-07E7FAAD366B:-ION-:beecf41d1d1248da96e5452c7e4ac409",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:34.983Z",
+    "document_size": 7713
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D332DF3F-CC6E-4429-A381-5228B1493EAF:-ION-:e2e8e0dba7024286b990ab2957d21784",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.090Z",
+    "document_size": 7682
+  },
+  {
+    "message_id": "lid://infor.bice.bice_767C936D-3038-441C-BB0E-4C81415C02A3:-ION-:1f5b965120014c3e946f2cf8c9d82a7e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.203Z",
+    "document_size": 7053
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9409BCDA-B7E3-4259-B4F7-1C26B20BCE01:-ION-:57d100ea8c464a92b1b1b90857b2e2d7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.298Z",
+    "document_size": 7062
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F8E851D7-0A40-4812-B698-85B9C88C982A:-ION-:e16b41a2b04f4fb1af2dfd07c6a412ab",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.382Z",
+    "document_size": 7532
+  },
+  {
+    "message_id": "lid://infor.bice.bice_657BBE46-C935-4EE6-A7A2-177DEF8CAD04:-ION-:003b9d20d9534a12b2187b5cc8ffdd07",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.513Z",
+    "document_size": 7384
+  },
+  {
+    "message_id": "lid://infor.bice.bice_95F47118-E737-4243-B90B-08FE9EBE045E:-ION-:68bda90b0ac14bdea23289f7fad7bcc4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.609Z",
+    "document_size": 7533
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8422FE97-C929-4B0D-A55F-132E300A5375:-ION-:6c03b6860c494aeaa62de1c69a668aca",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:35.657Z",
+    "document_size": 2828
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1238AA8E-B838-4959-8249-45169CA55F50:-ION-:230cf42eadff464d88b53da94f8080f0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:51.533Z",
+    "document_size": 7886
+  },
+  {
+    "message_id": "lid://infor.bice.bice_87803CAF-FDA4-464D-94C5-C3BAFD4CE041:-ION-:83bc0f18af2d49d583fd3be46f0aa8df",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:51.646Z",
+    "document_size": 7973
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1EAFD0DD-7A96-48E1-BA39-C5DDBB0A6580:-ION-:ac5e0d4d97a14cbe99eda6661634040b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:51.729Z",
+    "document_size": 8309
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A2411B95-0B78-47DB-B9A0-1E6C0C1B2BFE:-ION-:9c7b37847059475d8c8bd21a484761cb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:51.807Z",
+    "document_size": 7658
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A2EB74B9-BB39-4BBA-91E1-C542BC015812:-ION-:47148a2c8295452d83c07f92f4653faf",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:51.897Z",
+    "document_size": 7809
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3D8FD98E-0DCA-44B7-B12D-91BF588A85CB:-ION-:d939998f86244194a92f669d2ac89216",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:51.981Z",
+    "document_size": 7711
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D8AAA57F-BC25-4523-9C82-95D7F62A8FA3:-ION-:525078c6340b4174a6e67b747ce8299d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.074Z",
+    "document_size": 7886
+  },
+  {
+    "message_id": "lid://infor.bice.bice_FCE5475B-B256-41C8-9409-C5F55EFCC0C2:-ION-:93de284ac6f44eadbfa536f8bcfa442c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.153Z",
+    "document_size": 8382
+  },
+  {
+    "message_id": "lid://infor.bice.bice_00568413-EFCD-475B-A4B1-7D3D360937B1:-ION-:304c7cab5c924980a958c496403cfba7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.298Z",
+    "document_size": 8004
+  },
+  {
+    "message_id": "lid://infor.bice.bice_90A2C541-264E-4A20-9B16-F43EF10524A4:-ION-:bb19c64a084145599c0201a47fc51ce3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.402Z",
+    "document_size": 8606
+  },
+  {
+    "message_id": "lid://infor.bice.bice_570124CE-5F9B-4379-B51B-ACFC8DFEB9AB:-ION-:62a4f2d5a4044af79590b18dab2296fd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.490Z",
+    "document_size": 8400
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E76391C7-7B99-4D05-A94C-AEAB6B9DC93A:-ION-:7868cc034b324c9ba05d7707d4dd7fcd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.603Z",
+    "document_size": 8920
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E08F7CC9-9F09-406D-B8B3-FB8FBD15FA11:-ION-:dad2f94c435441d1b78fe015ca98c116",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.690Z",
+    "document_size": 8815
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E4334056-CBD0-49B2-9309-6E3F0DA018A8:-ION-:d3993ef7338b41c8a5ba15d1baca51c5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.806Z",
+    "document_size": 8645
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D218AC29-1615-45B8-959D-9326D9F0F328:-ION-:4f1c442d4d0d46e8a9e811f5205499d8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.896Z",
+    "document_size": 8884
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A1544D54-7C67-4CE3-A399-A1F8A747D7D6:-ION-:5ddbfdba85f64643b6979763604f6cca",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:52.985Z",
+    "document_size": 8194
+  },
+  {
+    "message_id": "lid://infor.bice.bice_937CBB9A-9EEC-4A4E-9F1F-71A727C009E1:-ION-:b9da3fc1774d4807a92816dd252f9067",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:53.277Z",
+    "document_size": 7971
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AF48605D-306F-4F75-B04C-7E41824695AB:-ION-:a4e51a552df54e20942e45f20aba1ea4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:53.393Z",
+    "document_size": 9158
+  },
+  {
+    "message_id": "lid://infor.bice.bice_40EF2291-677A-4FC8-944D-3D7FB01E6839:-ION-:7fa7db84851c40aca111a12c223bd6df",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:53.512Z",
+    "document_size": 9046
+  },
+  {
+    "message_id": "lid://infor.bice.bice_009DE949-18FC-4ABE-86D0-40165B2800D0:-ION-:383d225cafbf444ba4a9b4121cd74818",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:53.618Z",
+    "document_size": 8645
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1DDA573D-FC46-4C0C-8F34-7C8375B033A6:-ION-:415c5754f958440faf4e7e3846d82c4d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:53.661Z",
+    "document_size": 2474
+  },
+  {
+    "message_id": "lid://infor.bice.bice_602FC355-F756-4D31-8967-A306F64F0655:-ION-:3372a38681484a9cbb1021db99dad57f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:53.959Z",
+    "document_size": 8017
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4E3AE40B-F02B-461F-973D-23B2DA81EFB0:-ION-:5be9d58a7d0b457482bf06ffa9d761d8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.054Z",
+    "document_size": 8045
+  },
+  {
+    "message_id": "lid://infor.bice.bice_60DB9504-091B-4DEF-8EC5-9501E7E72473:-ION-:0b554cf1cb9f4790b7bd4e27ad4d7e59",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.150Z",
+    "document_size": 8328
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DFB9F234-412E-4C36-A48A-125B0E6714AF:-ION-:2a835a893f1041b4b3fc23a1dcead515",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.253Z",
+    "document_size": 7736
+  },
+  {
+    "message_id": "lid://infor.bice.bice_250C4BFC-09E5-444F-A19C-697748B3676D:-ION-:45d36525fee9427fa7c7f4f29c553b46",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.318Z",
+    "document_size": 7865
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7049067B-36F6-4C16-BB8A-38F7E78108C0:-ION-:2586bff203b046cb82b86390ad8eb615",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.406Z",
+    "document_size": 7726
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8B2AB910-2422-4D82-B1D2-35E5CCE9A74F:-ION-:b30fa22c7ce8476da231b7ba89b6f237",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.481Z",
+    "document_size": 8009
+  },
+  {
+    "message_id": "lid://infor.bice.bice_66B6A527-527A-423D-9BB1-AA4283B81B31:-ION-:70c58518a9544ee982f33eceb284ba2b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.554Z",
+    "document_size": 8302
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5134F240-C9EE-4969-9DC5-C22502E14779:-ION-:c471827ce96248c59e34e72a6533c911",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.695Z",
+    "document_size": 7928
+  },
+  {
+    "message_id": "lid://infor.bice.bice_760DE24E-5122-456C-BC35-BCFCB1E8E238:-ION-:5111599171aa4af1978fde807ebe764e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.772Z",
+    "document_size": 8579
+  },
+  {
+    "message_id": "lid://infor.bice.bice_17B775EC-9504-45D7-AD4B-5BF5978C6690:-ION-:fa2707cad9d14a3a899959fe83af95fd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.875Z",
+    "document_size": 8450
+  },
+  {
+    "message_id": "lid://infor.bice.bice_709930F0-EAB1-4B23-98D9-37B8FB99B242:-ION-:a043f56971534e9683c4e612a0b0ed96",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:54.967Z",
+    "document_size": 9049
+  },
+  {
+    "message_id": "lid://infor.bice.bice_645CA267-B564-4946-981C-40A53B401ED7:-ION-:ae03bff6437240109464609c065002d0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.047Z",
+    "document_size": 8894
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D87DF9CE-86ED-4601-9C68-308279BFC45E:-ION-:95be7424fa3e4a539a2456f1697ad874",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.123Z",
+    "document_size": 8715
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8AB77D61-1F1A-43C9-BF10-0724F1905460:-ION-:c5181b9d7fb44e16a3096e562118f39c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.241Z",
+    "document_size": 8961
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D9B426A9-A2CC-4292-894A-567FFB0A223C:-ION-:228bbb36cfd145c79d95130e017035c0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.307Z",
+    "document_size": 7944
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0979191C-FD0D-4FC9-A3AD-F50669B90BE7:-ION-:d89cbfc3c0aa4eb797e5dc37ad4d70ea",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.409Z",
+    "document_size": 8000
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0F813130-8D91-48C5-80C3-CC1AC2568777:-ION-:cfeb7c5801a846da83947611f3770b35",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.883Z",
+    "document_size": 9051
+  },
+  {
+    "message_id": "lid://infor.bice.bice_80D16A9E-5441-4D7E-B701-3F8211A19964:-ION-:0c7c5f1808314c5badc8dc3a1517e79a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:55.998Z",
+    "document_size": 8698
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F58238E0-6572-40A9-AE06-7C0833F94E92:-ION-:d7ec871f8c31470abd93ac62c179c258",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.091Z",
+    "document_size": 8504
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EB742FF6-44D1-45B8-908E-C245BD2B3184:-ION-:92830481ba704672af8564c6f6c82184",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.141Z",
+    "document_size": 2493
+  },
+  {
+    "message_id": "lid://infor.bice.bice_94A9C54F-F19B-4303-A29C-A37F0FE0F8E6:-ION-:47b0e9619dfa4d07922bc3d0e2ecb3c6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.410Z",
+    "document_size": 7678
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9B2652FB-1E67-4B25-B758-DCA0E6F3B46B:-ION-:d192a54c23054933ba5705d1f3a769d6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.488Z",
+    "document_size": 7943
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DA081D23-8063-42B6-9845-790D9514BE32:-ION-:254c7c48b1104e4d91e86f1d582b52a6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.599Z",
+    "document_size": 8096
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5BE99616-5BFD-4DD8-8B7B-2EAB9C0DEFC7:-ION-:2e8012ba58e74bdbbbf9d069d4f950a5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.707Z",
+    "document_size": 7471
+  },
+  {
+    "message_id": "lid://infor.bice.bice_548C1466-96AC-4F65-B814-02DBE093DAFB:-ION-:4016dda0bd9849e08644783a1e3c9488",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.816Z",
+    "document_size": 7765
+  },
+  {
+    "message_id": "lid://infor.bice.bice_48743F67-78E8-46CA-B67B-C3E922891706:-ION-:4b4a581e72124998b8e2d620579878db",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:56.916Z",
+    "document_size": 7511
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E6AFD0AE-5595-49E1-AB00-F9C74D9F18F2:-ION-:86a60d684abc4a009a327cc9976da771",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.002Z",
+    "document_size": 7656
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CC5F2B8D-4659-43C2-B860-3627826FE186:-ION-:de9e4bf741be4a1881880867d05e492c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.102Z",
+    "document_size": 8570
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0EDE8A78-FE4A-489B-BEBA-3CD8AED0E83C:-ION-:cf50d855db8e470dbceb1adb6c1eea87",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.220Z",
+    "document_size": 8605
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A2C861AE-5A6F-42E0-824A-273D7A2732D6:-ION-:39adb0c851cb4874b4978889023010cc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.332Z",
+    "document_size": 9462
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D0F77E5B-BA44-4AB3-939E-1CFC1AB690DB:-ION-:1039e14d065647da8bba5b18d4db75c7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.454Z",
+    "document_size": 9450
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D42F5AB4-B366-44CF-8604-F252193A4B94:-ION-:d17ac293952042c1b5fc22379fab07d5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.555Z",
+    "document_size": 9740
+  },
+  {
+    "message_id": "lid://infor.bice.bice_40353602-D7CF-465B-A52B-8B10FBEC84C8:-ION-:c9b1d04639974746bd2fbd833e252ded",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.707Z",
+    "document_size": 9902
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DF5F3C32-8E56-4F70-A3A1-CA2C30984B8E:-ION-:687b0cc679274eb0918c0cc0e5c16199",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.806Z",
+    "document_size": 9848
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5C5693F7-384C-4A04-AE35-FF54DCAA4CE8:-ION-:855c1c30d5584b849cea1c6a176c1c54",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.884Z",
+    "document_size": 9931
+  },
+  {
+    "message_id": "lid://infor.bice.bice_73CF9EAE-AFFF-4BC8-B36A-9F27A49B3A14:-ION-:613d432769264e1f8230a60ae7734524",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:57.974Z",
+    "document_size": 8700
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E3756711-1158-48A4-ADC2-D3FD531D7B9A:-ION-:c554ab0a27f84c10909b026479993129",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:58.075Z",
+    "document_size": 8333
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9BA33F45-3353-45FC-9865-006C9E4E91B6:-ION-:d1dc3324c6db487389d9803865184637",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:58.175Z",
+    "document_size": 9408
+  },
+  {
+    "message_id": "lid://infor.bice.bice_13EF8F7E-43E9-4C67-81E5-C645176C673B:-ION-:e5866ccf04004e4181a2e233746885d6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:58.277Z",
+    "document_size": 8779
+  },
+  {
+    "message_id": "lid://infor.bice.bice_97B3D0A9-A95F-4776-956F-AEB9D8DDB153:-ION-:74dab76b3df445dd86865fa685069fed",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:58.347Z",
+    "document_size": 9142
+  },
+  {
+    "message_id": "lid://infor.bice.bice_FF2D5A31-68CA-4015-9965-10120D1B96B9:-ION-:2eabe7d326964443aa0fa8387ef7882b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:49:58.396Z",
+    "document_size": 4433
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BAA5AF96-8F4E-4B30-8C1F-BC093DD48AE0:-ION-:05ce05ee7f1c41bba3858fb37cb7dd06",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:10.165Z",
+    "document_size": 7724
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DF10AB6E-ECD2-41F1-806E-F7AF88F64761:-ION-:ad03de33660d49d9b5d2f543433283e5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:10.997Z",
+    "document_size": 7823
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0147E17F-FAD9-4247-BECF-920885C3E931:-ION-:bde6bf1de12648e39dd817beb5591948",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:11.857Z",
+    "document_size": 8057
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E296365C-79DC-4720-A27C-AA4F16D6EA8D:-ION-:c0ff761b5c164bb1b4a6a028976c3aed",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:12.735Z",
+    "document_size": 7532
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EE56741A-B421-4C23-9B70-44A04239F9C9:-ION-:86c380f3d0154d1499c9da7ea15fb365",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:13.613Z",
+    "document_size": 7897
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B10B0B68-B852-486E-AB56-754B8E9535EB:-ION-:150f31db52d44baeab47a9e411c63a89",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:14.475Z",
+    "document_size": 7564
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E71F57AD-178E-4D1A-BAD0-50E31F717F13:-ION-:528affbdacd84d059fd07adc768a05ef",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:15.338Z",
+    "document_size": 7666
+  },
+  {
+    "message_id": "lid://infor.bice.bice_FE6E53A6-705A-43F8-B6DA-D61737D00717:-ION-:32a740bc9c974b83aea1d3d64c6c227e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:16.213Z",
+    "document_size": 7765
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D449B060-923B-4658-9ED3-CCAC52A36DCA:-ION-:02fd3922519f4c1c84041a2b43e6a4bb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:17.039Z",
+    "document_size": 7261
+  },
+  {
+    "message_id": "lid://infor.bice.bice_00DCEEB2-50D6-4331-8325-A5026E9E28BC:-ION-:3ab113a58a7941f491f171fb832697b4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:17.144Z",
+    "document_size": 1006
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CBFAFD0F-694F-40B7-B5B6-5F044C0FF392:-ION-:ac5fbdce63d34094b8378f73bb7c2f90",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:34.056Z",
+    "document_size": 7912
+  },
+  {
+    "message_id": "lid://infor.bice.bice_52A956C4-F531-401A-8F2A-1B3A27EC5416:-ION-:fa9b239c2255444cbc9ed59f281f8035",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:34.932Z",
+    "document_size": 7854
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B23A799E-B51E-4EC7-A868-B62566E8827C:-ION-:b4f5c236c92e478f8d254fb806f528c8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:35.765Z",
+    "document_size": 8328
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BF70A93A-2EDF-4E71-B2AA-4180DB6BDF9C:-ION-:3cf868c48bca4472b41fffee9f6fb238",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:36.592Z",
+    "document_size": 7616
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E9ABE4AE-7FAA-4B37-8F52-1A66A6DE84F2:-ION-:8204239bbdd744248abde85eb7ca342a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:37.425Z",
+    "document_size": 7856
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F612B21D-40AB-4D4A-A319-BEECBFE7756C:-ION-:47b6dd11ee7a4e56a7142b3f58d9e56b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:38.257Z",
+    "document_size": 7651
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CE5A47E3-9518-43F3-9E42-25343281AD17:-ION-:48da60199d0e428d818063248464b9e0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:39.073Z",
+    "document_size": 7834
+  },
+  {
+    "message_id": "lid://infor.bice.bice_25388BEE-12C8-4C6C-A7BE-38393DCE708B:-ION-:00c241bbb08241a28fff1f56e38e5bec",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:40.001Z",
+    "document_size": 7938
+  },
+  {
+    "message_id": "lid://infor.bice.bice_837C726B-A164-4C3A-A6D8-4ABA13DF8A7B:-ION-:bf3ecb3481204cc499a53afe6a655c34",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:40.941Z",
+    "document_size": 7295
+  },
+  {
+    "message_id": "lid://infor.bice.bice_079557F0-8062-4FCF-AEC3-9B2C205F55E6:-ION-:518438be42574d669ea26e17252a1bdd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:41.810Z",
+    "document_size": 8013
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BD25F305-938E-4CD7-96DC-18ABDD9487F0:-ION-:fc5c7a8cb62d4352aac766ae2a17fc0c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:42.669Z",
+    "document_size": 7954
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3EE86119-4752-4BB7-A2FE-D3C833067346:-ION-:50d256e4521e4c68a8f6592dfe119d6f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:43.573Z",
+    "document_size": 8283
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5FD08037-77F5-4F97-9BE7-CCB2AA4389C5:-ION-:f3055666b09a4186babdc3c64f46fd0d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:44.464Z",
+    "document_size": 8440
+  },
+  {
+    "message_id": "lid://infor.bice.bice_212217C3-DD7D-4FD8-B925-0BF70AF0D256:-ION-:676d2180dc794d4b8eef6ad41768340b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:45.335Z",
+    "document_size": 8537
+  },
+  {
+    "message_id": "lid://infor.bice.bice_69D33C21-B38F-4E40-ABB3-794B088D85A0:-ION-:9a85d46375994aff9ed827a0ab735207",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:46.224Z",
+    "document_size": 8227
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7D551295-2319-442A-AECA-FDE6797E6D28:-ION-:54b82cbe9e51432eab6b5149632caa96",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:47.241Z",
+    "document_size": 8137
+  },
+  {
+    "message_id": "lid://infor.bice.bice_69ED118C-2223-4865-849F-8F75D828FE16:-ION-:4d6f57dd4ebc43ce96731278538b1590",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:48.134Z",
+    "document_size": 7127
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CA8CD06A-8B56-4330-B840-FD6A8094679A:-ION-:b2930a42c2d64a4eb3d26be9a4fd9a83",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:49.000Z",
+    "document_size": 8825
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DA00D5F2-A412-4E88-B93B-B721C9AA59B2:-ION-:df70f1c3ddd34070b68c358f449b0f78",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:49.919Z",
+    "document_size": 8075
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F7BF7CA3-0C50-4814-8CB2-B95C0BB78574:-ION-:681a9ff1f4064dbfa7641951a40ae0bb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:50.741Z",
+    "document_size": 8206
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F351A5DD-FD68-4559-A641-0FE69E9F7D98:-ION-:99ca3effcd8f43779682780daa45669b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:51.155Z",
+    "document_size": 4055
+  },
+  {
+    "message_id": "lid://infor.bice.bice_72546C8C-B9CB-4B38-8C49-AC605DBE569A:-ION-:7fed6ff1f5124b83b2e1bdbe2f113297",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:52.201Z",
+    "document_size": 8075
+  },
+  {
+    "message_id": "lid://infor.bice.bice_51400BFB-A44A-4448-8593-71E07C27E253:-ION-:9def13f18abc41e9a3029cd468c5beca",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:53.072Z",
+    "document_size": 8002
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C79364D9-5FCB-49D4-913D-27761801F291:-ION-:04ae61cfe2954eccaf16b81ac3f16ec8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:53.874Z",
+    "document_size": 8457
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C1AF1CA0-83B2-419F-B9BA-80500171F835:-ION-:c69bc6466a4149bb9f8f62801ed03f8e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:54.737Z",
+    "document_size": 7798
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4DF90E7E-96AB-42A8-8872-4BC730FE3DAA:-ION-:6d3cd15a7e874467902a5b6a01ece85c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:55.571Z",
+    "document_size": 7871
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E292D217-A32E-45AE-ACE2-246E7AE45327:-ION-:051b083bf7d94935beb994b6e1a73405",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:56.461Z",
+    "document_size": 7683
+  },
+  {
+    "message_id": "lid://infor.bice.bice_031FAE28-368D-4FDF-B887-4C1496EDB5FC:-ION-:41fcc8d7f70c4d779be401690eba99a0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:57.325Z",
+    "document_size": 8004
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A3C93F75-1663-43DF-BC04-EB5BF02E4C6B:-ION-:20de59b99c3448509a30be6d70cdc2e3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:58.195Z",
+    "document_size": 8352
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E7C33C2F-3BCE-4785-8830-CB82A9BDDA6A:-ION-:b7b19522d1464b029cd13fd4bfe9a6ca",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:50:59.072Z",
+    "document_size": 8078
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BAA54620-B9AC-4C61-B5F9-074DAE93B51F:-ION-:0ec998da649a48b381344f1eee7d762d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:00.043Z",
+    "document_size": 8960
+  },
+  {
+    "message_id": "lid://infor.bice.bice_930B5562-5A2C-4FAA-B894-B77C01242565:-ION-:33946a7e39814ab186065c0964e37e30",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:00.923Z",
+    "document_size": 8789
+  },
+  {
+    "message_id": "lid://infor.bice.bice_06B02894-253D-4571-A22F-52F94BC31D53:-ION-:46779f5093aa4377acaa3e7c2e28db5c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:01.788Z",
+    "document_size": 9507
+  },
+  {
+    "message_id": "lid://infor.bice.bice_999653FD-0ED5-4206-ADDA-E30628B6F637:-ION-:7b29ddac71724d2384e2a4979f13b185",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:02.597Z",
+    "document_size": 9295
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A11ADCAC-6184-4AB2-A8DD-A25F9141E2F7:-ION-:e4ecba923fe34bbd859a9e5829933132",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:03.490Z",
+    "document_size": 9476
+  },
+  {
+    "message_id": "lid://infor.bice.bice_17F6811E-387C-4E3E-A20B-F406265FD446:-ION-:8e8ff7d79b114f2d8e81da83171e5dff",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:04.368Z",
+    "document_size": 9175
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C6774DE3-F498-4289-A7AF-8109D7A05203:-ION-:c172f01a960444e8b3f28bc0ac8abb35",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:05.227Z",
+    "document_size": 8684
+  },
+  {
+    "message_id": "lid://infor.bice.bice_57BB70D9-CEBE-4658-9F17-A9604C7C4AB6:-ION-:1c529956d9c24a9f8572cc2f556b8ece",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:06.109Z",
+    "document_size": 7950
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8642E121-5F5A-4303-AC6C-3EBEFAE5C9B8:-ION-:5643d85f292e4daeb4344bb4e0eb81ac",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:06.971Z",
+    "document_size": 9318
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0EC3DAA9-E543-4F5F-97AD-2703B0DBCD78:-ION-:eede0d65429c4f29b48b3179ff4d3d10",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:07.838Z",
+    "document_size": 9057
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D6533262-8213-488C-88D1-1415CA75FF6B:-ION-:dd3345c1bdd2401c925ce86cee09c914",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:08.704Z",
+    "document_size": 8959
+  },
+  {
+    "message_id": "lid://infor.bice.bice_56A6CD0F-BD80-48BB-9350-9F7DE70800BA:-ION-:35164d70d653495a98115f33ac707f8b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:09.142Z",
+    "document_size": 4517
+  },
+  {
+    "message_id": "lid://infor.bice.bice_84DEC8B9-67BD-4D25-B09F-6272213F8D86:-ION-:668b3bcf4120465999f67e11d22235ac",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:10.206Z",
+    "document_size": 7746
+  },
+  {
+    "message_id": "lid://infor.bice.bice_09FFD963-2532-43B0-B5FC-842F405DB151:-ION-:0d29a8a6a2e54fe88a9da6bc935f5dec",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:11.056Z",
+    "document_size": 7876
+  },
+  {
+    "message_id": "lid://infor.bice.bice_434F8951-229C-4BDD-88F5-0561C53ABB37:-ION-:bf49aa2d1019429cb309b3ec99472122",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:11.935Z",
+    "document_size": 7951
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CA8741B7-BBF4-4400-9A0B-1A81DC9CB247:-ION-:71261106eab24d9a8aeb354afd2d03e9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:12.780Z",
+    "document_size": 7497
+  },
+  {
+    "message_id": "lid://infor.bice.bice_13CB43F3-9513-4FAC-BC17-C07ABBE5EE71:-ION-:116019ff3299450dbcffa9ff4dc938fe",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:13.639Z",
+    "document_size": 7761
+  },
+  {
+    "message_id": "lid://infor.bice.bice_627F003A-1D08-4039-BF41-6616F5A5DF20:-ION-:e6ce3e8bc84f4f7680257235d1259a92",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:14.450Z",
+    "document_size": 7543
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6A016BD8-9461-4F38-9361-ACE9B76E498E:-ION-:a562c08ace264548bdae83e310779975",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:15.281Z",
+    "document_size": 7747
+  },
+  {
+    "message_id": "lid://infor.bice.bice_77B6C1E2-8586-48A7-8A39-90E1976C6A96:-ION-:a781ff1da8924d53ab6271a1b9c1040b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:16.127Z",
+    "document_size": 8777
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7337E07D-4174-4D66-B3BB-17B01770A41B:-ION-:a3abfec04ac0473787afb114481ecb1a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:17.017Z",
+    "document_size": 8979
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EFEA6374-92CE-4EFB-851B-1607DE67FDD2:-ION-:2a72bc43de1e4131b981715cc0bf360f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:17.886Z",
+    "document_size": 9727
+  },
+  {
+    "message_id": "lid://infor.bice.bice_12F33CAD-1072-4C94-BE84-83A559BA8B7D:-ION-:cb7ce2df05af4fc781a425f03eb77e85",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:18.749Z",
+    "document_size": 9773
+  },
+  {
+    "message_id": "lid://infor.bice.bice_18A50FCE-600C-4CC3-8722-0E9341214288:-ION-:3ade27d9a2e042c4ab4e067ff83a393d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:19.584Z",
+    "document_size": 10159
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8E0359D8-646E-4034-B72B-F51DB7C9E7CD:-ION-:3989e5a6d0ea482eb0b54d226415e121",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:20.441Z",
+    "document_size": 10096
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CCAD8FBF-C54A-4A72-8649-7081DE09EA93:-ION-:20da7859e4cf409d88e8f3da1b2ba330",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:21.242Z",
+    "document_size": 10124
+  },
+  {
+    "message_id": "lid://infor.bice.bice_89D32A13-E59C-46CA-B6B6-2E9503654BC0:-ION-:7fe60221846d491bb961f01cfd13f3ac",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:22.077Z",
+    "document_size": 10163
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C28F39BA-8752-4D4C-8DDC-CE87F59CF1A3:-ION-:8d2d288686d24d309d6e04c25887e19a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:22.914Z",
+    "document_size": 8967
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A914400E-F1F8-4970-9B6B-C11D87C948E1:-ION-:1d14972e286343c7a5dbf741f40eca7a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:23.774Z",
+    "document_size": 8540
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8619F17B-EEF8-46FA-84B1-D6880540F89D:-ION-:daeaa6ffa6894edc995e5dbae7f24e97",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:24.597Z",
+    "document_size": 9407
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D5805BFB-4884-4A1F-9B58-9801901D5963:-ION-:ad80898ef81649cda8045527318d716c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:25.449Z",
+    "document_size": 8912
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DE185B6C-712B-4814-84D9-4984B33BC912:-ION-:7e27d310f9314bc19b1167694c5663fb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:26.292Z",
+    "document_size": 9379
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D7ED8C36-3E00-4A26-ABFF-D06299751770:-ION-:0904745e425e49999892b905ade9f0a4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:26.861Z",
+    "document_size": 6486
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9A0EA23F-91F0-4AF9-A030-5779770116CE:-ION-:dcc231902fe3447297645d48c14c85e1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:38.833Z",
+    "document_size": 7716
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AA9DD206-C909-4AA5-8436-22C4526FD06A:-ION-:c1193692d6c94b6ebac7fb6abc42260c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:39.543Z",
+    "document_size": 7820
+  },
+  {
+    "message_id": "lid://infor.bice.bice_618D1247-FB4E-4667-A6F7-E35B6B329228:-ION-:999a3b1bf16f4eadb6f40ee6761cad1a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:40.241Z",
+    "document_size": 8057
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8185247C-3F86-40D3-8709-A8305C686C27:-ION-:ae6d0c6bdf2a4e3795d4469d98c2a165",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:40.925Z",
+    "document_size": 7586
+  },
+  {
+    "message_id": "lid://infor.bice.bice_03DCC799-3B1C-48D5-A01C-9D9E766B850E:-ION-:634244d600d54ab3b19baf5baa269b6b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:41.659Z",
+    "document_size": 7917
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7314330D-F1C7-4F82-9720-881EC2B0C7C7:-ION-:0c0ea87c2e2e4feb8ee79c5922e642c8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:42.369Z",
+    "document_size": 7565
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F3A6550F-01FE-4CDA-811A-DD086BA378A4:-ION-:5cf320ecedd2443cb451beafedded13b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:43.079Z",
+    "document_size": 7689
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E6D5C8B6-3017-4AA8-9C56-CBD40CFA23FB:-ION-:571b7f45e37a4c0d977f81d600f69ef7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:43.791Z",
+    "document_size": 7811
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5C12CC6D-0937-4D2F-B5A7-924AFAA25642:-ION-:45dc1ffd36f94b9b99dd3f9d5310406a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:44.499Z",
+    "document_size": 7194
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E4A819FF-8576-45CC-9F7D-78AC898DB4D7:-ION-:9cedc7b59c024c98b3864d1a839fc802",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:45.259Z",
+    "document_size": 7327
+  },
+  {
+    "message_id": "lid://infor.bice.bice_94FC5551-A873-4577-BAB9-BB7F7B6917F0:-ION-:8091fad1ed3340aa9a17a5d3c1757ff9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:45.993Z",
+    "document_size": 6928
+  },
+  {
+    "message_id": "lid://infor.bice.bice_35A08C66-4462-49E3-A229-3E5AE5781DEE:-ION-:ac6b02e4a9b548489ba6cf3b285410a4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:46.717Z",
+    "document_size": 7755
+  },
+  {
+    "message_id": "lid://infor.bice.bice_667F458A-8B9B-4021-9CEE-B4AB809D3E2C:-ION-:b9c7536ec8604c8291b0bc0a40ef1060",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:47.415Z",
+    "document_size": 7795
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9B2D6BCC-AD77-4BD4-84E8-701881AFC2AA:-ION-:efdb8cdcaa654092b0567a5a3ef29bd8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:48.101Z",
+    "document_size": 7959
+  },
+  {
+    "message_id": "lid://infor.bice.bice_82ADB4F8-6D9F-452D-A49D-39BF252AF3C6:-ION-:e8f4889b1c07465daebdaff7ae4eca41",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:48.860Z",
+    "document_size": 7873
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1D85F1FD-4987-419A-9A42-718BA80E27C0:-ION-:55594b94a1464ea1948fe92a9abddcdf",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:49.588Z",
+    "document_size": 7095
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6E0CC602-7A3F-4DD4-88D6-36FA25D92542:-ION-:128713670aa34f4ea91702cce186c089",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:50.290Z",
+    "document_size": 6767
+  },
+  {
+    "message_id": "lid://infor.bice.bice_94953BD8-542C-434F-BBC0-272B626A0DED:-ION-:ebbd6335deb14e7d8bd542a3875ad5c3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:51.090Z",
+    "document_size": 7694
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3FCF7C46-2C03-464A-8067-20257231E099:-ION-:d2bcff452ed54f179c9a6c0678df670d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:51.797Z",
+    "document_size": 7331
+  },
+  {
+    "message_id": "lid://infor.bice.bice_923F2586-0AA0-4FED-8391-D24E144CFE25:-ION-:68f8ee1cbd3246e5b975a44bf19ed82e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:52.518Z",
+    "document_size": 7658
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8D3C120E-5649-4770-BC71-A52B3C2A6867:-ION-:fc51a17f084f433688dd5e90c24172b6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:51:52.982Z",
+    "document_size": 5204
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C6A9B834-C807-4DB2-8802-7FB6398B63FF:-ION-:6677d0419ac9420a98096998072e4965",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:09.659Z",
+    "document_size": 7877
+  },
+  {
+    "message_id": "lid://infor.bice.bice_FC65C13A-8A02-427D-9A15-2A9596EDCCEF:-ION-:db06cd4fdbe242aa88e4d0d7ec14c164",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:10.378Z",
+    "document_size": 7970
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EBD3942D-906D-4375-A89E-6A8F9768282F:-ION-:e66fc511e5914f54a3386dffb8636433",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:11.082Z",
+    "document_size": 8304
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3DF4D6C2-013C-42DE-A388-EEC1332EB811:-ION-:2f9cc639c4764e4da3b2dba51cfc7408",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:11.806Z",
+    "document_size": 7661
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BC941612-1E75-4BE1-8168-645D22F3CE28:-ION-:11cffac46ea24ff88581842a31f7ea34",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:13.216Z",
+    "document_size": 7812
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E2B8D20E-5928-4968-BE57-15BFB24AE1DE:-ION-:861ffa867ca14a4d9fe5bdc00b14be8d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:13.922Z",
+    "document_size": 7691
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D6910508-D562-4166-8DBA-639F75EE0B6E:-ION-:22ca5a4a60a8484e8eb16600652c3686",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:14.617Z",
+    "document_size": 7892
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F1A59BD3-74FD-4D16-B901-7BC78D6C6657:-ION-:4bfb28c150514e8b83e779361368224b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:15.518Z",
+    "document_size": 8137
+  },
+  {
+    "message_id": "lid://infor.bice.bice_024635A1-CB48-49BC-AB59-4B9027E9D0F6:-ION-:b4b9aa7a828b441482101b1d3a901c82",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:16.288Z",
+    "document_size": 7849
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E8B52C97-8E65-4BD9-B23E-E568FC9FAEBE:-ION-:e0c9e1770380418381fcb067dd85a1a0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:16.987Z",
+    "document_size": 8537
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D4A43549-CC08-4046-BECD-1FF540C79CB5:-ION-:97006d2ca8e24a7d8b96af14e938dec5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:18.868Z",
+    "document_size": 7403
+  },
+  {
+    "message_id": "lid://infor.bice.bice_12B13DC3-3703-40F9-BCC9-7A65713CDF5F:-ION-:34f71980cbb74dc08a2057ea497fe52d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:19.607Z",
+    "document_size": 7859
+  },
+  {
+    "message_id": "lid://infor.bice.bice_35FDA384-1601-41B3-9B70-0E2B6CFCA1A5:-ION-:e6449682de2741bcb7c20c03a43e7f68",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:20.354Z",
+    "document_size": 7926
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CCF92F1C-8EB9-4105-A3D1-6ADB8B1F6C85:-ION-:d349080abcff4ef1a64e0ec7a53491df",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:21.140Z",
+    "document_size": 7746
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2C4849D9-CE3D-4595-AC87-D34B6DEBDB10:-ION-:fa05e68abeb048e6b445c91e62f91ecb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:21.842Z",
+    "document_size": 6543
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DEA858BC-603B-4373-BD0D-C2C7E097D1A7:-ION-:b52ecbb1d00e49038fa331c23dd64052",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:22.552Z",
+    "document_size": 7553
+  },
+  {
+    "message_id": "lid://infor.bice.bice_57D90224-6DA3-476B-94D7-76E03882005A:-ION-:c463cbb965fa415f9e573a5c45d0e146",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:23.242Z",
+    "document_size": 6700
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1A6BAF85-DE16-449A-A29D-4CC032E03D38:-ION-:27772e5b050045f7b5bb180d554042fd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:23.999Z",
+    "document_size": 8857
+  },
+  {
+    "message_id": "lid://infor.bice.bice_94D3B4A4-D59A-402E-8846-2287B87A960D:-ION-:066a407a483f4b3e94c05a6c83357f5e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:24.690Z",
+    "document_size": 8454
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CF2249D4-1844-462E-88AC-CF4E2A91C39E:-ION-:714f507619e04447b9713381e0b9dc74",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:25.404Z",
+    "document_size": 8848
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C9B61D06-E0F8-4961-A64D-C39F78897E37:-ION-:1deeeaf847b64567bf86854a9d34d9f2",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:25.779Z",
+    "document_size": 4647
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D1E3FEE2-AB5D-4277-85D6-266CB106E66F:-ION-:9547b877a10941a3983c44d10c588712",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:26.860Z",
+    "document_size": 7914
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A3935E78-F782-49E5-8BB5-D2C98BEA20BE:-ION-:e2203da45a264ef9a74207dbadbf9e3c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:27.648Z",
+    "document_size": 8057
+  },
+  {
+    "message_id": "lid://infor.bice.bice_340DA9C8-4AEE-4038-975E-A1E8157E13AD:-ION-:bab16973acd84d608378ea8076adb286",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:28.380Z",
+    "document_size": 8127
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EA78A85A-E656-404F-A648-8E6E7B46FD61:-ION-:53e9a12590b74290982be2ac91441d18",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:29.055Z",
+    "document_size": 7946
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1AA9D193-0D9C-46F2-A162-49507B888142:-ION-:d6abd1c673b144dfb818d2fc64e9d864",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:29.835Z",
+    "document_size": 8073
+  },
+  {
+    "message_id": "lid://infor.bice.bice_88950ED0-24A5-497D-B201-46BFC91BB7E9:-ION-:a0c7f56910154010b72fd542298cc2e2",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:30.584Z",
+    "document_size": 7617
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4B59C9A8-6AA7-4E76-9AD9-38288DEBA846:-ION-:188e51827cf2407fad05bdeb07598751",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:31.324Z",
+    "document_size": 7926
+  },
+  {
+    "message_id": "lid://infor.bice.bice_ECE381E3-43C6-4719-AB5C-BA82BDB6F6D8:-ION-:fd0d7e64ba0d4cbfbc0da6f0cb8d0fee",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:32.017Z",
+    "document_size": 8388
+  },
+  {
+    "message_id": "lid://infor.bice.bice_57935BFB-7852-423C-9882-50D033558C33:-ION-:77c9f8c6dd9c4955aea7411eda2ab750",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:32.761Z",
+    "document_size": 8257
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6C7A90C1-8847-4F96-802C-84823424A615:-ION-:1740c3b5461644d6ae36a8675ce86f91",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:33.472Z",
+    "document_size": 9063
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7FAA8ED5-4DCA-4ACE-AB54-D61E00A394F5:-ION-:c80d9c769d5347d993082590f0b05990",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:34.273Z",
+    "document_size": 7750
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9F90F7C5-A80A-4A56-9713-3FE897EC6723:-ION-:ecf574ec80524bef961858a8ad460dec",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:35.028Z",
+    "document_size": 8344
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CCF16756-7879-405B-AAF4-298B81A43151:-ION-:1c675e1124b848b8a4551600e108d8db",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:35.912Z",
+    "document_size": 8584
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7E1726D3-342D-40B1-9740-44CCA00A5F8C:-ION-:60308e720e4e48a284b3ffb8b515ea3c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:37.277Z",
+    "document_size": 8163
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4A0236CA-D04F-4A7B-B408-AE29AE332FD4:-ION-:b2f79f5af4d64f8ca1de0d880364f966",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:38.297Z",
+    "document_size": 7702
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4C5C50F2-EBF5-43B4-B354-C19244826EDD:-ION-:dc15be09191c43b5a9c1ab3cacf61fc3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:39.161Z",
+    "document_size": 8407
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6FC70FA0-CE39-4E53-A93D-8B66E3DD73C5:-ION-:17bf460b3bbc412b8cdcf2c2cc98ada1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:39.952Z",
+    "document_size": 7627
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D7DB10FF-7CCC-4399-8F24-CD672AAB32CB:-ION-:729bdbec6260480b8f86366ed25a6e3e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:40.712Z",
+    "document_size": 9464
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0CF19B32-E8CC-4B94-9B02-24FD8FA03575:-ION-:92e6bdaf6c4f4053a1621625c06cd739",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:41.504Z",
+    "document_size": 8538
+  },
+  {
+    "message_id": "lid://infor.bice.bice_15BCB76E-A0B2-42AA-BC81-E0EBFC3F69B2:-ION-:c0a63d3406ff4347a21c8ff90f3379fa",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:42.275Z",
+    "document_size": 9298
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7D7DDB7C-E038-4B24-9165-2FBA5E2C5BFD:-ION-:e45cff3c53d04b2688221885fefe791e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:42.731Z",
+    "document_size": 5284
+  },
+  {
+    "message_id": "lid://infor.bice.bice_84A3E08D-7246-4243-9967-7965741C0D30:-ION-:8d4ce40718f348a9aab2531912750b6b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:43.671Z",
+    "document_size": 7834
+  },
+  {
+    "message_id": "lid://infor.bice.bice_40ADCBF4-A41B-4040-9F32-3ADDFCF04282:-ION-:f8abaf9d008f42a3a25d0b3271431c2d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:44.340Z",
+    "document_size": 7874
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0BBD9794-F472-418F-B282-8FF7F01CEFF8:-ION-:82a3864c34404fc2a201cd25a3721bf3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:45.053Z",
+    "document_size": 8114
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0262C758-A13F-47FE-A31A-6EA46AB92ECE:-ION-:362860adf379489cbc8c715e428479fd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:45.761Z",
+    "document_size": 7505
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CECAA863-4ACC-42D7-9295-CA52FBF01A59:-ION-:02192a5116ed499297fc5269a8ce9ac5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:46.468Z",
+    "document_size": 7719
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4AA6F8D1-3F86-47E1-A095-BA759060699F:-ION-:402bbd2327214401b092cb87cfbb03db",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:47.139Z",
+    "document_size": 7579
+  },
+  {
+    "message_id": "lid://infor.bice.bice_41E6AFEB-1347-41D6-B825-A78551C3A4D0:-ION-:6e554f410e674247a3d878c7d9764a57",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:47.839Z",
+    "document_size": 7735
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F862651B-DB13-4345-A7AB-F8439315E7BA:-ION-:7fa926af60f74b35be09c09dc095809c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:48.550Z",
+    "document_size": 8744
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F6554F26-A9A5-4C8F-A038-900DBB1F8526:-ION-:26c77685a93f4c12b6ad3e85c4267878",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:49.317Z",
+    "document_size": 9012
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EB6418A0-FED1-470A-A8D0-A5E42E95F7B4:-ION-:5120fa808d8a43dab848cff1107f53aa",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:50.046Z",
+    "document_size": 8999
+  },
+  {
+    "message_id": "lid://infor.bice.bice_56E088BC-A64C-44A8-A7AF-104D8D85FB13:-ION-:90af28af02a0489d8be89d5c4bb3c8ea",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:50.874Z",
+    "document_size": 8654
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5F7E3D99-83C6-4AA0-A51D-E78D614D713A:-ION-:9754e8a59df848b1b4e38760113c3f50",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:51.580Z",
+    "document_size": 9081
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D058AA53-86A4-4AEE-93DB-93A04D23785A:-ION-:76e67c6bae71447e8b28043d2561ffd0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:52.292Z",
+    "document_size": 8708
+  },
+  {
+    "message_id": "lid://infor.bice.bice_499549E5-C78E-4FA8-BDC1-54766FEE8F58:-ION-:e1714c47d2f5466f9bf146a5270e2867",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:52.995Z",
+    "document_size": 8427
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8E81CFE6-50A9-41DB-937B-27842FF5B9DB:-ION-:557ea05544d64ad48c3b8f6d57c3eb54",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:53.730Z",
+    "document_size": 8053
+  },
+  {
+    "message_id": "lid://infor.bice.bice_73459D67-A7D0-42F0-BDE6-262715BC9AE2:-ION-:3bb08253c3e24bbabdd04c54a8e898ab",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:54.453Z",
+    "document_size": 8418
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EDAA6FFA-78DC-4E24-A77B-D0C002C91CB0:-ION-:285dc50e08f3481e811248eea0f80918",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:55.157Z",
+    "document_size": 8085
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EB35CA84-76D2-40B0-BB78-78952DFC7CDE:-ION-:f012d7c3f96641689441658490222a9f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:55.869Z",
+    "document_size": 9309
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9ACDB509-CF44-479B-A237-8C0EC202F4DC:-ION-:5fd68d2ceea345d49230f8c1cd909751",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:56.583Z",
+    "document_size": 8719
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F099E2EB-61D4-4F18-BD74-A1AF9BE4E218:-ION-:6e3dcd4aa429448899fca02d873ea48a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:57.276Z",
+    "document_size": 9183
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F2294053-1ADE-418D-8815-62E73C0B7063:-ION-:78e94df3325e4a35aa39eba7cff9a6a9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:52:57.845Z",
+    "document_size": 7235
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DDAAB403-C4F1-416A-9E65-8EE343FD5B8D:-ION-:f2a240d72b5a43138876b8e81d88e918",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:19.967Z",
+    "document_size": 7812
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6834CBF0-4984-40B3-B3D6-6A205302F7C9:-ION-:6e1fa983e5e3498a8ed9191e01134002",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.071Z",
+    "document_size": 7416
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A78EC7E2-61DF-493C-8C85-74D420BE3968:-ION-:d8800b816ae447f7b2c5680046d18902",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.147Z",
+    "document_size": 7682
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8A141135-7CB7-440B-AE71-F1C446BBE0F5:-ION-:d5bc407debcc42718b8f1673285e4899",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.303Z",
+    "document_size": 7571
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C02F6E90-8B61-4970-8221-10CDDE411C8D:-ION-:ac0514c57fae4cceb85028be35f1440a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.447Z",
+    "document_size": 7099
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A12CEA1F-15DA-4E25-85F5-63085F2A2719:-ION-:30ad1a7354fe469a9a042ed2c6158071",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.549Z",
+    "document_size": 7211
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F6BA4AD3-73CB-424F-9BA8-00ABB887588F:-ION-:95ab409418414d04a7735e9ef205dcdf",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.673Z",
+    "document_size": 7032
+  },
+  {
+    "message_id": "lid://infor.bice.bice_131242AB-1B1B-4FB4-9808-9A4603684F54:-ION-:a4be94725cb94242ad0c4a3ee6cf29f1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.782Z",
+    "document_size": 7316
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5537E2A2-4A7C-4925-8430-013EDB3CB957:-ION-:57606ce8432c41d4a9ef53b4eafe3598",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:20.885Z",
+    "document_size": 7094
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7AA67058-A4B6-44C5-B005-70CE4624C753:-ION-:39bd53778dcd4626947fe7ab39c7ca7a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:21.028Z",
+    "document_size": 7018
+  },
+  {
+    "message_id": "lid://infor.bice.bice_81AB7A1D-4D9D-4727-AA4D-869D251E1DFE:-ION-:25bb129b971a4c8bb930af6ba29c84e0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:21.127Z",
+    "document_size": 7256
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4B7EC025-159D-41E8-939F-8A65DFB0A5DB:-ION-:830d18f404a14288827b635641201994",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:21.256Z",
+    "document_size": 847
+  },
+  {
+    "message_id": "lid://infor.bice.bice_611A97D0-941B-4FDA-93CC-9846DE80891B:-ION-:8f56ac96355448a587df11684301cb73",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.150Z",
+    "document_size": 8423
+  },
+  {
+    "message_id": "lid://infor.bice.bice_14BF4542-BB24-4CC0-A459-722C863219DE:-ION-:f9935f7f57e94194b2f0a5df1eef3844",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.252Z",
+    "document_size": 7751
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D4CAF7E4-1F78-4BEE-A28C-A505A95250C6:-ION-:05f27e4f3f7c4b6699f26141631bb6d3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.340Z",
+    "document_size": 8001
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6EE590C1-C5E4-4CA5-BA7E-12197FE477E2:-ION-:c405d0c9a08249c1aed1c11e02237b0d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.433Z",
+    "document_size": 8534
+  },
+  {
+    "message_id": "lid://infor.bice.bice_70BEB24B-DA79-4244-AB9F-D2AFFDFDC208:-ION-:5ff1ef04b7cf4c369c6351194ec2bcd5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.512Z",
+    "document_size": 8293
+  },
+  {
+    "message_id": "lid://infor.bice.bice_533A1603-6E7E-41D1-B356-51B1399604E6:-ION-:4eb4aff826f8434c82efa2cf0dd66d0f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.594Z",
+    "document_size": 8406
+  },
+  {
+    "message_id": "lid://infor.bice.bice_05FD2868-E4E8-49A7-B2B7-FD1C2F6BBAFB:-ION-:18f0f1fa1f0545b9853da8706fa7d51a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:37.745Z",
+    "document_size": 8170
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A5258431-39CE-4323-9B7D-7404FC9821A7:-ION-:0cf55e6816e14295bbc41e57d4777b5f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.143Z",
+    "document_size": 8148
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0E5B752B-EBD2-4643-9939-AD293C5D75F8:-ION-:3c9af07e2c1a4e5992a9c35507e04fe3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.243Z",
+    "document_size": 8329
+  },
+  {
+    "message_id": "lid://infor.bice.bice_64BF0C4E-1A32-47D3-A9C3-B0478090EDBF:-ION-:b553bda5124845268c002a501599de78",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.360Z",
+    "document_size": 8214
+  },
+  {
+    "message_id": "lid://infor.bice.bice_68B85AFB-C83B-44E6-A87E-0F33C8692A47:-ION-:b3a6761abc76489fbd181c6de57c216d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.461Z",
+    "document_size": 8147
+  },
+  {
+    "message_id": "lid://infor.bice.bice_ADCD6036-9509-4D1A-973B-4DA355F6ABD9:-ION-:98e759dec3ae43d3ac2e2e301b2d2a1c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.488Z",
+    "document_size": 929
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A838ECC7-0BFB-4378-B9D8-82E4DB868644:-ION-:269fbedcac8a4277ba3fee23028914ba",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.626Z",
+    "document_size": 8302
+  },
+  {
+    "message_id": "lid://infor.bice.bice_016AD8E1-6465-47B9-958A-BEAF09F71309:-ION-:be4c2e31c461421488731b3b7d31003f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.706Z",
+    "document_size": 7836
+  },
+  {
+    "message_id": "lid://infor.bice.bice_24A2C2D4-F620-42FD-9C29-34F81946ACA9:-ION-:81d76b18720d4ce69c417758487ec205",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.805Z",
+    "document_size": 8095
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A287B743-BA06-48EF-AA85-885EDED4757A:-ION-:82dc909977a0439eac982fc9e736ee98",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:38.906Z",
+    "document_size": 8477
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CDFB7101-0320-4468-AFD4-7B53CAD8CE16:-ION-:7cfad9056f134177882329080e556037",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.093Z",
+    "document_size": 8208
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9E5F0271-E56A-478B-ADB3-69CEEAF6C422:-ION-:35dcc00ca05240189ddd52ec14b97961",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.189Z",
+    "document_size": 8418
+  },
+  {
+    "message_id": "lid://infor.bice.bice_46B6E35E-EA8E-4A3E-8F2A-04F1DE553D7A:-ION-:a0b4a6d016c04f909a23106160c3ed2b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.287Z",
+    "document_size": 8139
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7646C079-9351-4B65-B160-CB75E4D69552:-ION-:619ba02e14374408bd649077b0ef9527",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.357Z",
+    "document_size": 8086
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E63EBB9F-0FBB-4748-85EA-CC31D7C7473E:-ION-:759d847ce3fa4613a93202397ae52f1d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.429Z",
+    "document_size": 8341
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EF97BB81-D99B-42CF-B376-E25657177470:-ION-:58541e32a612493bac24983df84a9986",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.526Z",
+    "document_size": 8132
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1B00DEF8-641F-4FE2-BAED-286EDA999368:-ION-:e6e34ae255fd4acfb091b0056fbaae71",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.621Z",
+    "document_size": 8142
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F66F3840-A4E5-418A-92B1-3286CC31CDD6:-ION-:6f8b20990609446fac95c7687258d9ed",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.650Z",
+    "document_size": 935
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0AEC2629-3F03-41EE-985A-2D5E78CF0B61:-ION-:fe9d737dc43d48cdb19900539e5dd44c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.840Z",
+    "document_size": 8030
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1A730FE5-BA5D-4B4B-8033-319D40C03D8C:-ION-:acd666d1c8b14d578b07360bbabd8c88",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:39.968Z",
+    "document_size": 7543
+  },
+  {
+    "message_id": "lid://infor.bice.bice_35528D08-D0F3-400D-A736-78A1AD21AE3F:-ION-:51ee961af7f94d2c952639bccbbf78b7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.171Z",
+    "document_size": 7793
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3E946523-75A1-41E1-B96C-0289DCBB9E7B:-ION-:3815c58f03a642feba52f674cee9870a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.286Z",
+    "document_size": 8165
+  },
+  {
+    "message_id": "lid://infor.bice.bice_67AFEFE9-807C-47B4-9C8D-EF3EDB560447:-ION-:c929d76cff1c4bcc85482b88448ebd7b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.368Z",
+    "document_size": 7902
+  },
+  {
+    "message_id": "lid://infor.bice.bice_25A8F576-6679-4B9B-941C-D02271458A16:-ION-:d6b387cf39b943a28460ae6fbb285347",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.469Z",
+    "document_size": 8024
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1684B11C-F2B0-4EA9-B48C-8D7C9A3CB258:-ION-:cd51931db5344765a2986c0e26e90456",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.544Z",
+    "document_size": 7992
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A0099B64-7684-44CF-B6A4-D13A00B3870C:-ION-:718982b325bd4426804cb0be25941e26",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.651Z",
+    "document_size": 7951
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CE7E1421-1902-4FB6-93CE-96EABFDDCC1A:-ION-:61437758e0ec47ff88ddc4273c7d5d1f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.756Z",
+    "document_size": 8030
+  },
+  {
+    "message_id": "lid://infor.bice.bice_33DEB71A-81E9-4B5C-A7F7-89BA16AB2B23:-ION-:3e7659e851b9458796fdefd3be02f017",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.870Z",
+    "document_size": 7795
+  },
+  {
+    "message_id": "lid://infor.bice.bice_448912FB-EF28-442F-85F4-B300EE67FC9C:-ION-:e8e34acbe2b14492a9c6f94323a73444",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.969Z",
+    "document_size": 7747
+  },
+  {
+    "message_id": "lid://infor.bice.bice_77BFB6E9-CD86-4BA4-9CB1-131A49479E3B:-ION-:8eb13b2bb26542728d5b9b6615e7f0ac",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:40.993Z",
+    "document_size": 934
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3FD1206F-151D-4A21-A733-6DA9999E9E01:-ION-:eadf9519f6544e0c8199a80c73e11c9c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:52.414Z",
+    "document_size": 7813
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C61F84E7-6143-4211-B216-79CCD0C0EE09:-ION-:03642d3e3b85489cb0fb5270425c25a9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:52.588Z",
+    "document_size": 7414
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B75C19AB-0269-4004-8F72-E2F0729F6442:-ION-:06fa44289ff040489e52dc30f8bd4e13",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:52.788Z",
+    "document_size": 7683
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C67491DF-34E9-4DAC-A60C-E37AB455501F:-ION-:0fc6aeb65cc746c68356f07562b81e38",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:52.979Z",
+    "document_size": 7622
+  },
+  {
+    "message_id": "lid://infor.bice.bice_26DFCBEE-5F72-44F9-A244-1FB211DB4323:-ION-:deb5d69d0447484cbc0f7b92852807d6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:53.137Z",
+    "document_size": 7170
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7695F860-CA2C-4F7C-9B64-C7A02493BCAD:-ION-:3e7c3627be91425d987051211cb21114",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:53.326Z",
+    "document_size": 6816
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5B6DDC18-6D58-43E6-8120-828B3C92C9B5:-ION-:0d7fcb2e30f24dd7a8f62dbd7f01f8c7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:53.513Z",
+    "document_size": 7235
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6F7EF754-E135-4CAB-8068-C63BF147AA98:-ION-:258391f4f11e4e47ba118425528130d3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:53.729Z",
+    "document_size": 7316
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3E5BEF86-94F4-40C3-835D-7317ADF2C67E:-ION-:a287228a3aa84c3297a48bca2b209536",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:53.907Z",
+    "document_size": 7063
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E5FF1195-A8D8-4A69-95A4-1E483B62E37E:-ION-:52f97a5a3b9148779c0ba5d1245e73ab",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:54.124Z",
+    "document_size": 7434
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C9F5DC48-9358-4A8C-BC0B-268CFDFF4F6E:-ION-:5fc9151f79f84ed7b9ded826d2dcbc03",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:54.295Z",
+    "document_size": 6875
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DDC54763-04E5-487B-81C4-221BB9A4B844:-ION-:7f34e78afa6648fc956029e88961bb91",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:54.463Z",
+    "document_size": 7596
+  },
+  {
+    "message_id": "lid://infor.bice.bice_84940BDE-3408-46E8-9D44-3E6987F75EF3:-ION-:8e93d4f3af034a4b901582d3ca847e4c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:54:54.608Z",
+    "document_size": 4849
+  },
+  {
+    "message_id": "lid://infor.bice.bice_47D15216-EEFD-4522-8134-10BBAFAA63DE:-ION-:d8929bcc2aee476a8d215b3213fdc7ac",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:14.138Z",
+    "document_size": 8194
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2C622F0A-5833-4149-938E-AF9FF6D4A33F:-ION-:bdc3d67d7357469c8dfc5f330c08aa78",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:14.420Z",
+    "document_size": 7770
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1D2D1468-2ABC-4467-8809-34C6A274F5B0:-ION-:6f8f4e8b3cdb4475bf5eb2a7ae2e6ded",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:14.642Z",
+    "document_size": 7933
+  },
+  {
+    "message_id": "lid://infor.bice.bice_39101352-AD8C-46A9-AB3C-19B7929CA896:-ION-:d98c3d93db854674b679b5cb0cb9bb17",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:14.816Z",
+    "document_size": 8450
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EC1E16D5-B920-4ABF-AB74-9841D9FC376D:-ION-:87823ea8a68443ddaa36846744b0c358",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:15.019Z",
+    "document_size": 8471
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8C7EAEE7-026A-4704-80E4-190CB30BCA57:-ION-:b59a2b0573154718badb7fc522d9ad28",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:15.231Z",
+    "document_size": 7914
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F1270BF0-E742-4ED5-97C2-22ABEA4C776E:-ION-:18cd3fd54f6a4054a581f2a2932353cf",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:15.412Z",
+    "document_size": 8701
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6DB06790-D80F-47D5-AC74-328070E5485A:-ION-:13fda2f898bd4e338776393c3bd492ef",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:15.606Z",
+    "document_size": 8481
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1A83CF03-4969-44F3-B574-14ACB0C86AF7:-ION-:29976715b9da4dc98383cb7bbc85cb8d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:15.803Z",
+    "document_size": 8435
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C08208D9-8597-4A2D-8F32-D7BACB65F275:-ION-:f77e3428cfe24e519019e4d6bdc564ef",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:16.019Z",
+    "document_size": 8696
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CB91D5C1-EB4D-48DD-BFA6-B9D845DA4278:-ION-:f2884567ddfd45ba96aba2a6b45f2b62",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:16.197Z",
+    "document_size": 7960
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8AA10C9D-C94E-4012-9AC6-68B2FDC917B8:-ION-:3861343651b1437eb08c86a838ff63ab",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:16.404Z",
+    "document_size": 9144
+  },
+  {
+    "message_id": "lid://infor.bice.bice_89FD4892-16E5-4063-94F9-DCC57FD5A123:-ION-:6901d0f93edf4463963410852b906e80",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:16.543Z",
+    "document_size": 5670
+  },
+  {
+    "message_id": "lid://infor.bice.bice_17728357-7D52-4A06-9309-94331F446C55:-ION-:98ec0707912a4b4eaca86cadb85452fe",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:16.821Z",
+    "document_size": 8309
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5E343CD1-B15F-4E6B-AE77-265270134888:-ION-:1b19c1348d744c64be1be6e2748c4c6d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:17.068Z",
+    "document_size": 7920
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AB3184C1-0B4A-4CFE-84BD-C33CA137EA0F:-ION-:273f4060c90b42d4837f94ca18db6342",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:17.221Z",
+    "document_size": 7889
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B86B48F3-12B4-4985-9D54-1F1EAF81DED9:-ION-:e3c26541141f4e709ce3bc61f8661a51",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:17.403Z",
+    "document_size": 8395
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AB93486D-380D-4066-BEF8-FC84D72534CF:-ION-:d68a4eb6826548a8a50a449ecf7e3fea",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:17.598Z",
+    "document_size": 8080
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3AAF7F27-A177-48C9-9C5C-4DF7A0065CE8:-ION-:6db2e366ef614676a3ee403fe33c6118",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:17.924Z",
+    "document_size": 7608
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B7B13FBE-085F-4167-BDCA-D2D5DD60D620:-ION-:e115dc61ae0b4a3d9ffc254eb9b5c925",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:18.105Z",
+    "document_size": 8340
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3EB9F3E7-8654-4FEE-9328-04C4798A3B34:-ION-:b2847984059c43c2a69f6045809f25c8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:18.325Z",
+    "document_size": 7950
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2C9ED55F-93B8-4D99-B6FB-5926A6DB8A3D:-ION-:7a05037cdf1748a59a3929ae6c41439a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:18.516Z",
+    "document_size": 7862
+  },
+  {
+    "message_id": "lid://infor.bice.bice_62B886BF-7941-40B1-8452-D005FABA89EF:-ION-:0e5b7bbf3bec4a2a9fbe44ff2ab4d7ec",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:18.766Z",
+    "document_size": 8202
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6EC7DD64-61B7-4AC3-A449-13CC6C56C8EC:-ION-:10a95402059e4fb88493efd8071ef0db",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:18.940Z",
+    "document_size": 7442
+  },
+  {
+    "message_id": "lid://infor.bice.bice_189439BA-3EE8-4D5C-BCDF-9B59703F6B8F:-ION-:c3cc742ef5e5412d810f6c65ae02c44c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:19.152Z",
+    "document_size": 8533
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4B81669D-AA7A-4A7B-823B-075DB96C58BE:-ION-:45b42684ece8464da33ba1f34133722e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:19.351Z",
+    "document_size": 5570
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B8501895-E98D-4566-8C69-9AAC5F085593:-ION-:8114cb70683a46c8b5b4492c5e6b44bc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:19.654Z",
+    "document_size": 7999
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2BDB0819-4FDE-483A-9B06-7EB8315BBB01:-ION-:a48c3acfb3bc4e7282264949445eecfd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:19.821Z",
+    "document_size": 7580
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BC10B5FD-2C95-41E8-8970-A9CA5177D884:-ION-:542b2f2206d84de0b0e6776fe3556758",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:20.178Z",
+    "document_size": 7842
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6D93F253-FA09-4AEB-B4DB-F4ACC82C19F0:-ION-:7477fcf7255a4ac7b3bdd7f686406394",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:20.347Z",
+    "document_size": 7934
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0DA74DB0-C62E-43B5-BE1D-C865BCA1C984:-ION-:4470ada6f71d461999738bffdedb070a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:20.643Z",
+    "document_size": 7596
+  },
+  {
+    "message_id": "lid://infor.bice.bice_52020D6C-8EE8-4012-B9B8-6AA9BFE1DFFD:-ION-:9deff4aa7458400c93e67f01396e041e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:20.846Z",
+    "document_size": 7193
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BD1BFDCB-21DC-494D-9435-E98CA10464E4:-ION-:b2e2e41513374807b812aebdb50dc096",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:21.066Z",
+    "document_size": 7814
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0C39A9BB-20E0-4CAC-9397-33D71EA20B0C:-ION-:47cb0e39940843a99297357f9919c779",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:21.232Z",
+    "document_size": 7884
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E6ACF21B-A27E-40DA-8E8D-38EE880181D3:-ION-:26888d5390c24c3289de2af653a07f45",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:21.459Z",
+    "document_size": 7848
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AE7A544C-7820-41BF-BBF6-7B022D85192D:-ION-:effa5c42b3e14e0491215e5d30687e69",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:21.740Z",
+    "document_size": 7761
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D6B03500-F81B-4F3E-A2F5-BA3C02ABB9E4:-ION-:e04ce61f26bb4ce194dcb955ac2d5c31",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:21.917Z",
+    "document_size": 7217
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F8BE646E-FC8B-41DE-AE05-0F9B68040CC6:-ION-:fcc1927fa3ec47c981c20361b3e7d5a9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:22.100Z",
+    "document_size": 8175
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CE9CD588-BBC4-41CE-AC1E-0B24CE5A653F:-ION-:9211402b879a498483c791bb195cabc5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:22.287Z",
+    "document_size": 5383
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2719F7C9-6E80-4D1A-B7EA-97F2AE94B019:-ION-:cdd2a1c5146942528e038f2051bfb930",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.258Z",
+    "document_size": 7812
+  },
+  {
+    "message_id": "lid://infor.bice.bice_132C32D5-904A-49C9-81A8-0FF1545C153E:-ION-:2bdd7382d9614ae1b710a49cc965504e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.330Z",
+    "document_size": 7416
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9D3F6250-FAE2-40FC-96E6-167147635B21:-ION-:191589862f9e43f6a23faba31e8b4f48",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.477Z",
+    "document_size": 7685
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3E9D4CBF-C80A-4BB1-B825-C64382B4A924:-ION-:46e6bf33818440cabd84dbfa79ed1bc6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.587Z",
+    "document_size": 7724
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3B0E7DDD-B135-425E-A3E5-B4D78FAA606E:-ION-:08518eb7b06341a691b2203ad4711e28",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.669Z",
+    "document_size": 7355
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4CC0EFFC-80BC-44A2-8178-00D8BA616431:-ION-:7dd3edb924ef434c905e9e853d1710fe",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.769Z",
+    "document_size": 6969
+  },
+  {
+    "message_id": "lid://infor.bice.bice_61872A5F-5A0E-4DB3-84B9-054A38A9100E:-ION-:f67ace86a47b486fa2d4a01f2ebb19a8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.842Z",
+    "document_size": 7004
+  },
+  {
+    "message_id": "lid://infor.bice.bice_758625E2-0DE7-4410-A900-B68B00AD4FF9:-ION-:0b3ecb31955842b39ab54ca4e8e7064b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:33.929Z",
+    "document_size": 7164
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CDCDE37E-53F0-40B4-91C4-55951CD9ADD8:-ION-:94359c94d95146789784b6f092f52d7f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:34.003Z",
+    "document_size": 7508
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CE419CA5-CCDF-4F5F-A684-C5DC6F286AA3:-ION-:5393ec0a978440d381b0048b5fb236ce",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:34.102Z",
+    "document_size": 7312
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5EF58F17-0E49-4960-B849-5A3E630BCF1D:-ION-:661b49b8a5214f1d9edff8fe21f451f4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:34.217Z",
+    "document_size": 6889
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E843FB83-39EA-443F-9454-127F18AF6D32:-ION-:cae9bee13f214c7dba2149f9bdb95abd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:34.293Z",
+    "document_size": 7032
+  },
+  {
+    "message_id": "lid://infor.bice.bice_970F7140-B673-4547-B923-D01D969E8794:-ION-:54f60e7186764a47923f0377ea6c0da4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:34.367Z",
+    "document_size": 7159
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9CA64779-8AA4-4D0E-ABDA-245D38E91233:-ION-:5820ba15bc99408fb5ceed95f13e3d83",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:34.464Z",
+    "document_size": 4634
+  },
+  {
+    "message_id": "lid://infor.bice.bice_00D92542-A26B-4FFC-8069-70820AB5E980:-ION-:8eda455afb764fd6b5826dedc9d6cf16",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:51.962Z",
+    "document_size": 8422
+  },
+  {
+    "message_id": "lid://infor.bice.bice_68B92C70-7B4E-4936-8C9F-CA60B382BCDD:-ION-:c15fe26b810f4238b07650d5ab21b981",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.070Z",
+    "document_size": 7752
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BA0FC499-E82E-4C77-9499-E02C82C027CA:-ION-:80704c754dfa4e80bc8e26d0443eff33",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.150Z",
+    "document_size": 8006
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B4D25A86-4599-4CA1-BCCF-3771474C049C:-ION-:59ba830b2b224e3e9fea5f1a73abb7d8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.246Z",
+    "document_size": 8776
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1CE60F95-37BF-4C07-B503-E9DBC9F76F6D:-ION-:e0eabc006ffe4f20919e8625fdb90a1b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.345Z",
+    "document_size": 8652
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A6DEEF15-7D65-470E-813F-4B1ECB6C347D:-ION-:48983e3c2dea47fe97815246783f5514",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.447Z",
+    "document_size": 8111
+  },
+  {
+    "message_id": "lid://infor.bice.bice_67579338-EA8F-473D-8A16-38C736444650:-ION-:98e439a3b50e4cb18b3811ce0ea43e47",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.548Z",
+    "document_size": 8456
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A5B48DCD-A3E9-4907-B4AA-2F1426418B89:-ION-:a8d07bf3fa6d41cfbbdb3282eab296f5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.628Z",
+    "document_size": 8352
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1D87EC13-86F3-407E-8514-8F4EE9B2E635:-ION-:9757eded223e4689b1230102207a6ba7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.718Z",
+    "document_size": 8588
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4D10CF24-AC0A-4773-81BB-2F47CC0FFB04:-ION-:78499085f9da4ce3b855e0adab15b2eb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.877Z",
+    "document_size": 8524
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7CED90B6-DA1F-4274-97FA-108F3111E19D:-ION-:dac79b1bd6794928b0bf2c0ccb43df55",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:52.986Z",
+    "document_size": 8452
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D892BB35-1F70-4583-B628-D592DCEA2B3A:-ION-:0a685e97a5ed401a951e43ef6e31dd3a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.085Z",
+    "document_size": 8162
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D796C321-39FA-4A58-8633-72EFCF05AB5C:-ION-:a21ed5b6e8014a6abff394e2bfa239eb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.166Z",
+    "document_size": 9123
+  },
+  {
+    "message_id": "lid://infor.bice.bice_63F21886-EC09-4928-81D9-D525D8AA87BE:-ION-:d1c8805cf2604eafb49ab4671b63a571",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.238Z",
+    "document_size": 5307
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8A0037E5-65DD-44B5-8DF4-CCBC248E257B:-ION-:ff0d666b82774e31b1897f8a13ea3266",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.438Z",
+    "document_size": 8143
+  },
+  {
+    "message_id": "lid://infor.bice.bice_08CE85AA-3E40-4070-A699-4B0C6FFA34A7:-ION-:6f9caf39b3bd4acd966cc5922fa3332f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.537Z",
+    "document_size": 7749
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F30C93DC-A366-4988-8A36-DC49BC139857:-ION-:521767a0f1504fb1b1ce483bd0db8a59",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.613Z",
+    "document_size": 7975
+  },
+  {
+    "message_id": "lid://infor.bice.bice_70DC28D2-38E7-4EFB-8458-04EB80EF6A39:-ION-:f7db2d2d46cd4d3ba7dd3f316af240b6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:53.698Z",
+    "document_size": 8983
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B06FC499-69D3-4562-BDB0-7DDE06EAE455:-ION-:a6e7cba0cd7248b9bb1a01ff3c79b355",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:54.009Z",
+    "document_size": 8935
+  },
+  {
+    "message_id": "lid://infor.bice.bice_57054198-38EA-47ED-BAB7-7596BE25B94D:-ION-:3ede3145c69f4df18370b0fa0b02bca3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:54.098Z",
+    "document_size": 8519
+  },
+  {
+    "message_id": "lid://infor.bice.bice_18A1CD1F-F00A-45AD-B5BF-A8946AC94C16:-ION-:8b6bf9f8430045b6868c050615a7c9ec",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:54.202Z",
+    "document_size": 8783
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5419FECA-B1A9-4DFF-AD85-08675A6BD1EF:-ION-:516816e384864f2f823fe4ddb486df8a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:54.426Z",
+    "document_size": 9095
+  },
+  {
+    "message_id": "lid://infor.bice.bice_207E36B0-D597-4B84-8091-D3760337AD45:-ION-:7579603826f24c74ab6e6ddd64222e3d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:54.577Z",
+    "document_size": 9048
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DF37E1AB-0E62-4FA8-A6A5-87A4D4E5802C:-ION-:ce26950746464d949605e2d2dcb95751",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:54.698Z",
+    "document_size": 9028
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2AC032BA-A88B-4D51-8149-F3B747269E09:-ION-:2889c9f3783747dcbf5eede4b76b99b3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.034Z",
+    "document_size": 8845
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8158BEA3-DEAB-44D6-8009-E0F0720124DA:-ION-:db1ca380d8284dbaa4be56bee3c371da",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.219Z",
+    "document_size": 8410
+  },
+  {
+    "message_id": "lid://infor.bice.bice_038E6F29-5FBB-403B-856F-64F1F2D6BA55:-ION-:dde2d71d78ef46b48b50f616176b8e83",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.358Z",
+    "document_size": 9331
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F89D8C36-9C68-41D4-8DAD-5FF544645B87:-ION-:f061093d4ecc40b295a8815cf5f1135f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.422Z",
+    "document_size": 5970
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B26E0B37-1BD8-4168-938C-D85411571BC5:-ION-:46cc2c973bd04fecab04bb63a6aefb0a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.599Z",
+    "document_size": 7894
+  },
+  {
+    "message_id": "lid://infor.bice.bice_360D409E-0FA4-4E82-9683-800929ACF9BF:-ION-:f8be29db191b4ddda0982e3af89e1ab5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.719Z",
+    "document_size": 7538
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6B54DCD0-0E72-45EB-9A27-89CBE7F79747:-ION-:5a98c2b2dcfe40bdb0673884b6cd1024",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:55.824Z",
+    "document_size": 7852
+  },
+  {
+    "message_id": "lid://infor.bice.bice_380478FF-D1BF-4F4B-9AA0-BB4C7F9C99BD:-ION-:d29afaf07fd54967b93f713769503a13",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.091Z",
+    "document_size": 8735
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AE2996BE-A7ED-4239-AAD5-E29E51B3E323:-ION-:665da51d887d4354866027dcd770b61e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.216Z",
+    "document_size": 8649
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8D063736-4F66-4FB2-B121-A0EEB4DB60A8:-ION-:b69c020660594233a45c65f1082e49d5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.404Z",
+    "document_size": 8054
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C492C703-7F9F-438E-8FF8-2CAEDB3EFB87:-ION-:ac277ef59807489694415112c763ba6d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.517Z",
+    "document_size": 8355
+  },
+  {
+    "message_id": "lid://infor.bice.bice_54582AC0-3356-44E6-ACC2-F83389409E08:-ION-:454002f086ee448b80fb22d3e849a426",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.627Z",
+    "document_size": 9032
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2CA5CED0-6463-445E-95D3-3A31E96240DA:-ION-:edf94c6aded341159487c18396bae43a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.840Z",
+    "document_size": 8926
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7BD1C6EB-2700-4F34-BB79-2BEFECC79DE9:-ION-:0bd9957c9d0c4c1b83a28bb4ff18755f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:56.971Z",
+    "document_size": 9025
+  },
+  {
+    "message_id": "lid://infor.bice.bice_865B148E-F03B-4065-80E2-245ADC4C8FB9:-ION-:889c1c836104469195b0619147f1ff1c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:57.090Z",
+    "document_size": 8677
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DE4EADA1-8E6A-454C-BBDA-2244B19BBB20:-ION-:86d340ee8d084c07830c2ed8e1039249",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:57.312Z",
+    "document_size": 8188
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8AF28DB4-31C0-4BEB-8530-4D876C7F8922:-ION-:1f7a7c5ca3e14f4ca210452fe39786a7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:57.399Z",
+    "document_size": 8900
+  },
+  {
+    "message_id": "lid://infor.bice.bice_88DD767C-0124-4A95-9454-25F8E4674489:-ION-:e0105796b202407cbc5197e136a048dd",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:55:57.479Z",
+    "document_size": 5830
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7AF108DC-6124-425E-BA29-17737CD19580:-ION-:565a4589129942c6b1bbc5385a3925a6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:08.984Z",
+    "document_size": 7814
+  },
+  {
+    "message_id": "lid://infor.bice.bice_15D095F1-10EC-4FB2-9F2A-B9D95C91D22E:-ION-:4e71ed54d67a48599d88f5e0f3befe76",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.154Z",
+    "document_size": 7416
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8A65551D-0319-47A9-B6AD-2B66A8E3C9E3:-ION-:71ca0f5dfd294061a3893caf4d13b625",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.249Z",
+    "document_size": 7684
+  },
+  {
+    "message_id": "lid://infor.bice.bice_14AC86DB-DCF7-4634-B19F-3A853556DC40:-ION-:9a2a00fc9bd24622be66b977b72e58e5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.344Z",
+    "document_size": 7845
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8BAA9B55-D708-41C1-8C27-089B1AB62519:-ION-:ca0bde9972fe45d5bc76962a824e261c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.443Z",
+    "document_size": 7300
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E1958102-8E38-419D-BC95-6E246895E07B:-ION-:9a8c82d829f24b489db242e1ad703c98",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.529Z",
+    "document_size": 7000
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D3D54F3F-81FD-409E-A584-E51DF9FFA481:-ION-:d36ea51f5d8f44f0a16070e5fb02058d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.600Z",
+    "document_size": 7478
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7B2FAF23-9379-4C55-9686-976D064733BB:-ION-:8da62350c33947aeb943e21a86df29b5",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.716Z",
+    "document_size": 6981
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EC689B43-9BB8-40D8-8E8F-B6FE2D050B9B:-ION-:4b725cb9a4f045a08854e7a4d52be419",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.809Z",
+    "document_size": 7051
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AD271B1F-833B-4ED1-B88C-5B5F20EEE115:-ION-:9b861cd7268a42fda9041d0f82e87a75",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:09.927Z",
+    "document_size": 7083
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D7BC5A5C-15DC-468E-9654-B5874CCA1E99:-ION-:c4cffdd988a342ada02a3d655c328c96",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:10.041Z",
+    "document_size": 7358
+  },
+  {
+    "message_id": "lid://infor.bice.bice_11681D87-ACFA-47CA-BCE7-A8A68667016F:-ION-:927e763bcb6c40a3b356c8b460b71dd6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:10.140Z",
+    "document_size": 6617
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BFFC425C-49EF-4426-B03E-E1D4648ADC82:-ION-:f023e7f7ab584df39c80b370f08f6df4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:10.218Z",
+    "document_size": 7533
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A9511E0F-00CA-42EA-A738-7CB96010555F:-ION-:643390302fa740afbafd922f046a61ad",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:10.316Z",
+    "document_size": 7115
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6BAD0CA5-C343-4E78-9ABB-969FD9E6F1EC:-ION-:09b1961d17c842b58d540da6bad6a7d4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:10.352Z",
+    "document_size": 1360
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3F5EAAF1-52DA-44CC-A752-2E3EBD781BE1:-ION-:75fcc028eabd4bcc8e31de9e92c3d9ad",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.056Z",
+    "document_size": 8277
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6FE7CCB9-6821-4047-BA2B-D826F77AB860:-ION-:b488f37024ad4eab9d8f23c50be7c86f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.135Z",
+    "document_size": 7733
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5A171F7D-E523-4DC5-8337-EBE367FB637C:-ION-:b9456fc85df649728ddf458751ee702f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.236Z",
+    "document_size": 7828
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E684FE1F-87EA-4D33-91F8-E9386D33E0DF:-ION-:c8152af6aee04f278a96145d2636f0a9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.314Z",
+    "document_size": 8630
+  },
+  {
+    "message_id": "lid://infor.bice.bice_363002FD-5AAC-4034-A0BD-BB8DC0D671B6:-ION-:765332031c0f45eab694efd4b0ba6044",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.437Z",
+    "document_size": 8218
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9A19897F-55CE-4A16-B6BD-5FD31CC5F78D:-ION-:8d21cf28b3bc49a2bed295c193622707",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.550Z",
+    "document_size": 7392
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AC3AB0DE-51FC-4014-97EF-89ED6D563DA6:-ION-:b8b34fc0f3ba445faab61f88c06f2bae",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.673Z",
+    "document_size": 8136
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9C425AFF-8462-47A9-A242-AB2B421C90F9:-ION-:5c05c93f267645d6baf57dfdcdf1056a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.774Z",
+    "document_size": 7632
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DCB19E51-3D62-424A-A171-03C03611E577:-ION-:f867469086a64d2f829134cef453a459",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:26.870Z",
+    "document_size": 7815
+  },
+  {
+    "message_id": "lid://infor.bice.bice_596B99DE-D8F2-4AEE-B2E9-56407786E582:-ION-:4831b4b935be477aa9dbea269c4642c9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.000Z",
+    "document_size": 7918
+  },
+  {
+    "message_id": "lid://infor.bice.bice_22946581-CE0B-4B40-9F4A-0DA471506B07:-ION-:0a10a91aeec6463e98b4b1ef7deab19d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.076Z",
+    "document_size": 8230
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B65031F3-B096-4C4C-9BA6-F2E6CA53BCB1:-ION-:7686890ac3d6437a8f82ae2b56466596",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.188Z",
+    "document_size": 7262
+  },
+  {
+    "message_id": "lid://infor.bice.bice_23DA560E-6EB5-452A-908B-0126C0B858C8:-ION-:b9ed5ad6d798433a997d12a7030716e0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.293Z",
+    "document_size": 8575
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1038F49D-FF6A-4817-988B-457E01D82B4F:-ION-:7d83be8363e94046a1db62c3c1e2fe8d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.399Z",
+    "document_size": 7991
+  },
+  {
+    "message_id": "lid://infor.bice.bice_668469E6-BECA-4E9A-BA74-DB16653C0579:-ION-:d84ae12c2c3849d7b06c85a9f8967885",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.435Z",
+    "document_size": 1562
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8A504B97-9965-4B32-BB12-92945E85713E:-ION-:c76878c48b374d519ae6fa194228da8a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.658Z",
+    "document_size": 8313
+  },
+  {
+    "message_id": "lid://infor.bice.bice_659CC682-2E9E-41F3-9234-5E73948A0AB8:-ION-:803c0e6a35a446b6a2766c4b5314ce5b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.746Z",
+    "document_size": 7920
+  },
+  {
+    "message_id": "lid://infor.bice.bice_77B33B9E-3678-47EB-9E2B-AA1AA39FB164:-ION-:d3f0ce8bfb144add85da8e603c4cbb7b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:27.908Z",
+    "document_size": 7891
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B1F52586-FF1F-45CE-B64D-29AF3EF23F32:-ION-:efc98bfbc9904d36932063e4bbd0bffc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.017Z",
+    "document_size": 8619
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0C75FE5F-6A18-4715-A0D9-8861B3974750:-ION-:b3fc7d66621746158032f6c90902b538",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.322Z",
+    "document_size": 8099
+  },
+  {
+    "message_id": "lid://infor.bice.bice_01493D80-F53E-40B5-B5FC-EFC0142CE326:-ION-:c3cd3e0f010247938bbfe8c65bf33a7f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.437Z",
+    "document_size": 7367
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4D020302-ECB0-44E4-9B2C-B94859B20372:-ION-:aabe5829c4284e14b4ce4f541dd6715b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.514Z",
+    "document_size": 8231
+  },
+  {
+    "message_id": "lid://infor.bice.bice_273D681F-3A7A-4ABA-AE5B-7E4B2555522B:-ION-:6f8f5872c81148f3839c216319d6405b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.616Z",
+    "document_size": 7566
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1BBDD388-D298-4F41-9F88-88668A85552C:-ION-:3b3fcc7aacd448e089c7d3f3492e5066",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.747Z",
+    "document_size": 7771
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8A5024DC-D891-4E07-A033-93A43BA7C832:-ION-:6762c5e38d0e43aba1b4b7f8752767d8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:28.886Z",
+    "document_size": 7870
+  },
+  {
+    "message_id": "lid://infor.bice.bice_177C3CB0-90A7-49C5-9F33-E48380384835:-ION-:a9261faad0e045a78be17e64714c10b1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.085Z",
+    "document_size": 8156
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9EDE3129-C24A-47A0-903A-54230A6EBE70:-ION-:e267bcf6f64d46f9adde66c6758b23fc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.189Z",
+    "document_size": 7207
+  },
+  {
+    "message_id": "lid://infor.bice.bice_90070C7D-B5FC-4114-BB58-1DF07D75410F:-ION-:c1b423bc133747e6ae0fe037857824e2",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.312Z",
+    "document_size": 8419
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B4996DD7-D5FD-4DD4-A4C3-44926D76F7F8:-ION-:f4c14115671a4b2298bfc6fd22656a2c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.420Z",
+    "document_size": 7833
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4D1C4F87-97AA-437E-88EE-8B0C8A2953C6:-ION-:31e2d45a20ee4fc58883ac88559e8017",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.449Z",
+    "document_size": 1563
+  },
+  {
+    "message_id": "lid://infor.bice.bice_21350448-6CBC-44C6-A3D0-E980EC47364F:-ION-:f2b7339c93d643459f72b00c14a13e67",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.687Z",
+    "document_size": 7983
+  },
+  {
+    "message_id": "lid://infor.bice.bice_55E5BABB-71BF-4537-9F2A-1192F2EE366C:-ION-:5c8a6c8c8adc47e19330a029d2202d97",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.819Z",
+    "document_size": 7630
+  },
+  {
+    "message_id": "lid://infor.bice.bice_ADB631D8-686A-404B-9618-1F2BF9E1EEEB:-ION-:64592f00cb7d4233a777d891bf50acb8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:29.901Z",
+    "document_size": 7873
+  },
+  {
+    "message_id": "lid://infor.bice.bice_49AB383B-BD79-4C6E-8A2A-048CDAF3AA39:-ION-:cbb3e9f86f484e49a842e5e37b066649",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.047Z",
+    "document_size": 8717
+  },
+  {
+    "message_id": "lid://infor.bice.bice_17DC0603-8D72-4F2D-86A6-3922AB517D55:-ION-:3372c9d8bcf740479663d8b5008db1df",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.127Z",
+    "document_size": 8630
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A29E9007-B962-4D29-AC4A-2B6A154EA0C5:-ION-:91d556637d0f4a6fb574c82ec576367a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.196Z",
+    "document_size": 8260
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8AAA61FF-7805-4FF5-A402-63623F213A61:-ION-:8f3d4c280804493da9076543c49f43ab",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.267Z",
+    "document_size": 8672
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C5D9CEEB-C1D6-4888-BA9C-3AFD3CF8DD4A:-ION-:a1b67823c5194223a0c6996024ee9186",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.375Z",
+    "document_size": 8713
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DA4C133F-5AD9-4DC7-9018-223F6BD4CF6D:-ION-:ddb30a73a3dd42d8ac3b970e2113af62",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.441Z",
+    "document_size": 9129
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F08B2B40-9426-4BEC-AE06-797DA056F280:-ION-:0d0aca4bcaf04136b413457c87d881f1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.550Z",
+    "document_size": 9102
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2FF03121-CBF3-4E2A-BB50-DC49DD24CEDA:-ION-:82b0ca61d50844c4a8d6be08c663885c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.641Z",
+    "document_size": 9288
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F96FC295-D49F-492C-A5EA-85BB54F94B07:-ION-:2d7305fab7be429492c7f5696c409450",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.713Z",
+    "document_size": 7976
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8B0A51F8-FFFB-4164-840F-C336A579CE93:-ION-:09cca305663b484789ed8b644dfe65a2",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.832Z",
+    "document_size": 9138
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1F928114-CE1F-451B-9CB2-D61700E3B34C:-ION-:b355b52eb56a462bab4358cede1f689f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.933Z",
+    "document_size": 8648
+  },
+  {
+    "message_id": "lid://infor.bice.bice_37667A44-6BDA-428C-8ECC-8EE384D5DCDD:-ION-:64b46bbca6034424be0c561ea78efb85",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:30.973Z",
+    "document_size": 2502
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8E1AECD8-C15A-42D1-BC2F-3E298CCE4038:-ION-:926efd98da794416a22f75aa689741c1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.022Z",
+    "document_size": 7814
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4AC9DCF0-8826-4F77-9139-D5DFF7E3B505:-ION-:11f7887bec12422d9a53d667bda42445",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.161Z",
+    "document_size": 7415
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8435D205-E5F1-4618-98ED-69AE82317237:-ION-:504fe804e07a4c05b076564b464b1d9f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.286Z",
+    "document_size": 7684
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D6573364-889F-4F01-BA5C-C3E06B12C963:-ION-:a7ca58060af044388dbd18e3294ed3bc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.373Z",
+    "document_size": 7705
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7008C00F-B165-4130-A474-97468616FE31:-ION-:f5f565dd4edb4d71aee560b74c10baf3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.474Z",
+    "document_size": 7274
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4EC82C0C-46C6-457F-89F2-1910B226772C:-ION-:bba4ecead1d249b3bce5c0bfee60f2ce",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.636Z",
+    "document_size": 6822
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4F7E1739-BBB1-497D-833A-17EA2753FC04:-ION-:e457b45c14654b46ac41d7c16ef3e694",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.739Z",
+    "document_size": 7539
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6007F70E-061E-4333-A850-0427CB3B5342:-ION-:af246a935a204716a5bcf48367b02f7f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.867Z",
+    "document_size": 6901
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5120FE23-3E86-47C9-BA32-216A9368258E:-ION-:43be911f7ea342edbe9a567cfef43ddc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:42.949Z",
+    "document_size": 7099
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EA9115B6-B8B2-4E95-A56A-C1A444C70101:-ION-:8e20369d5c9b4cf2a90ef1fa2979344c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:43.083Z",
+    "document_size": 7211
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4120B4E7-DCB6-4A2B-AA3C-666BF2A6175A:-ION-:e6e8c21ebc8346aa957fcb9ddd497e2f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:43.173Z",
+    "document_size": 7397
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6EE58565-ED5B-44F6-948F-B28DD2CF7CC8:-ION-:061bfe5301bc4010856168a963492416",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:43.260Z",
+    "document_size": 7016
+  },
+  {
+    "message_id": "lid://infor.bice.bice_068D6D8E-F673-470B-8E02-590B4A606155:-ION-:c884e4b196eb4cfaaeedb53f01243191",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:43.369Z",
+    "document_size": 7081
+  },
+  {
+    "message_id": "lid://infor.bice.bice_486DE749-10B3-45A8-AE43-FB6024F2EB96:-ION-:7d808d803160477ba0d6446949171e16",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:43.450Z",
+    "document_size": 7307
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4A8ECF43-BC1B-4757-BB2B-5912BA027DB0:-ION-:67103b94228c4cb0ae601443aa84ea0e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:43.513Z",
+    "document_size": 3840
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D8785390-A56F-4155-8644-7BD77D5ED6DF:-ION-:758b62cb732d43fa8755d82db3ab808b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:59.856Z",
+    "document_size": 8423
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5EC786A5-6FF2-49E6-9DF3-1FA920977679:-ION-:19087593ad56484c8a670cef2f9730af",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:57:59.926Z",
+    "document_size": 7751
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CE92699D-C71A-483C-B56A-D4E91B7A4A06:-ION-:25435f1c86fd45108aa9d25810ad9663",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.038Z",
+    "document_size": 8004
+  },
+  {
+    "message_id": "lid://infor.bice.bice_EA174A5E-0040-4C80-B4CC-A6868B6B858C:-ION-:550ee57e80cf437084f1a55d4eac2b9c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.147Z",
+    "document_size": 8581
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F0F0F42B-4C70-4FE8-9559-A9A0A88D8CF9:-ION-:d452a4cfb6ad46f19b18e016cee5f026",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.309Z",
+    "document_size": 8652
+  },
+  {
+    "message_id": "lid://infor.bice.bice_547D67BE-5515-4F6A-9D52-9069CD4A26C6:-ION-:37bc775fd11f46fd839df390c94c2b45",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.393Z",
+    "document_size": 7734
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8F556F13-AAC7-4FCA-8CD5-86DBBEFF7F46:-ION-:5d81dd1b16c7495f8b2b14f848d5fc75",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.483Z",
+    "document_size": 8681
+  },
+  {
+    "message_id": "lid://infor.bice.bice_381627EA-8F98-4CF5-960E-820BCC3888C8:-ION-:4fcaf5d6e7cf4f9b9815e9147e07de25",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.566Z",
+    "document_size": 7945
+  },
+  {
+    "message_id": "lid://infor.bice.bice_62E64756-E0B6-47B7-8967-8B11B19FE90A:-ION-:d6a22ec52672451b8de6b308e6ffee2b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.723Z",
+    "document_size": 8416
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A2398B7F-181B-40EC-BFE9-26210F3536B6:-ION-:24ccee2583854a9c8717ba8a4b545d97",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:00.957Z",
+    "document_size": 8419
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E72DAE9E-2D67-4F61-9F35-781569CB774F:-ION-:129aa2e9b6c1400f8022da579b4b3fb3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.055Z",
+    "document_size": 8868
+  },
+  {
+    "message_id": "lid://infor.bice.bice_03BE9609-DFA8-40CA-93A3-70E65417F492:-ION-:e8173a9bcb1e42afbb376c4ca23fb499",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.157Z",
+    "document_size": 8101
+  },
+  {
+    "message_id": "lid://infor.bice.bice_08954C4D-1052-442A-B305-F2813AE95C39:-ION-:00a11d4f3fa84a29a7c3b02a443da77a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.261Z",
+    "document_size": 8252
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F3CEF430-2FDB-4A56-8067-D44AD81BDE88:-ION-:df576f9415ca4cefb027391542fd3619",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.381Z",
+    "document_size": 8842
+  },
+  {
+    "message_id": "lid://infor.bice.bice_88AF65AB-B5EB-4EFB-878E-3A29BACD7112:-ION-:c9664cd179754cfeb119cb8c356907d7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.449Z",
+    "document_size": 4411
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F8A401CE-C539-46ED-BE98-08C262D8BFED:-ION-:acc68d4f581e42eabfcb1fca7625aded",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.633Z",
+    "document_size": 8563
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C88832A8-2223-4497-9F2D-DB2CF691B4DA:-ION-:586ce46c78554c598047fa8369da5c90",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.736Z",
+    "document_size": 7935
+  },
+  {
+    "message_id": "lid://infor.bice.bice_70341187-6283-4011-A82B-9A88CA18578C:-ION-:3e8fd1c89bb94a1b9c8bf7b02c7e56b6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.898Z",
+    "document_size": 7964
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CC6E6A36-D800-49FF-B656-5BA405998088:-ION-:f0f5162fc75e41da967697a6c9983f82",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:01.988Z",
+    "document_size": 8879
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8D3D81DF-1C01-4A04-AC54-2127740158E9:-ION-:932f37814b2447e9ab45caf29062ebfa",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.096Z",
+    "document_size": 9090
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BD6D0BE6-64A0-456C-AAD1-BD4DE1359D7B:-ION-:d29409a8b7ee407f976064f0e23ec03b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.179Z",
+    "document_size": 8183
+  },
+  {
+    "message_id": "lid://infor.bice.bice_49EE73C1-1BF2-4077-AAB6-BA3C51A8A0CD:-ION-:ad45c86feb154d8cb5db183ba4b26e96",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.256Z",
+    "document_size": 9049
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CDF9DFCF-7AD2-403C-8944-D333C36C8AEC:-ION-:6373f14678744dfa9b06b5f5bba391b6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.351Z",
+    "document_size": 8309
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2CAC1846-ECD0-4B4F-8E09-E95F53B475A0:-ION-:137cb63dc9ec4e0ab8dcee7340093612",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.701Z",
+    "document_size": 8538
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2D9C9CD4-29AE-4A53-BCEA-D35789E7A895:-ION-:f8ccc90d3eb04e7b803c24cc964db5db",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.839Z",
+    "document_size": 9084
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8B8B63AC-ACF5-4572-B553-506786FFC664:-ION-:8edb606afdf2457bb901d03029bc0381",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:02.932Z",
+    "document_size": 8924
+  },
+  {
+    "message_id": "lid://infor.bice.bice_069C53B9-ADD5-4170-BEE5-6140B5A5E114:-ION-:7698910e54914ccf9f418f4b9a49dec0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.004Z",
+    "document_size": 8296
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C2C46A61-EFF2-4C09-864A-059285F7F0EA:-ION-:a6c9f8041cea4da6aa80e3b91c889744",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.081Z",
+    "document_size": 8507
+  },
+  {
+    "message_id": "lid://infor.bice.bice_75D65419-0558-428A-8D47-9D3739537CFB:-ION-:c05947d0c72a45ba8859f214603a4dea",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.175Z",
+    "document_size": 9176
+  },
+  {
+    "message_id": "lid://infor.bice.bice_588317CD-8A1A-4457-82AE-E80F649AC1CA:-ION-:a4bbd985ef0b4cbe91756353986db962",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.231Z",
+    "document_size": 5080
+  },
+  {
+    "message_id": "lid://infor.bice.bice_19E7297C-6127-409D-BC1E-34A324BB2C62:-ION-:9bf45e5e94ed4af99a501551c8f2c26d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.419Z",
+    "document_size": 8023
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1D3FCB7E-C5EA-4146-B14A-B7AF46712ED2:-ION-:d1edb9e22b1e437ba98cc024919b79ae",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.505Z",
+    "document_size": 7502
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4A85C187-B848-4CAB-96D5-3DDA0F318360:-ION-:9355a386c4744b73aaf0cb1e06a3629f",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.579Z",
+    "document_size": 7845
+  },
+  {
+    "message_id": "lid://infor.bice.bice_208E6FB7-C822-463C-B1C9-08351430C658:-ION-:7f19936f84914e5faf72a67d23bd7a42",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.668Z",
+    "document_size": 8633
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F29E3E67-A3FD-45A8-8516-D8A058659BF7:-ION-:0109d5f3e1714f919d37a7de425cdd68",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.762Z",
+    "document_size": 8686
+  },
+  {
+    "message_id": "lid://infor.bice.bice_DBE2E84F-2067-4865-97D3-E3C77F25B81C:-ION-:6df6bd5e871241f99714b3c3ea5c5d0d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:03.904Z",
+    "document_size": 8068
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9F157751-1993-4A94-BEEA-FD4D2A453101:-ION-:99e1b8025af14012a432c6bee71f51d7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.070Z",
+    "document_size": 8802
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9707D60D-BDC5-405A-A120-AB74032DE6DE:-ION-:34a8dd3ac06e4e939add4618d2606688",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.170Z",
+    "document_size": 8532
+  },
+  {
+    "message_id": "lid://infor.bice.bice_56ABAFB4-B791-4F83-BCE6-C6DE096DF4BB:-ION-:de63df2637d441acab5824fc9707245c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.250Z",
+    "document_size": 8736
+  },
+  {
+    "message_id": "lid://infor.bice.bice_961CB0DE-BC04-43F6-AD3D-7E8054C2AD1F:-ION-:c0096d71029a4a63a01d6997c6489699",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.385Z",
+    "document_size": 9138
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5249D0C4-59F9-4CE4-821F-C9E4A8389A1B:-ION-:535a88bb93694ce88656daf14e6598f1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.461Z",
+    "document_size": 9104
+  },
+  {
+    "message_id": "lid://infor.bice.bice_092BDBCC-9456-45FA-BCDC-1E68865F2728:-ION-:2ab32cdc91854df6bbcf25136b72e9c4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.568Z",
+    "document_size": 8052
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C2C8436E-F55D-4A88-BC52-DB9AFF7AFF55:-ION-:dcfc8a9760584e908e55f639a62b0803",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.645Z",
+    "document_size": 8471
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A22ABB42-4432-4136-9CFE-BF47BF4C9899:-ION-:842919da99394b4da269e2b5c8d75516",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.728Z",
+    "document_size": 8917
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E43E2ED5-77AF-4E63-BB64-07703E75404C:-ION-:4a2808d6ea844976adac2918ffe17869",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:04.854Z",
+    "document_size": 5327
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C631566D-750C-40FC-A2D2-4395E70C2E23:-ION-:c6049c31fcf141f788c5c1500528aa39",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:15.954Z",
+    "document_size": 7817
+  },
+  {
+    "message_id": "lid://infor.bice.bice_BCF88354-2C07-4184-981E-709950A9C226:-ION-:62201e6fb0af4a2ca331322f1559c62a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.054Z",
+    "document_size": 7417
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D182BF21-1D43-4FE7-A7AB-F574808AA606:-ION-:8a87740408c64124807de653258f2410",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.238Z",
+    "document_size": 7686
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4A6A5AB3-5F6E-4ED1-B286-0637E7A47A5E:-ION-:8167fae4bd7f495e8f5eae2f9c2c3872",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.363Z",
+    "document_size": 7814
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2B1611D4-9E6E-4E43-9ABA-02C90F236FC8:-ION-:a24a5174178b478d9c003fd6aa44bd0b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.476Z",
+    "document_size": 7397
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8F5DE6C1-570D-4FDC-94D3-E9A00AD5A40B:-ION-:a094a647b4c34fc6a48e0baf9f1c6583",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.608Z",
+    "document_size": 6867
+  },
+  {
+    "message_id": "lid://infor.bice.bice_FC80DF41-8D12-47A9-A77B-ADF6A20B8164:-ION-:b9ad769baf6848ada8ab12c3d640cd23",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.686Z",
+    "document_size": 7512
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C8DD0ED8-D87F-4F8E-8021-A296E0EC3615:-ION-:5e99ae331cb444099c5b26aeb8715b64",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.774Z",
+    "document_size": 6961
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CAD7FDB6-D15E-4890-9B0A-4EFACE0AC6D6:-ION-:36094d2abc134387846b8c005a77946b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.840Z",
+    "document_size": 7506
+  },
+  {
+    "message_id": "lid://infor.bice.bice_7B501E3A-35C5-466D-BB13-32E9E584530B:-ION-:e70e1c976e6f4b13a5902e19cf4a89c2",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:16.964Z",
+    "document_size": 7310
+  },
+  {
+    "message_id": "lid://infor.bice.bice_8D9827F3-7C88-4365-BA56-501914CE6EC5:-ION-:c9a4cd1523f245f7927fe9d4b12034e6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:17.037Z",
+    "document_size": 7245
+  },
+  {
+    "message_id": "lid://infor.bice.bice_25A05770-2875-445E-97E2-B9065A22D870:-ION-:d3182face1cc4b6b94560d51fd1beddc",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:17.136Z",
+    "document_size": 7227
+  },
+  {
+    "message_id": "lid://infor.bice.bice_86A98206-E145-4C32-9095-39A33DC437B0:-ION-:549ac113d66042a8a88e42d846b23c96",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:17.229Z",
+    "document_size": 7107
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D7CA7A52-B2B6-4E9F-B811-E592ECF8B10F:-ION-:1dc6218555c44199bb1bb2d654af0d7e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:17.352Z",
+    "document_size": 7572
+  },
+  {
+    "message_id": "lid://infor.bice.bice_75B34D7A-5FBF-46AF-91C1-1FE6B9FFC7E6:-ION-:de3b7ebd3d0946279a6f2787f2740983",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:17.469Z",
+    "document_size": 6618
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AE8550AC-A55A-4B49-9B60-FDC5B2A3838D:-ION-:15b7f5d16a204c248c63757afea40896",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:33.412Z",
+    "document_size": 8277
+  },
+  {
+    "message_id": "lid://infor.bice.bice_FD7766A6-87A1-4E34-876B-4EA61AEE416A:-ION-:25324c5f07204fd8ab16789d6b4e7931",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:33.514Z",
+    "document_size": 7734
+  },
+  {
+    "message_id": "lid://infor.bice.bice_766CD0EF-58A6-43B4-AA22-E31C386A6992:-ION-:7706b39f663047f3bb743b86dba6773c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:33.617Z",
+    "document_size": 7829
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9923D6E1-2727-42B4-8F66-5068F5EA89AF:-ION-:bd485762c3954c079ebf251a9c8e4976",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:33.686Z",
+    "document_size": 8493
+  },
+  {
+    "message_id": "lid://infor.bice.bice_096475B5-1096-4010-A31C-2BB379DFB8FB:-ION-:f907cd7297e346a789418ccea7121d14",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:33.788Z",
+    "document_size": 8253
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C1F59EBA-92A4-42B4-95F5-79880904F2CE:-ION-:5fc609d49c7d47b28267ef25cc8081f8",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:33.864Z",
+    "document_size": 7230
+  },
+  {
+    "message_id": "lid://infor.bice.bice_425FC2C6-3496-4BB4-AC87-13B35CD7D840:-ION-:da009f4b576041439659db7dbfba6bf3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.005Z",
+    "document_size": 8367
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C93F2C5F-6361-43FC-B2AC-2A23C4359BE5:-ION-:5381b727bf594ce2a869aa33ca3c67a6",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.086Z",
+    "document_size": 7612
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A48806E7-B937-4FC6-90AA-F3D0F463B276:-ION-:ff85e854e5364247bbc8d2a00ada7136",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.184Z",
+    "document_size": 7775
+  },
+  {
+    "message_id": "lid://infor.bice.bice_0AD0F4BC-EE8E-425B-B482-F46541C923B6:-ION-:2ada6bca19e54cb18859942b14d9cd03",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.329Z",
+    "document_size": 8078
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E590C3AF-44D4-4653-BDDF-5373C570861C:-ION-:ad7aeced55bd415cb802e705f4b1ff53",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.711Z",
+    "document_size": 8068
+  },
+  {
+    "message_id": "lid://infor.bice.bice_CDE20084-B476-4C04-90A2-F15BA1CF1C21:-ION-:e996f5d2675c49f5960e12e9f25f3177",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.824Z",
+    "document_size": 7722
+  },
+  {
+    "message_id": "lid://infor.bice.bice_9AEF2993-4845-437C-81AE-C15FAF5B1CD6:-ION-:44769d47663749b687e252831cc0e7d9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:34.926Z",
+    "document_size": 7555
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A543FD54-E232-42CF-91B7-37FFE7BD2AE4:-ION-:51f58109d7964699a3398ca837c5ea37",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.024Z",
+    "document_size": 8515
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D4E5B9BD-EA03-41C0-B703-826ADCE76940:-ION-:a94c62cbb7f348cb96b4202f51be2aca",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.141Z",
+    "document_size": 7471
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B6DFE476-D57D-46A6-8C1A-EDDE0A1AC6B5:-ION-:fc945d22876244d79fdd9a69b3fadb6a",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.362Z",
+    "document_size": 8146
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4EAF77DE-6DB2-4355-838F-95D782756AE6:-ION-:5d4b7fb402a44e79bd033b3e32b70119",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.443Z",
+    "document_size": 7751
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3427C896-6398-46EE-9705-C9F4336594BD:-ION-:e399f218ebf94e1e82291b9dedaeda95",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.544Z",
+    "document_size": 7976
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AA69CE23-243D-4389-B2C4-666A8FFF149F:-ION-:070536d8610c49e6927e1b8fd39f3128",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.622Z",
+    "document_size": 8791
+  },
+  {
+    "message_id": "lid://infor.bice.bice_72C7FDF7-EA18-4215-90B1-955D96C946E0:-ION-:15b17c4e400143d78e884127de92e8a9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.700Z",
+    "document_size": 9133
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D6A5615C-2C3A-4343-8A4E-087C2CB26334:-ION-:a991f3f530614071872f6a91b1e15beb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.805Z",
+    "document_size": 8109
+  },
+  {
+    "message_id": "lid://infor.bice.bice_AC3F7C71-BF39-4778-AC31-D96570E6CAC7:-ION-:f7944019610d4188b1c27a86595815a3",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:35.902Z",
+    "document_size": 9068
+  },
+  {
+    "message_id": "lid://infor.bice.bice_F7A3AA28-6616-4BD6-A360-945F94A4B861:-ION-:39389e40e251460e89e9a0a4e71091de",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.037Z",
+    "document_size": 8566
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C61FF9FC-4709-41E3-91A8-866BA0C9CE37:-ION-:3791c974500344c4a3c17f0179525485",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.136Z",
+    "document_size": 9060
+  },
+  {
+    "message_id": "lid://infor.bice.bice_1707EC16-520D-44E9-8F64-FF70DB5D3B2E:-ION-:c4c7c426f6054d5fb030b7b8b349280e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.282Z",
+    "document_size": 9341
+  },
+  {
+    "message_id": "lid://infor.bice.bice_41956C0E-2C73-4DE6-882F-57D9E3CCF4C8:-ION-:a4e95ac27fd14cc19fac385dfee0aa16",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.470Z",
+    "document_size": 9133
+  },
+  {
+    "message_id": "lid://infor.bice.bice_20306B50-F7A5-47FB-A780-C307B2537E62:-ION-:83b39f47cde646cc95467219af12eca1",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.566Z",
+    "document_size": 9002
+  },
+  {
+    "message_id": "lid://infor.bice.bice_14E31D17-7BDE-4985-AA2B-434BC2D4927E:-ION-:3c170626d1f343cd9e9ce467c7796ee7",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.676Z",
+    "document_size": 8166
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B2070527-F4F7-4A4A-B9AA-B72E3FBA2975:-ION-:849cd2543f4249d7b56f2ab544d4f18d",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.773Z",
+    "document_size": 9522
+  },
+  {
+    "message_id": "lid://infor.bice.bice_6C6B7513-E571-474B-9BC3-4A81F17FE87E:-ION-:02e25192a8a342b48f4519d4559b35d0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.895Z",
+    "document_size": 8788
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3D811133-7066-47AE-86A6-6A5394BEA0E3:-ION-:a3ad107bad6846d08bb819facb10d219",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:36.926Z",
+    "document_size": 453
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C338A5C8-185A-43C3-B3F4-EAF9FF95FB04:-ION-:f0aace5b128c4239bcfab10a9f846c55",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.106Z",
+    "document_size": 7898
+  },
+  {
+    "message_id": "lid://infor.bice.bice_305DF755-BAB0-40FC-9548-72A014F1C289:-ION-:3e720a4585aa45cb85abd8945ef5e94c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.178Z",
+    "document_size": 7539
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B9335272-7DC5-4779-B310-98AB6099DEAF:-ION-:0ad97f856cfe4259807cb5745f8ba111",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.305Z",
+    "document_size": 7856
+  },
+  {
+    "message_id": "lid://infor.bice.bice_E2AD4673-16ED-4286-B44D-3E6FF3A8E52C:-ION-:40c29cb629a342b7a9fc3b19fb701a58",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.402Z",
+    "document_size": 8829
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4B69528D-190A-4A7C-A6A4-D829BD8E80C3:-ION-:401d1dcbb4964b2eb4b35a73b435d5b4",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.479Z",
+    "document_size": 8859
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4CF72C16-FC30-45AB-BD16-2E0C917ED3D9:-ION-:0a19b22aff8c4754b6b1b86915e2af8e",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.581Z",
+    "document_size": 8355
+  },
+  {
+    "message_id": "lid://infor.bice.bice_C73921B4-CC32-4102-B9E6-4B37D067A17C:-ION-:56e9923b2fcb426b844ff0afd0598861",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.690Z",
+    "document_size": 8870
+  },
+  {
+    "message_id": "lid://infor.bice.bice_87A2F38D-0C71-49A7-8DE2-6DDB3FD19AE1:-ION-:a9f1a4b0c5b84824beec32cefdfd4e6c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.824Z",
+    "document_size": 8544
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3C075045-39FB-414C-80FF-9D8A96B8CC05:-ION-:64ac67fd476e4cffac6c050ee89ea88c",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:37.898Z",
+    "document_size": 8797
+  },
+  {
+    "message_id": "lid://infor.bice.bice_2FE8CC0A-D549-4970-B75F-38711C797585:-ION-:b271a23ba77e4096946f3b1447a9cd8b",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.015Z",
+    "document_size": 9629
+  },
+  {
+    "message_id": "lid://infor.bice.bice_3A7E4B9F-4B6D-4543-ABAF-E89BF5F41E19:-ION-:a6ffb16018a44fe8b9ad6cbdd96befb9",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.123Z",
+    "document_size": 9011
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A011CCC5-7CB2-4792-A6FD-AA9DB237DBAA:-ION-:edc7c5398f2a435d9f42ec4fa10d5290",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.248Z",
+    "document_size": 8943
+  },
+  {
+    "message_id": "lid://infor.bice.bice_A9B75258-B16E-4A87-B4C0-A9EB864122E4:-ION-:ffe5821279d5484b82e66aa8c888f944",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.325Z",
+    "document_size": 8402
+  },
+  {
+    "message_id": "lid://infor.bice.bice_4929DBD0-58B5-4FF8-BE48-8DF1239ECDEC:-ION-:922012a3cc6045a4bff8942b0a1df544",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.419Z",
+    "document_size": 9130
+  },
+  {
+    "message_id": "lid://infor.bice.bice_B5E8131E-05C2-465C-9D6A-D5056BE4F1FF:-ION-:ca0ba201ceba478c8ececf8c23396721",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.493Z",
+    "document_size": 8364
+  },
+  {
+    "message_id": "lid://infor.bice.bice_D6EA9B05-B408-47A5-BF32-FA0ADAA9A52D:-ION-:bda95a45017745e0afdb83234d0ccdd0",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:58:38.520Z",
+    "document_size": 1073
+  },
+  {
+    "message_id": "lid://infor.bice.bice_880B59B3-46C4-42DE-A3BD-5DF87619B65F:-ION-:0f13fd60852642a7be455038c2f86113",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:59:58.841Z",
+    "document_size": 7816
+  },
+  {
+    "message_id": "lid://infor.bice.bice_5EBE8BD4-651E-4C48-9872-F460BA40FE5A:-ION-:efae1f93a94a4e169dff98bc9631e3eb",
+    "document_type": "FPI_FCE_IDL_GLTotals",
+    "message_date": "2025-12-16T02:59:59.669Z",
+    "document_size": 7417
+  }
+]

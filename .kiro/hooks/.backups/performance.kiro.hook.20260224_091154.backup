@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Performance",
+  "description": "Analyze IPA runtime performance from work unit logs. Identifies execution bottlenecks, errors, memory issues, and slow activities. Generates comprehensive Excel report with performance metrics and recommendations.",
+  "version": "2",
+  "when": {
+    "type": "userTriggered"
+  },
+  "newSession": true,
+  "then": {
+    "type": "askAgent",
+    "prompt": "IMPORTANT: This is a NEW analysis request. Do NOT use any previously analyzed work unit numbers or filenames from prior conversations. You MUST ask the user NOW: 'Which workunit number or log filename would you like me to analyze?' Wait for their response before proceeding. Once the user provides a NEW workunit number or filename, search the WU_Logs directory for a matching log file (e.g., files containing the WU number like 636228_log.txt or WU_636228.txt). Read and analyze the work unit log file. Extract all activities, errors, JavaScript issues, memory metrics, and performance data. Then use the wu_master_template.py to generate a comprehensive Excel report and save it to Performance_Results/WU_<ProcessName>_Report_YYYYMMDD.xlsx. Do not ask for optional fields like RICE ID, Developer, Peer Reviewer - use 'N/A' as defaults.\n\nNOTE: Steering files (02_Work_Unit_Analysis.md, 04_WU_Report_Generation.md) are automatically loaded when 'analyze WU' keywords are detected per proactive loading rules in 00_Kiro_General_Rules.md."
+  }
+}

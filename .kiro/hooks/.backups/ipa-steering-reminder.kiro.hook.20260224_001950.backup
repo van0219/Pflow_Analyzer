@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "IPA Steering Files Reminder",
+  "description": "Forces loading of relevant steering files BEFORE any IPA analysis tool use",
+  "version": "5",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": "read"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "🚨 BLOCKING REQUIREMENT: IPA STEERING FILES\n\nYou are about to use a read tool. BEFORE proceeding, check if the user's request contains IPA-related keywords:\n\n**Keywords to detect:**\n- Work Unit: \"WU\", \"work unit\", \"log\", \"24487\", \"analyze WU\"\n- Coding Standards: \"coding standards\", \"peer review\", \"IPA review\", \"LPD\", \"analyze process\"\n- Client Handover: \"client handover\", \"documentation\", \"handover report\"\n\n**If keywords detected, you MUST load steering files FIRST:**\n\n📊 WORK UNIT ANALYSIS (wu, log, work unit):\nreadMultipleFiles(['.kiro/steering/02_Work_Unit_Analysis.md', '.kiro/steering/04_WU_Report_Generation.md'])\n\n🔍 CODING STANDARDS (coding standards, peer review, LPD):\nreadMultipleFiles(['.kiro/steering/01_IPA_and_IPD_Complete_Guide.md', '.kiro/steering/02_Work_Unit_Analysis.md', '.kiro/steering/03_Process_Patterns_Library.md', '.kiro/steering/05_Compass_SQL_CheatSheet.md', '.kiro/steering/10_IPA_Report_Generation.md', '.kiro/steering/11_RICE_Methodology_and_Specifications.md'])\n\n📋 CLIENT HANDOVER (client handover, documentation):\nreadMultipleFiles(['.kiro/steering/01_IPA_and_IPD_Complete_Guide.md', '.kiro/steering/10_IPA_Report_Generation.md', '.kiro/steering/11_RICE_Methodology_and_Specifications.md'])\n\n**If NO IPA keywords detected, proceed with the original tool call.**"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "IPA Workflow Enforcement",
+  "description": "Enforces mandatory IPA analysis workflow: extract data → READ data completely → analyze thoroughly → fix root causes. Prevents the #1 recurring issue: skipping the data reading step.",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "🚨 IPA WORKFLOW ENFORCEMENT 🚨\n\nBefore proceeding with IPA analysis, verify these critical steps:\n\n[ ] STEP 1: DATA EXTRACTED?\n    ✓ Run extract_lpd_data() or extract_wu_log()\n    ✓ Verify JSON file created successfully\n    ✓ Check file exists with executePwsh(\"Test-Path <file>\")\n\n[ ] STEP 2: DATA READ COMPLETELY? (MOST CRITICAL)\n    ✓ Use readFile() to READ the complete JSON file\n    ✓ DO NOT skip this step\n    ✓ DO NOT rely on summary statistics only\n    ✓ READ ALL processes, ALL activities, ALL data\n    ✓ If file is large, read in chunks until complete\n\n[ ] STEP 3: ANALYSIS COMPLETE?\n    ✓ Reviewed ALL extracted data (not just first process)\n    ✓ Identified ALL issues (not just obvious ones)\n    ✓ Counted ALL violations (specific numbers, not estimates)\n    ✓ Built comprehensive findings with examples\n\n[ ] STEP 4: ROOT CAUSE IDENTIFIED?\n    ✓ If there's an error, WHY did it happen?\n    ✓ Will your fix prevent it from happening again?\n    ✓ Should you update steering files with this learning?\n\n🛑 IF ANY CHECKBOX IS UNCHECKED, STOP AND COMPLETE THAT STEP.\n\n⚠️ COMMON MISTAKES TO AVOID:\n\n1. SKIPPING STEP 2 (Reading the JSON data)\n   - This is the #1 cause of incomplete analysis\n   - Summary stats are NOT enough\n   - You MUST read the actual data\n\n2. Building ipa_data from summary stats instead of actual data\n   - Results in generic findings\n   - Missing specific violations\n   - Incorrect counts\n\n3. Fixing symptoms instead of root causes\n   - Problems recur in next session\n   - Wastes time on repeated fixes\n   - Update steering files when patterns emerge\n\n4. Proceeding without verification\n   - Verify each step completed before moving to next\n   - Check files exist before reading them\n   - Confirm data is complete before analyzing\n\n💡 REMEMBER: Quality analysis requires reading the actual data, not just acknowledging it exists."
+  }
+}

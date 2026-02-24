@@ -1,0 +1,11 @@
+# Place .ionapi credential files here
+# Each FSM environment has different credentials
+# 
+# Naming convention:
+#   CLIENT_PRD.ionapi  - Production
+#   CLIENT_TST.ionapi  - Test
+#   CLIENT_TRN.ionapi  - Training
+#   CLIENT_AX1.ionapi  - Sandbox
+#
+# DO NOT commit actual credentials to version control
+# Add *.ionapi to .gitignore

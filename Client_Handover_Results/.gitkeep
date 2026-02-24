@@ -1,0 +1,2 @@
+# This file ensures the Client_Handover_Results folder is tracked by Git
+# All other files in this folder are ignored via .gitignore

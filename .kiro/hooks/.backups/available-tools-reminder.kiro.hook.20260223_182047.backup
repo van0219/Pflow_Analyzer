@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Available Tools Reminder",
+  "description": "Reminds about available ReusableTools and capabilities to prevent 'I can't do that' responses when tools exist",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "🛠️ AVAILABLE TOOLS REMINDER\n\nYou have access to powerful ReusableTools. Don't say \"I can't\" when tools exist!\n\n📊 EXCEL FILES:\n✓ CAN read Excel files: ReusableTools/excel_reader.py\n✓ Usage: executePwsh(\"python ReusableTools/excel_reader.py <file.xlsx> --sheet <SheetName>\")\n✓ Or: executePwsh(\"python -c \\\"from ReusableTools.excel_reader import read_excel; df = read_excel('<file.xlsx>', sheet_name='<Sheet>', display=True)\\\"\")\n✓ NEVER say \"I can't inspect Excel files\" - YOU CAN!\n\n📁 IPA ANALYSIS:\n✓ Extract LPD data: ReusableTools/IPA_Analyzer/extract_lpd_data.py\n✓ Extract spec data: ReusableTools/IPA_Analyzer/extract_spec.py\n✓ Extract WU logs: ReusableTools/IPA_Analyzer/extract_wu_log.py\n✓ Organize by domain: ReusableTools/IPA_CodingStandards/organize_by_domain.py\n✓ Organize by sections: ReusableTools/IPA_ClientHandover/organize_by_sections.py\n✓ Merge violations: ReusableTools/IPA_CodingStandards/merge_violations.py\n✓ Merge documentation: ReusableTools/IPA_ClientHandover/merge_documentation.py\n✓ Check standard flow: ReusableTools/check_standard_flow.py\n\n📋 REPORT GENERATION:\n✓ Coding standards: ReusableTools/IPA_CodingStandards/ipa_coding_standards_template.py\n✓ Enhanced template: ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_enhanced.py\n✓ Client handover: ipa_client_handover_template.py (workspace root)\n✓ Work unit analysis: wu_master_template.py (workspace root)\n✓ Build ipa_data helper: ReusableTools/IPA_CodingStandards/build_ipa_data_helper.py\n\n🔍 ION/BOD:\n✓ Download BODs: ReusableTools/ION_BOD_Download/bod_analyzer.py\n✓ Analyze BOD data: Query SQLite database in downloads folder\n\n💡 GENERAL PRINCIPLE:\n- Check ReusableTools/ BEFORE saying \"I can't\"\n- Use executePwsh to run Python scripts\n- Read tool documentation if unsure how to use\n- Tools are there to be USED, not ignored\n\n🚫 NEVER SAY:\n- \"I can't directly inspect Excel files\" → USE excel_reader.py\n- \"I can't read binary files\" → USE appropriate tool\n- \"I can't analyze X\" → CHECK if tool exists first\n\n✅ INSTEAD SAY:\n- \"Let me use excel_reader.py to inspect that Excel file\"\n- \"I'll use the extraction tool to process that data\"\n- \"Let me check the available tools for this task\"\n\n📂 QUICK REFERENCE:\nList all tools: executePwsh(\"Get-ChildItem ReusableTools -Recurse -Filter *.py | Select-Object FullName\")"
+  }
+}

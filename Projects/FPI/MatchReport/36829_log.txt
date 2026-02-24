@@ -1,0 +1,1568 @@
+Workunit 36,829 started @ 01/17/2026 04:38:55.047 AM
+	Landmark version: 2025.12.04.
+	Service name: (blank)
+	Process name: MatchReport_Outbound
+	Process version: 3
+	JVM Name: BG_LPA
+	Host Name:tam-pa-202-7f0b-i-0c4d88e86ecf27f0b
+	Auto Restart: Disabled
+Activity name:Start type:START id:1 started @ 01/17/2026 04:38:55.048 AM
+	 Executing Start Activity...
+	 queryID = 
+	 auth = 
+	 getStatus = 
+	 sourceDirectory = 
+	 InterfaceDirectory = 
+	 req = 
+	 accessTokenResp = 
+	 OauthCreds = 
+	 x = 
+	 Counter = 0
+	 RecordCount = 
+	 Tenant = 
+	 Webroot = 
+	 WebrootAccessToken = 
+	 WebrootAccessTokenWebProgram = 
+	 loopCount = 0
+	 tempCount = 0
+	 rowCount = 0
+	 limit = 5000
+	 offset = 0
+	 GetResultOut = 
+	 OutputRecords = 
+	 Delimiter = ,
+	 retryCount = 0
+	 FEG = 
+	 ErrorDir = 
+	 ArchiveDir = 
+	 FileChannelFileName = MatchReportTrigger_P962_FMFC20260116233831.txt
+	 FileChannelProcessedFileDirectory = /InProgress
+	 FileChannelMonitorDirectory = /FMFC/Match/Input
+	 ErrMsg = 
+	 OutputFileName = SDN_MatchReport_MTH.vul
+	 Header = 
+	 RunDate = 
+	 DateFilter = 
+	 DateFilterJulian = 
+	 DateFilterJulianJan = 
+	 newExt = .flg
+	 Ctr = 0
+	 FlagFilesLoc = 
+	 InvalidDate = 
+	 OutputDir = 
+Activity name:Start id:1 completed @ 01/17/2026 04:38:55.049 AM
+
+Activity name:ReadInput type:ACCFIL id:1 started @ 01/17/2026 04:38:55.049 AM
+	 ReadInput_errorCode = 0
+	 ReadInput_informationCode = 0
+	 ReadInput_returnMessage = File Access ReadInput: 13 Bytes read from file /InProgress/MatchReportTrigger_P962_FMFC20260116233831.txt
+	 ReadInput_outputData = 01/16/2026 
+
+	 File Access ReadInput: 13 Bytes read from file /InProgress/MatchReportTrigger_P962_FMFC20260116233831.txt
+Activity name:ReadInput id:1 completed @ 01/17/2026 04:38:55.062 AM
+
+Activity name:Assign1540 type:ASSGN id:1 started @ 01/17/2026 04:38:55.062 AM
+	 Evaluating JavaScript expression FEG = FileChannelMonitorDirectory.split("/")[1];
+var arr = FileChannelMonitorDirectory.split("/");
+arr.pop();
+var dir = arr.join("/");
+ErrorDir = dir + "/Error";
+ArchiveDir = dir + "/Archive";
+OutputDir = dir + "/Output";
+FlagFilesLoc = _configuration.Interface.MatchReport_FlagFilesLocation;
+
+FlagFilesLoc = FlagFilesLoc.toString().replace("ACA",FEG);
+ArchiveDir = ArchiveDir.toString().replace("ACA",FEG);
+ErrorDir = ErrorDir.toString().replace("ACA",FEG);
+OutputDir = OutputDir.toString().replace("ACA",FEG);
+
+
+OauthCreds = FEG == "AGW" ? _configuration.Interface.API_AuthCred_AGW : 
+				FEG == "AGC" ? _configuration.Interface.API_AuthCred_AGC :
+				FEG == "FCIL" ? _configuration.Interface.API_AuthCred_FCIL :
+				FEG == "FMFC" ? _configuration.Interface.API_AuthCred_FMFC :
+				FEG == "FCE" ? _configuration.Interface.API_AuthCred_FCE : "";; to value class org.mozilla.javascript.xmlimpl.XMLList
+	 Evaluating JavaScript expression var Oauth2Data = JSON.parse(OauthCreds.toString());
+
+var ClientID = Oauth2Data.ci;
+var ClientUsername = Oauth2Data.saak;
+var ClientPassword = Oauth2Data.sask;
+var ClientSecret = Oauth2Data.cs;
+
+var str = Oauth2Data.pu;
+WebrootAccessToken = str.substring(0,str.indexOf("3")+1);
+WebrootAccessTokenWebProgram = str.substring(str.indexOf("3")+2,str.length) + Oauth2Data.ot + "?";
+Webroot = Oauth2Data.iu;
+Tenant = Oauth2Data.ti;
+
+
+
+req = "grant_type=password&username=" + ClientUsername + "&password=" + ClientPassword + "&scope=&client_id=" + ClientID + "&client_secret=" + ClientSecret;; to value grant_type=password&username=CV6W2RCMM3EZ2355_PRD#wIItUJ8ny9bEiFIYAMHUBKpgR1kndO0nsi-BLNgTqsyzfh2wfs08a4u_izwgLIMYjaoze6R2CHHy0qWNaFaboA&password=iLq34vwirsQkDdqS2Qk4XjkFgYEf7cZzDBwXVX1PaB9tdR5AMAYRw8ttUcPSAX7wF-fpL4uBPDJ6gJHxRs7zkg&scope=&client_id=CV6W2RCMM3EZ2355_PRD~JuMuW-5tXaWPzSfJ0KoZQRmqQEU-DkTjHe8A-VT6os8&client_secret=DVrvfvEJwXA1Rd9xHtKmcgiK5KY4APYProFoSWu55TkCCneL3Il4LtLYf6LRkuPgjwQSZC0crirvCL5dpFQzkA
+	 Evaluating JavaScript expression //format date to YYMMDD format
+function formatDate2(dt) {
+	var d = new Date(dt);
+	var padMonth = (d.getMonth()+1).toString().length == 1 ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+	var padDay = d.getDate().toString().length == 1 ? '0' + d.getDate().toString() : d.getDate().toString();
+	return padMonth + "/" + padDay + "/" + d.getFullYear().toString();
+}
+
+function getDayOfYear(date) {
+    var startOfYear = new Date(date.getFullYear(), 0, 0);
+    var diff = date - startOfYear;
+    var oneDayMilliseconds = 1000 * 60 * 60 * 24;
+    var dayOfYear = Math.floor(diff / oneDayMilliseconds);
+    return dayOfYear;
+}
+
+function DaysInMonth(Mo, Yr) {
+    if(Mo == 1 || Mo == 3 || Mo == 5 || Mo == 7 || Mo == 8 || Mo == 10 || Mo == 12) {
+        return 31;
+    }
+    else if(Mo == 4 || Mo == 6 || Mo == 9 || Mo == 11){
+        return 30;
+    }
+    else {
+        var f = new Date(Yr, 2, 0);
+        return f.getDate();
+    }
+}
+
+DateFilter = ReadInput_outputData.toString().trim().split("\n")[0];
+RunDate = DateFilter;
+
+var p = DateFilter.split("/");
+if(p.length == 3) {
+    var a = p[0].length == 2;
+    var b = p[1].length == 2;
+    var c = p[2].length == 4;
+    
+    if ((isNaN(Date.parse(DateFilter)) == false) && a && b && c) {
+      var Mo = parseInt(p[0] - 0);
+      var Yr = parseInt(p[2] - 0);
+      var Dy = DaysInMonth(Mo, Yr);
+    
+      if(parseInt(p[1]-0) <= Dy) {
+          DateFilter = DateFilter;
+          	var today = new Date(DateFilter);
+        	var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);
+        	DateFilter = new Date(formatDate2(lastDayOfMonth));
+        	
+        	var dayOfYear = getDayOfYear(DateFilter);
+        	dayOfYear = dayOfYear.toString().length == 2 ? '0' + dayOfYear : dayOfYear;
+        	DateFilterJulian = DateFilter.getFullYear().toString() + dayOfYear.toString();
+        	DateFilterJulianJan = DateFilter.getFullYear().toString() + "000";
+      }
+      else {
+          InvalidDate = "invalid";
+      }
+    }
+    else {
+        InvalidDate = "invalid";
+    }
+}
+else {
+    InvalidDate = "invalid";
+}; to value 2026000
+	 RunDate = 01/16/2026
+	 DateFilterJulian = 2026031
+Activity name:Assign1540 id:1 completed @ 01/17/2026 04:38:55.063 AM
+
+Activity name:Branch4660 type:BRANCH id:1 started @ 01/17/2026 04:38:55.063 AM
+	 Evaluating rule: InvalidDate != "invalid" to node GetAccessToken
+	 Next activity: GetAccessToken
+Activity name:Branch4660 id:1 completed @ 01/17/2026 04:38:55.063 AM
+
+Activity name:GetAccessToken type:WEBRN id:1 started @ 01/17/2026 04:38:55.063 AM
+	 WebRun GetAccessToken: Executing WebRun activity node
+	 WebRun GetAccessToken: call type Standard HTTP Call
+	 WebRun GetAccessToken: Posting directly host https://mingle-sso.inforcloudsuite.com:443 (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/as/token.oauth2?
+	 WebRun GetAccessToken: Post string grant_type=password&username=CV6W2RCMM3EZ2355_PRD#wIItUJ8ny9bEiFIYAMHUBKpgR1kndO0nsi-BLNgTqsyzfh2wfs08a4u_izwgLIMYjaoze6R2CHHy0qWNaFaboA&password=iLq34vwirsQkDdqS2Qk4XjkFgYEf7cZzDBwXVX1PaB9tdR5AMAYRw8ttUcPSAX7wF-fpL4uBPDJ6gJHxRs7zkg&scope=&client_id=CV6W2RCMM3EZ2355_PRD~JuMuW-5tXaWPzSfJ0KoZQRmqQEU-DkTjHe8A-VT6os8&client_secret=DVrvfvEJwXA1Rd9xHtKmcgiK5KY4APYProFoSWu55TkCCneL3Il4LtLYf6LRkuPgjwQSZC0crirvCL5dpFQzkA
+	 WebRun GetAccessToken: Request header - {accept=[application/json], Content-Type=[application/x-www-form-urlencoded]}
+	 WebRun GetAccessToken: Response header - {Transfer-Encoding=[chunked], null=[HTTP/1.1 200 OK], X-Cache=[Miss from cloudfront], X-STS-Trace-ID=[Root=1-696b125f-642522a201c53a4856293889], X-Content-Type-Options=[nosniff], X-Amz-Cf-Pop=[IAD61-P12], Connection=[keep-alive], Pragma=[no-cache], P3P=[Infor does not have P3P policies], Date=[Sat, 17 Jan 2026 04:38:55 GMT], Via=[1.1 62dc5fc8174d0e36bcbea4543058f992.cloudfront.net (CloudFront)], Strict-Transport-Security=[max-age=31536000; includeSubDomains], X-Robots-Tag=[noindex, nofollow], Cache-Control=[no-store, no-cache, must-revalidate, private, proxy-revalidate], Content-Security-Policy=[script-src 'nonce-Mzy3BO1+En7YdSncEBntZAV2n8TsKFIKcvCln0Wvx0E='; img-src data: 'self' https://*.s3.amazonaws.com/; frame-ancestors * 'self'], X-Amz-Cf-Id=[ky29U9SHk1MldsVEgg6uY9bViSqapPQ-1bQ3dPHI_7w3SJu9mtrYkw==], Vary=[Accept-Encoding], X-XSS-Protection=[1; mode=block], Content-Type=[application/json]}
+	 WebRun GetAccessToken: WebRun result size: 0.00 MiB
+	 GetAccessToken_result = {"access_token":"eyJraWQiOiJrZzo0NjA4ZjE5NC03NTM1LTRmYzMtYTNiNC1mNDEwNmRmYzIyOTMiLCJhbGciOiJSUzI1NiJ9.eyJTZXJ2aWNlQWNjb3VudCI6IkNWNlcyUkNNTTNFWjIzNTVfUFJEI3dJSXRVSjhueTliRWlGSVlBTUhVQktwZ1Ixa25kTzBuc2
+	 WebRun GetAccessToken: Success string  found
+	 GetAccessToken_errorCode = 0
+	 GetAccessToken_informationCode = 0
+	 GetAccessToken_returnMessage = 
+	 GetAccessToken_outputData = 
+Activity name:GetAccessToken id:1 completed @ 01/17/2026 04:38:55.401 AM
+
+Activity name:Assign9280 type:ASSGN id:1 started @ 01/17/2026 04:38:55.401 AM
+	 Evaluating JavaScript expression function dateTime () {
+  now = new Date();
+  year = "" + now.getFullYear();
+  month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+  day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+  hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+  minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+  second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+  return year + "-" + month + "-" + day + "-" + minute + "-" + hour + "-" + second;
+}
+
+vDateToday = dateTime();; to value 2026-01-17-38-04-55
+	 Evaluating JavaScript expression var obj = JSON.parse(GetAccessToken_result);
+
+accessTokenResp = obj.access_token;
+
+auth = "Authorization:Bearer " +accessTokenResp;; to value Authorization:Bearer eyJraWQiOiJrZzo0NjA4ZjE5NC03NTM1LTRmYzMtYTNiNC1mNDEwNmRmYzIyOTMiLCJhbGciOiJSUzI1NiJ9.eyJTZXJ2aWNlQWNjb3VudCI6IkNWNlcyUkNNTTNFWjIzNTVfUFJEI3dJSXRVSjhueTliRWlGSVlBTUhVQktwZ1Ixa25kTzBuc2ktQkxOZ1Rxc3l6Zmgyd2ZzMDhhNHVfaXp3Z0xJTVlqYW96ZTZSMkNISHkwcVdOYUZhYm9BIiwiVGVuYW50IjoiQ1Y2VzJSQ01NM0VaMjM1NV9QUkQiLCJJZGVudGl0eTIiOiJkZGVjMDgyMC00NWMyLTRkOWUtYjdiOC1hNDdiZDIwMzNmMzEiLCJFbmZvcmNlU2NvcGVzRm9yQ2xpZW50IjoiMCIsImdyYW50X2lkIjoiYjhjNTUzNWEtNTZkZi00NDUzLWI1MjgtNzA0YTdkY2NjYTQ5IiwiSW5mb3JTVFNJc3N1ZWRUeXBlIjoiQVMiLCJjbGllbnRfaWQiOiJDVjZXMlJDTU0zRVoyMzU1X1BSRH5KdU11Vy01dFhhV1B6U2ZKMEtvWlFSbXFRRVUtRGtUakhlOEEtVlQ2b3M4IiwianRpIjoiOTZlOGY2MWYtMTQ4ZS00NDk2LWJlZDItMGU2ZGY3OWZkNjE0IiwiaWF0IjoxNzY4NjI0NzM1LCJuYmYiOjE3Njg2MjQ3MzUsImV4cCI6MTc2ODYyODMzNSwiaXNzIjoiaHR0cHM6Ly9taW5nbGUtc3NvLmluZm9yY2xvdWRzdWl0ZS5jb206NDQzIiwiYXVkIjoiaHR0cHM6Ly9taW5nbGUtaW9uYXBpLmluZm9yY2xvdWRzdWl0ZS5jb20ifQ.mBtzaZgR2jQ2Uu_lwXh-9mnKoq78S0iVqWJk4cKrJnNMEzyUIlYDjc8EK2jUdJrMu3D2OT7nG3ACqfzg43rT3shTxQ5VDrciWq5cGTkqo53bhySC2wL58qD7Vy1_q5x_t1W-6UUiFpgok7ixTgxg3y0P5gaRseoyHeosU6H6zkq1vO8oTw9sRXo8RTdpS7Yft9zwUChya4vZccZS0B_wew_TmhEUoFeA6Nhr1HIsowIhnBBrL7EkWg60FS6zI1eh-1qKOJVy3VZM61cdlsJbegnlLYc2Lh3lVpjkLgvHFIqLt6IWEbfUn5BpYcfB2-qZ3DJi_FZFDROmHxTc7osbQg
+Activity name:Assign9280 id:1 completed @ 01/17/2026 04:38:55.402 AM
+	 Message Builder:MsgBuilder7360 Executing this activity...
+
+Activity name:MsgBuilder7360 type:MSGBD id:1 started @ 01/17/2026 04:38:55.402 AM
+Activity name:MsgBuilder7360 id:1 completed @ 01/17/2026 04:38:55.402 AM
+
+Activity name:InitQuery type:WEBRN id:1 started @ 01/17/2026 04:38:55.402 AM
+	 WebRun InitQuery: Executing WebRun activity node
+	 WebRun InitQuery: call type Standard HTTP Call
+	 WebRun InitQuery: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/
+	 WebRun InitQuery: Post string   SELECT 
+		'01/16/2026' AS RunDte
+		,AccountingEntity AS Company
+		,CONCAT(FinanceDimension1,FinanceDimension3, FinanceDimension4) AS AccountingUnit
+		-- ,CONCAT("GeneralLedgerTotal.GeneralLedgerChartAccount",CASE WHEN ISNULL(GeneralLedgerSubAccount,'0000') = '' THEN '0000' ELSE ISNULL(GeneralLedgerSubAccount,'0000') END) AS GLAccountNum
+    ,RPAD(REPLACE("GeneralLedgerTotal.GeneralLedgerChartAccount",'-',''),9,'0') AS GLAccountNum
+    ,"Account.AccountDescription" AS GLAccountDesc
+    ,CAST(CAST(SUM(NetTransactionAmount) AS DECIMAL(18,2)) AS VARCHAR) AS AccountAmt
+FROM FPI_FSM_GeneralLedgerTotal
+WHERE FinanceEnterpriseGroup = 'FMFC'
+      AND ("GeneralLedgerTotal.EntityYearPeriod" BETWEEN '2026000' AND '2026031')
+      AND Scenario = 2
+GROUP BY '01/16/2026'
+          ,AccountingEntity
+          ,CONCAT(FinanceDimension1,FinanceDimension3, FinanceDimension4)
+          ,RPAD(REPLACE("GeneralLedgerTotal.GeneralLedgerChartAccount",'-',''),9,'0')
+          ,"Account.AccountDescription"
+	 WebRun InitQuery: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun InitQuery: Response header - {null=[HTTP/1.1 202 Accepted], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[100], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[99], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Sat, 17 Jan 2026 04:38:56 GMT], set-cookie=[JSESSIONID=90391840EECAFA42EFCBA50AAD66C0E8; Path=/; Secure; HttpOnly], x-transaction-id=[1768624735419-965b453d-414b-4c2c-ab04-ac72ef056975], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[99], x-ratelimit-window=[60 second], Content-Type=[application/json]}
+	 WebRun InitQuery: WebRun result size: 0.00 MiB
+	 InitQuery_result = {"status":"RUNNING","location":"jobs/PrGjp2ZztX59dkhVPZKG/status","queryId":"PrGjp2ZztX59dkhVPZKG"}
+	 WebRun InitQuery: Success string  found
+	 InitQuery_errorCode = 0
+	 InitQuery_informationCode = 0
+	 InitQuery_returnMessage = 
+	 InitQuery_outputData = 
+Activity name:InitQuery id:1 completed @ 01/17/2026 04:38:56.096 AM
+
+Activity name:Assign4580 type:ASSGN id:1 started @ 01/17/2026 04:38:56.096 AM
+	 Evaluating JavaScript expression var obj = JSON.parse(InitQuery_result);
+
+queryID = obj.queryId;; to value PrGjp2ZztX59dkhVPZKG
+	 queryID = PrGjp2ZztX59dkhVPZKG
+Activity name:Assign4580 id:1 completed @ 01/17/2026 04:38:56.096 AM
+
+Activity name:GetStatus type:WEBRN id:1 started @ 01/17/2026 04:38:56.097 AM
+	 WebRun GetStatus: Executing WebRun activity node
+	 WebRun GetStatus: call type Standard HTTP Call
+	 WebRun GetStatus: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/PrGjp2ZztX59dkhVPZKG/status?timeout=25
+	 WebRun GetStatus: Request header - {accept=[application/json], Content-Type=[text/plain]}
+	 WebRun GetStatus: Response header - {null=[HTTP/1.1 201 Created], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[1000], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[999], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Sat, 17 Jan 2026 04:39:00 GMT], set-cookie=[JSESSIONID=A074898E041DFA606DA9D0F8571E6DDC; Path=/; Secure; HttpOnly], x-transaction-id=[1768624736111-df5bff22-73f8-42e9-aebd-fbd9245e5809], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[397], x-ratelimit-window=[60 second], Content-Type=[application/json]}
+	 WebRun GetStatus: WebRun result size: 0.00 MiB
+	 GetStatus_result = {"status":"FINISHED","location":"result","queryId":"PrGjp2ZztX59dkhVPZKG","columns":[{"name":"RunDte","datatype":"String"},{"name":"Company","datatype":"String"},{"name":"AccountingUnit","datatype":"S
+	 WebRun GetStatus: Success string  found
+	 GetStatus_errorCode = 0
+	 GetStatus_informationCode = 0
+	 GetStatus_returnMessage = 
+	 GetStatus_outputData = 
+Activity name:GetStatus id:1 completed @ 01/17/2026 04:39:00.612 AM
+
+Activity name:Assign1340 type:ASSGN id:1 started @ 01/17/2026 04:39:00.612 AM
+	 x = {"status":"FINISHED","location":"result","queryId":"PrGjp2ZztX59dkhVPZKG","columns":[{"name":"RunDte","datatype":"String"},{"name":"Company","datatype":"String"},{"name":"AccountingUnit","datatype":"String"},{"name":"GLAccountNum","datatype":"String"},{"name":"GLAccountDesc","datatype":"String"},{"name":"AccountAmt","datatype":"String"}],"rowCount":370,"queryDetails":{"statementType":"select"}}
+	 Evaluating JavaScript expression var obj = JSON.parse(GetStatus_result);
+
+if(obj.messageCode){
+	getStatus = "ERROR";
+}
+else {
+	getStatus =obj.status;
+	rowCount = obj.rowCount;
+	tempCount = rowCount;
+};; to value 370
+	 getStatus = FINISHED
+	 Counter = 1
+Activity name:Assign1340 id:1 completed @ 01/17/2026 04:39:00.612 AM
+
+Activity name:Branch8450 type:BRANCH id:1 started @ 01/17/2026 04:39:00.612 AM
+	 Evaluating rule: getStatus == "FAILED" to node Assign1560
+	 Evaluating rule: Counter > 15 to node Assign7920
+	 Evaluating rule: getStatus != "FINISHED" to node Wait2830
+	 Evaluating rule: getStatus =="FINISHED" to node GetResult
+	 Next activity: GetResult
+Activity name:Branch8450 id:1 completed @ 01/17/2026 04:39:00.612 AM
+
+Activity name:GetResult type:WEBRN id:1 started @ 01/17/2026 04:39:00.613 AM
+	 WebRun GetResult: Executing WebRun activity node
+	 WebRun GetResult: call type Standard HTTP Call
+	 WebRun GetResult: Posting directly host https://mingle-ionapi.inforcloudsuite.com (Conn timeout: 0 min; Req timeout: 0 min) web program CV6W2RCMM3EZ2355_PRD/DATAFABRIC/compass/v2/jobs/PrGjp2ZztX59dkhVPZKG/result?limit=5000&offset=0
+	 WebRun GetResult: Request header - {Accept-Encoding=[identity], accept=[text/csv], Content-Type=[text/html]}
+	 WebRun GetResult: Response header - {null=[HTTP/1.1 200 OK], server=[ionapi-2025.12.16120920.16120920], expires=[0], x-ratelimit-limit=[10000], access-control-allow-headers=[Origin, Content-Type, Accept, Authorization], content-encoding=[identity], x-frame-options=[DENY], Connection=[keep-alive], x-ratelimit-remaining=[9999], access-control-allow-methods=[GET, POST, PUT], pragma=[no-cache], strict-transport-security=[max-age=31536000 ; includeSubDomains], Date=[Sat, 17 Jan 2026 04:39:00 GMT], set-cookie=[JSESSIONID=79807EC6A3C2A5DB8E24F827376B636A; Path=/; Secure; HttpOnly], x-transaction-id=[1768624740628-45aa9be9-d4bf-49a9-b3a3-a5f5c8210d60], x-xss-protection=[0], x-content-type-options=[nosniff], cache-control=[no-cache, no-store, max-age=0, must-revalidate], Content-Length=[29209], x-ratelimit-window=[60 second], Content-Type=[text/csv;charset=UTF-8]}
+	 WebRun GetResult: WebRun result size: 0.03 MiB
+	 GetResult_result = "RunDte","Company","AccountingUnit","GLAccountNum","GLAccountDesc","AccountAmt"
+"01/16/2026","962","110001","362850000","OUTSTANDING CHECKS - CORPORATE","-38239.47"
+"01/16/2026","962","1100031000","52
+	 WebRun GetResult: Success string  found
+	 GetResult_errorCode = 0
+	 GetResult_informationCode = 0
+	 GetResult_returnMessage = 
+	 GetResult_outputData = 
+Activity name:GetResult id:1 completed @ 01/17/2026 04:39:00.916 AM
+
+Activity name:Assign7960 type:ASSGN id:1 started @ 01/17/2026 04:39:00.917 AM
+	 GetResultOut = "RunDte","Company","AccountingUnit","GLAccountNum","GLAccountDesc","AccountAmt"
+"01/16/2026","962","110001","362850000","OUTSTANDING CHECKS - CORPORATE","-38239.47"
+"01/16/2026","962","1100031000","522050000","FEES-OTHER","-61617.77"
+"01/16/2026","962","1100011000","520160000","FEES-ORIG/COMIT FAS 91","56510.34"
+"01/16/2026","962","110001","762750000","PUB/MEM-MEMBER APPRECIATION EVENTS","-1337.40"
+"01/16/2026","962","1100031000","101850000","UNAMORT FAS91 COSTS-RE","1154522.34"
+"01/16/2026","962","1100011000","508000000","LATE FEE INC-FARM LN-RE","-105982.96"
+"01/16/2026","962","1100011000","790500000","OTHER MISC-FAS91 LN COSTS DEFERRED","-32400.00"
+"01/16/2026","962","110001","735100000","COS-REPAIRS/MAINT","1421.08"
+"01/16/2026","962","1200031000","520150000","FEES-ORIGINATION","-979.61"
+"01/16/2026","962","1200011000","100650000","PARTICIPATIONS PURCHASED-COMM","6460136.43"
+"01/16/2026","962","1100031000","215990000","NA CLEARING","0.00"
+"01/16/2026","962","1200011000","300310000","FUNDS HELD-ST","-38513812.74"
+"01/16/2026","962","1100011000","303350000","A/P-PARTICIPATIONS SOLD LN-LT","3049.46"
+"01/16/2026","962","110001","725370000","PUR SVCS-COURIER","2016.00"
+"01/16/2026","962","110001","220450000","FIXED ASSETS CLEARING","0.00"
+"01/16/2026","962","1100011000","240800000","PREPAID LEASE AUTO","46453.30"
+"01/16/2026","962","1100011000","302650000","A/P-VENDOR CLEARING","0.00"
+"01/16/2026","962","110001","175250000","A/R-INTRAZONE DUE FROM-FLCA/PCA","0.00"
+"01/16/2026","962","1100031000","300030000","NOTES PAY TO COBANK-ST","-4536.74"
+"01/16/2026","962","1200011000","302100000","A/P-OTHER","-73497.47"
+"01/16/2026","962","1200031000","100150000","FARM LN-COMM","2532595.39"
+"01/16/2026","962","110001","103020000","ALL CR LOSS-PROD AG PROD/INTERMEDIATE","0.00"
+"01/16/2026","962","120001","103030000","ALL CR LOSS-AGRIBUS COOPERATIVES","-270293.00"
+"01/16/2026","962","110001","103040000","ALL CR LOSS-AGRIBUS PROC & MKT","-1224309.00"
+"01/16/2026","962","1200011000","174900000","A/R-DECLARED PATR DUE FROM COBANK","0.00"
+"01/16/2026","962","110001","220250000","FURNITURE & FIXTURES","63476.30"
+"01/16/2026","962","110001","221550000","RIGHT OF USE ASSET-SOLAR LEASE","211979.32"
+"01/16/2026","962","1100011000","240000000","PREPAID FCA SUPERVISORY","101163.33"
+"01/16/2026","962","120001","300030000","NOTES PAY TO COBANK-ST","142893411.43"
+"01/16/2026","962","1100031000","360300000","UNAPPLIED RECEIPT-LOCKBOX","0.00"
+"01/16/2026","962","1200011000","215110000","NA PARTICIPATIONS PURCHASED-COMM","-200.61"
+"01/16/2026","962","1100011000","500000000","INT INC-FARM LN-RE","-2647765.34"
+"01/16/2026","962","1100031000","102550000","UNPROCESSED LN TRANSACTIONS","-17774.99"
+"01/16/2026","962","120001","103040000","ALL CR LOSS-AGRIBUS PROC & MKT","-276076.00"
+"01/16/2026","962","120001","103050000","ALL CR LOSS-AGRIBUS FARM RELATED","-8923.00"
+"01/16/2026","962","110001","220100000","LAND OWNED","0.00"
+"01/16/2026","962","110001","220120000","LAND IMPROVEMENTS-OWNED","583515.76"
+"01/16/2026","962","1100011000","220550000","LEASEHOLD IMPROVEMENTS","15789.58"
+"01/16/2026","962","110001","220900000","ACCUM DEPR-LEASEHOLD IMPROVEMENTS","-15789.58"
+"01/16/2026","962","110001","300020000","NOTES PAY TO COBANK-LT","-121600154.00"
+"01/16/2026","962","1100011000","300020000","NOTES PAY TO COBANK-LT","-1185135688.95"
+"01/16/2026","962","110001","301600000","A/P-FCSIC PREMIUM","-659370.00"
+"01/16/2026","962","120001","303400000","A/P-PARTCIPATIONS SOLD LN-ST","6405111.88"
+"01/16/2026","962","1100011000","215990000","NA CLEARING","6000.00"
+"01/16/2026","962","1100011000","522050000","FEES-OTHER","-10879.86"
+"01/16/2026","962","110001","750650000","FURN & EQUIP-OTHER","4442.21"
+"01/16/2026","962","1100011000","460250000","UNDISTRIBUTED EARNINGS","-2807993.91"
+"01/16/2026","962","110001","755050000","IT-FPI SERVICES","383919.06"
+"01/16/2026","962","110001","755010000","IT-SOFTWARE LICENSING FEES","-14517.00"
+"01/16/2026","962","1100991000","300020000","NOTES PAY TO COBANK-LT","-35902412.22"
+"01/16/2026","962","1200011000","102550000","UNPROCESSED LN TRANSACTIONS","8744.26"
+"01/16/2026","962","1100031000","460250000","UNDISTRIBUTED EARNINGS","-1728038.97"
+"01/16/2026","962","110001","240410000","PREPAID SOFTWARE","563667.47"
+"01/16/2026","962","1100011000","301000000","AIP-FUNDS HELD-LT","-18360.07"
+"01/16/2026","962","1200011000","502550000","INT INC-AMORT FAS91 COSTS-ST","3640.83"
+"01/16/2026","962","120001","725300000","PUR SVCS-LEGAL FEES","148.50"
+"01/16/2026","962","110001","363500000","MONTH END ACCRUALS","0.00"
+"01/16/2026","962","110001","763050000","PUB/MEM-EXTERNAL EVENTS","-671.58"
+"01/16/2026","962","1100011000","220400000","PURCHASED SOFTWARE","2930477.92"
+"01/16/2026","962","1200011000","175250000","A/R-INTRAZONE DUE FROM-FLCA/PCA","6942768.74"
+"01/16/2026","962","1200011000","301650000","A/P-INTRAZONE DUE TO-FLCA/PCA","-12404681.13"
+"01/16/2026","962","110001","120010000","CASH IN BANKS-COBANK","0.00"
+"01/16/2026","962","1200011000","450550000","STOCK - CLASS C FLCA","0.00"
+"01/16/2026","962","1200011000","450600000","STOCK - CLASS C PCA","-168000.00"
+"01/16/2026","962","120003","102550000","UNPROCESSED LN TRANSACTIONS","-17572.44"
+"01/16/2026","962","120001","103080000","ALL CR LOSS-COMMUNICATIONS","0.00"
+"01/16/2026","962","1200031000","120010000","CASH IN BANKS-COBANK","0.00"
+"01/16/2026","962","1100011000","174750000","A/R-APPRAISALS","21550.00"
+"01/16/2026","962","1100011000","220050000","OFFICE BUILDING OWNED","9234302.97"
+"01/16/2026","962","110001","300030000","NOTES PAY TO COBANK-ST","106440.93"
+"01/16/2026","962","110001","300910000","AIP-COBANK-LT-EQUITY POSITIONING","101168.96"
+"01/16/2026","962","120001","300970000","AIP-COBANK SPREAD","-132003.36"
+"01/16/2026","962","120003","302100000","A/P-OTHER","-4330.52"
+"01/16/2026","962","110001","303350000","A/P-PARTICIPATIONS SOLD LN-LT","-2049.46"
+"01/16/2026","962","1200991000","303400000","A/P-PARTCIPATIONS SOLD LN-ST","-30124.54"
+"01/16/2026","962","1100011000","450600000","STOCK - CLASS C PCA","0.00"
+"01/16/2026","962","110001","460400000","EARNING RESERVED FOR PATRONAGE DISTRIBUTION","0.00"
+"01/16/2026","962","110001","470010000","OCI - NQ PENSION","595136.00"
+"01/16/2026","962","110001","499500000","ERROR SUSPENSE - LOAN ACCOUNTING  INTERFACE","0.00"
+"01/16/2026","962","1100031000","172050000","AIR-LATE FEE-FARM LN-RE","0.00"
+"01/16/2026","962","1200031000","502450000","INT INC-AMORT FAS91 FEES-ST","-1666.77"
+"01/16/2026","962","110001","730180000","TRAVEL EXP-AUTO-LICENSE & REGISTRATION","6.00"
+"01/16/2026","962","110001","220700000","ACCUM DEPR-COMPUTER HARDWARE","-34832.38"
+"01/16/2026","962","110001","220800000","ACCUM DEPR-AUTOS","-4726.59"
+"01/16/2026","962","110003","101650000","DEFERRED INC-RE","10730.52"
+"01/16/2026","962","1200011000","160650000","INV IN COBANK-ALLOCATED","58196.14"
+"01/16/2026","962","1100011000","251350000","SECURITY DEPOSITS","5230.00"
+"01/16/2026","962","1200011000","300970000","AIP-COBANK SPREAD","0.00"
+"01/16/2026","962","1100011000","363600000","ACCRUAL ANNUAL LEAVE","-540922.61"
+"01/16/2026","962","1200011000","303400000","A/P-PARTCIPATIONS SOLD LN-ST","-6393427.58"
+"01/16/2026","962","110001","735150000","COS-JANITOR","5574.36"
+"01/16/2026","962","110001","735250000","COS-UTILITIES","322.19"
+"01/16/2026","962","1200011000","521350000","FEES-PREPAYMENT-RETAIL","-1751.55"
+"01/16/2026","962","1100011000","170400000","AIR-PART SOLD-RE","-2336873.17"
+"01/16/2026","962","1100011000","300300000","FUNDS HELD-LT","-11905205.33"
+"01/16/2026","962","1200011000","460250000","UNDISTRIBUTED EARNINGS","-1472755.62"
+"01/16/2026","962","110001","735950000","COS-LANDSCAPING","2060.71"
+"01/16/2026","962","119999","175250000","A/R-INTRAZONE DUE FROM-FLCA/PCA","55230892.09"
+"01/16/2026","962","110001","745000000","OFFICE EXP-SUPPLIES","111.38"
+"01/16/2026","962","110001","735290000","PUR SVCS-SECURE PAPER DISPOSAL","1121.10"
+"01/16/2026","962","1200991000","300030000","NOTES PAY TO COBANK-ST","134941969.11"
+"01/16/2026","962","1200011000","100550000","PARTICIPATIONS SOLD-COMM","-256078321.59"
+"01/16/2026","962","1200031000","500550000","INT INC-PART PUR-COMM","-370713.37"
+"01/16/2026","962","1200011000","790500000","OTHER MISC-FAS91 LN COSTS DEFERRED","-65800.00"
+"01/16/2026","962","1200011000","542860000","OTH INC","-0.03"
+"01/16/2026","962","1100011000","300030000","NOTES PAY TO COBANK-ST","-97075.61"
+"01/16/2026","962","110001","740310000","COMMUNICATIONS-FEDEX","45.96"
+"01/16/2026","962","110001","789990000","OTHER EXP-INTEREST EXPENSE","47.26"
+"01/16/2026","962","110001","220650000","ACCUM DEPR-FURNITURE AND FIXTURES","-62154.66"
+"01/16/2026","962","1100011000","220750000","ACCUM DEPR-SOFTWARE","-2743132.27"
+"01/16/2026","962","1100011000","240350000","PREPAID EXP-OTHER","141727.31"
+"01/16/2026","962","110001","302450000","A/P-PATRONAGE TO MEMBERS","-14889984.35"
+"01/16/2026","962","110001","103080000","ALL CR LOSS-COMMUNICATIONS","-1850739.00"
+"01/16/2026","962","1200011000","103150000","LN CHARGE OFFS-COMM","166878.00"
+"01/16/2026","962","120001","161500000","INV IN COBANK-DN-PURCHASED STOCK","3835000.00"
+"01/16/2026","962","110001","174750000","A/R-APPRAISALS","-5950.00"
+"01/16/2026","962","110003","215990000","NA CLEARING","0.00"
+"01/16/2026","962","110001","220300000","COMPUTER HARDWARE","39981.71"
+"01/16/2026","962","120003","300030000","NOTES PAY TO COBANK-ST","55219847.48"
+"01/16/2026","962","1200011000","302450000","A/P-PATRONAGE TO MEMBERS","8018.41"
+"01/16/2026","962","1100011000","363500000","MONTH END ACCRUALS","0.00"
+"01/16/2026","962","1100011000","450650000","PARTICIPATION CERT - CLASS F FLCA","0.00"
+"01/16/2026","962","110003","460050000","EARNED SURPLUS","840471.64"
+"01/16/2026","962","1100011000","460400000","EARNING RESERVED FOR PATRONAGE DISTRIBUTION","0.00"
+"01/16/2026","962","1200011000","499500000","ERROR SUSPENSE - LOAN ACCOUNTING  INTERFACE","0.00"
+"01/16/2026","962","1100031000","100050000","FARM LN-RE","3671449.53"
+"01/16/2026","962","1200991000","120010000","CASH IN BANKS-COBANK","0.00"
+"01/16/2026","962","999999","499000000","ERROR SUSPENSE","0.00"
+"01/16/2026","962","110001","736050000","COS-SECURITY","1336.50"
+"01/16/2026","962","1100011000","220800000","ACCUM DEPR-AUTOS","-36113.84"
+"01/16/2026","962","1100011000","240400000","PREPAID FURNITURE/EQUIPMENT","103225.00"
+"01/16/2026","962","110001","103050000","ALL CR LOSS-AGRIBUS FARM RELATED","-177101.00"
+"01/16/2026","962","1100011000","103100000","LN CHARGE OFFS-RE","168875.42"
+"01/16/2026","962","1100011000","160600000","INV IN COBANK-DN-ALLOCATED EQUITY","9585225.00"
+"01/16/2026","962","110001","173900000","A/R-PATR DUE FROM COBANK","0.00"
+"01/16/2026","962","110001","174860000","A/R-DECLARED PART STOCK PATRONAGE DUE FROM COBANK","534000.00"
+"01/16/2026","962","110001","221560000","ACCUM AMORT-RIGHT OF USE ASSET-SOLAR LEASE","-193546.31"
+"01/16/2026","962","12000310000","300030000","NOTES PAY TO COBANK-ST","14181.09"
+"01/16/2026","962","110001","302100000","A/P-OTHER","25387.67"
+"01/16/2026","962","1200031000","101900000","UNAMORT FAS91 COSTS-COMM","64476.52"
+"01/16/2026","962","1200031000","502550000","INT INC-AMORT FAS91 COSTS-ST","541.77"
+"01/16/2026","962","1100031000","215100000","NA PARTICIPATIONS PURCHASED-RE","18459929.51"
+"01/16/2026","962","1200011000","170450000","AIR-PART SOLD-COMM","-789330.61"
+"01/16/2026","962","1200011000","170550000","AIR-PART PURCHASED-COMM","88940.42"
+"01/16/2026","962","129999","175250000","A/R-INTRAZONE DUE FROM-FLCA/PCA","10601787.29"
+"01/16/2026","962","1200031000","300030000","NOTES PAY TO COBANK-ST","-79633893.22"
+"01/16/2026","962","1100031000","500000000","INT INC-FARM LN-RE","-15133.15"
+"01/16/2026","962","1100011000","502500000","INT INC-AMORT FAS91 COSTS-LT","6574.46"
+"01/16/2026","962","1200011000","520160000","FEES-ORIG/COMIT FAS 91","32330.00"
+"01/16/2026","962","1100011000","601000000","INT EXP-FUNDS HELD-LT","18775.76"
+"01/16/2026","962","1100011000","101850000","UNAMORT FAS91 COSTS-RE","4263025.03"
+"01/16/2026","962","1200031000","500050000","INT INC-FARM LN-COMM","-9118.53"
+"01/16/2026","962","1200011000","500550000","INT INC-PART PUR-COMM","-25085.31"
+"01/16/2026","962","1200011000","601010000","INT EXP-FUNDS HELD-ST","63534.27"
+"01/16/2026","962","129999","301650000","A/P-INTRAZONE DUE TO-FLCA/PCA","-55230546.42"
+"01/16/2026","962","1100011000","100600000","PARTICIPATIONS PURCHASED-RE","21277176.30"
+"01/16/2026","962","1200011000","502450000","INT INC-AMORT FAS91 FEES-ST","-1281.34"
+"01/16/2026","962","1100011000","450550000","STOCK - CLASS C FLCA","-534000.00"
+"01/16/2026","962","110001","220050000","OFFICE BUILDING OWNED","88025.00"
+"01/16/2026","962","1100011000","220300000","COMPUTER HARDWARE","685577.24"
+"01/16/2026","962","1100011000","302100000","A/P-OTHER","-17525.44"
+"01/16/2026","962","1100011000","302450000","A/P-PATRONAGE TO MEMBERS","-210655.65"
+"01/16/2026","962","110001","363670000","LEASE LIABILITY - KINGSBURG OFFICE","-63125.80"
+"01/16/2026","962","1200011000","174000000","A/R-OTHER","0.00"
+"01/16/2026","962","120001","102550000","UNPROCESSED LN TRANSACTIONS","-38301.12"
+"01/16/2026","962","110001","103070000","ALL CR LOSS-LEASE RECEIVABLES","-28441.00"
+"01/16/2026","962","120001","103850000","LN RECOVERIES-COMM","-2169.90"
+"01/16/2026","962","1100011000","161000000","INV IN FCS CAPTIVE INSURANCE CO","518200.89"
+"01/16/2026","962","1100011000","174000000","A/R-OTHER","0.00"
+"01/16/2026","962","110001","221570000","RIGHT OF USE ASSET-KINGSBURG LEASE","123259.99"
+"01/16/2026","962","1100011000","240150000","PREPAID EQUIP SERVICE/MAINT","4686.36"
+"01/16/2026","962","110001","300040000","LOANABLE FUNDS-EQUITY POSITIONING","1150000.00"
+"01/16/2026","962","1100011000","300910000","AIP-COBANK-LT-EQUITY POSITIONING","681107.17"
+"01/16/2026","962","120001","300980000","AIP-COBANK LOANABLE FUNDS CREDIT","-454995.81"
+"01/16/2026","962","110001","302200000","A/P- RETENTION","328807.87"
+"01/16/2026","962","110001","363050000","ACCRUED BENEFIT PAYABLE FAS106","2405.65"
+"01/16/2026","962","1100011000","101750000","UNAMORT FAS91 FEES","-1979683.04"
+"01/16/2026","962","1200031000","215990000","NA CLEARING","0.00"
+"01/16/2026","962","1100031000","460050000","EARNED SURPLUS","-74838096.62"
+"01/16/2026","962","110001","220750000","ACCUM DEPR-SOFTWARE","-73879.39"
+"01/16/2026","962","1100011000","499520000","ERROR SUSPENSE - EMPOWER INTERFACE","0.00"
+"01/16/2026","962","120001","103060000","ALL CR LOSS-ENERGY","-93289.00"
+"01/16/2026","962","110001","161060000","INV IN FOUNDATIONS","14165.00"
+"01/16/2026","962","1100011000","220200000","CONSTRUCTION IN PROGRESS","0.00"
+"01/16/2026","962","1100011000","301020000","AIP-FUNDS HELD-LT-CM","0.00"
+"01/16/2026","962","1100011000","363050000","ACCRUED BENEFIT PAYABLE FAS106","-211488.40"
+"01/16/2026","962","110001","450550000","STOCK - CLASS C FLCA","0.00"
+"01/16/2026","962","120003","215990000","NA CLEARING","0.00"
+"01/16/2026","962","1100011000","520150000","FEES-ORIGINATION","-17677.00"
+"01/16/2026","962","1200011000","508050000","LATE FEE INC-FARM LN-COMM","-382589.77"
+"01/16/2026","962","1100011000","521350000","FEES-PREPAYMENT-RETAIL","-9365.32"
+"01/16/2026","962","1200031000","460250000","UNDISTRIBUTED EARNINGS","-404440.88"
+"01/16/2026","962","1100011000","100500000","PARTICIPATIONS SOLD-RE","-262652832.56"
+"01/16/2026","962","1200031000","170550000","AIR-PART PURCHASED-COMM","543004.78"
+"01/16/2026","962","1100011000","360300000","UNAPPLIED RECEIPT-LOCKBOX","-1131212.35"
+"01/16/2026","962","1100031000","500500000","INT INC-PART PUR-RE","-1613016.82"
+"01/16/2026","962","110001","240050000","PREPAID INSURANCE","220773.32"
+"01/16/2026","962","110001","363660000","LEASE LIABILITY - SOLAR LEASE","-22408.56"
+"01/16/2026","962","1200011000","522050000","FEES-OTHER","-31709.01"
+"01/16/2026","962","1100031000","100600000","PARTICIPATIONS PURCHASED-RE","529677698.27"
+"01/16/2026","962","1100011000","170000000","AIR-FARM LN-RE","17323864.74"
+"01/16/2026","962","1200011000","301030000","AIP-FUNDS HELD-ST-CM","-25906.93"
+"01/16/2026","962","1200011000","500050000","INT INC-FARM LN-COMM","-1057620.64"
+"01/16/2026","962","110001","302650000","A/P-VENDOR CLEARING","-403271.82"
+"01/16/2026","962","110001","460250000","UNDISTRIBUTED EARNINGS","447176.64"
+"01/16/2026","962","110001","788650000","OTHER EXP-STAFF EVENTS","21881.88"
+"01/16/2026","962","110001","725300000","PUR SVCS-LEGAL FEES","4697.00"
+"01/16/2026","962","110001","787950000","INS EXP-FCS CAPTIVE-WORKPLACE VIOLENCE","5905.00"
+"01/16/2026","962","110001","220600000","ACCUM DEPR-OFFICE BUILDING","-192609.90"
+"01/16/2026","962","1100011000","220600000","ACCUM DEPR-OFFICE BUILDING","-2782699.72"
+"01/16/2026","962","1100011000","220700000","ACCUM DEPR-COMPUTER HARDWARE","-497067.57"
+"01/16/2026","962","110001","240400000","PREPAID FURNITURE/EQUIPMENT","-103225.00"
+"01/16/2026","962","110001","363600000","ACCRUAL ANNUAL LEAVE","-60557.37"
+"01/16/2026","962","110001","301650000","A/P-INTRAZONE DUE TO-FLCA/PCA","0.00"
+"01/16/2026","962","1200031000","302100000","A/P-OTHER","4330.52"
+"01/16/2026","962","110001","102550000","UNPROCESSED LN TRANSACTIONS","35778.05"
+"01/16/2026","962","1200031000","102550000","UNPROCESSED LN TRANSACTIONS","17572.44"
+"01/16/2026","962","1100011000","120010000","CASH IN BANKS-COBANK","0.00"
+"01/16/2026","962","1200011000","160800000","INV IN COBANK-PART PURCHASED STOCK","1000.00"
+"01/16/2026","962","120001","173900000","A/R-PATR DUE FROM COBANK","-503702.00"
+"01/16/2026","962","120001","174900000","A/R-DECLARED PATR DUE FROM COBANK","1975568.00"
+"01/16/2026","962","1100011000","215000000","NA FARM LN-RE","5617548.76"
+"01/16/2026","962","110001","221580000","ACCUM AMORT-RIGHT OF USE ASSET-KINGSBURG LEASE","-61384.97"
+"01/16/2026","962","110001","240420000","PREPAID STAFF EVENTS","0.00"
+"01/16/2026","962","110099","300020000","NOTES PAY TO COBANK-LT","23475454.83"
+"01/16/2026","962","1200011000","301600000","A/P-FCSIC PREMIUM","-105370.00"
+"01/16/2026","962","110001","302250000","A/P- LWOP BENEFITS","0.00"
+"01/16/2026","962","110001","302260000","A/P-INCENTIVE ACCRUALS","-1331750.00"
+"01/16/2026","962","110001","360300000","UNAPPLIED RECEIPT-LOCKBOX","1131212.35"
+"01/16/2026","962","120001","450600000","STOCK - CLASS C PCA","0.00"
+"01/16/2026","962","120001","460050000","EARNED SURPLUS","28062775.25"
+"01/16/2026","962","120003","460050000","EARNED SURPLUS","448308.97"
+"01/16/2026","962","120001","120010000","CASH IN BANKS-COBANK","-55872803.32"
+"01/16/2026","962","1100011000","215070000","NA FARM LN-RE-CASH BASIS","0.00"
+"01/16/2026","962","110001","215990000","NA CLEARING","-6000.00"
+"01/16/2026","962","1200011000","160600000","INV IN COBANK-DN-ALLOCATED EQUITY","13624375.00"
+"01/16/2026","962","110001","173860000","A/R-PART STOCK PATRONAGE DUE FROM COBANK","0.00"
+"01/16/2026","962","110001","174430000","A/R-FARM CREDIT FOUNDATIONS","10205.63"
+"01/16/2026","962","1100011000","300040000","LOANABLE FUNDS-EQUITY POSITIONING","210950000.00"
+"01/16/2026","962","110001","300970000","AIP-COBANK SPREAD","-216092.29"
+"01/16/2026","962","1100011000","300970000","AIP-COBANK SPREAD","0.00"
+"01/16/2026","962","120001","302450000","A/P-PATRONAGE TO MEMBERS","-8018.41"
+"01/16/2026","962","110001","365500000","RESERVE FOR UNFUNDED COMMITMEN","-141662.00"
+"01/16/2026","962","1100991000","303350000","A/P-PARTICIPATIONS SOLD LN-LT","-3049.46"
+"01/16/2026","962","1200011000","172100000","AIR-LATE FEE-FARM LN-COMM","385811.92"
+"01/16/2026","962","110001","775200000","ABSTRACTS-CREDIT REPORTS","8454.06"
+"01/16/2026","962","110001","700750000","DIRECTOR-OTHER","-1921.91"
+"01/16/2026","962","1200031000","522050000","FEES-OTHER","-22504.37"
+"01/16/2026","962","1200011000","215990000","NA CLEARING","36610.73"
+"01/16/2026","962","110001","730050000","TRAVEL EXP-EMPLOYEE","-565.26"
+"01/16/2026","962","1200011000","100150000","FARM LN-COMM","530183352.13"
+"01/16/2026","962","1100011000","170500000","AIR-PART PURCHASED-RE","108987.88"
+"01/16/2026","962","110001","740150000","COMMUNICATIONS-CELLULAR","2802.64"
+"01/16/2026","962","110001","725050000","PUR SVCS-PROFESSIONAL FEES","229.17"
+"01/16/2026","962","110001","220500000","AUTO","6746.28"
+"01/16/2026","962","110001","175000000","A/R-EMPLOYEES","20866.80"
+"01/16/2026","962","110001","240430000","PREPAID MEMBER EVENTS","0.00"
+"01/16/2026","962","110001","103060000","ALL CR LOSS-ENERGY","-30518.00"
+"01/16/2026","962","110001","120020000","CASH IN BANKS-US BANK","18628.50"
+"01/16/2026","962","1100011000","160650000","INV IN COBANK-ALLOCATED","5118768.57"
+"01/16/2026","962","1200031000","170050000","AIR-FARM LN-COMM","9598.45"
+"01/16/2026","962","110001","173850000","A/R- PART PATRONAGE DUE FROM COBANK","0.00"
+"01/16/2026","962","110001","174850000","A/R-DECLARED PART PATRONAGE DUE FROM COBANK","1814000.00"
+"01/16/2026","962","1100011000","220650000","ACCUM DEPR-FURNITURE AND FIXTURES","-1551698.78"
+"01/16/2026","962","1200011000","300030000","NOTES PAY TO COBANK-ST","-463347165.59"
+"01/16/2026","962","120001","301650000","A/P-INTRAZONE DUE TO-FLCA/PCA","12404681.13"
+"01/16/2026","962","1100011000","362850000","OUTSTANDING CHECKS - CORPORATE","-618745.81"
+"01/16/2026","962","1200011000","450650000","PARTICIPATION CERT - CLASS F FLCA","-2000.00"
+"01/16/2026","962","120001","215990000","NA CLEARING","-2370.51"
+"01/16/2026","962","1100011000","300320000","FUNDS HELD-LT-CM","0.00"
+"01/16/2026","962","1200031000","301050000","AIP-FUNDS HELD-ST","0.00"
+"01/16/2026","962","1100031000","101650000","DEFERRED INC-RE","-614576.99"
+"01/16/2026","962","110001","725650000","PUR SVCS-OTHER","589.00"
+"01/16/2026","962","110001","762450000","PUB/MEM-ANNUAL MTG/NOMINATING COMMITTEE","12233.00"
+"01/16/2026","962","1200011000","301050000","AIP-FUNDS HELD-ST","-63534.26"
+"01/16/2026","962","1100011000","500500000","INT INC-PART PUR-RE","-65783.99"
+"01/16/2026","962","1100031000","502500000","INT INC-AMORT FAS91 COSTS-LT","562.11"
+"01/16/2026","962","110001","775000000","ABSTRACTS-RECORDS-REPORTS & FILING","1545.00"
+"01/16/2026","962","110001","220570000","ACCUM DEPR-LAND IMPROVEMENTS","-75898.72"
+"01/16/2026","962","120001","172100000","AIR-LATE FEE-FARM LN-COMM","0.00"
+"01/16/2026","962","1100011000","300900000","AIP-COBANK-LT","0.00"
+"01/16/2026","962","110001","363060000","NQ PENSION OCI LIABILITY","-595136.00"
+"01/16/2026","962","1100011000","102550000","UNPROCESSED LN TRANSACTIONS","-6221.19"
+"01/16/2026","962","1200011000","103850000","LN RECOVERIES-COMM","-40091.88"
+"01/16/2026","962","110001","700200000","DIRECTOR-TRAVEL/SUBSISTENCE","-1471.65"
+"01/16/2026","962","110001","789350000","OTHER EXP-STAFF MEETINGS","-826.71"
+"01/16/2026","962","1100031000","101750000","UNAMORT FAS91 FEES","-1041192.41"
+"01/16/2026","962","110001","762500000","PUB/MEM-DUES/MEMBERSHIPS","4000.00"
+"01/16/2026","962","1200011000","101900000","UNAMORT FAS91 COSTS-COMM","647868.14"
+"01/16/2026","962","1200011000","120010000","CASH IN BANKS-COBANK","60517413.00"
+"01/16/2026","962","1100031000","170000000","AIR-FARM LN-RE","14285.02"
+"01/16/2026","962","110001","240350000","PREPAID EXP-OTHER","-49769.14"
+"01/16/2026","962","119999","301650000","A/P-INTRAZONE DUE TO-FLCA/PCA","-10602132.96"
+"01/16/2026","962","1100011000","220450000","FIXED ASSETS CLEARING","0.00"
+"01/16/2026","962","1100011000","460050000","EARNED SURPLUS","-323009661.45"
+"01/16/2026","962","1100011000","240050000","PREPAID INSURANCE","138542.68"
+"01/16/2026","962","110001","240150000","PREPAID EQUIP SERVICE/MAINT","5258.96"
+"01/16/2026","962","110001","240800000","PREPAID LEASE AUTO","19181.29"
+"01/16/2026","962","1200011000","460050000","EARNED SURPLUS","3377719.14"
+"01/16/2026","962","1200011000","360600000","UNAPPLIED RECEIPT-LN REJECTS","0.00"
+"01/16/2026","962","110001","103010000","ALL CR LOSS-PROD AG REAL ESTATE","-990644.42"
+"01/16/2026","962","120001","103020000","ALL CR LOSS-PROD AG PROD/INTERMEDIATE","-541433.10"
+"01/16/2026","962","110001","103030000","ALL CR LOSS-AGRIBUS COOPERATIVES","-13117.00"
+"01/16/2026","962","120099","120010000","CASH IN BANKS-COBANK","0.00"
+"01/16/2026","962","120001","172600000","AIR-LATE FEE-PURCHASED COMM","0.00"
+"01/16/2026","962","110001","174900000","A/R-DECLARED PATR DUE FROM COBANK","4976432.00"
+"01/16/2026","962","120001","215110000","NA PARTICIPATIONS PURCHASED-COMM","200.61"
+"01/16/2026","962","1100011000","220100000","LAND OWNED","1433075.35"
+"01/16/2026","962","1100011000","220500000","AUTO","84777.15"
+"01/16/2026","962","110001","250100000","PREPAID PENSION","-102699.00"
+"01/16/2026","962","110001","300900000","AIP-COBANK-LT","-4242932.73"
+"01/16/2026","962","110001","303660000","A/P-FOUNDATIONS","0.00"
+"01/16/2026","962","1200031000","460050000","EARNED SURPLUS","-41778529.26"
+"01/16/2026","962","1100011000","172050000","AIR-LATE FEE-FARM LN-RE","105752.13"
+"01/16/2026","962","1200011000","300330000","FUNDS HELD-ST-CM","-13942710.72"
+"01/16/2026","962","1200011000","170050000","AIR-FARM LN-COMM","5106488.74"
+"01/16/2026","962","120003","120010000","CASH IN BANKS-COBANK","0.00"
+"01/16/2026","962","1200011000","173900000","A/R-PATR DUE FROM COBANK","503702.00"
+"01/16/2026","962","110001","240000000","PREPAID FCA SUPERVISORY","-101163.33"
+"01/16/2026","962","1100011000","250100000","PREPAID PENSION","8951170.79"
+"01/16/2026","962","120099","300030000","NOTES PAY TO COBANK-ST","-112411938.59"
+"01/16/2026","962","110099","303350000","A/P-PARTICIPATIONS SOLD LN-LT","2049.46"
+"01/16/2026","962","120099","303400000","A/P-PARTCIPATIONS SOLD LN-ST","18440.24"
+"01/16/2026","962","1100031000","520150000","FEES-ORIGINATION","-38833.34"
+"01/16/2026","962","110001","730250000","TRAVEL EXP-AUTO MAINT","203.94"
+"01/16/2026","962","110001","765000000","TRAINING-EMPLOYEES","1045.99"
+"01/16/2026","962","110001","788150000","OTHER EXP-HIRING EXPENSE","-465.13"
+"01/16/2026","962","110001","788400000","OTHER EXP-LUNCHROOM SUPPLIES","-163.39"
+"01/16/2026","962","1200011000","520150000","FEES-ORIGINATION","-32330.00"
+"01/16/2026","962","1200031000","100650000","PARTICIPATIONS PURCHASED-COMM","116655798.87"
+"01/16/2026","962","1200011000","101800000","UNAMORT FAS91 FEES-COMM","-299943.84"
+"01/16/2026","962","1100031000","170500000","AIR-PART PURCHASED-RE","3754426.48"
+"01/16/2026","962","110001","760460000","ADVERTISING-PRINT/DISPLAY","425.00"
+"01/16/2026","962","1200011000","215010000","NA FARM LN-COMM","303936.46"
+"01/16/2026","962","120001","460250000","UNDISTRIBUTED EARNINGS","148.50"
+"01/16/2026","962","999999","175250000","A/R-INTRAZONE DUE FROM-FLCA/PCA","345.67"
+"01/16/2026","962","1100011000","220250000","FURNITURE & FIXTURES","1890453.45"
+"01/16/2026","962","999999","301650000","A/P-INTRAZONE DUE TO-FLCA/PCA","-345.67"
+"01/16/2026","962","1100031000","302100000","A/P-OTHER","0.00"
+"01/16/2026","962","1200031000","101800000","UNAMORT FAS91 FEES-COMM","-138835.52"
+"01/16/2026","962","110003","102550000","UNPROCESSED LN TRANSACTIONS","17774.99"
+"01/16/2026","962","120001","103070000","ALL CR LOSS-LEASE RECEIVABLES","-101376.34"
+"01/16/2026","962","1100011000","103800000","LN RECOVERIES-RE","0.00"
+"01/16/2026","962","1100011000","161100000","INV IN FARMER MAC","1.00"
+"01/16/2026","962","1200011000","161500000","INV IN COBANK-DN-PURCHASED STOCK","5378000.00"
+"01/16/2026","962","110001","172050000","AIR-LATE FEE-FARM LN-RE","0.00"
+"01/16/2026","962","1200011000","172600000","AIR-LATE FEE-PURCHASED COMM","0.00"
+"01/16/2026","962","1100011000","175000000","A/R-EMPLOYEES","0.00"
+"01/16/2026","962","120001","300950000","AIP-COBANK-ST","-1475267.42"
+"01/16/2026","962","120001","301600000","A/P-FCSIC PREMIUM","-280630.00"
+"01/16/2026","962","110001","460050000","EARNED SURPLUS","63253891.73"
+"01/16/2026","962","1100011000","100050000","FARM LN-RE","1051941671.17"
+"01/16/2026","962","1100011000","215020000","NA PARTICIPATIONS SOLD-RE","28252.63"
+"01/16/2026","962","110001","215020000","NA PARTICIPATIONS SOLD-RE","-1660927.50"
+"01/16/2026","962","1200011000","601030000","INT EXP-FUNDS HELD-ST-CM","25906.93"
+"01/16/2026","962","110001","755000000","IT-INTERNET","160.50"
+"01/16/2026","962","110001","730170000","TRAVEL EXP-AUTO-FUEL","2520.68"
+"01/16/2026","962","120001","302100000","A/P-OTHER","48438.48"
+"01/16/2026","962","110001","160300000","INV IN RBIC OPEN PRAIRIE","1849110.17"
+"01/16/2026","962","1100011000","161300000","INV IN OTHER FARM CREDIT INSTITUTIONS","0.00"
+"01/16/2026","962","1100011000","161500000","INV IN COBANK-DN-PURCHASED STOCK","9716816.15"
+"01/16/2026","962","120001","175250000","A/R-INTRAZONE DUE FROM-FLCA/PCA","-6942768.74"
+"01/16/2026","962","120001","215010000","NA FARM LN-COMM","2169.90"
+"01/16/2026","962","110003","300030000","NOTES PAY TO COBANK-ST","4536.74"
+"01/16/2026","962","110001","300980000","AIP-COBANK LOANABLE FUNDS CREDIT","791542.54"
+"01/16/2026","962","1100011000","301600000","A/P-FCSIC PREMIUM","-306630.00"
+"01/16/2026","962","1100011000","302200000","A/P- RETENTION","-1439509.22"
+"01/16/2026","962","1200011000","363500000","MONTH END ACCRUALS","0.00"
+"01/16/2026","962","120001","365500000","RESERVE FOR UNFUNDED COMMITMEN","-123993.00"
+"01/16/2026","962","1100991000","360300000","UNAPPLIED RECEIPT-LOCKBOX","0.00"
+
+	 rowCount = -4630
+	 Evaluating JavaScript expression var GetResultArr =  GetResultOut.trim().split("\n");
+
+//Remove header for succeeding results.
+//if(offset > 0) {
+	Header = GetResultArr.shift();
+//}
+
+for(var i=0; i<GetResultArr.length; i++) {
+        GetResultArr[i] = GetResultArr[i].toString().replace(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/g, Delimiter).replace(/"/g,"");
+}
+
+GetResultOut = GetResultArr.join("\r\n");
+
+//Append the transformed result to OutputRecords
+OutputRecords += GetResultOut + "\r\n";; to value 01/16/2026,962,110001,362850000,OUTSTANDING CHECKS - CORPORATE,-38239.47
+01/16/2026,962,1100031000,522050000,FEES-OTHER,-61617.77
+01/16/2026,962,1100011000,520160000,FEES-ORIG/COMIT FAS 91,56510.34
+01/16/2026,962,110001,762750000,PUB/MEM-MEMBER APPRECIATION EVENTS,-1337.40
+01/16/2026,962,1100031000,101850000,UNAMORT FAS91 COSTS-RE,1154522.34
+01/16/2026,962,1100011000,508000000,LATE FEE INC-FARM LN-RE,-105982.96
+01/16/2026,962,1100011000,790500000,OTHER MISC-FAS91 LN COSTS DEFERRED,-32400.00
+01/16/2026,962,110001,735100000,COS-REPAIRS/MAINT,1421.08
+01/16/2026,962,1200031000,520150000,FEES-ORIGINATION,-979.61
+01/16/2026,962,1200011000,100650000,PARTICIPATIONS PURCHASED-COMM,6460136.43
+01/16/2026,962,1100031000,215990000,NA CLEARING,0.00
+01/16/2026,962,1200011000,300310000,FUNDS HELD-ST,-38513812.74
+01/16/2026,962,1100011000,303350000,A/P-PARTICIPATIONS SOLD LN-LT,3049.46
+01/16/2026,962,110001,725370000,PUR SVCS-COURIER,2016.00
+01/16/2026,962,110001,220450000,FIXED ASSETS CLEARING,0.00
+01/16/2026,962,1100011000,240800000,PREPAID LEASE AUTO,46453.30
+01/16/2026,962,1100011000,302650000,A/P-VENDOR CLEARING,0.00
+01/16/2026,962,110001,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,0.00
+01/16/2026,962,1100031000,300030000,NOTES PAY TO COBANK-ST,-4536.74
+01/16/2026,962,1200011000,302100000,A/P-OTHER,-73497.47
+01/16/2026,962,1200031000,100150000,FARM LN-COMM,2532595.39
+01/16/2026,962,110001,103020000,ALL CR LOSS-PROD AG PROD/INTERMEDIATE,0.00
+01/16/2026,962,120001,103030000,ALL CR LOSS-AGRIBUS COOPERATIVES,-270293.00
+01/16/2026,962,110001,103040000,ALL CR LOSS-AGRIBUS PROC & MKT,-1224309.00
+01/16/2026,962,1200011000,174900000,A/R-DECLARED PATR DUE FROM COBANK,0.00
+01/16/2026,962,110001,220250000,FURNITURE & FIXTURES,63476.30
+01/16/2026,962,110001,221550000,RIGHT OF USE ASSET-SOLAR LEASE,211979.32
+01/16/2026,962,1100011000,240000000,PREPAID FCA SUPERVISORY,101163.33
+01/16/2026,962,120001,300030000,NOTES PAY TO COBANK-ST,142893411.43
+01/16/2026,962,1100031000,360300000,UNAPPLIED RECEIPT-LOCKBOX,0.00
+01/16/2026,962,1200011000,215110000,NA PARTICIPATIONS PURCHASED-COMM,-200.61
+01/16/2026,962,1100011000,500000000,INT INC-FARM LN-RE,-2647765.34
+01/16/2026,962,1100031000,102550000,UNPROCESSED LN TRANSACTIONS,-17774.99
+01/16/2026,962,120001,103040000,ALL CR LOSS-AGRIBUS PROC & MKT,-276076.00
+01/16/2026,962,120001,103050000,ALL CR LOSS-AGRIBUS FARM RELATED,-8923.00
+01/16/2026,962,110001,220100000,LAND OWNED,0.00
+01/16/2026,962,110001,220120000,LAND IMPROVEMENTS-OWNED,583515.76
+01/16/2026,962,1100011000,220550000,LEASEHOLD IMPROVEMENTS,15789.58
+01/16/2026,962,110001,220900000,ACCUM DEPR-LEASEHOLD IMPROVEMENTS,-15789.58
+01/16/2026,962,110001,300020000,NOTES PAY TO COBANK-LT,-121600154.00
+01/16/2026,962,1100011000,300020000,NOTES PAY TO COBANK-LT,-1185135688.95
+01/16/2026,962,110001,301600000,A/P-FCSIC PREMIUM,-659370.00
+01/16/2026,962,120001,303400000,A/P-PARTCIPATIONS SOLD LN-ST,6405111.88
+01/16/2026,962,1100011000,215990000,NA CLEARING,6000.00
+01/16/2026,962,1100011000,522050000,FEES-OTHER,-10879.86
+01/16/2026,962,110001,750650000,FURN & EQUIP-OTHER,4442.21
+01/16/2026,962,1100011000,460250000,UNDISTRIBUTED EARNINGS,-2807993.91
+01/16/2026,962,110001,755050000,IT-FPI SERVICES,383919.06
+01/16/2026,962,110001,755010000,IT-SOFTWARE LICENSING FEES,-14517.00
+01/16/2026,962,1100991000,300020000,NOTES PAY TO COBANK-LT,-35902412.22
+01/16/2026,962,1200011000,102550000,UNPROCESSED LN TRANSACTIONS,8744.26
+01/16/2026,962,1100031000,460250000,UNDISTRIBUTED EARNINGS,-1728038.97
+01/16/2026,962,110001,240410000,PREPAID SOFTWARE,563667.47
+01/16/2026,962,1100011000,301000000,AIP-FUNDS HELD-LT,-18360.07
+01/16/2026,962,1200011000,502550000,INT INC-AMORT FAS91 COSTS-ST,3640.83
+01/16/2026,962,120001,725300000,PUR SVCS-LEGAL FEES,148.50
+01/16/2026,962,110001,363500000,MONTH END ACCRUALS,0.00
+01/16/2026,962,110001,763050000,PUB/MEM-EXTERNAL EVENTS,-671.58
+01/16/2026,962,1100011000,220400000,PURCHASED SOFTWARE,2930477.92
+01/16/2026,962,1200011000,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,6942768.74
+01/16/2026,962,1200011000,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-12404681.13
+01/16/2026,962,110001,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1200011000,450550000,STOCK - CLASS C FLCA,0.00
+01/16/2026,962,1200011000,450600000,STOCK - CLASS C PCA,-168000.00
+01/16/2026,962,120003,102550000,UNPROCESSED LN TRANSACTIONS,-17572.44
+01/16/2026,962,120001,103080000,ALL CR LOSS-COMMUNICATIONS,0.00
+01/16/2026,962,1200031000,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1100011000,174750000,A/R-APPRAISALS,21550.00
+01/16/2026,962,1100011000,220050000,OFFICE BUILDING OWNED,9234302.97
+01/16/2026,962,110001,300030000,NOTES PAY TO COBANK-ST,106440.93
+01/16/2026,962,110001,300910000,AIP-COBANK-LT-EQUITY POSITIONING,101168.96
+01/16/2026,962,120001,300970000,AIP-COBANK SPREAD,-132003.36
+01/16/2026,962,120003,302100000,A/P-OTHER,-4330.52
+01/16/2026,962,110001,303350000,A/P-PARTICIPATIONS SOLD LN-LT,-2049.46
+01/16/2026,962,1200991000,303400000,A/P-PARTCIPATIONS SOLD LN-ST,-30124.54
+01/16/2026,962,1100011000,450600000,STOCK - CLASS C PCA,0.00
+01/16/2026,962,110001,460400000,EARNING RESERVED FOR PATRONAGE DISTRIBUTION,0.00
+01/16/2026,962,110001,470010000,OCI - NQ PENSION,595136.00
+01/16/2026,962,110001,499500000,ERROR SUSPENSE - LOAN ACCOUNTING  INTERFACE,0.00
+01/16/2026,962,1100031000,172050000,AIR-LATE FEE-FARM LN-RE,0.00
+01/16/2026,962,1200031000,502450000,INT INC-AMORT FAS91 FEES-ST,-1666.77
+01/16/2026,962,110001,730180000,TRAVEL EXP-AUTO-LICENSE & REGISTRATION,6.00
+01/16/2026,962,110001,220700000,ACCUM DEPR-COMPUTER HARDWARE,-34832.38
+01/16/2026,962,110001,220800000,ACCUM DEPR-AUTOS,-4726.59
+01/16/2026,962,110003,101650000,DEFERRED INC-RE,10730.52
+01/16/2026,962,1200011000,160650000,INV IN COBANK-ALLOCATED,58196.14
+01/16/2026,962,1100011000,251350000,SECURITY DEPOSITS,5230.00
+01/16/2026,962,1200011000,300970000,AIP-COBANK SPREAD,0.00
+01/16/2026,962,1100011000,363600000,ACCRUAL ANNUAL LEAVE,-540922.61
+01/16/2026,962,1200011000,303400000,A/P-PARTCIPATIONS SOLD LN-ST,-6393427.58
+01/16/2026,962,110001,735150000,COS-JANITOR,5574.36
+01/16/2026,962,110001,735250000,COS-UTILITIES,322.19
+01/16/2026,962,1200011000,521350000,FEES-PREPAYMENT-RETAIL,-1751.55
+01/16/2026,962,1100011000,170400000,AIR-PART SOLD-RE,-2336873.17
+01/16/2026,962,1100011000,300300000,FUNDS HELD-LT,-11905205.33
+01/16/2026,962,1200011000,460250000,UNDISTRIBUTED EARNINGS,-1472755.62
+01/16/2026,962,110001,735950000,COS-LANDSCAPING,2060.71
+01/16/2026,962,119999,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,55230892.09
+01/16/2026,962,110001,745000000,OFFICE EXP-SUPPLIES,111.38
+01/16/2026,962,110001,735290000,PUR SVCS-SECURE PAPER DISPOSAL,1121.10
+01/16/2026,962,1200991000,300030000,NOTES PAY TO COBANK-ST,134941969.11
+01/16/2026,962,1200011000,100550000,PARTICIPATIONS SOLD-COMM,-256078321.59
+01/16/2026,962,1200031000,500550000,INT INC-PART PUR-COMM,-370713.37
+01/16/2026,962,1200011000,790500000,OTHER MISC-FAS91 LN COSTS DEFERRED,-65800.00
+01/16/2026,962,1200011000,542860000,OTH INC,-0.03
+01/16/2026,962,1100011000,300030000,NOTES PAY TO COBANK-ST,-97075.61
+01/16/2026,962,110001,740310000,COMMUNICATIONS-FEDEX,45.96
+01/16/2026,962,110001,789990000,OTHER EXP-INTEREST EXPENSE,47.26
+01/16/2026,962,110001,220650000,ACCUM DEPR-FURNITURE AND FIXTURES,-62154.66
+01/16/2026,962,1100011000,220750000,ACCUM DEPR-SOFTWARE,-2743132.27
+01/16/2026,962,1100011000,240350000,PREPAID EXP-OTHER,141727.31
+01/16/2026,962,110001,302450000,A/P-PATRONAGE TO MEMBERS,-14889984.35
+01/16/2026,962,110001,103080000,ALL CR LOSS-COMMUNICATIONS,-1850739.00
+01/16/2026,962,1200011000,103150000,LN CHARGE OFFS-COMM,166878.00
+01/16/2026,962,120001,161500000,INV IN COBANK-DN-PURCHASED STOCK,3835000.00
+01/16/2026,962,110001,174750000,A/R-APPRAISALS,-5950.00
+01/16/2026,962,110003,215990000,NA CLEARING,0.00
+01/16/2026,962,110001,220300000,COMPUTER HARDWARE,39981.71
+01/16/2026,962,120003,300030000,NOTES PAY TO COBANK-ST,55219847.48
+01/16/2026,962,1200011000,302450000,A/P-PATRONAGE TO MEMBERS,8018.41
+01/16/2026,962,1100011000,363500000,MONTH END ACCRUALS,0.00
+01/16/2026,962,1100011000,450650000,PARTICIPATION CERT - CLASS F FLCA,0.00
+01/16/2026,962,110003,460050000,EARNED SURPLUS,840471.64
+01/16/2026,962,1100011000,460400000,EARNING RESERVED FOR PATRONAGE DISTRIBUTION,0.00
+01/16/2026,962,1200011000,499500000,ERROR SUSPENSE - LOAN ACCOUNTING  INTERFACE,0.00
+01/16/2026,962,1100031000,100050000,FARM LN-RE,3671449.53
+01/16/2026,962,1200991000,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,999999,499000000,ERROR SUSPENSE,0.00
+01/16/2026,962,110001,736050000,COS-SECURITY,1336.50
+01/16/2026,962,1100011000,220800000,ACCUM DEPR-AUTOS,-36113.84
+01/16/2026,962,1100011000,240400000,PREPAID FURNITURE/EQUIPMENT,103225.00
+01/16/2026,962,110001,103050000,ALL CR LOSS-AGRIBUS FARM RELATED,-177101.00
+01/16/2026,962,1100011000,103100000,LN CHARGE OFFS-RE,168875.42
+01/16/2026,962,1100011000,160600000,INV IN COBANK-DN-ALLOCATED EQUITY,9585225.00
+01/16/2026,962,110001,173900000,A/R-PATR DUE FROM COBANK,0.00
+01/16/2026,962,110001,174860000,A/R-DECLARED PART STOCK PATRONAGE DUE FROM COBANK,534000.00
+01/16/2026,962,110001,221560000,ACCUM AMORT-RIGHT OF USE ASSET-SOLAR LEASE,-193546.31
+01/16/2026,962,12000310000,300030000,NOTES PAY TO COBANK-ST,14181.09
+01/16/2026,962,110001,302100000,A/P-OTHER,25387.67
+01/16/2026,962,1200031000,101900000,UNAMORT FAS91 COSTS-COMM,64476.52
+01/16/2026,962,1200031000,502550000,INT INC-AMORT FAS91 COSTS-ST,541.77
+01/16/2026,962,1100031000,215100000,NA PARTICIPATIONS PURCHASED-RE,18459929.51
+01/16/2026,962,1200011000,170450000,AIR-PART SOLD-COMM,-789330.61
+01/16/2026,962,1200011000,170550000,AIR-PART PURCHASED-COMM,88940.42
+01/16/2026,962,129999,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,10601787.29
+01/16/2026,962,1200031000,300030000,NOTES PAY TO COBANK-ST,-79633893.22
+01/16/2026,962,1100031000,500000000,INT INC-FARM LN-RE,-15133.15
+01/16/2026,962,1100011000,502500000,INT INC-AMORT FAS91 COSTS-LT,6574.46
+01/16/2026,962,1200011000,520160000,FEES-ORIG/COMIT FAS 91,32330.00
+01/16/2026,962,1100011000,601000000,INT EXP-FUNDS HELD-LT,18775.76
+01/16/2026,962,1100011000,101850000,UNAMORT FAS91 COSTS-RE,4263025.03
+01/16/2026,962,1200031000,500050000,INT INC-FARM LN-COMM,-9118.53
+01/16/2026,962,1200011000,500550000,INT INC-PART PUR-COMM,-25085.31
+01/16/2026,962,1200011000,601010000,INT EXP-FUNDS HELD-ST,63534.27
+01/16/2026,962,129999,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-55230546.42
+01/16/2026,962,1100011000,100600000,PARTICIPATIONS PURCHASED-RE,21277176.30
+01/16/2026,962,1200011000,502450000,INT INC-AMORT FAS91 FEES-ST,-1281.34
+01/16/2026,962,1100011000,450550000,STOCK - CLASS C FLCA,-534000.00
+01/16/2026,962,110001,220050000,OFFICE BUILDING OWNED,88025.00
+01/16/2026,962,1100011000,220300000,COMPUTER HARDWARE,685577.24
+01/16/2026,962,1100011000,302100000,A/P-OTHER,-17525.44
+01/16/2026,962,1100011000,302450000,A/P-PATRONAGE TO MEMBERS,-210655.65
+01/16/2026,962,110001,363670000,LEASE LIABILITY - KINGSBURG OFFICE,-63125.80
+01/16/2026,962,1200011000,174000000,A/R-OTHER,0.00
+01/16/2026,962,120001,102550000,UNPROCESSED LN TRANSACTIONS,-38301.12
+01/16/2026,962,110001,103070000,ALL CR LOSS-LEASE RECEIVABLES,-28441.00
+01/16/2026,962,120001,103850000,LN RECOVERIES-COMM,-2169.90
+01/16/2026,962,1100011000,161000000,INV IN FCS CAPTIVE INSURANCE CO,518200.89
+01/16/2026,962,1100011000,174000000,A/R-OTHER,0.00
+01/16/2026,962,110001,221570000,RIGHT OF USE ASSET-KINGSBURG LEASE,123259.99
+01/16/2026,962,1100011000,240150000,PREPAID EQUIP SERVICE/MAINT,4686.36
+01/16/2026,962,110001,300040000,LOANABLE FUNDS-EQUITY POSITIONING,1150000.00
+01/16/2026,962,1100011000,300910000,AIP-COBANK-LT-EQUITY POSITIONING,681107.17
+01/16/2026,962,120001,300980000,AIP-COBANK LOANABLE FUNDS CREDIT,-454995.81
+01/16/2026,962,110001,302200000,A/P- RETENTION,328807.87
+01/16/2026,962,110001,363050000,ACCRUED BENEFIT PAYABLE FAS106,2405.65
+01/16/2026,962,1100011000,101750000,UNAMORT FAS91 FEES,-1979683.04
+01/16/2026,962,1200031000,215990000,NA CLEARING,0.00
+01/16/2026,962,1100031000,460050000,EARNED SURPLUS,-74838096.62
+01/16/2026,962,110001,220750000,ACCUM DEPR-SOFTWARE,-73879.39
+01/16/2026,962,1100011000,499520000,ERROR SUSPENSE - EMPOWER INTERFACE,0.00
+01/16/2026,962,120001,103060000,ALL CR LOSS-ENERGY,-93289.00
+01/16/2026,962,110001,161060000,INV IN FOUNDATIONS,14165.00
+01/16/2026,962,1100011000,220200000,CONSTRUCTION IN PROGRESS,0.00
+01/16/2026,962,1100011000,301020000,AIP-FUNDS HELD-LT-CM,0.00
+01/16/2026,962,1100011000,363050000,ACCRUED BENEFIT PAYABLE FAS106,-211488.40
+01/16/2026,962,110001,450550000,STOCK - CLASS C FLCA,0.00
+01/16/2026,962,120003,215990000,NA CLEARING,0.00
+01/16/2026,962,1100011000,520150000,FEES-ORIGINATION,-17677.00
+01/16/2026,962,1200011000,508050000,LATE FEE INC-FARM LN-COMM,-382589.77
+01/16/2026,962,1100011000,521350000,FEES-PREPAYMENT-RETAIL,-9365.32
+01/16/2026,962,1200031000,460250000,UNDISTRIBUTED EARNINGS,-404440.88
+01/16/2026,962,1100011000,100500000,PARTICIPATIONS SOLD-RE,-262652832.56
+01/16/2026,962,1200031000,170550000,AIR-PART PURCHASED-COMM,543004.78
+01/16/2026,962,1100011000,360300000,UNAPPLIED RECEIPT-LOCKBOX,-1131212.35
+01/16/2026,962,1100031000,500500000,INT INC-PART PUR-RE,-1613016.82
+01/16/2026,962,110001,240050000,PREPAID INSURANCE,220773.32
+01/16/2026,962,110001,363660000,LEASE LIABILITY - SOLAR LEASE,-22408.56
+01/16/2026,962,1200011000,522050000,FEES-OTHER,-31709.01
+01/16/2026,962,1100031000,100600000,PARTICIPATIONS PURCHASED-RE,529677698.27
+01/16/2026,962,1100011000,170000000,AIR-FARM LN-RE,17323864.74
+01/16/2026,962,1200011000,301030000,AIP-FUNDS HELD-ST-CM,-25906.93
+01/16/2026,962,1200011000,500050000,INT INC-FARM LN-COMM,-1057620.64
+01/16/2026,962,110001,302650000,A/P-VENDOR CLEARING,-403271.82
+01/16/2026,962,110001,460250000,UNDISTRIBUTED EARNINGS,447176.64
+01/16/2026,962,110001,788650000,OTHER EXP-STAFF EVENTS,21881.88
+01/16/2026,962,110001,725300000,PUR SVCS-LEGAL FEES,4697.00
+01/16/2026,962,110001,787950000,INS EXP-FCS CAPTIVE-WORKPLACE VIOLENCE,5905.00
+01/16/2026,962,110001,220600000,ACCUM DEPR-OFFICE BUILDING,-192609.90
+01/16/2026,962,1100011000,220600000,ACCUM DEPR-OFFICE BUILDING,-2782699.72
+01/16/2026,962,1100011000,220700000,ACCUM DEPR-COMPUTER HARDWARE,-497067.57
+01/16/2026,962,110001,240400000,PREPAID FURNITURE/EQUIPMENT,-103225.00
+01/16/2026,962,110001,363600000,ACCRUAL ANNUAL LEAVE,-60557.37
+01/16/2026,962,110001,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,0.00
+01/16/2026,962,1200031000,302100000,A/P-OTHER,4330.52
+01/16/2026,962,110001,102550000,UNPROCESSED LN TRANSACTIONS,35778.05
+01/16/2026,962,1200031000,102550000,UNPROCESSED LN TRANSACTIONS,17572.44
+01/16/2026,962,1100011000,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1200011000,160800000,INV IN COBANK-PART PURCHASED STOCK,1000.00
+01/16/2026,962,120001,173900000,A/R-PATR DUE FROM COBANK,-503702.00
+01/16/2026,962,120001,174900000,A/R-DECLARED PATR DUE FROM COBANK,1975568.00
+01/16/2026,962,1100011000,215000000,NA FARM LN-RE,5617548.76
+01/16/2026,962,110001,221580000,ACCUM AMORT-RIGHT OF USE ASSET-KINGSBURG LEASE,-61384.97
+01/16/2026,962,110001,240420000,PREPAID STAFF EVENTS,0.00
+01/16/2026,962,110099,300020000,NOTES PAY TO COBANK-LT,23475454.83
+01/16/2026,962,1200011000,301600000,A/P-FCSIC PREMIUM,-105370.00
+01/16/2026,962,110001,302250000,A/P- LWOP BENEFITS,0.00
+01/16/2026,962,110001,302260000,A/P-INCENTIVE ACCRUALS,-1331750.00
+01/16/2026,962,110001,360300000,UNAPPLIED RECEIPT-LOCKBOX,1131212.35
+01/16/2026,962,120001,450600000,STOCK - CLASS C PCA,0.00
+01/16/2026,962,120001,460050000,EARNED SURPLUS,28062775.25
+01/16/2026,962,120003,460050000,EARNED SURPLUS,448308.97
+01/16/2026,962,120001,120010000,CASH IN BANKS-COBANK,-55872803.32
+01/16/2026,962,1100011000,215070000,NA FARM LN-RE-CASH BASIS,0.00
+01/16/2026,962,110001,215990000,NA CLEARING,-6000.00
+01/16/2026,962,1200011000,160600000,INV IN COBANK-DN-ALLOCATED EQUITY,13624375.00
+01/16/2026,962,110001,173860000,A/R-PART STOCK PATRONAGE DUE FROM COBANK,0.00
+01/16/2026,962,110001,174430000,A/R-FARM CREDIT FOUNDATIONS,10205.63
+01/16/2026,962,1100011000,300040000,LOANABLE FUNDS-EQUITY POSITIONING,210950000.00
+01/16/2026,962,110001,300970000,AIP-COBANK SPREAD,-216092.29
+01/16/2026,962,1100011000,300970000,AIP-COBANK SPREAD,0.00
+01/16/2026,962,120001,302450000,A/P-PATRONAGE TO MEMBERS,-8018.41
+01/16/2026,962,110001,365500000,RESERVE FOR UNFUNDED COMMITMEN,-141662.00
+01/16/2026,962,1100991000,303350000,A/P-PARTICIPATIONS SOLD LN-LT,-3049.46
+01/16/2026,962,1200011000,172100000,AIR-LATE FEE-FARM LN-COMM,385811.92
+01/16/2026,962,110001,775200000,ABSTRACTS-CREDIT REPORTS,8454.06
+01/16/2026,962,110001,700750000,DIRECTOR-OTHER,-1921.91
+01/16/2026,962,1200031000,522050000,FEES-OTHER,-22504.37
+01/16/2026,962,1200011000,215990000,NA CLEARING,36610.73
+01/16/2026,962,110001,730050000,TRAVEL EXP-EMPLOYEE,-565.26
+01/16/2026,962,1200011000,100150000,FARM LN-COMM,530183352.13
+01/16/2026,962,1100011000,170500000,AIR-PART PURCHASED-RE,108987.88
+01/16/2026,962,110001,740150000,COMMUNICATIONS-CELLULAR,2802.64
+01/16/2026,962,110001,725050000,PUR SVCS-PROFESSIONAL FEES,229.17
+01/16/2026,962,110001,220500000,AUTO,6746.28
+01/16/2026,962,110001,175000000,A/R-EMPLOYEES,20866.80
+01/16/2026,962,110001,240430000,PREPAID MEMBER EVENTS,0.00
+01/16/2026,962,110001,103060000,ALL CR LOSS-ENERGY,-30518.00
+01/16/2026,962,110001,120020000,CASH IN BANKS-US BANK,18628.50
+01/16/2026,962,1100011000,160650000,INV IN COBANK-ALLOCATED,5118768.57
+01/16/2026,962,1200031000,170050000,AIR-FARM LN-COMM,9598.45
+01/16/2026,962,110001,173850000,A/R- PART PATRONAGE DUE FROM COBANK,0.00
+01/16/2026,962,110001,174850000,A/R-DECLARED PART PATRONAGE DUE FROM COBANK,1814000.00
+01/16/2026,962,1100011000,220650000,ACCUM DEPR-FURNITURE AND FIXTURES,-1551698.78
+01/16/2026,962,1200011000,300030000,NOTES PAY TO COBANK-ST,-463347165.59
+01/16/2026,962,120001,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,12404681.13
+01/16/2026,962,1100011000,362850000,OUTSTANDING CHECKS - CORPORATE,-618745.81
+01/16/2026,962,1200011000,450650000,PARTICIPATION CERT - CLASS F FLCA,-2000.00
+01/16/2026,962,120001,215990000,NA CLEARING,-2370.51
+01/16/2026,962,1100011000,300320000,FUNDS HELD-LT-CM,0.00
+01/16/2026,962,1200031000,301050000,AIP-FUNDS HELD-ST,0.00
+01/16/2026,962,1100031000,101650000,DEFERRED INC-RE,-614576.99
+01/16/2026,962,110001,725650000,PUR SVCS-OTHER,589.00
+01/16/2026,962,110001,762450000,PUB/MEM-ANNUAL MTG/NOMINATING COMMITTEE,12233.00
+01/16/2026,962,1200011000,301050000,AIP-FUNDS HELD-ST,-63534.26
+01/16/2026,962,1100011000,500500000,INT INC-PART PUR-RE,-65783.99
+01/16/2026,962,1100031000,502500000,INT INC-AMORT FAS91 COSTS-LT,562.11
+01/16/2026,962,110001,775000000,ABSTRACTS-RECORDS-REPORTS & FILING,1545.00
+01/16/2026,962,110001,220570000,ACCUM DEPR-LAND IMPROVEMENTS,-75898.72
+01/16/2026,962,120001,172100000,AIR-LATE FEE-FARM LN-COMM,0.00
+01/16/2026,962,1100011000,300900000,AIP-COBANK-LT,0.00
+01/16/2026,962,110001,363060000,NQ PENSION OCI LIABILITY,-595136.00
+01/16/2026,962,1100011000,102550000,UNPROCESSED LN TRANSACTIONS,-6221.19
+01/16/2026,962,1200011000,103850000,LN RECOVERIES-COMM,-40091.88
+01/16/2026,962,110001,700200000,DIRECTOR-TRAVEL/SUBSISTENCE,-1471.65
+01/16/2026,962,110001,789350000,OTHER EXP-STAFF MEETINGS,-826.71
+01/16/2026,962,1100031000,101750000,UNAMORT FAS91 FEES,-1041192.41
+01/16/2026,962,110001,762500000,PUB/MEM-DUES/MEMBERSHIPS,4000.00
+01/16/2026,962,1200011000,101900000,UNAMORT FAS91 COSTS-COMM,647868.14
+01/16/2026,962,1200011000,120010000,CASH IN BANKS-COBANK,60517413.00
+01/16/2026,962,1100031000,170000000,AIR-FARM LN-RE,14285.02
+01/16/2026,962,110001,240350000,PREPAID EXP-OTHER,-49769.14
+01/16/2026,962,119999,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-10602132.96
+01/16/2026,962,1100011000,220450000,FIXED ASSETS CLEARING,0.00
+01/16/2026,962,1100011000,460050000,EARNED SURPLUS,-323009661.45
+01/16/2026,962,1100011000,240050000,PREPAID INSURANCE,138542.68
+01/16/2026,962,110001,240150000,PREPAID EQUIP SERVICE/MAINT,5258.96
+01/16/2026,962,110001,240800000,PREPAID LEASE AUTO,19181.29
+01/16/2026,962,1200011000,460050000,EARNED SURPLUS,3377719.14
+01/16/2026,962,1200011000,360600000,UNAPPLIED RECEIPT-LN REJECTS,0.00
+01/16/2026,962,110001,103010000,ALL CR LOSS-PROD AG REAL ESTATE,-990644.42
+01/16/2026,962,120001,103020000,ALL CR LOSS-PROD AG PROD/INTERMEDIATE,-541433.10
+01/16/2026,962,110001,103030000,ALL CR LOSS-AGRIBUS COOPERATIVES,-13117.00
+01/16/2026,962,120099,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,120001,172600000,AIR-LATE FEE-PURCHASED COMM,0.00
+01/16/2026,962,110001,174900000,A/R-DECLARED PATR DUE FROM COBANK,4976432.00
+01/16/2026,962,120001,215110000,NA PARTICIPATIONS PURCHASED-COMM,200.61
+01/16/2026,962,1100011000,220100000,LAND OWNED,1433075.35
+01/16/2026,962,1100011000,220500000,AUTO,84777.15
+01/16/2026,962,110001,250100000,PREPAID PENSION,-102699.00
+01/16/2026,962,110001,300900000,AIP-COBANK-LT,-4242932.73
+01/16/2026,962,110001,303660000,A/P-FOUNDATIONS,0.00
+01/16/2026,962,1200031000,460050000,EARNED SURPLUS,-41778529.26
+01/16/2026,962,1100011000,172050000,AIR-LATE FEE-FARM LN-RE,105752.13
+01/16/2026,962,1200011000,300330000,FUNDS HELD-ST-CM,-13942710.72
+01/16/2026,962,1200011000,170050000,AIR-FARM LN-COMM,5106488.74
+01/16/2026,962,120003,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1200011000,173900000,A/R-PATR DUE FROM COBANK,503702.00
+01/16/2026,962,110001,240000000,PREPAID FCA SUPERVISORY,-101163.33
+01/16/2026,962,1100011000,250100000,PREPAID PENSION,8951170.79
+01/16/2026,962,120099,300030000,NOTES PAY TO COBANK-ST,-112411938.59
+01/16/2026,962,110099,303350000,A/P-PARTICIPATIONS SOLD LN-LT,2049.46
+01/16/2026,962,120099,303400000,A/P-PARTCIPATIONS SOLD LN-ST,18440.24
+01/16/2026,962,1100031000,520150000,FEES-ORIGINATION,-38833.34
+01/16/2026,962,110001,730250000,TRAVEL EXP-AUTO MAINT,203.94
+01/16/2026,962,110001,765000000,TRAINING-EMPLOYEES,1045.99
+01/16/2026,962,110001,788150000,OTHER EXP-HIRING EXPENSE,-465.13
+01/16/2026,962,110001,788400000,OTHER EXP-LUNCHROOM SUPPLIES,-163.39
+01/16/2026,962,1200011000,520150000,FEES-ORIGINATION,-32330.00
+01/16/2026,962,1200031000,100650000,PARTICIPATIONS PURCHASED-COMM,116655798.87
+01/16/2026,962,1200011000,101800000,UNAMORT FAS91 FEES-COMM,-299943.84
+01/16/2026,962,1100031000,170500000,AIR-PART PURCHASED-RE,3754426.48
+01/16/2026,962,110001,760460000,ADVERTISING-PRINT/DISPLAY,425.00
+01/16/2026,962,1200011000,215010000,NA FARM LN-COMM,303936.46
+01/16/2026,962,120001,460250000,UNDISTRIBUTED EARNINGS,148.50
+01/16/2026,962,999999,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,345.67
+01/16/2026,962,1100011000,220250000,FURNITURE & FIXTURES,1890453.45
+01/16/2026,962,999999,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-345.67
+01/16/2026,962,1100031000,302100000,A/P-OTHER,0.00
+01/16/2026,962,1200031000,101800000,UNAMORT FAS91 FEES-COMM,-138835.52
+01/16/2026,962,110003,102550000,UNPROCESSED LN TRANSACTIONS,17774.99
+01/16/2026,962,120001,103070000,ALL CR LOSS-LEASE RECEIVABLES,-101376.34
+01/16/2026,962,1100011000,103800000,LN RECOVERIES-RE,0.00
+01/16/2026,962,1100011000,161100000,INV IN FARMER MAC,1.00
+01/16/2026,962,1200011000,161500000,INV IN COBANK-DN-PURCHASED STOCK,5378000.00
+01/16/2026,962,110001,172050000,AIR-LATE FEE-FARM LN-RE,0.00
+01/16/2026,962,1200011000,172600000,AIR-LATE FEE-PURCHASED COMM,0.00
+01/16/2026,962,1100011000,175000000,A/R-EMPLOYEES,0.00
+01/16/2026,962,120001,300950000,AIP-COBANK-ST,-1475267.42
+01/16/2026,962,120001,301600000,A/P-FCSIC PREMIUM,-280630.00
+01/16/2026,962,110001,460050000,EARNED SURPLUS,63253891.73
+01/16/2026,962,1100011000,100050000,FARM LN-RE,1051941671.17
+01/16/2026,962,1100011000,215020000,NA PARTICIPATIONS SOLD-RE,28252.63
+01/16/2026,962,110001,215020000,NA PARTICIPATIONS SOLD-RE,-1660927.50
+01/16/2026,962,1200011000,601030000,INT EXP-FUNDS HELD-ST-CM,25906.93
+01/16/2026,962,110001,755000000,IT-INTERNET,160.50
+01/16/2026,962,110001,730170000,TRAVEL EXP-AUTO-FUEL,2520.68
+01/16/2026,962,120001,302100000,A/P-OTHER,48438.48
+01/16/2026,962,110001,160300000,INV IN RBIC OPEN PRAIRIE,1849110.17
+01/16/2026,962,1100011000,161300000,INV IN OTHER FARM CREDIT INSTITUTIONS,0.00
+01/16/2026,962,1100011000,161500000,INV IN COBANK-DN-PURCHASED STOCK,9716816.15
+01/16/2026,962,120001,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,-6942768.74
+01/16/2026,962,120001,215010000,NA FARM LN-COMM,2169.90
+01/16/2026,962,110003,300030000,NOTES PAY TO COBANK-ST,4536.74
+01/16/2026,962,110001,300980000,AIP-COBANK LOANABLE FUNDS CREDIT,791542.54
+01/16/2026,962,1100011000,301600000,A/P-FCSIC PREMIUM,-306630.00
+01/16/2026,962,1100011000,302200000,A/P- RETENTION,-1439509.22
+01/16/2026,962,1200011000,363500000,MONTH END ACCRUALS,0.00
+01/16/2026,962,120001,365500000,RESERVE FOR UNFUNDED COMMITMEN,-123993.00
+01/16/2026,962,1100991000,360300000,UNAPPLIED RECEIPT-LOCKBOX,0.00
+
+	 offset = 5000
+Activity name:Assign7960 id:1 completed @ 01/17/2026 04:39:00.921 AM
+
+Activity name:Branch9750 type:BRANCH id:1 started @ 01/17/2026 04:39:00.921 AM
+	 Evaluating rule: rowCount > 0 to node GetResult
+	 Evaluating rule: true to node Assign5250
+	 Next activity: Assign5250
+Activity name:Branch9750 id:1 completed @ 01/17/2026 04:39:00.921 AM
+
+Activity name:Assign5250 type:ASSGN id:1 started @ 01/17/2026 04:39:00.921 AM
+	 Evaluating JavaScript expression var arr = OutputRecords.trim().split("\n");
+
+var Count = 0;
+// The condition below will remove spaces and line feed (\n) in the records. So no empty rows will be counted.
+if(arr.join("").trim().length == 0) {
+	Count = 0;
+}
+else {
+	Count = arr.length;
+}
+
+RecordCount = parseInt(Count);
+
+Header = Header.replace(/"/g,"");
+
+OutputRecords = Header + "\n" + arr.join("\n");; to value RunDte,Company,AccountingUnit,GLAccountNum,GLAccountDesc,AccountAmt
+01/16/2026,962,110001,362850000,OUTSTANDING CHECKS - CORPORATE,-38239.47
+01/16/2026,962,1100031000,522050000,FEES-OTHER,-61617.77
+01/16/2026,962,1100011000,520160000,FEES-ORIG/COMIT FAS 91,56510.34
+01/16/2026,962,110001,762750000,PUB/MEM-MEMBER APPRECIATION EVENTS,-1337.40
+01/16/2026,962,1100031000,101850000,UNAMORT FAS91 COSTS-RE,1154522.34
+01/16/2026,962,1100011000,508000000,LATE FEE INC-FARM LN-RE,-105982.96
+01/16/2026,962,1100011000,790500000,OTHER MISC-FAS91 LN COSTS DEFERRED,-32400.00
+01/16/2026,962,110001,735100000,COS-REPAIRS/MAINT,1421.08
+01/16/2026,962,1200031000,520150000,FEES-ORIGINATION,-979.61
+01/16/2026,962,1200011000,100650000,PARTICIPATIONS PURCHASED-COMM,6460136.43
+01/16/2026,962,1100031000,215990000,NA CLEARING,0.00
+01/16/2026,962,1200011000,300310000,FUNDS HELD-ST,-38513812.74
+01/16/2026,962,1100011000,303350000,A/P-PARTICIPATIONS SOLD LN-LT,3049.46
+01/16/2026,962,110001,725370000,PUR SVCS-COURIER,2016.00
+01/16/2026,962,110001,220450000,FIXED ASSETS CLEARING,0.00
+01/16/2026,962,1100011000,240800000,PREPAID LEASE AUTO,46453.30
+01/16/2026,962,1100011000,302650000,A/P-VENDOR CLEARING,0.00
+01/16/2026,962,110001,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,0.00
+01/16/2026,962,1100031000,300030000,NOTES PAY TO COBANK-ST,-4536.74
+01/16/2026,962,1200011000,302100000,A/P-OTHER,-73497.47
+01/16/2026,962,1200031000,100150000,FARM LN-COMM,2532595.39
+01/16/2026,962,110001,103020000,ALL CR LOSS-PROD AG PROD/INTERMEDIATE,0.00
+01/16/2026,962,120001,103030000,ALL CR LOSS-AGRIBUS COOPERATIVES,-270293.00
+01/16/2026,962,110001,103040000,ALL CR LOSS-AGRIBUS PROC & MKT,-1224309.00
+01/16/2026,962,1200011000,174900000,A/R-DECLARED PATR DUE FROM COBANK,0.00
+01/16/2026,962,110001,220250000,FURNITURE & FIXTURES,63476.30
+01/16/2026,962,110001,221550000,RIGHT OF USE ASSET-SOLAR LEASE,211979.32
+01/16/2026,962,1100011000,240000000,PREPAID FCA SUPERVISORY,101163.33
+01/16/2026,962,120001,300030000,NOTES PAY TO COBANK-ST,142893411.43
+01/16/2026,962,1100031000,360300000,UNAPPLIED RECEIPT-LOCKBOX,0.00
+01/16/2026,962,1200011000,215110000,NA PARTICIPATIONS PURCHASED-COMM,-200.61
+01/16/2026,962,1100011000,500000000,INT INC-FARM LN-RE,-2647765.34
+01/16/2026,962,1100031000,102550000,UNPROCESSED LN TRANSACTIONS,-17774.99
+01/16/2026,962,120001,103040000,ALL CR LOSS-AGRIBUS PROC & MKT,-276076.00
+01/16/2026,962,120001,103050000,ALL CR LOSS-AGRIBUS FARM RELATED,-8923.00
+01/16/2026,962,110001,220100000,LAND OWNED,0.00
+01/16/2026,962,110001,220120000,LAND IMPROVEMENTS-OWNED,583515.76
+01/16/2026,962,1100011000,220550000,LEASEHOLD IMPROVEMENTS,15789.58
+01/16/2026,962,110001,220900000,ACCUM DEPR-LEASEHOLD IMPROVEMENTS,-15789.58
+01/16/2026,962,110001,300020000,NOTES PAY TO COBANK-LT,-121600154.00
+01/16/2026,962,1100011000,300020000,NOTES PAY TO COBANK-LT,-1185135688.95
+01/16/2026,962,110001,301600000,A/P-FCSIC PREMIUM,-659370.00
+01/16/2026,962,120001,303400000,A/P-PARTCIPATIONS SOLD LN-ST,6405111.88
+01/16/2026,962,1100011000,215990000,NA CLEARING,6000.00
+01/16/2026,962,1100011000,522050000,FEES-OTHER,-10879.86
+01/16/2026,962,110001,750650000,FURN & EQUIP-OTHER,4442.21
+01/16/2026,962,1100011000,460250000,UNDISTRIBUTED EARNINGS,-2807993.91
+01/16/2026,962,110001,755050000,IT-FPI SERVICES,383919.06
+01/16/2026,962,110001,755010000,IT-SOFTWARE LICENSING FEES,-14517.00
+01/16/2026,962,1100991000,300020000,NOTES PAY TO COBANK-LT,-35902412.22
+01/16/2026,962,1200011000,102550000,UNPROCESSED LN TRANSACTIONS,8744.26
+01/16/2026,962,1100031000,460250000,UNDISTRIBUTED EARNINGS,-1728038.97
+01/16/2026,962,110001,240410000,PREPAID SOFTWARE,563667.47
+01/16/2026,962,1100011000,301000000,AIP-FUNDS HELD-LT,-18360.07
+01/16/2026,962,1200011000,502550000,INT INC-AMORT FAS91 COSTS-ST,3640.83
+01/16/2026,962,120001,725300000,PUR SVCS-LEGAL FEES,148.50
+01/16/2026,962,110001,363500000,MONTH END ACCRUALS,0.00
+01/16/2026,962,110001,763050000,PUB/MEM-EXTERNAL EVENTS,-671.58
+01/16/2026,962,1100011000,220400000,PURCHASED SOFTWARE,2930477.92
+01/16/2026,962,1200011000,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,6942768.74
+01/16/2026,962,1200011000,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-12404681.13
+01/16/2026,962,110001,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1200011000,450550000,STOCK - CLASS C FLCA,0.00
+01/16/2026,962,1200011000,450600000,STOCK - CLASS C PCA,-168000.00
+01/16/2026,962,120003,102550000,UNPROCESSED LN TRANSACTIONS,-17572.44
+01/16/2026,962,120001,103080000,ALL CR LOSS-COMMUNICATIONS,0.00
+01/16/2026,962,1200031000,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1100011000,174750000,A/R-APPRAISALS,21550.00
+01/16/2026,962,1100011000,220050000,OFFICE BUILDING OWNED,9234302.97
+01/16/2026,962,110001,300030000,NOTES PAY TO COBANK-ST,106440.93
+01/16/2026,962,110001,300910000,AIP-COBANK-LT-EQUITY POSITIONING,101168.96
+01/16/2026,962,120001,300970000,AIP-COBANK SPREAD,-132003.36
+01/16/2026,962,120003,302100000,A/P-OTHER,-4330.52
+01/16/2026,962,110001,303350000,A/P-PARTICIPATIONS SOLD LN-LT,-2049.46
+01/16/2026,962,1200991000,303400000,A/P-PARTCIPATIONS SOLD LN-ST,-30124.54
+01/16/2026,962,1100011000,450600000,STOCK - CLASS C PCA,0.00
+01/16/2026,962,110001,460400000,EARNING RESERVED FOR PATRONAGE DISTRIBUTION,0.00
+01/16/2026,962,110001,470010000,OCI - NQ PENSION,595136.00
+01/16/2026,962,110001,499500000,ERROR SUSPENSE - LOAN ACCOUNTING  INTERFACE,0.00
+01/16/2026,962,1100031000,172050000,AIR-LATE FEE-FARM LN-RE,0.00
+01/16/2026,962,1200031000,502450000,INT INC-AMORT FAS91 FEES-ST,-1666.77
+01/16/2026,962,110001,730180000,TRAVEL EXP-AUTO-LICENSE & REGISTRATION,6.00
+01/16/2026,962,110001,220700000,ACCUM DEPR-COMPUTER HARDWARE,-34832.38
+01/16/2026,962,110001,220800000,ACCUM DEPR-AUTOS,-4726.59
+01/16/2026,962,110003,101650000,DEFERRED INC-RE,10730.52
+01/16/2026,962,1200011000,160650000,INV IN COBANK-ALLOCATED,58196.14
+01/16/2026,962,1100011000,251350000,SECURITY DEPOSITS,5230.00
+01/16/2026,962,1200011000,300970000,AIP-COBANK SPREAD,0.00
+01/16/2026,962,1100011000,363600000,ACCRUAL ANNUAL LEAVE,-540922.61
+01/16/2026,962,1200011000,303400000,A/P-PARTCIPATIONS SOLD LN-ST,-6393427.58
+01/16/2026,962,110001,735150000,COS-JANITOR,5574.36
+01/16/2026,962,110001,735250000,COS-UTILITIES,322.19
+01/16/2026,962,1200011000,521350000,FEES-PREPAYMENT-RETAIL,-1751.55
+01/16/2026,962,1100011000,170400000,AIR-PART SOLD-RE,-2336873.17
+01/16/2026,962,1100011000,300300000,FUNDS HELD-LT,-11905205.33
+01/16/2026,962,1200011000,460250000,UNDISTRIBUTED EARNINGS,-1472755.62
+01/16/2026,962,110001,735950000,COS-LANDSCAPING,2060.71
+01/16/2026,962,119999,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,55230892.09
+01/16/2026,962,110001,745000000,OFFICE EXP-SUPPLIES,111.38
+01/16/2026,962,110001,735290000,PUR SVCS-SECURE PAPER DISPOSAL,1121.10
+01/16/2026,962,1200991000,300030000,NOTES PAY TO COBANK-ST,134941969.11
+01/16/2026,962,1200011000,100550000,PARTICIPATIONS SOLD-COMM,-256078321.59
+01/16/2026,962,1200031000,500550000,INT INC-PART PUR-COMM,-370713.37
+01/16/2026,962,1200011000,790500000,OTHER MISC-FAS91 LN COSTS DEFERRED,-65800.00
+01/16/2026,962,1200011000,542860000,OTH INC,-0.03
+01/16/2026,962,1100011000,300030000,NOTES PAY TO COBANK-ST,-97075.61
+01/16/2026,962,110001,740310000,COMMUNICATIONS-FEDEX,45.96
+01/16/2026,962,110001,789990000,OTHER EXP-INTEREST EXPENSE,47.26
+01/16/2026,962,110001,220650000,ACCUM DEPR-FURNITURE AND FIXTURES,-62154.66
+01/16/2026,962,1100011000,220750000,ACCUM DEPR-SOFTWARE,-2743132.27
+01/16/2026,962,1100011000,240350000,PREPAID EXP-OTHER,141727.31
+01/16/2026,962,110001,302450000,A/P-PATRONAGE TO MEMBERS,-14889984.35
+01/16/2026,962,110001,103080000,ALL CR LOSS-COMMUNICATIONS,-1850739.00
+01/16/2026,962,1200011000,103150000,LN CHARGE OFFS-COMM,166878.00
+01/16/2026,962,120001,161500000,INV IN COBANK-DN-PURCHASED STOCK,3835000.00
+01/16/2026,962,110001,174750000,A/R-APPRAISALS,-5950.00
+01/16/2026,962,110003,215990000,NA CLEARING,0.00
+01/16/2026,962,110001,220300000,COMPUTER HARDWARE,39981.71
+01/16/2026,962,120003,300030000,NOTES PAY TO COBANK-ST,55219847.48
+01/16/2026,962,1200011000,302450000,A/P-PATRONAGE TO MEMBERS,8018.41
+01/16/2026,962,1100011000,363500000,MONTH END ACCRUALS,0.00
+01/16/2026,962,1100011000,450650000,PARTICIPATION CERT - CLASS F FLCA,0.00
+01/16/2026,962,110003,460050000,EARNED SURPLUS,840471.64
+01/16/2026,962,1100011000,460400000,EARNING RESERVED FOR PATRONAGE DISTRIBUTION,0.00
+01/16/2026,962,1200011000,499500000,ERROR SUSPENSE - LOAN ACCOUNTING  INTERFACE,0.00
+01/16/2026,962,1100031000,100050000,FARM LN-RE,3671449.53
+01/16/2026,962,1200991000,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,999999,499000000,ERROR SUSPENSE,0.00
+01/16/2026,962,110001,736050000,COS-SECURITY,1336.50
+01/16/2026,962,1100011000,220800000,ACCUM DEPR-AUTOS,-36113.84
+01/16/2026,962,1100011000,240400000,PREPAID FURNITURE/EQUIPMENT,103225.00
+01/16/2026,962,110001,103050000,ALL CR LOSS-AGRIBUS FARM RELATED,-177101.00
+01/16/2026,962,1100011000,103100000,LN CHARGE OFFS-RE,168875.42
+01/16/2026,962,1100011000,160600000,INV IN COBANK-DN-ALLOCATED EQUITY,9585225.00
+01/16/2026,962,110001,173900000,A/R-PATR DUE FROM COBANK,0.00
+01/16/2026,962,110001,174860000,A/R-DECLARED PART STOCK PATRONAGE DUE FROM COBANK,534000.00
+01/16/2026,962,110001,221560000,ACCUM AMORT-RIGHT OF USE ASSET-SOLAR LEASE,-193546.31
+01/16/2026,962,12000310000,300030000,NOTES PAY TO COBANK-ST,14181.09
+01/16/2026,962,110001,302100000,A/P-OTHER,25387.67
+01/16/2026,962,1200031000,101900000,UNAMORT FAS91 COSTS-COMM,64476.52
+01/16/2026,962,1200031000,502550000,INT INC-AMORT FAS91 COSTS-ST,541.77
+01/16/2026,962,1100031000,215100000,NA PARTICIPATIONS PURCHASED-RE,18459929.51
+01/16/2026,962,1200011000,170450000,AIR-PART SOLD-COMM,-789330.61
+01/16/2026,962,1200011000,170550000,AIR-PART PURCHASED-COMM,88940.42
+01/16/2026,962,129999,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,10601787.29
+01/16/2026,962,1200031000,300030000,NOTES PAY TO COBANK-ST,-79633893.22
+01/16/2026,962,1100031000,500000000,INT INC-FARM LN-RE,-15133.15
+01/16/2026,962,1100011000,502500000,INT INC-AMORT FAS91 COSTS-LT,6574.46
+01/16/2026,962,1200011000,520160000,FEES-ORIG/COMIT FAS 91,32330.00
+01/16/2026,962,1100011000,601000000,INT EXP-FUNDS HELD-LT,18775.76
+01/16/2026,962,1100011000,101850000,UNAMORT FAS91 COSTS-RE,4263025.03
+01/16/2026,962,1200031000,500050000,INT INC-FARM LN-COMM,-9118.53
+01/16/2026,962,1200011000,500550000,INT INC-PART PUR-COMM,-25085.31
+01/16/2026,962,1200011000,601010000,INT EXP-FUNDS HELD-ST,63534.27
+01/16/2026,962,129999,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-55230546.42
+01/16/2026,962,1100011000,100600000,PARTICIPATIONS PURCHASED-RE,21277176.30
+01/16/2026,962,1200011000,502450000,INT INC-AMORT FAS91 FEES-ST,-1281.34
+01/16/2026,962,1100011000,450550000,STOCK - CLASS C FLCA,-534000.00
+01/16/2026,962,110001,220050000,OFFICE BUILDING OWNED,88025.00
+01/16/2026,962,1100011000,220300000,COMPUTER HARDWARE,685577.24
+01/16/2026,962,1100011000,302100000,A/P-OTHER,-17525.44
+01/16/2026,962,1100011000,302450000,A/P-PATRONAGE TO MEMBERS,-210655.65
+01/16/2026,962,110001,363670000,LEASE LIABILITY - KINGSBURG OFFICE,-63125.80
+01/16/2026,962,1200011000,174000000,A/R-OTHER,0.00
+01/16/2026,962,120001,102550000,UNPROCESSED LN TRANSACTIONS,-38301.12
+01/16/2026,962,110001,103070000,ALL CR LOSS-LEASE RECEIVABLES,-28441.00
+01/16/2026,962,120001,103850000,LN RECOVERIES-COMM,-2169.90
+01/16/2026,962,1100011000,161000000,INV IN FCS CAPTIVE INSURANCE CO,518200.89
+01/16/2026,962,1100011000,174000000,A/R-OTHER,0.00
+01/16/2026,962,110001,221570000,RIGHT OF USE ASSET-KINGSBURG LEASE,123259.99
+01/16/2026,962,1100011000,240150000,PREPAID EQUIP SERVICE/MAINT,4686.36
+01/16/2026,962,110001,300040000,LOANABLE FUNDS-EQUITY POSITIONING,1150000.00
+01/16/2026,962,1100011000,300910000,AIP-COBANK-LT-EQUITY POSITIONING,681107.17
+01/16/2026,962,120001,300980000,AIP-COBANK LOANABLE FUNDS CREDIT,-454995.81
+01/16/2026,962,110001,302200000,A/P- RETENTION,328807.87
+01/16/2026,962,110001,363050000,ACCRUED BENEFIT PAYABLE FAS106,2405.65
+01/16/2026,962,1100011000,101750000,UNAMORT FAS91 FEES,-1979683.04
+01/16/2026,962,1200031000,215990000,NA CLEARING,0.00
+01/16/2026,962,1100031000,460050000,EARNED SURPLUS,-74838096.62
+01/16/2026,962,110001,220750000,ACCUM DEPR-SOFTWARE,-73879.39
+01/16/2026,962,1100011000,499520000,ERROR SUSPENSE - EMPOWER INTERFACE,0.00
+01/16/2026,962,120001,103060000,ALL CR LOSS-ENERGY,-93289.00
+01/16/2026,962,110001,161060000,INV IN FOUNDATIONS,14165.00
+01/16/2026,962,1100011000,220200000,CONSTRUCTION IN PROGRESS,0.00
+01/16/2026,962,1100011000,301020000,AIP-FUNDS HELD-LT-CM,0.00
+01/16/2026,962,1100011000,363050000,ACCRUED BENEFIT PAYABLE FAS106,-211488.40
+01/16/2026,962,110001,450550000,STOCK - CLASS C FLCA,0.00
+01/16/2026,962,120003,215990000,NA CLEARING,0.00
+01/16/2026,962,1100011000,520150000,FEES-ORIGINATION,-17677.00
+01/16/2026,962,1200011000,508050000,LATE FEE INC-FARM LN-COMM,-382589.77
+01/16/2026,962,1100011000,521350000,FEES-PREPAYMENT-RETAIL,-9365.32
+01/16/2026,962,1200031000,460250000,UNDISTRIBUTED EARNINGS,-404440.88
+01/16/2026,962,1100011000,100500000,PARTICIPATIONS SOLD-RE,-262652832.56
+01/16/2026,962,1200031000,170550000,AIR-PART PURCHASED-COMM,543004.78
+01/16/2026,962,1100011000,360300000,UNAPPLIED RECEIPT-LOCKBOX,-1131212.35
+01/16/2026,962,1100031000,500500000,INT INC-PART PUR-RE,-1613016.82
+01/16/2026,962,110001,240050000,PREPAID INSURANCE,220773.32
+01/16/2026,962,110001,363660000,LEASE LIABILITY - SOLAR LEASE,-22408.56
+01/16/2026,962,1200011000,522050000,FEES-OTHER,-31709.01
+01/16/2026,962,1100031000,100600000,PARTICIPATIONS PURCHASED-RE,529677698.27
+01/16/2026,962,1100011000,170000000,AIR-FARM LN-RE,17323864.74
+01/16/2026,962,1200011000,301030000,AIP-FUNDS HELD-ST-CM,-25906.93
+01/16/2026,962,1200011000,500050000,INT INC-FARM LN-COMM,-1057620.64
+01/16/2026,962,110001,302650000,A/P-VENDOR CLEARING,-403271.82
+01/16/2026,962,110001,460250000,UNDISTRIBUTED EARNINGS,447176.64
+01/16/2026,962,110001,788650000,OTHER EXP-STAFF EVENTS,21881.88
+01/16/2026,962,110001,725300000,PUR SVCS-LEGAL FEES,4697.00
+01/16/2026,962,110001,787950000,INS EXP-FCS CAPTIVE-WORKPLACE VIOLENCE,5905.00
+01/16/2026,962,110001,220600000,ACCUM DEPR-OFFICE BUILDING,-192609.90
+01/16/2026,962,1100011000,220600000,ACCUM DEPR-OFFICE BUILDING,-2782699.72
+01/16/2026,962,1100011000,220700000,ACCUM DEPR-COMPUTER HARDWARE,-497067.57
+01/16/2026,962,110001,240400000,PREPAID FURNITURE/EQUIPMENT,-103225.00
+01/16/2026,962,110001,363600000,ACCRUAL ANNUAL LEAVE,-60557.37
+01/16/2026,962,110001,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,0.00
+01/16/2026,962,1200031000,302100000,A/P-OTHER,4330.52
+01/16/2026,962,110001,102550000,UNPROCESSED LN TRANSACTIONS,35778.05
+01/16/2026,962,1200031000,102550000,UNPROCESSED LN TRANSACTIONS,17572.44
+01/16/2026,962,1100011000,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1200011000,160800000,INV IN COBANK-PART PURCHASED STOCK,1000.00
+01/16/2026,962,120001,173900000,A/R-PATR DUE FROM COBANK,-503702.00
+01/16/2026,962,120001,174900000,A/R-DECLARED PATR DUE FROM COBANK,1975568.00
+01/16/2026,962,1100011000,215000000,NA FARM LN-RE,5617548.76
+01/16/2026,962,110001,221580000,ACCUM AMORT-RIGHT OF USE ASSET-KINGSBURG LEASE,-61384.97
+01/16/2026,962,110001,240420000,PREPAID STAFF EVENTS,0.00
+01/16/2026,962,110099,300020000,NOTES PAY TO COBANK-LT,23475454.83
+01/16/2026,962,1200011000,301600000,A/P-FCSIC PREMIUM,-105370.00
+01/16/2026,962,110001,302250000,A/P- LWOP BENEFITS,0.00
+01/16/2026,962,110001,302260000,A/P-INCENTIVE ACCRUALS,-1331750.00
+01/16/2026,962,110001,360300000,UNAPPLIED RECEIPT-LOCKBOX,1131212.35
+01/16/2026,962,120001,450600000,STOCK - CLASS C PCA,0.00
+01/16/2026,962,120001,460050000,EARNED SURPLUS,28062775.25
+01/16/2026,962,120003,460050000,EARNED SURPLUS,448308.97
+01/16/2026,962,120001,120010000,CASH IN BANKS-COBANK,-55872803.32
+01/16/2026,962,1100011000,215070000,NA FARM LN-RE-CASH BASIS,0.00
+01/16/2026,962,110001,215990000,NA CLEARING,-6000.00
+01/16/2026,962,1200011000,160600000,INV IN COBANK-DN-ALLOCATED EQUITY,13624375.00
+01/16/2026,962,110001,173860000,A/R-PART STOCK PATRONAGE DUE FROM COBANK,0.00
+01/16/2026,962,110001,174430000,A/R-FARM CREDIT FOUNDATIONS,10205.63
+01/16/2026,962,1100011000,300040000,LOANABLE FUNDS-EQUITY POSITIONING,210950000.00
+01/16/2026,962,110001,300970000,AIP-COBANK SPREAD,-216092.29
+01/16/2026,962,1100011000,300970000,AIP-COBANK SPREAD,0.00
+01/16/2026,962,120001,302450000,A/P-PATRONAGE TO MEMBERS,-8018.41
+01/16/2026,962,110001,365500000,RESERVE FOR UNFUNDED COMMITMEN,-141662.00
+01/16/2026,962,1100991000,303350000,A/P-PARTICIPATIONS SOLD LN-LT,-3049.46
+01/16/2026,962,1200011000,172100000,AIR-LATE FEE-FARM LN-COMM,385811.92
+01/16/2026,962,110001,775200000,ABSTRACTS-CREDIT REPORTS,8454.06
+01/16/2026,962,110001,700750000,DIRECTOR-OTHER,-1921.91
+01/16/2026,962,1200031000,522050000,FEES-OTHER,-22504.37
+01/16/2026,962,1200011000,215990000,NA CLEARING,36610.73
+01/16/2026,962,110001,730050000,TRAVEL EXP-EMPLOYEE,-565.26
+01/16/2026,962,1200011000,100150000,FARM LN-COMM,530183352.13
+01/16/2026,962,1100011000,170500000,AIR-PART PURCHASED-RE,108987.88
+01/16/2026,962,110001,740150000,COMMUNICATIONS-CELLULAR,2802.64
+01/16/2026,962,110001,725050000,PUR SVCS-PROFESSIONAL FEES,229.17
+01/16/2026,962,110001,220500000,AUTO,6746.28
+01/16/2026,962,110001,175000000,A/R-EMPLOYEES,20866.80
+01/16/2026,962,110001,240430000,PREPAID MEMBER EVENTS,0.00
+01/16/2026,962,110001,103060000,ALL CR LOSS-ENERGY,-30518.00
+01/16/2026,962,110001,120020000,CASH IN BANKS-US BANK,18628.50
+01/16/2026,962,1100011000,160650000,INV IN COBANK-ALLOCATED,5118768.57
+01/16/2026,962,1200031000,170050000,AIR-FARM LN-COMM,9598.45
+01/16/2026,962,110001,173850000,A/R- PART PATRONAGE DUE FROM COBANK,0.00
+01/16/2026,962,110001,174850000,A/R-DECLARED PART PATRONAGE DUE FROM COBANK,1814000.00
+01/16/2026,962,1100011000,220650000,ACCUM DEPR-FURNITURE AND FIXTURES,-1551698.78
+01/16/2026,962,1200011000,300030000,NOTES PAY TO COBANK-ST,-463347165.59
+01/16/2026,962,120001,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,12404681.13
+01/16/2026,962,1100011000,362850000,OUTSTANDING CHECKS - CORPORATE,-618745.81
+01/16/2026,962,1200011000,450650000,PARTICIPATION CERT - CLASS F FLCA,-2000.00
+01/16/2026,962,120001,215990000,NA CLEARING,-2370.51
+01/16/2026,962,1100011000,300320000,FUNDS HELD-LT-CM,0.00
+01/16/2026,962,1200031000,301050000,AIP-FUNDS HELD-ST,0.00
+01/16/2026,962,1100031000,101650000,DEFERRED INC-RE,-614576.99
+01/16/2026,962,110001,725650000,PUR SVCS-OTHER,589.00
+01/16/2026,962,110001,762450000,PUB/MEM-ANNUAL MTG/NOMINATING COMMITTEE,12233.00
+01/16/2026,962,1200011000,301050000,AIP-FUNDS HELD-ST,-63534.26
+01/16/2026,962,1100011000,500500000,INT INC-PART PUR-RE,-65783.99
+01/16/2026,962,1100031000,502500000,INT INC-AMORT FAS91 COSTS-LT,562.11
+01/16/2026,962,110001,775000000,ABSTRACTS-RECORDS-REPORTS & FILING,1545.00
+01/16/2026,962,110001,220570000,ACCUM DEPR-LAND IMPROVEMENTS,-75898.72
+01/16/2026,962,120001,172100000,AIR-LATE FEE-FARM LN-COMM,0.00
+01/16/2026,962,1100011000,300900000,AIP-COBANK-LT,0.00
+01/16/2026,962,110001,363060000,NQ PENSION OCI LIABILITY,-595136.00
+01/16/2026,962,1100011000,102550000,UNPROCESSED LN TRANSACTIONS,-6221.19
+01/16/2026,962,1200011000,103850000,LN RECOVERIES-COMM,-40091.88
+01/16/2026,962,110001,700200000,DIRECTOR-TRAVEL/SUBSISTENCE,-1471.65
+01/16/2026,962,110001,789350000,OTHER EXP-STAFF MEETINGS,-826.71
+01/16/2026,962,1100031000,101750000,UNAMORT FAS91 FEES,-1041192.41
+01/16/2026,962,110001,762500000,PUB/MEM-DUES/MEMBERSHIPS,4000.00
+01/16/2026,962,1200011000,101900000,UNAMORT FAS91 COSTS-COMM,647868.14
+01/16/2026,962,1200011000,120010000,CASH IN BANKS-COBANK,60517413.00
+01/16/2026,962,1100031000,170000000,AIR-FARM LN-RE,14285.02
+01/16/2026,962,110001,240350000,PREPAID EXP-OTHER,-49769.14
+01/16/2026,962,119999,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-10602132.96
+01/16/2026,962,1100011000,220450000,FIXED ASSETS CLEARING,0.00
+01/16/2026,962,1100011000,460050000,EARNED SURPLUS,-323009661.45
+01/16/2026,962,1100011000,240050000,PREPAID INSURANCE,138542.68
+01/16/2026,962,110001,240150000,PREPAID EQUIP SERVICE/MAINT,5258.96
+01/16/2026,962,110001,240800000,PREPAID LEASE AUTO,19181.29
+01/16/2026,962,1200011000,460050000,EARNED SURPLUS,3377719.14
+01/16/2026,962,1200011000,360600000,UNAPPLIED RECEIPT-LN REJECTS,0.00
+01/16/2026,962,110001,103010000,ALL CR LOSS-PROD AG REAL ESTATE,-990644.42
+01/16/2026,962,120001,103020000,ALL CR LOSS-PROD AG PROD/INTERMEDIATE,-541433.10
+01/16/2026,962,110001,103030000,ALL CR LOSS-AGRIBUS COOPERATIVES,-13117.00
+01/16/2026,962,120099,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,120001,172600000,AIR-LATE FEE-PURCHASED COMM,0.00
+01/16/2026,962,110001,174900000,A/R-DECLARED PATR DUE FROM COBANK,4976432.00
+01/16/2026,962,120001,215110000,NA PARTICIPATIONS PURCHASED-COMM,200.61
+01/16/2026,962,1100011000,220100000,LAND OWNED,1433075.35
+01/16/2026,962,1100011000,220500000,AUTO,84777.15
+01/16/2026,962,110001,250100000,PREPAID PENSION,-102699.00
+01/16/2026,962,110001,300900000,AIP-COBANK-LT,-4242932.73
+01/16/2026,962,110001,303660000,A/P-FOUNDATIONS,0.00
+01/16/2026,962,1200031000,460050000,EARNED SURPLUS,-41778529.26
+01/16/2026,962,1100011000,172050000,AIR-LATE FEE-FARM LN-RE,105752.13
+01/16/2026,962,1200011000,300330000,FUNDS HELD-ST-CM,-13942710.72
+01/16/2026,962,1200011000,170050000,AIR-FARM LN-COMM,5106488.74
+01/16/2026,962,120003,120010000,CASH IN BANKS-COBANK,0.00
+01/16/2026,962,1200011000,173900000,A/R-PATR DUE FROM COBANK,503702.00
+01/16/2026,962,110001,240000000,PREPAID FCA SUPERVISORY,-101163.33
+01/16/2026,962,1100011000,250100000,PREPAID PENSION,8951170.79
+01/16/2026,962,120099,300030000,NOTES PAY TO COBANK-ST,-112411938.59
+01/16/2026,962,110099,303350000,A/P-PARTICIPATIONS SOLD LN-LT,2049.46
+01/16/2026,962,120099,303400000,A/P-PARTCIPATIONS SOLD LN-ST,18440.24
+01/16/2026,962,1100031000,520150000,FEES-ORIGINATION,-38833.34
+01/16/2026,962,110001,730250000,TRAVEL EXP-AUTO MAINT,203.94
+01/16/2026,962,110001,765000000,TRAINING-EMPLOYEES,1045.99
+01/16/2026,962,110001,788150000,OTHER EXP-HIRING EXPENSE,-465.13
+01/16/2026,962,110001,788400000,OTHER EXP-LUNCHROOM SUPPLIES,-163.39
+01/16/2026,962,1200011000,520150000,FEES-ORIGINATION,-32330.00
+01/16/2026,962,1200031000,100650000,PARTICIPATIONS PURCHASED-COMM,116655798.87
+01/16/2026,962,1200011000,101800000,UNAMORT FAS91 FEES-COMM,-299943.84
+01/16/2026,962,1100031000,170500000,AIR-PART PURCHASED-RE,3754426.48
+01/16/2026,962,110001,760460000,ADVERTISING-PRINT/DISPLAY,425.00
+01/16/2026,962,1200011000,215010000,NA FARM LN-COMM,303936.46
+01/16/2026,962,120001,460250000,UNDISTRIBUTED EARNINGS,148.50
+01/16/2026,962,999999,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,345.67
+01/16/2026,962,1100011000,220250000,FURNITURE & FIXTURES,1890453.45
+01/16/2026,962,999999,301650000,A/P-INTRAZONE DUE TO-FLCA/PCA,-345.67
+01/16/2026,962,1100031000,302100000,A/P-OTHER,0.00
+01/16/2026,962,1200031000,101800000,UNAMORT FAS91 FEES-COMM,-138835.52
+01/16/2026,962,110003,102550000,UNPROCESSED LN TRANSACTIONS,17774.99
+01/16/2026,962,120001,103070000,ALL CR LOSS-LEASE RECEIVABLES,-101376.34
+01/16/2026,962,1100011000,103800000,LN RECOVERIES-RE,0.00
+01/16/2026,962,1100011000,161100000,INV IN FARMER MAC,1.00
+01/16/2026,962,1200011000,161500000,INV IN COBANK-DN-PURCHASED STOCK,5378000.00
+01/16/2026,962,110001,172050000,AIR-LATE FEE-FARM LN-RE,0.00
+01/16/2026,962,1200011000,172600000,AIR-LATE FEE-PURCHASED COMM,0.00
+01/16/2026,962,1100011000,175000000,A/R-EMPLOYEES,0.00
+01/16/2026,962,120001,300950000,AIP-COBANK-ST,-1475267.42
+01/16/2026,962,120001,301600000,A/P-FCSIC PREMIUM,-280630.00
+01/16/2026,962,110001,460050000,EARNED SURPLUS,63253891.73
+01/16/2026,962,1100011000,100050000,FARM LN-RE,1051941671.17
+01/16/2026,962,1100011000,215020000,NA PARTICIPATIONS SOLD-RE,28252.63
+01/16/2026,962,110001,215020000,NA PARTICIPATIONS SOLD-RE,-1660927.50
+01/16/2026,962,1200011000,601030000,INT EXP-FUNDS HELD-ST-CM,25906.93
+01/16/2026,962,110001,755000000,IT-INTERNET,160.50
+01/16/2026,962,110001,730170000,TRAVEL EXP-AUTO-FUEL,2520.68
+01/16/2026,962,120001,302100000,A/P-OTHER,48438.48
+01/16/2026,962,110001,160300000,INV IN RBIC OPEN PRAIRIE,1849110.17
+01/16/2026,962,1100011000,161300000,INV IN OTHER FARM CREDIT INSTITUTIONS,0.00
+01/16/2026,962,1100011000,161500000,INV IN COBANK-DN-PURCHASED STOCK,9716816.15
+01/16/2026,962,120001,175250000,A/R-INTRAZONE DUE FROM-FLCA/PCA,-6942768.74
+01/16/2026,962,120001,215010000,NA FARM LN-COMM,2169.90
+01/16/2026,962,110003,300030000,NOTES PAY TO COBANK-ST,4536.74
+01/16/2026,962,110001,300980000,AIP-COBANK LOANABLE FUNDS CREDIT,791542.54
+01/16/2026,962,1100011000,301600000,A/P-FCSIC PREMIUM,-306630.00
+01/16/2026,962,1100011000,302200000,A/P- RETENTION,-1439509.22
+01/16/2026,962,1200011000,363500000,MONTH END ACCRUALS,0.00
+01/16/2026,962,120001,365500000,RESERVE FOR UNFUNDED COMMITMEN,-123993.00
+01/16/2026,962,1100991000,360300000,UNAPPLIED RECEIPT-LOCKBOX,0.00
+Activity name:Assign5250 id:1 completed @ 01/17/2026 04:39:00.921 AM
+
+Activity name:Branch5450 type:BRANCH id:1 started @ 01/17/2026 04:39:00.921 AM
+	 Evaluating rule: RecordCount < 1 to node Assign6630
+	 Evaluating rule: true to node Filename
+	 Next activity: Filename
+Activity name:Branch5450 id:1 completed @ 01/17/2026 04:39:00.921 AM
+
+Activity name:Filename type:ASSGN id:1 started @ 01/17/2026 04:39:00.921 AM
+	 Evaluating JavaScript expression //format date to YYMMDD format
+function formatDate(dt) {
+	var d = new Date(dt);
+	var padMonth = (d.getMonth()+1).toString().length == 1 ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+	var padDay = d.getDate().toString().length == 1 ? '0' + d.getDate().toString() : d.getDate().toString();
+	return d.getFullYear().toString().substring(2) +  padMonth + padDay;
+}
+
+function formatTime(tm) {
+	var t = new Date(tm);
+	var padHour = t.getHours().toString().length == 1 ? '0' + t.getHours().toString() : t.getHours().toString();
+	var padMin = t.getMinutes().toString().length == 1 ? '0' + t.getMinutes().toString() : t.getMinutes().toString();
+	var padSec = t.getSeconds().toString().length == 1 ? '0' + t.getSeconds().toString() : t.getSeconds().toString();
+	return padHour +  padMin + padSec;
+}; to value 
+function formatTime(tm) {
+    var t = new Date(tm);
+    var padHour = t.getHours().toString().length == 1 ? "0" + t.getHours().toString() : t.getHours().toString();
+    var padMin = t.getMinutes().toString().length == 1 ? "0" + t.getMinutes().toString() : t.getMinutes().toString();
+    var padSec = t.getSeconds().toString().length == 1 ? "0" + t.getSeconds().toString() : t.getSeconds().toString();
+    return padHour + padMin + padSec;
+}
+
+Activity name:Filename id:1 completed @ 01/17/2026 04:39:00.921 AM
+
+Activity name:SubProcess5440_Branch8470 type:BRANCH id:1 started @ 01/17/2026 04:39:00.921 AM
+	 Evaluating rule: FEG == "FCE" to node SubProcess5440_FileAccess9180
+	 Evaluating rule: FEG == "FCIL" to node SubProcess5440_FileAccess5860
+	 Evaluating rule: FEG == "AGW" to node SubProcess5440_FileAccess6360
+	 Evaluating rule: FEG == "FMFC" to node SubProcess5440_FileAccess2330
+	 Next activity: SubProcess5440_FileAccess2330
+Activity name:SubProcess5440_Branch8470 id:1 completed @ 01/17/2026 04:39:00.921 AM
+
+Activity name:SubProcess5440_FileAccess2330 type:ACCFIL id:1 started @ 01/17/2026 04:39:00.922 AM
+Activity name:SubProcess5440_FileAccess2330 id:1 completed @ 01/17/2026 04:39:00.941 AM
+
+Activity name:SubProcess5440_FileAccess1870 type:ACCFIL id:1 started @ 01/17/2026 04:39:00.941 AM
+Activity name:SubProcess5440_FileAccess1870 id:1 completed @ 01/17/2026 04:39:00.960 AM
+
+Activity name:SubProcess5440_FTP1860 type:FileTransfer id:1 started @ 01/17/2026 04:39:00.960 AM
+	 FileTransfer SubProcess5440_FTP1860: Source file /FMFC/Match/Output/SDN_MatchReport_MTH.vul has been transferred to target /FMFC/Match/Output/SDN_MatchReport_MTH.vul successfully
+	 SubProcess5440_FTP1860_errorCode = 0
+	 SubProcess5440_FTP1860_informationCode = 0
+	 SubProcess5440_FTP1860_returnMessage = FileTransfer SubProcess5440_FTP1860: Source file /FMFC/Match/Output/SDN_MatchReport_MTH.vul has been transferred to target /FMFC/Match/Output/SDN_MatchReport_MTH.vul successfully
+	 SubProcess5440_FTP1860_outputData = 
+Activity name:SubProcess5440_FTP1860 id:1 completed @ 01/17/2026 04:39:01.293 AM
+
+Activity name:SubProcess5440_FTP3750 type:FileTransfer id:1 started @ 01/17/2026 04:39:01.294 AM
+	 FileTransfer SubProcess5440_FTP3750: Source file /InProgress/MatchReportTrigger_P962_FMFC20260116233831.txt has been transferred to target /FMFC/Match/Archive/MatchReportTrigger_P962_FMFC20260116233831.txt successfully
+	 SubProcess5440_FTP3750_errorCode = 0
+	 SubProcess5440_FTP3750_informationCode = 0
+	 SubProcess5440_FTP3750_returnMessage = FileTransfer SubProcess5440_FTP3750: Source file /InProgress/MatchReportTrigger_P962_FMFC20260116233831.txt has been transferred to target /FMFC/Match/Archive/MatchReportTrigger_P962_FMFC20260116233831.txt successfully
+	 SubProcess5440_FTP3750_outputData = 
+Activity name:SubProcess5440_FTP3750 id:1 completed @ 01/17/2026 04:39:01.510 AM
+
+Activity name:SubProcess5440_FTP9210 type:FileTransfer id:1 started @ 01/17/2026 04:39:01.511 AM
+	 FileTransfer SubProcess5440_FTP9210: Source file /FMFC/MatchReportTrigger_P962_FMFC20260116233831.flg has been transferred to target /FMFC/MatchReportTrigger_P962_FMFC20260116233831.flg successfully
+	 SubProcess5440_FTP9210_errorCode = 0
+	 SubProcess5440_FTP9210_informationCode = 0
+	 SubProcess5440_FTP9210_returnMessage = FileTransfer SubProcess5440_FTP9210: Source file /FMFC/MatchReportTrigger_P962_FMFC20260116233831.flg has been transferred to target /FMFC/MatchReportTrigger_P962_FMFC20260116233831.flg successfully
+	 SubProcess5440_FTP9210_outputData = 
+Activity name:SubProcess5440_FTP9210 id:1 completed @ 01/17/2026 04:39:01.698 AM
+
+Activity name:DeleteOutput type:ACCFIL id:1 started @ 01/17/2026 04:39:01.699 AM
+	 DeleteOutput_errorCode = 0
+	 DeleteOutput_informationCode = 0
+	 DeleteOutput_returnMessage = File Access DeleteOutput: File /FMFC/Match/Output/SDN_MatchReport_MTH.vul deleted
+	 DeleteOutput_outputData = 
+	 File Access DeleteOutput: File /FMFC/Match/Output/SDN_MatchReport_MTH.vul deleted
+Activity name:DeleteOutput id:1 completed @ 01/17/2026 04:39:01.720 AM
+
+Activity name:DeleteFlag type:ACCFIL id:1 started @ 01/17/2026 04:39:01.720 AM
+	 DeleteFlag_errorCode = 0
+	 DeleteFlag_informationCode = 0
+	 DeleteFlag_returnMessage = File Access DeleteFlag: File /FMFC/MatchReportTrigger_P962_FMFC20260116233831.flg deleted
+	 DeleteFlag_outputData = 
+	 File Access DeleteFlag: File /FMFC/MatchReportTrigger_P962_FMFC20260116233831.flg deleted
+Activity name:DeleteFlag id:1 completed @ 01/17/2026 04:39:01.735 AM
+
+Activity name:DeleteInput type:ACCFIL id:1 started @ 01/17/2026 04:39:01.736 AM
+	 DeleteInput_errorCode = 0
+	 DeleteInput_informationCode = 0
+	 DeleteInput_returnMessage = File Access DeleteInput: File /InProgress/MatchReportTrigger_P962_FMFC20260116233831.txt deleted
+	 DeleteInput_outputData = 
+	 File Access DeleteInput: File /InProgress/MatchReportTrigger_P962_FMFC20260116233831.txt deleted
+Activity name:DeleteInput id:1 completed @ 01/17/2026 04:39:01.752 AM
+
+Activity name:End type:END id:1 started @ 01/17/2026 04:39:01.752 AM
+	 Activity End: Executing End activity
+	 End_errorCode = 0
+	 End_informationCode = 0
+	 End_returnMessage = 
+	 End_outputData = 
+	 [Metrics - Workunit] WU Total Cpu:[79 ms] WU Total User:[80 ms] WU Total Duration:[6770 ms] WU Total Alloc:[35.54 MiB]
+	 [Metrics - Top list: Memory] WUDuration:[6770 ms] [#1 - |Assign7960|Assign|1x|10.97 MiB|4 ms|0 ms|5 ms] [#2 - |End|End|1x|2.92 MiB|7 ms|0 ms|25 ms] [#3 - |DeleteOutput|FileAccess|1x|1.88 MiB|5 ms|10 ms|21 ms] [#4 - |Start|Start|1x|1.70 MiB|3 ms|0 ms|7 ms] [#5 - |SubProcess5440_FTP1860|FTP|1x|1.56 MiB|7 ms|10 ms|334 ms]

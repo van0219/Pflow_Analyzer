@@ -1,0 +1,363 @@
+Workunit 636,228 started @ 12/04/2025 07:22:22.799 AM
+	Landmark version: 2025.11.07.
+	Service name: CISOutboundIntegrationService
+	Process name: CISOutboundIntegration
+	Process version: 3
+	JVM Name: BG_LPA
+	Host Name:tam-pa-207-9799-i-0b237714010609799
+	Auto Restart: Disabled
+Activity name:Start type:START id:1 started @ 12/04/2025 07:22:22.799 AM
+	 Executing Start Activity...
+	 dbExportWebProgram = 
+	 dbExportResult = 
+	 dataLakeResult = 
+	 dataLakeHeader = 
+	 queryID = 
+	 auth = 
+	 getStatus = 
+	 sourceDirectory = 
+	 oauthCreds = 
+	 configWebroot = 
+	 configTenant = 
+	 configAccessTokenWebRoot = 
+	 configTokenWebProgram = 
+	 configStatusWebProgram = /status?timeout=25
+	 configWebProgram = /DATAFABRIC/compass/v2/jobs/
+	 finalArchiveFilename = 
+	 req = 
+	 accessTokenResp = 
+	 counter = 0
+	 recordCount = 
+	 rowCount = 0
+	 limit = 1000
+	 offset = 0
+	 OutputRecords = 
+	 retryCount = 0
+	 arrOutput = 
+	 landmarkDate = 2025120407222200
+	 prefix = [AX1]
+	 processDate = 12/04/2025
+	 successEmailSubject = <prefix> [Success] – <integrationName> to <customer> – Process Date: <processDate>
+	 successEmailBody = <p>Data extract <integrationName> has completed successfully.</p><head><style>table.header, table.header th, table.header td{padding: 5px;border: 1px solid black;border-collapse: collapse;}table.header th{color: white;background-color: #0000FF;}table.header tr:nth-child(even){background-color: #F0FFFF;}</style></head><body><table class="header"; style="width:100%"><tr><td>Output File name</td><td><filename></td></tr><tr><td>File Date</td><td><processDate></td></tr><tr><td>File Location</td><td><outputDirectory></td></tr></table></body>
+	 failureEmailSubject = <prefix> [Failed] – <integrationName> to <customer> – Process Date: <processDate>
+	 failureEmailBody = <p>Data extract <integrationName> encountered an error while processing.</p>
+	 emailFooter = <table width="100%" style="font-family:Calibri;font-size:10pt;"><td><hr style="color:blue"/>The following information is for Infor Support reference purposes only:</td></table><table style="font-family:Calibri;font-size:10pt;"><tr><th align="left">Environment:</th><td><appProdline></td></tr><tr><th align="left">Process Name:</th><td><ProcessName></td></tr><th align="left">Workunit/Reference:</th><td><WorkUnit></td></tr></table>
+	 EmailLogo = 
+Activity name:Start id:1 completed @ 12/04/2025 07:22:22.800 AM
+
+Activity name:AddWorkUnit type:LM id:1 started @ 12/04/2025 07:22:22.801 AM
+	 Landmark:AddWorkUnit Executing transaction: _dataArea="<!appProdline>" & _module="_config" & _objectName="CISOutboundIntegration" & _actionName="Update" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _relationName="" & _setName="SymbolicKey" & _asOfDate="" & _effectiveDate="" & CISOutboundIntegration="<!CISOutboundIntegration>" & PfiWorkunit="<!WorkUnit>"
+	 Landmark:AddWorkUnit Executing transaction: _dataArea="TAMICS10_AX1_FSM" & _module="_config" & _objectName="CISOutboundIntegration" & _actionName="Update" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _relationName="" & _setName="SymbolicKey" & _asOfDate="" & _effectiveDate="" & CISOutboundIntegration="18" & PfiWorkunit="636228"
+	 Landmark:AddWorkUnit Retrieving page 1 started @ 12/04/2025 07:22:22.801 AM
+	 Use data views: false
+	 Landmark:AddWorkUnit Retrieving page 1 completed @ 12/04/2025 07:22:22.944 AM
+	 Landmark:AddWorkUnit transaction complete:true, 
+ response message:CIS Outbound Integration updated (batchStatus=0)
+	 AddWorkUnit_complete = true
+	 AddWorkUnit_recordCount = 1
+	 AddWorkUnit_hasNext = false
+	 AddWorkUnit_hasPrevious = false
+	 AddWorkUnit_resultsHeader = CISOutboundIntegration,PfiWorkunit
+	 AddWorkUnit_currentPage = 1
+	 AddWorkUnit_recordCount = 1
+	 AddWorkUnit_currentPage = 1
+Activity name:AddWorkUnit id:1 completed @ 12/04/2025 07:22:22.944 AM
+	 AddWorkUnit_errorCode = 0
+	 AddWorkUnit_informationCode = 0
+	 AddWorkUnit_returnMessage = CIS Outbound Integration updated (batchStatus=0)
+	 AddWorkUnit_outputData = 18,636228
+	 LandmarkAddWorkUnit: Executing loop 1 of 1 (Page 1)
+	 AddWorkUnit_PfiWorkunit = 636228
+	 AddWorkUnit_CISOutboundIntegration = 18
+
+Activity name:Branch8570 type:BRANCH id:1 started @ 12/04/2025 07:22:22.944 AM
+	 Evaluating rule: UseDefaultProcess to node Assign1540
+	 Next activity: Assign1540
+Activity name:Branch8570 id:1 completed @ 12/04/2025 07:22:22.944 AM
+
+Activity name:Assign1540 type:ASSGN id:1 started @ 12/04/2025 07:22:22.944 AM
+	 Activity Assign1540: Error evaluating expression: if (AppendTimestampToFileName && FileTimeZone != "UTC")
+{
+	var filenameOnly = ""
+	var filenameExtensionOnly = ""
+	if (CalculatedFileName.indexOf("_") >= 0){
+		filenameOnly = Filename.substr(0, Filename.lastIndexOf("_"));
+		filenameExtensionOnly = Filename.slice(Filename.lastIndexOf("_")).split(".")[1]
+	} else {
+		filenameOnly = Filename.split(".")[0];
+		filenameExtensionOnly = Filename.split(".")[1];
+	}
+	
+	var timezoneDate = timestamp.getFormattedTimeZoneCurrentTimeStamp("yyyyMMddkkmmss", FileTimeZone) + "00";
+	var century = timezoneDate.substr(0,2);
+	var yy = timezoneDate.substr(2,2);
+	var MM = timezoneDate.substr(4,2);
+	var dd = timezoneDate.substr(6,2);
+	var kk = timezoneDate.substr(8,2);
+	var mm = timezoneDate.substr(10,2);
+	var ss = timezoneDate.substr(12,2);
+	var zz = timezoneDate.substr(14,2);
+	
+	CalculatedFileName = filenameOnly //+ "_";
+	
+	if (IncludeCentury)
+	{
+		yy = century + yy
+	}
+	if (DateFormat == "0")
+	{
+		CalculatedFileName += yy + MM + dd;
+	}
+	if (DateFormat == "1")
+	{
+		CalculatedFileName += MM + dd + yy;
+	}
+	if (DateFormat == "2")
+	{
+		CalculatedFileName += dd + MM + yy;
+	}
+	if (IncludeHours)
+	{
+		CalculatedFileName += kk;
+	}
+	if (IncludeMinutes)
+	{
+		CalculatedFileName += mm;
+	}
+	if (IncludeSeconds)
+	{
+		CalculatedFileName += ss;
+	}
+	if (IncludeMilliseconds)
+	{
+		CalculatedFileName += zz;
+	}
+	CalculatedFileName += "." + filenameExtensionOnly;
+}; Error: org.mozilla.javascript.EcmaError: ReferenceError: "FileTimeZone" is not defined. (threadScript#1)
+	at org.mozilla.javascript.ScriptRuntime.constructError(ScriptRuntime.java:3687)
+	at org.mozilla.javascript.ScriptRuntime.constructError(ScriptRuntime.java:3665)
+	at org.mozilla.javascript.ScriptRuntime.notFoundError(ScriptRuntime.java:3750)
+	at org.mozilla.javascript.ScriptRuntime.name(ScriptRuntime.java:1728)
+	at org.mozilla.javascript.Interpreter.interpretLoop(Interpreter.java:1552)
+	at script(threadScript:1)
+	at org.mozilla.javascript.Interpreter.interpret(Interpreter.java:815)
+	at org.mozilla.javascript.InterpretedFunction.call(InterpretedFunction.java:109)
+	at org.mozilla.javascript.ContextFactory.doTopCall(ContextFactory.java:394)
+	at com.lawson.bpm.processflow.rulesEngine.LAScriptableObject$SandboxContextFactory.doTopCall(LAScriptableObject.java:166)
+	at org.mozilla.javascript.ScriptRuntime.doTopCall(ScriptRuntime.java:3091)
+	at org.mozilla.javascript.InterpretedFunction.exec(InterpretedFunction.java:120)
+	at org.mozilla.javascript.Context.evaluateString(Context.java:1079)
+	at com.lawson.bpm.processflow.rulesEngine.Rule.eval(Rule.java:33)
+	at com.lawson.bpm.processflow.utility.Condition.evalExpressionObject(Condition.java:109)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgaAssign.startActivity(FgaAssign.java:310)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity.executeActivity(FgActivity.java:2325)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity.execute_original(FgActivity.java:2171)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity.execute(FgActivity.java:2052)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgProcess.runActivities(FgProcess.java:3978)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgProcess.runOriginal(FgProcess.java:3789)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgProcess.run(FgProcess.java:3691)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:645)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:762)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:219)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:182)
+	at com.lawson.bpm.eprocessserver.ProcessFlowEngine.execute(ProcessFlowEngine.java:120)
+	at com.lawson.bpm.eprocessserver.ProcessFlowEngine.startProcessAt(ProcessFlowEngine.java:97)
+	at com.lawson.bpm.eprocessserver.KBConnection.startProcess(KBConnection.java:250)
+	at com.lawson.bpm.eprocessserver.KBConnection.run(KBConnection.java:217)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+	 Evaluating JavaScript expression if (Archive)
+{
+	if (AppendTimestampToFileName)
+	{
+		if (ArchiveFilename)
+		{
+			var filenameOnly = CalculatedFileName.split(".")[0];
+			var filenameExtensionOnly = CalculatedFileName.split(".")[1];
+			finalArchiveFilename = filenameOnly + ArchiveFilename + "." + filenameExtensionOnly;
+		}
+		else
+		{
+			finalArchiveFilename = CalculatedFileName;
+		}
+	}
+	else
+	{
+		if (ArchiveFilename)
+		{
+			var filenameOnly = CalculatedFileName.split(".")[0];
+			var filenameExtensionOnly = CalculatedFileName.split(".")[1];
+			finalArchiveFilename = filenameOnly + ArchiveFilename + "_" + todayLMRK() + "." + filenameExtensionOnly;
+		}
+		else
+		{
+			var filenameOnly = CalculatedFileName.split(".")[0];
+			var filenameExtensionOnly = CalculatedFileName.split(".")[1];
+			finalArchiveFilename = filenameOnly + "_" + todayLMRK() + "." + filenameExtensionOnly;
+		}
+	}
+}; to value Accounts_251204.csv
+	 Activity Assign1540: Error evaluating expression: var Oauth2Data = JSON.parse(oauthCreds.toString());
+var ClientID = Oauth2Data.ci;
+var ClientUsername = Oauth2Data.saak;
+var ClientPassword = Oauth2Data.sask;
+var ClientSecret = Oauth2Data.cs;
+
+var str = Oauth2Data.pu;
+configAccessTokenWebRoot = str.substring(0,str.indexOf("3")+1);
+configTokenWebProgram = str.substring(str.indexOf("3")+2,str.length) + Oauth2Data.ot + "?";
+configWebroot = Oauth2Data.iu;
+configTenant = Oauth2Data.ti;
+
+req = "grant_type=password&username=" + ClientUsername + "&password=" + ClientPassword + "&scope=&client_id=" + ClientID + "&client_secret=" + ClientSecret;; Error: org.mozilla.javascript.EcmaError: SyntaxError: Empty JSON string (threadScript#1)
+	at org.mozilla.javascript.ScriptRuntime.constructError(ScriptRuntime.java:3687)
+	at org.mozilla.javascript.ScriptRuntime.constructError(ScriptRuntime.java:3665)
+	at org.mozilla.javascript.NativeJSON.parse(NativeJSON.java:112)
+	at org.mozilla.javascript.NativeJSON.execIdCall(NativeJSON.java:88)
+	at org.mozilla.javascript.IdFunctionObject.call(IdFunctionObject.java:97)
+	at org.mozilla.javascript.Interpreter.interpretLoop(Interpreter.java:1473)
+	at script(threadScript:1)
+	at org.mozilla.javascript.Interpreter.interpret(Interpreter.java:815)
+	at org.mozilla.javascript.InterpretedFunction.call(InterpretedFunction.java:109)
+	at org.mozilla.javascript.ContextFactory.doTopCall(ContextFactory.java:394)
+	at com.lawson.bpm.processflow.rulesEngine.LAScriptableObject$SandboxContextFactory.doTopCall(LAScriptableObject.java:166)
+	at org.mozilla.javascript.ScriptRuntime.doTopCall(ScriptRuntime.java:3091)
+	at org.mozilla.javascript.InterpretedFunction.exec(InterpretedFunction.java:120)
+	at org.mozilla.javascript.Context.evaluateString(Context.java:1079)
+	at com.lawson.bpm.processflow.rulesEngine.Rule.eval(Rule.java:33)
+	at com.lawson.bpm.processflow.utility.Condition.evalExpressionObject(Condition.java:109)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgaAssign.startActivity(FgaAssign.java:310)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity.executeActivity(FgActivity.java:2325)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity.execute_original(FgActivity.java:2171)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity.execute(FgActivity.java:2052)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgProcess.runActivities(FgProcess.java:3978)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgProcess.runOriginal(FgProcess.java:3789)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgProcess.run(FgProcess.java:3691)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:645)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:762)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:219)
+	at com.lawson.bpm.eprocessserver.grid.ExecuteFlowImpl.executeFlow(ExecuteFlowImpl.java:182)
+	at com.lawson.bpm.eprocessserver.ProcessFlowEngine.execute(ProcessFlowEngine.java:120)
+	at com.lawson.bpm.eprocessserver.ProcessFlowEngine.startProcessAt(ProcessFlowEngine.java:97)
+	at com.lawson.bpm.eprocessserver.KBConnection.startProcess(KBConnection.java:250)
+	at com.lawson.bpm.eprocessserver.KBConnection.run(KBConnection.java:217)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+	 Evaluating JavaScript expression emailFooter = emailFooter.replace("<appProdline>", appProdline);
+emailFooter = emailFooter.replace("<ProcessName>", ProcessName);
+emailFooter = emailFooter.replace("<WorkUnit>", WorkUnit);
+//emailFooter = emailFooter.replace("<vLogo>", EmailLogo);; to value <table width="100%" style="font-family:Calibri;font-size:10pt;"><td><hr style="color:blue"/>The following information is for Infor Support reference purposes only:</td></table><table style="font-family:Calibri;font-size:10pt;"><tr><th align="left">Environment:</th><td>TAMICS10_AX1_FSM</td></tr><tr><th align="left">Process Name:</th><td>CISOutboundIntegration</td></tr><th align="left">Workunit/Reference:</th><td>636228</td></tr></table>
+	 emailFooter = <table width="100%" style="font-family:Calibri;font-size:10pt;"><td><hr style="color:blue"/>The following information is for Infor Support reference purposes only:</td></table><table style="font-family:Calibri;font-size:10pt;"><tr><th align="left">Environment:</th><td>TAMICS10_AX1_FSM</td></tr><tr><th align="left">Process Name:</th><td>CISOutboundIntegration</td></tr><th align="left">Workunit/Reference:</th><td>636228</td></tr></table>
+Activity name:Assign1540 id:1 completed @ 12/04/2025 07:22:23.009 AM
+
+Activity name:GetAccessToken type:WEBRN id:2 started @ 12/04/2025 07:22:23.010 AM
+	 WebRun GetAccessToken: Executing WebRun activity node
+	 WebRun GetAccessToken: call type Standard HTTP Call
+	 WebRun GetAccessToken: Posting directly host  (Conn timeout: 0 min; Req timeout: 0 min) web program 
+Activity name:GetAccessToken id:2 failed @ 12/04/2025 07:22:23.017 AM
+	 GetAccessToken_errorCode = 1
+	 GetAccessToken_informationCode = 0
+	 GetAccessToken_returnMessage = no protocol: /
+	 GetAccessToken_outputData = 
+	 WebRun GetAccessToken: Failed with error java.net.MalformedURLException: no protocol: /
+	at java.base/java.net.URL.<init>(URL.java:674)
+	at java.base/java.net.URL.<init>(URL.java:569)
+	at java.base/java.net.URL.<init>(URL.java:516)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgaCgiRun.getUrlConnection(FgaCgiRun.java:630)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgaCgiRun.runBasicAuthConnection(FgaCgiRun.java:1357)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgaCgiRun.startActivity(FgaCgiRun.java:677)
+	at com.lawson.bpm.processflow.workFlow.flowGraph.FgActivity$1.run(FgActivity.java:2271)
+
+	 GetAccessToken_result = no protocol: /
+	 
+Error encountered executing process
+
+Process: CISOutboundIntegration
+Workunit: 636228
+Activity id: GetAccessToken
+
+Error code: 1
+Information code: 0
+
+Return message: no protocol: /
+
+Output data:
+
+
+
+
+	 Executing Branch1000 because activity GetAccessToken encountered an error
+
+Activity name:Branch1000 type:BRANCH id:3 started @ 12/04/2025 07:22:23.073 AM
+	 Evaluating rule: FailureEmail to node Assign9370
+	 Next activity: Assign9370
+Activity name:Branch1000 id:3 completed @ 12/04/2025 07:22:23.073 AM
+
+Activity name:Assign9370 type:ASSGN id:3 started @ 12/04/2025 07:22:23.073 AM
+	 Evaluating JavaScript expression failureEmailSubject = failureEmailSubject.replace("<prefix>", prefix);
+failureEmailSubject = failureEmailSubject.replace("<integrationName>", IntegrationName);
+failureEmailSubject = failureEmailSubject.replace("<processDate>", processDate);; to value [AX1] [Failed] – TEST-001 to <customer> – Process Date: 12/04/2025
+	 Evaluating JavaScript expression failureEmailBody = failureEmailBody.replace("<integrationName>", IntegrationName);; to value <p>Data extract TEST-001 encountered an error while processing.</p>
+Activity name:Assign9370 id:3 completed @ 12/04/2025 07:22:23.073 AM
+
+Activity name:Email2 type:EMAIL id:3 started @ 12/04/2025 07:22:23.074 AM
+	 Email Email2: Executing Email activity node
+	 Email Email2: Email properties before variable substitution and expansion:
+    To: <!FailureEmailTo>
+    Cc: <!FailureEmailCc>
+    Bcc: 
+    From: <!FailureEmailFrom>
+    Subject: <!failureEmailSubject>
+	 Email Email2: Email content before variable substitution:
+<!failureEmailBody>
+<br><br>
+<!emailFooter>
+	 Email Email2: Email properties after variable substitution and expansion:
+    To: vananthony.silleza@infor.com
+    Cc: 
+    Bcc: 
+    From: no-reply@inforcloudsuite.com
+    Subject: [AX1] [Failed] – TEST-001 to <customer> – Process Date: 12/04/2025
+	 Email Email2: Email content after variable substitution:
+<p>Data extract TEST-001 encountered an error while processing.</p>
+<br><br>
+<table width="100%" style="font-family:Calibri;font-size:10pt;"><td><hr style="color:blue"/>The following information is for Infor Support reference purposes only:</td></table><table style="font-family:Calibri;font-size:10pt;"><tr><th align="left">Environment:</th><td>TAMICS10_AX1_FSM</td></tr><tr><th align="left">Process Name:</th><td>CISOutboundIntegration</td></tr><th align="left">Workunit/Reference:</th><td>636228</td></tr></table>
+Activity name:Email2 id:3 completed @ 12/04/2025 07:22:23.112 AM
+	 Email2_errorCode = 0
+	 Email2_informationCode = 0
+	 Email2_returnMessage = Completed
+	 Email2_outputData = 
+
+Activity name:Error type:LM id:3 started @ 12/04/2025 07:22:23.112 AM
+	 Landmark:Error Executing transaction: _dataArea="<!appProdline>" & _module="_config" & _objectName="CISOutboundIntegration" & _actionName="Update" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _relationName="" & _setName="SymbolicKey" & _asOfDate="" & _effectiveDate="" & CISOutboundIntegration="<!CISOutboundIntegration>" & Status="4"
+	 Landmark:Error Executing transaction: _dataArea="TAMICS10_AX1_FSM" & _module="_config" & _objectName="CISOutboundIntegration" & _actionName="Update" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _relationName="" & _setName="SymbolicKey" & _asOfDate="" & _effectiveDate="" & CISOutboundIntegration="18" & Status="4"
+	 Landmark:Error Retrieving page 1 started @ 12/04/2025 07:22:23.112 AM
+	 Use data views: false
+	 Landmark:Error Retrieving page 1 completed @ 12/04/2025 07:22:23.202 AM
+	 Landmark:Error transaction complete:true, 
+ response message:CIS Outbound Integration updated (batchStatus=0)
+	 Error_complete = true
+	 Error_recordCount = 1
+	 Error_hasNext = false
+	 Error_hasPrevious = false
+	 Error_resultsHeader = CISOutboundIntegration,Status
+	 Error_currentPage = 1
+	 Error_recordCount = 1
+	 Error_currentPage = 1
+Activity name:Error id:3 completed @ 12/04/2025 07:22:23.202 AM
+	 Error_errorCode = 0
+	 Error_informationCode = 0
+	 Error_returnMessage = CIS Outbound Integration updated (batchStatus=0)
+	 Error_outputData = 18,4
+	 LandmarkError: Executing loop 1 of 1 (Page 1)
+	 Error_Status = 4
+	 Error_CISOutboundIntegration = 18
+
+Activity name:End type:END id:3 started @ 12/04/2025 07:22:23.202 AM
+	 Activity End: Executing End activity
+	 End_errorCode = 0
+	 End_informationCode = 0
+	 End_returnMessage = 
+	 End_outputData = 
+	 [Metrics - Workunit] WU Total Cpu:[169 ms] WU Total User:[140 ms] WU Total Duration:[496 ms] WU Total Alloc:[34.09 MiB]
+	 [Metrics - Top list: Memory] WUDuration:[496 ms] [#1 - |AddWorkUnit|Landmark|1x|9.07 MiB|63 ms|40 ms|143 ms] [#2 - |Error|Landmark|1x|5.93 MiB|26 ms|20 ms|90 ms] [#3 - |Assign1540|Assign|1x|4.91 MiB|23 ms|30 ms|65 ms] [#4 - |End|End|1x|4.01 MiB|19 ms|20 ms|41 ms] [#5 - |Email2|Email|1x|1.51 MiB|7 ms|0 ms|38 ms]

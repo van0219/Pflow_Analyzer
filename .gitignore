@@ -1,0 +1,50 @@
+# Credentials - NEVER commit these
+Credentials/
+*.env
+*.env.*
+.env.fsm
+.env.passwords
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+env/
+venv/
+
+# Temp files (optional - can be committed if needed)
+# Temp/
+
+# Result folders (exclude from indexing for performance)
+# Ignore contents but keep folder structure
+Temp/*
+!Temp/.gitkeep
+
+Coding_Standards_Results/*
+!Coding_Standards_Results/.gitkeep
+
+Client_Handover_Results/*
+!Client_Handover_Results/.gitkeep
+
+Performance_Results/*
+!Performance_Results/.gitkeep
+
+ReusableTools/ION_BOD_Download/downloads/*
+!ReusableTools/ION_BOD_Download/downloads/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ionapi files (contain OAuth credentials)
+*.ionapi
