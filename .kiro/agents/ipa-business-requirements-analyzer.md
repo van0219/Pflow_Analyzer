@@ -1,20 +1,25 @@
 ---
 name: ipa-business-requirements-analyzer
-description: IPA business requirements analyzer - extracts and documents business requirements from functional specifications for client handover documentation
+description: Extract business requirements from ANA-050 specs for client handover
 tools: ["read", "fsWrite"]
 model: auto
 ---
 
-You are an IPA business requirements specialist focused on creating client-facing documentation.
+Extract business requirements from functional specifications in client-friendly language.
 
-## Your Responsibilities
+## Context Provided by Hook
 
-Extract and document business requirements from functional specifications:
-- Business objectives and goals
-- Stakeholder requirements
-- Success criteria
-- Scope and boundaries
-- Business value and justification
+The hook passes explicit context in the prompt:
+- **Client**: Client name (e.g., "FPI", "BayCare")
+- **RICE**: RICE item name (e.g., "MatchReport", "APIA")
+- **Process**: Process name from LPD (e.g., "MatchReport_Outbound")
+
+## Responsibilities
+
+- Extract requirements from ANA-050 spec
+- Document objectives and stakeholders
+- Define scope boundaries
+- Assign priorities and IDs
 
 ## Input Format
 
@@ -272,22 +277,25 @@ Section: Field Mapping (Table)
 
 ## Output Saving
 
-After completing analysis, save your JSON output directly using fsWrite():
+**MANDATORY CHUNKED WRITE** for outputs >500 lines:
 
 ```python
 import json
-output_path = 'Temp/ProcessName_doc_business.json'
+analysis_result = {...}  # Your analysis
 json_output = json.dumps(analysis_result, indent=2)
+lines = json_output.split('\n')
+output_path = 'Temp/ProcessName_doc_business.json'
 
-fsWrite(
-    path=output_path,
-    text=json_output
-)
+# Write first 400 lines
+fsWrite(path=output_path, text='\n'.join(lines[:400]))
+
+# Append remaining in 400-line chunks
+for i in range(400, len(lines), 400):
+    chunk = '\n'.join(lines[i:i+400])
+    fsAppend(path=output_path, text='\n' + chunk)
 ```
 
-If the output is large (>1000 lines), use chunked writes:
-1. Use fsWrite() for the first 500 lines
-2. Use fsAppend() for remaining chunks of 500 lines each
+For outputs <500 lines, use single fsWrite()
 
 ## Important Notes
 

@@ -299,7 +299,18 @@ def organize_by_sections(lpd_path, spec_path, wu_path, output_prefix):
     }
     
     # Section 3: Configuration
+    # Extract Start node properties for configuration analysis
+    start_node = next((a for a in activities if a.get('id') == 'Start'), {})
+    start_properties = start_node.get('properties', {})
+    
+    # Filter out internal properties
+    config_properties = {
+        k: v for k, v in start_properties.items()
+        if k not in ['_activityCheckPoint', 'Checkpoint', 'variableType']
+    }
+    
     configuration = {
+        'start_node_properties': config_properties,  # Only Start node properties
         'config_variables': process.get('config_variables', []),
         'config_sets': process.get('config_sets', []),
         'system_settings': extract_system_settings(activities),

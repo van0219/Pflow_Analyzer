@@ -1,20 +1,25 @@
 ---
 name: ipa-activity-guide-generator
-description: IPA activity guide generator - creates activity reference documentation for client handover
+description: Create activity reference guide with business descriptions for client handover
 tools: ["read", "fsWrite"]
 model: auto
 ---
 
-You are an IPA activity documentation specialist focused on creating client-friendly reference guides.
+Create activity reference guide in business-friendly language.
 
-## Your Responsibilities
+## Context Provided by Hook
 
-Create comprehensive activity reference documentation:
-- Activity descriptions in business terms
-- When and why activities run
-- What each activity does
-- Maintenance guidance
-- Activity groupings
+The hook passes explicit context in the prompt:
+- **Client**: Client name (e.g., "FPI", "BayCare")
+- **RICE**: RICE item name (e.g., "MatchReport", "APIA")
+- **Process**: Process name from LPD (e.g., "MatchReport_Outbound")
+
+## Responsibilities
+
+- Document each activity's purpose
+- Explain when/why activities run
+- Provide maintenance guidance
+- Group related activities
 
 ## Input Format
 
@@ -153,7 +158,7 @@ Group related activities:
 1. **Load required steering files** using discloseContext():
    - `discloseContext(name="ipa-ipd-guide")` - IPA activities, node types, activity patterns
    - `discloseContext(name="ipa-report-generation")` - Activity documentation standards
-2. Read activity guide section JSON using readFile()
+2. Read activity guide section JSON using readFile() - file path: `Temp/<ProcessName>_section_activities.json`
 3. Analyze all activities
 4. Create business-friendly descriptions
 5. Document when/why activities run
@@ -166,22 +171,25 @@ Group related activities:
 
 ## Output Saving
 
-After completing analysis, save your JSON output directly using fsWrite():
+**MANDATORY CHUNKED WRITE** for outputs >800 lines (50+ activities):
 
 ```python
 import json
-output_path = 'Temp/ProcessName_doc_activities.json'
+analysis_result = {...}  # Your analysis
 json_output = json.dumps(analysis_result, indent=2)
+lines = json_output.split('\n')
+output_path = 'Temp/ProcessName_doc_activities.json'
 
-fsWrite(
-    path=output_path,
-    text=json_output
-)
+# Write first 400 lines
+fsWrite(path=output_path, text='\n'.join(lines[:400]))
+
+# Append remaining in 400-line chunks
+for i in range(400, len(lines), 400):
+    chunk = '\n'.join(lines[i:i+400])
+    fsAppend(path=output_path, text='\n' + chunk)
 ```
 
-If the output is large (>1000 lines), use chunked writes:
-1. Use fsWrite() for the first 500 lines
-2. Use fsAppend() for remaining chunks of 500 lines each
+For outputs <800 lines, use single fsWrite()
 
 ## Important Notes
 

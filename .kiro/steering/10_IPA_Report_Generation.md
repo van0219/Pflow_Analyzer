@@ -1050,6 +1050,58 @@ Array.shift(): 20 times × 1ms = 0.02 sec (0.067%) = VERY LOW priority
 - Consolidated executive summary, business requirements, validation
 - Backward compatible: single LPD works exactly as before
 
+**Two-Phase Workflow** (NEW - 2026-03-02):
+
+The client handover workflow is available in two forms:
+
+**Option 1: Skill (Recommended for Interactive Use)**
+
+Use the `ipa-client-handover` skill for conversational, guided workflow:
+- Activation: `/ipa-client-handover` or mention "client handover documentation"
+- Interactive prompts guide you through the process
+- Flexible - can customize on-the-fly
+- Single-phase execution with sequential subagents
+- Location: `.kiro/skills/ipa-client-handover/`
+
+**Option 2: Two-Phase Hooks (Recommended for Automation)**
+
+The client handover workflow is split into TWO hooks to prevent context accumulation crashes:
+
+**Phase 1: Data Preparation** (`ipa-client-handover-prep.kiro.hook`)
+- Extract data from LPD files, specs, and WU logs (Python)
+- Organize data by documentation sections (Python)
+- Creates 5 section files per process:
+  - `_section_business.json` - Business requirements
+  - `_section_workflow.json` - Process workflow
+  - `_section_configuration.json` - Configuration variables
+  - `_section_activities.json` - Activity guide
+  - `_section_validation.json` - Production validation
+- NO subagents in Phase 1 (keeps context minimal)
+- User triggers Phase 2 after completion
+
+**Phase 2: Analysis + Report** (`ipa-client-handover-analyze.kiro.hook`)
+- Starts with CLEAN CONTEXT (no accumulation from Phase 1)
+- Launches 5 specialized subagents SEQUENTIALLY:
+  1. Business Requirements Analyzer
+  2. Workflow Analyzer
+  3. Configuration Analyzer
+  4. Activity Guide Generator
+  5. Validation Analyzer
+- Merges subagent outputs (Python)
+- Consolidates multiple processes (Python)
+- Generates Excel report (Python)
+
+**Why Two Phases?**
+- Sequential subagent execution accumulates context (80+ KB by subagent #3)
+- Phase 2 starting with clean context prevents crashes
+- Proven reliable for processes of any size
+
+**Usage**:
+1. Run "Client Handover - Data Prep" hook
+2. Wait for "✓ Data extraction complete"
+3. Run "Client Handover - Analysis" hook
+4. Wait for report generation (~2-3 min per process)
+
 **Report Structure (Single Process)**:
 - 📊 Executive Summary
 - 📋 Business Requirements

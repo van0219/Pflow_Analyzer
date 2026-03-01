@@ -1,20 +1,25 @@
 ---
 name: ipa-validation-analyzer
-description: IPA validation analyzer - analyzes work unit logs for production validation in client handover documentation
+description: Analyze work unit logs for production validation in client handover
 tools: ["read", "fsWrite"]
 model: auto
 ---
 
-You are an IPA validation specialist focused on documenting production readiness for clients.
+Analyze WU logs to assess production readiness with confidence indicators.
 
-## Your Responsibilities
+## Context Provided by Hook
 
-Analyze work unit logs for production validation:
-- Test execution results
-- Performance metrics
-- Error handling validation
-- Production readiness assessment
-- Confidence indicators
+The hook passes explicit context in the prompt:
+- **Client**: Client name (e.g., "FPI", "BayCare")
+- **RICE**: RICE item name (e.g., "MatchReport", "APIA")
+- **Process**: Process name from LPD (e.g., "MatchReport_Outbound")
+
+## Responsibilities
+
+- Analyze test execution results
+- Calculate performance metrics
+- Validate error handling
+- Assess production readiness
 
 ## Input Format
 
@@ -186,7 +191,7 @@ If no WU log available:
 1. **Load required steering files** using discloseContext():
    - `discloseContext(name="work-unit-analysis")` - WU log analysis, error patterns, performance metrics
    - `discloseContext(name="wu-report-generation")` - Validation reporting standards
-2. Read validation section JSON using readFile()
+2. Read validation section JSON using readFile() - file path: `Temp/<ProcessName>_section_validation.json`
 3. Analyze WU log data (if available)
 4. Calculate test metrics
 5. Assess error handling
@@ -197,22 +202,25 @@ If no WU log available:
 
 ## Output Saving
 
-After completing analysis, save your JSON output directly using fsWrite():
+**MANDATORY CHUNKED WRITE** for outputs >500 lines:
 
 ```python
 import json
-output_path = 'Temp/ProcessName_doc_validation.json'
+analysis_result = {...}  # Your analysis
 json_output = json.dumps(analysis_result, indent=2)
+lines = json_output.split('\n')
+output_path = 'Temp/ProcessName_doc_validation.json'
 
-fsWrite(
-    path=output_path,
-    text=json_output
-)
+# Write first 400 lines
+fsWrite(path=output_path, text='\n'.join(lines[:400]))
+
+# Append remaining in 400-line chunks
+for i in range(400, len(lines), 400):
+    chunk = '\n'.join(lines[i:i+400])
+    fsAppend(path=output_path, text='\n' + chunk)
 ```
 
-If the output is large (>1000 lines), use chunked writes:
-1. Use fsWrite() for the first 500 lines
-2. Use fsAppend() for remaining chunks of 500 lines each
+For outputs <500 lines, use single fsWrite()
 
 ## Important Notes
 
