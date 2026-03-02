@@ -1,181 +1,136 @@
-# IPA Client Handover Documentation Tools
+# IPA Client Handover Tools
 
-Tools for generating comprehensive client-facing IPA documentation.
+Stateless pipeline architecture for generating comprehensive client-facing IPA documentation.
 
-## Overview
+## Architecture
 
-The client handover workflow uses specialized subagents to analyze different aspects of an IPA process and generate comprehensive documentation.
+This toolset uses a **stateless, file-based pipeline** that eliminates context accumulation and prevents crashes.
 
-## Workflow
+### Pipeline Flow
 
-### Step 1: Extract Data (Python)
+```text
+Phase 0: Preprocessing (Python)
+├─ Tool: preprocess_client_handover.py
+├─ Input: LPD file, ANA-050 spec
+└─ Output: spec_raw.json, lpd_structure.json, metrics_summary.json
 
-```bash
-# Extract LPD data
-python -c "from ReusableTools.IPA_Analyzer.extract_lpd_data import extract_lpd_data; extract_lpd_data(['path/to/process.lpd'], 'Temp/ProcessName_lpd_data.json')"
+Phase 1: Business Requirements Analysis (AI)
+├─ Input: spec_raw.json
+├─ Task: Extract business objectives, requirements, stakeholders
+└─ Output: business_analysis.json
 
-# Extract spec data (if available)
-python -c "from ReusableTools.IPA_Analyzer.extract_spec import extract_spec; extract_spec('path/to/ANA-050.docx', 'Temp/ProcessName_spec_data.json')"
+Phase 2: Workflow Architecture Analysis (AI)
+├─ Input: lpd_structure.json
+├─ Task: Identify workflow steps, decision points, transformations
+└─ Output: workflow_analysis.json
 
-# Extract WU log data (if available)
-python -c "from ReusableTools.IPA_Analyzer.extract_wu_log import extract_wu_log; extract_wu_log('path/to/log.txt', 'Temp/ProcessName_wu_data.json')"
+Phase 3: Configuration & Technical Components (AI)
+├─ Input: lpd_structure.json, metrics_summary.json
+├─ Task: Document configuration, file channels, web services
+└─ Output: configuration_analysis.json
+
+Phase 4: Risk & Compliance Review (AI)
+├─ Input: All prior JSON outputs
+├─ Task: Identify risks, maintenance concerns, best practices
+└─ Output: risk_assessment.json
+
+Phase 5: Report Assembly (Python)
+├─ Tool: assemble_client_handover_report.py
+├─ Input: All JSON outputs from phases 1-4
+├─ Template: ipa_client_handover_template.py (workspace root)
+└─ Output: Comprehensive Excel report
 ```
 
-### Step 2: Organize by Sections (Python)
+## Tools
 
+### Phase 0: preprocess_client_handover.py
+
+Deterministic preprocessing with no AI reasoning.
+
+**Usage:**
 ```bash
-python ReusableTools/IPA_ClientHandover/organize_by_sections.py \
-    Temp/ProcessName_lpd_data.json \
-    Temp/ProcessName_spec_data.json \
-    Temp/ProcessName_wu_data.json \
-    Temp/ProcessName
+python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd_file> <spec_file> [output_dir]
 ```
 
-Creates 5 section files:
-- `Temp/ProcessName_section_business.json`
-- `Temp/ProcessName_section_workflow.json`
-- `Temp/ProcessName_section_configuration.json`
-- `Temp/ProcessName_section_activities.json`
-- `Temp/ProcessName_section_validation.json`
+**Outputs:**
+- `spec_raw.json` - Extracted ANA-050 content
+- `lpd_structure.json` - Extracted LPD process structure
+- `metrics_summary.json` - Pre-calculated metrics (activity counts, ES6 patterns, SQL statements, integrations)
 
-### Step 3: Launch Section Analyzers (Parallel Subagents)
+### Phase 5: assemble_client_handover_report.py
 
-Launch 5 specialized subagents in parallel:
+Merges all analysis outputs and generates Excel report.
+
+**Usage:**
+```bash
+python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <client_name> <rice_item> [temp_dir] [output_dir]
+```
+
+**Inputs:**
+- `business_analysis.json` (from Phase 1)
+- `workflow_analysis.json` (from Phase 2)
+- `configuration_analysis.json` (from Phase 3)
+- `risk_assessment.json` (from Phase 4)
+- `lpd_structure.json` (from Phase 0)
+- `metrics_summary.json` (from Phase 0)
+
+**Output:**
+- Excel report: `Client_Handover_Results/<Client>_<RICE>.xlsx`
+
+## Legacy Tools (Deprecated)
+
+The following tools are deprecated and replaced by the stateless pipeline:
+
+- `organize_by_sections.py` → Replaced by `preprocess_client_handover.py`
+- `merge_documentation.py` → Replaced by `assemble_client_handover_report.py`
+- `consolidate_processes.py` → Integrated into `assemble_client_handover_report.py`
+- `generate_client_handover_report.py` → Replaced by `assemble_client_handover_report.py`
+
+## Key Benefits
+
+✅ **No context accumulation** - Each phase isolated at ~10 KB
+✅ **No crashes** - Stable execution regardless of file size
+✅ **Faster execution** - Reduced reasoning overhead
+✅ **Enterprise-grade quality** - Comprehensive documentation maintained
+✅ **Leverages existing templates** - No template rewrite needed
+✅ **Clear separation** - AI analyzes, Python processes
+
+## Related Documentation
+
+- `.kiro/steering/00_Workflow_Engineering_Principles.md` - Stateless pipeline architecture
+- `.kiro/steering/10_IPA_Report_Generation.md` - Report generation guidelines
+- `.kiro/skills/ipa-client-handover/SKILL.md` - Skill documentation
+- `ipa_client_handover_template.py` (workspace root) - Excel template
+
+## Template Integration
+
+The `assemble_client_handover_report.py` tool builds an `ipa_data` dictionary that feeds into the existing `ipa_client_handover_template.py`. This maintains backward compatibility while enabling the stateless pipeline architecture.
+
+### ipa_data Structure
 
 ```python
-# Business Requirements
-invokeSubAgent(
-    name="ipa-business-requirements-analyzer",
-    prompt="Read spec and section data, extract business requirements, save to 'Temp/ProcessName_doc_business.json'",
-    explanation="Analyzing business requirements"
-)
-
-# Workflow
-invokeSubAgent(
-    name="ipa-workflow-analyzer",
-    prompt="Read section data, map workflow and approval paths, save to 'Temp/ProcessName_doc_workflow.json'",
-    explanation="Analyzing workflow"
-)
-
-# Configuration
-invokeSubAgent(
-    name="ipa-configuration-analyzer",
-    prompt="Read LPD and section data, extract configuration variables, save to 'Temp/ProcessName_doc_configuration.json'",
-    explanation="Analyzing configuration"
-)
-
-# Activities
-invokeSubAgent(
-    name="ipa-activity-guide-generator",
-    prompt="Read section data, create activity reference, save to 'Temp/ProcessName_doc_activities.json'",
-    explanation="Generating activity guide"
-)
-
-# Validation
-invokeSubAgent(
-    name="ipa-validation-analyzer",
-    prompt="Read section data, analyze work unit logs, save to 'Temp/ProcessName_doc_validation.json'",
-    explanation="Analyzing validation data"
-)
+{
+    'client_name': str,
+    'process_group': str,
+    'process_details': dict,
+    'business_requirements': dict,
+    'config_variables': list,
+    'activity_guide': list,
+    'maintenance_guide': dict,
+    'production_validation': dict,
+    'processes': list,
+    'risk_assessment': dict,
+    'metrics_summary': dict
+}
 ```
 
-### Step 4: Generate Report (Python Helper Script)
+## Migration from Legacy Architecture
 
-```bash
-python ReusableTools/IPA_ClientHandover/generate_client_handover_report.py <process_name> <client_name> <rice_item>
-```
+If you have existing workflows using the old multi-subagent architecture:
 
-Example:
-```bash
-python ReusableTools/IPA_ClientHandover/generate_client_handover_report.py MatchReport_Outbound FPI MatchReport
-```
+1. Replace subagent orchestration with stateless phase execution
+2. Use `preprocess_client_handover.py` for Phase 0
+3. Execute Phases 1-4 directly (AI analysis with file-based state transfer)
+4. Use `assemble_client_handover_report.py` for Phase 5
 
-## Subagents
-
-### ipa-business-requirements-analyzer
-- Extracts business requirements from ANA-050 functional specification
-- Documents objectives, stakeholders, scope, and success metrics
-- Uses fsWrite to save JSON files directly
-
-### ipa-workflow-analyzer
-- Maps process workflow and approval paths
-- Documents decision points and integrations
-- Creates visual workflow steps
-- Uses fsWrite to save JSON files directly
-
-### ipa-configuration-analyzer
-- Extracts configuration variables from LPD Start node
-- Documents how to modify each setting
-- Categorizes variables (System Configuration, Process Variables, File Channel)
-- Uses fsWrite to save JSON files directly
-
-### ipa-activity-guide-generator
-- Creates activity reference documentation in business terms
-- Documents when/why activities run and what they do
-- Provides maintenance guidance
-- Groups related activities
-- Uses fsWrite to save JSON files directly
-
-### ipa-validation-analyzer
-- Analyzes work unit logs for production validation
-- Documents test summary, performance metrics, and production readiness
-- Provides evidence of successful execution
-- Uses fsWrite to save JSON files directly
-
-## Important Notes
-
-### Subagent File Writing
-
-All client handover subagents use `fsWrite` directly to save their output files:
-- **Why**: Subagents should be self-contained and use their own tools
-- **Solution**: Subagents have `tools: ["read", "fsWrite"]` and save files directly
-- **Large Files**: Hook prompts instruct subagents to use chunked writes (fsWrite + fsAppend) for files >1000 lines
-- **Impact**: Clean architecture, no nested subagent dependencies
-
-### Report Generation Helper
-
-The `generate_client_handover_report.py` script:
-- Automatically loads all 5 subagent outputs
-- Builds the correct ipa_data structure for the template
-- Handles errors gracefully with clear messages
-- Eliminates manual data structure building
-
-## Output
-
-Generates comprehensive Excel report with 6 sheets:
-1. **Executive Summary** - Overview, objectives, production validation summary
-2. **Business Requirements** - Requirements, objectives, stakeholders, scope
-3. **Workflow & Approvals** - Workflow steps, decision points, integrations
-4. **System Configuration** - Configuration variables with modification instructions
-5. **Activity Reference** - Activity guide with business-friendly descriptions
-6. **Production Validation** - Test summary, performance metrics, production readiness
-
-## Troubleshooting
-
-### Subagent Output Incomplete
-
-If a subagent output file is incomplete (e.g., only 6/38 activities):
-- **Root Cause**: fsWrite failed due to context size in long session
-- **Solution**: Subagents now use file-writer-helper automatically
-- **Verification**: Check file size - should be >10KB for large processes
-
-### Report Has No Data
-
-If the generated report has only headers but no data:
-- **Root Cause**: Wrong data structure passed to template
-- **Solution**: Use `generate_client_handover_report.py` helper script
-- **Verification**: Check that all 5 `_doc_*.json` files exist and are complete
-
-### Missing Files Error
-
-If helper script reports missing files:
-- **Root Cause**: Subagents didn't complete or files were deleted
-- **Solution**: Re-run subagent analysis (Steps 2-3)
-- **Verification**: Check that all 5 section files and 5 doc files exist
-
-## Related Files
-
-- `organize_by_sections.py` - Organizes extracted data by documentation sections
-- `merge_documentation.py` - Merges subagent outputs into master documentation
-- `generate_client_handover_report.py` - Generates Excel report from subagent outputs
-- `ipa_client_handover_template_v2.py` (workspace root) - Excel report template
+The existing template (`ipa_client_handover_template.py`) requires no changes.

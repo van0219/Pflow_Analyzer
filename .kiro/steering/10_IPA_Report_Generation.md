@@ -19,6 +19,84 @@ Comprehensive guide for generating IPA (Infor Process Automation) reports includ
 5. **Template Reusability**: Master templates work for ANY IPA project without modification.
 6. **Data Completeness**: ALWAYS read extracted data completely before analysis. Never skip the data reading step.
 
+## Stateless Pipeline Workflow (MANDATORY)
+
+**CRITICAL**: Client handover generation MUST follow the stateless pipeline architecture to prevent context accumulation and ensure data completeness.
+
+### Phase 0: Preprocessing (Python Only - MANDATORY FIRST STEP)
+
+**ALWAYS run this BEFORE any AI analysis:**
+
+```bash
+python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd_file> <spec_file> [output_dir]
+```
+
+**What it creates:**
+- `spec_raw.json` - Extracted ANA-050 content
+- `lpd_structure.json` - Extracted LPD process structure (REQUIRED by assembly script)
+- `metrics_summary.json` - Pre-calculated metrics (REQUIRED by assembly script)
+
+**Why this matters:**
+- The assembly script (`assemble_client_handover_report.py`) expects `lpd_structure.json` and `metrics_summary.json`
+- Without these files, the report will show "Process Count: 0" and "Total Activities: 0"
+- Manual extraction creates `lpd_data.json` which has a different structure
+
+### Phase 1-4: AI Analysis (Create Analysis JSONs)
+
+After Phase 0 completes, create these analysis files:
+- `business_analysis.json` - Business requirements and objectives
+- `workflow_analysis.json` - Process flow and decision points
+- `configuration_analysis.json` - Configuration dependencies and settings
+- `risk_assessment.json` - Technical risks and maintenance concerns
+
+### Phase 5: Report Assembly (Python Only - FINAL STEP)
+
+**ALWAYS run this to generate the Excel report:**
+
+```bash
+python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <client_name> <rice_item> [temp_dir] [output_dir]
+```
+
+**What it expects:**
+- `lpd_structure.json` (from Phase 0)
+- `metrics_summary.json` (from Phase 0)
+- `business_analysis.json` (from Phase 1)
+- `workflow_analysis.json` (from Phase 2)
+- `configuration_analysis.json` (from Phase 3)
+- `risk_assessment.json` (from Phase 4)
+
+### Common Mistakes to Avoid
+
+❌ **WRONG**: Manually extract data and skip Phase 0
+- Creates `lpd_data.json` instead of `lpd_structure.json`
+- Assembly script can't find required files
+- Report shows empty data (Process Count: 0)
+
+❌ **WRONG**: Create analysis JSONs without running Phase 0 first
+- Missing `lpd_structure.json` and `metrics_summary.json`
+- Assembly script uses empty dicts
+- Report has no process details
+
+✅ **CORRECT**: Always run Phase 0 → Phases 1-4 → Phase 5
+- All required files exist
+- Assembly script has complete data
+- Report shows accurate process information
+
+### Verification Before Report Assembly
+
+Before running Phase 5, verify these files exist:
+
+```bash
+Test-Path Temp/lpd_structure.json
+Test-Path Temp/metrics_summary.json
+Test-Path Temp/business_analysis.json
+Test-Path Temp/workflow_analysis.json
+Test-Path Temp/configuration_analysis.json
+Test-Path Temp/risk_assessment.json
+```
+
+If ANY file is missing, the report will be incomplete.
+
 ## Critical Data Extraction Requirements
 
 ### Client Handover Documentation
@@ -71,6 +149,12 @@ The difference: "Reading actual source data instead of generating content" trans
 ## Table of Contents
 
 - [Core Principles](#core-principles)
+- [Stateless Pipeline Workflow (MANDATORY)](#stateless-pipeline-workflow-mandatory)
+  - [Phase 0: Preprocessing](#phase-0-preprocessing-python-only---mandatory-first-step)
+  - [Phase 1-4: AI Analysis](#phase-1-4-ai-analysis-create-analysis-jsons)
+  - [Phase 5: Report Assembly](#phase-5-report-assembly-python-only---final-step)
+  - [Common Mistakes to Avoid](#common-mistakes-to-avoid)
+  - [Verification Before Report Assembly](#verification-before-report-assembly)
 - [Critical Data Extraction Requirements](#critical-data-extraction-requirements)
   - [Client Handover Documentation](#client-handover-documentation)
   - [Verification Checklist](#verification-checklist)

@@ -1,5 +1,7 @@
 ---
-inclusion: always
+inclusion: manual
+name: legacy-general-rules
+description: Historical reference for previous monolithic general rules before modular split. Content has been distributed to 00_Core_System_Rules.md and 00_Workflow_Engineering_Principles.md.
 ---
 
 # Kiro General Rules and Settings
