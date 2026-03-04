@@ -68,6 +68,9 @@ def validate_metrics_summary(data, filepath):
 
 def validate_business_analysis(data, filepath):
     """Validate business_analysis.json"""
+    issues = []
+    warnings = []
+    
     # Flexible validation - check for at least one expected field
     expected_fields = [
         'business_requirements', 'business_objectives', 'stakeholders',
@@ -78,7 +81,31 @@ def validate_business_analysis(data, filepath):
     
     if not has_content:
         return False, f"✗ {filepath} missing expected fields (need at least one of: {', '.join(expected_fields)})"
-    return True, f"✓ {filepath} structure valid"
+    
+    # Check business_objectives structure (recommended format)
+    if 'business_objectives' in data:
+        bo = data['business_objectives']
+        if isinstance(bo, dict):
+            if 'overview' not in bo:
+                warnings.append("business_objectives.overview missing (recommended)")
+            if 'objectives' not in bo:
+                warnings.append("business_objectives.objectives missing (recommended)")
+        elif isinstance(bo, list):
+            warnings.append("business_objectives is a list (dict format recommended)")
+        else:
+            warnings.append(f"business_objectives has unexpected type: {type(bo).__name__}")
+    
+    # Check for recommended fields
+    if 'stakeholders' not in data:
+        warnings.append("stakeholders field missing (recommended)")
+    if 'functional_requirements' not in data and 'business_requirements' not in data:
+        warnings.append("functional_requirements or business_requirements missing (recommended)")
+    
+    msg = f"✓ {filepath} structure valid"
+    if warnings:
+        msg += f"\n  ⚠ Warnings: {'; '.join(warnings)}"
+    
+    return True, msg
 
 
 def validate_workflow_analysis(data, filepath):
@@ -100,8 +127,10 @@ def validate_configuration_analysis(data, filepath):
     """Validate configuration_analysis.json"""
     # Flexible validation - check for at least one expected field
     expected_fields = [
-        'configuration_dependencies', 'configuration_items', 'file_channels',
-        'web_services', 'sql_queries'
+        'configuration_dependencies', 'configuration_items', 'configuration_sets',
+        'file_channels', 'file_channel_configuration',
+        'web_services', 'sql_queries', 'sql_query_configuration',
+        'hardcoded_values', 'environment_specific_settings'
     ]
     
     has_content = any(field in data for field in expected_fields)

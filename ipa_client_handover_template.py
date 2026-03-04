@@ -605,10 +605,10 @@ def create_system_configuration(wb, ipa_data):
             
             for var in system_config:
                 ws.cell(row=row, column=1, value=var.get('name', ''))
-                ws.cell(row=row, column=2, value=var.get('location', ''))
-                ws.cell(row=row, column=3, value=var.get('description', ''))
-                ws.cell(row=row, column=4, value=var.get('current_value', ''))
-                ws.cell(row=row, column=5, value=var.get('how_to_modify', ''))
+                ws.cell(row=row, column=2, value=var.get('location', 'FSM > Configuration > System Configuration'))
+                ws.cell(row=row, column=3, value=var.get('description', '') or var.get('usage', ''))
+                ws.cell(row=row, column=4, value=var.get('current_value', '') or var.get('default_value', ''))
+                ws.cell(row=row, column=5, value=var.get('how_to_modify', '') or var.get('modification_instructions', ''))
                 
                 for col_idx in range(1, 6):
                     cell = ws.cell(row=row, column=col_idx)
@@ -865,7 +865,6 @@ def create_production_validation(wb, ipa_data):
     if 'error_handling' in validation:
         eh = validation['error_handling']
         flattened_data.append(('Error Handling Validated', 'Yes' if eh.get('validated') else 'No', 'Pass'))
-        flattened_data.append(('Test Scenarios', f"{len(eh.get('test_scenarios', []))} scenarios tested", 'Pass'))
         flattened_data.append(('Confidence Level', eh.get('confidence', 'N/A'), 'Pass'))
     
     # Production Readiness
@@ -918,6 +917,10 @@ def create_production_validation(wb, ipa_data):
         ws[f'A{row}'] = param
         ws[f'B{row}'] = str(value)
         
+        # Special formatting for <Tenant> placeholder
+        if param == 'Test Environment' and '<Tenant>' in str(value):
+            ws[f'B{row}'].font = Font(bold=True, color=COLORS['red'])
+        
         # Add status indicator
         if status == 'Warning':
             ws[f'C{row}'] = 'Warning'
@@ -947,11 +950,11 @@ def create_production_validation(wb, ipa_data):
     
     # Extract performance metrics
     duration = validation.get('performance', {}).get('avg_duration', 'N/A')
-    records = validation.get('data_validation', {}).get('records_retrieved', 'N/A')
+    data_vol = validation.get('data_validation', {}).get('data_volume', 'N/A')
     
     perf_metrics = [
         ['Execution Speed', duration, 'Excellent'],
-        ['Data Volume', records, 'Normal'],
+        ['Data Volume', data_vol, 'Normal'],
         ['Authentication', 'OAuth2 Token', 'Secure'],
         ['API Integration', 'Compass Data Fabric', 'Stable']
     ]

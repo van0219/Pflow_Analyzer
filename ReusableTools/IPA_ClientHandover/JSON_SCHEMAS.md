@@ -112,15 +112,17 @@ This document defines the expected structure for all JSON files in the stateless
 
 ### business_analysis.json (Phase 1)
 
-**Flexible Structure** - Assembly script handles both formats:
-
-**Format A (Detailed)**:
+**RECOMMENDED Structure** (Most compatible):
 ```json
 {
   "rice_item": "string",
   "rice_type": "string",
-  "business_objective": "string",
-  "business_requirements": [
+  "business_purpose": "string (fallback for overview)",
+  "business_objectives": {
+    "overview": "string (primary business purpose)",
+    "objectives": ["string (list of specific objectives)"]
+  },
+  "functional_requirements": [
     {
       "requirement": "string",
       "description": "string",
@@ -134,7 +136,7 @@ This document defines the expected structure for all JSON files in the stateless
       "responsibilities": "string"
     }
   ],
-  "integrations": [
+  "integration_touchpoints": [
     {
       "system": "string",
       "purpose": "string",
@@ -148,18 +150,31 @@ This document defines the expected structure for all JSON files in the stateless
 }
 ```
 
-**Format B (Legacy - also supported)**:
+**ALSO SUPPORTED** (Legacy formats - assembly script handles gracefully):
+
+Format B - business_objectives as list:
 ```json
 {
-  "business_objectives": {
-    "overview": "string",
-    "objectives": ["string"]
-  },
-  "functional_requirements": [{}],
+  "business_objectives": ["string", "string"],
   "stakeholders": [{}],
   "integration_touchpoints": [{}]
 }
 ```
+
+Format C - Alternative field names:
+```json
+{
+  "business_requirements": [{}],
+  "stakeholders": [{}],
+  "integrations": [{}]
+}
+```
+
+**Assembly Script Behavior**:
+- Checks `isinstance()` for dict vs list
+- Falls back to `business_purpose` if `business_objectives.overview` missing
+- Handles missing fields with `.get()` defaults
+- Never crashes on unexpected format
 
 ### workflow_analysis.json (Phase 2)
 

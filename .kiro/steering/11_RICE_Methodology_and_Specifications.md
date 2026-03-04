@@ -9,77 +9,56 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 ## Table of Contents
 
 - [Overview](#overview)
-- [What is RICE?](#what-is-rice)
-- [RICE Categories Explained](#rice-categories-explained)
+- [RICE Categories](#rice-categories)
   - [Reports (R)](#reports-r)
   - [Interfaces (I)](#interfaces-i)
   - [Conversions (C)](#conversions-c)
   - [Enhancements (E)](#enhancements-e)
-- [RICE Item Lifecycle](#rice-item-lifecycle)
-- [ANA-050 Functional Specification](#ana-050-functional-specification)
-- [DES-020 Technical Specification](#des-020-technical-specification)
-- [Document Relationships](#document-relationships)
-- [ANA-050 Requirement Analysis Guidelines](#ana-050-requirement-analysis-guidelines)
-  - [Step 1: Identify RICE Type](#step-1-identify-rice-type-first-step---critical)
-  - [Step 2: Determine IPA vs LPL Requirement](#step-2-determine-ipa-vs-lpl-requirement)
-  - [Step 3: Determine Solution Deliverables](#step-3-determine-solution-deliverables)
-  - [Step 4: Separate IPA vs LPL Requirements](#step-4-separate-ipa-vs-lpl-requirements)
-- [Solution Deliverables by RICE Type](#solution-deliverables-by-rice-type)
-- [IPA vs LPL Determination](#ipa-vs-lpl-determination)
-- [Separating IPA vs LPL Requirements](#separating-ipa-vs-lpl-requirements)
-- [Automated RICE Analysis](#automated-rice-analysis)
+- [Specification Documents](#specification-documents)
+  - [ANA-050 Functional Specification](#ana-050-functional-specification)
+  - [DES-020 Technical Specification](#des-020-technical-specification)
+  - [Document Relationships](#document-relationships)
+- [AI Analysis Workflow](#ai-analysis-workflow)
+  - [Step 1: Identify RICE Type](#step-1-identify-rice-type)
+  - [Step 2: Determine IPA vs LPL](#step-2-determine-ipa-vs-lpl)
+  - [Step 3: Determine Deliverables](#step-3-determine-deliverables)
+  - [Step 4: Separate Requirements](#step-4-separate-requirements)
+- [IPA vs LPL Decision Matrix](#ipa-vs-lpl-decision-matrix)
+- [Solution Deliverables](#solution-deliverables)
 - [Document Formatting Standards](#document-formatting-standards)
-- [Best Practices](#best-practices)
 - [Related Steering Files](#related-steering-files)
-- [Summary](#summary)
 
 ## Overview
 
-**RICE** is a standard ERP project methodology representing the four major categories of deliverables tracked during Infor FSM system design, configuration, and enhancement processes.
+**RICE** is a standard ERP project methodology for categorizing deliverables in Infor FSM implementations:
 
-**Key Principle**: Every RICE item represents a complete solution that may include:
+- **R**eports - System outputs (data summaries, analytics)
+- **I**nterfaces - Data exchange with external systems
+- **C**onversions - Data migration from legacy systems
+- **E**nhancements - Customizations extending standard functionality
 
-- One or more IPAs (main + subprocesses)
-- LPL configuration code
-- File channels
-- Menu definitions
-- Form modifications
-- Security configurations
+**Key Principle**: One RICE item = one complete solution that may include:
+
+- One or more IPAs (main process + subprocesses)
+- LPL configuration code (UI/form changes)
+- File channels (for file-triggered processes)
+- Menu definitions, form modifications, security configurations
 - Combined ANA-050 + DES-020 specification document
 
-**Related Tools**:
+**Automated Analysis**: Use `ReusableTools/IPA_Analyzer/` to automatically identify RICE type from ANA-050 documents.
 
-- **IPA Analyzer** (`ReusableTools/IPA_Analyzer/`) - Automatically identifies RICE type from ANA-050 documents
-- See `00_Kiro_General_Rules.md` for usage
-
-## What is RICE?
-
-| Letter | Category | Description |
-|--------|----------|-------------|
-| **R** | Reports | System outputs containing data summaries, detailed views, or analytics |
-| **I** | Interfaces | Connections between FSM and external systems for data exchange |
-| **C** | Conversions | Data migration from legacy systems into FSM |
-| **E** | Enhancements | Customizations extending standard functionality |
-
-## RICE Categories Explained
+## RICE Categories
 
 ### Reports (R)
 
-**Purpose**: Outputs generated from FSM containing data summaries, detailed views, or analytics
+**Purpose**: System outputs containing data summaries, detailed views, or analytics
 
 **Common Implementations**:
 
 - Infor BI reports
 - FSM Lists
 - Spreadsheet Designer
-- Custom report generation
-
-**Characteristics**:
-
-- Read-only data access
-- Scheduled or on-demand execution
-- Various output formats (PDF, Excel, CSV)
-- Support decision-making and operations
+- Custom report generation (IPA-driven)
 
 **Typical Deliverables**:
 
@@ -87,10 +66,13 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - Report definition files
 - Testing guide
 - User documentation
+- ANA-050 + DES-020 specification
+
+**IPA/LPL**: Usually neither (unless report generation is automated via IPA)
 
 ### Interfaces (I)
 
-**Purpose**: Connections between Infor FSM and other systems for data exchange
+**Purpose**: Connections between FSM and external systems for data exchange
 
 **Common Implementations**:
 
@@ -99,21 +81,16 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - Web Services - REST/SOAP APIs
 - File-based integrations - SFTP, File Channels
 
-**Characteristics**:
-
-- Bidirectional or unidirectional data flow
-- Scheduled or event-triggered
-- Data transformation and mapping
-- Error handling and logging
-
 **Typical Deliverables**:
 
 - IPA process files (.lpd)
-- File Channel configurations
+- File Channel configurations (if file-triggered)
 - Field mapping specifications
 - Interface testing guide
 - Deployment procedures
 - Combined ANA-050 + DES-020 specification
+
+**IPA/LPL**: IPA required, LPL optional
 
 **Key Insight**: IPA is most commonly used for Interfaces where data or processes move between FSM and external systems.
 
@@ -128,13 +105,6 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - ETL (Extract, Transform, Load) processes
 - Custom migration scripts
 
-**Characteristics**:
-
-- One-time or phased execution
-- Data cleansing and validation
-- Legacy system mapping
-- Rollback procedures
-
 **Typical Deliverables**:
 
 - Data mapping specifications
@@ -142,6 +112,9 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - Data validation reports
 - Rollback procedures
 - Testing and validation guide
+- ANA-050 + DES-020 specification
+
+**IPA/LPL**: IPA common, LPL optional
 
 ### Enhancements (E)
 
@@ -154,96 +127,38 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - Custom fields and validations
 - Specialized processing logic
 
-**Characteristics**:
-
-- Meets unique business requirements
-- May include both process automation (IPA) and UI changes (LPL)
-- Requires thorough testing
-- Ongoing maintenance considerations
-
 **Typical Deliverables**:
 
 - IPA process files (if workflow automation)
 - LPL configuration code (if UI changes)
-- Menu definitions
-- Form modifications
+- Menu definitions, form modifications
 - Security configurations
 - Testing guide
 - Combined ANA-050 + DES-020 specification
 
-## RICE Item Lifecycle
+**IPA/LPL**: Both common, depends on requirements
 
-### 1. Requirements Gathering
+## Specification Documents
 
-- Business stakeholders define needs
-- Functional requirements documented
-- Scope and objectives established
+### ANA-050 Functional Specification
 
-### 2. Analysis (ANA-050)
+**Purpose**: Blueprint for implementation defining business requirements
 
-- Functional specification created
-- RICE type identified
-- IPA vs LPL determination made
-- Requirements separated and analyzed
+**Standard Sections**:
 
-### 3. Design (DES-020)
+1. Introduction - High-level overview
+2. Scope - Inclusions and exclusions
+3. Business Requirements - Detailed requirements with acceptance criteria
+4. Process Flow - Workflow diagrams and step-by-step descriptions
+5. Data Requirements - Data sources, fields, validation rules
+6. User Roles & Permissions - Access control definitions
+7. Integration Points - ION, SFTP, API interfaces
+8. Error Handling - Error scenarios and management strategies
+9. Reporting & Notifications - Reports, alerts, email requirements
+10. Approval Workflow - Approval steps and routing (if applicable)
+11. Appendix - Supporting information
 
-- Technical specification created
-- Solution architecture defined
-- Field mappings documented
-- Implementation approach detailed
-
-### 4. Development
-
-- IPA processes created
-- LPL configurations implemented
-- File channels configured
-- Integration points established
-
-### 5. Testing
-
-- Unit testing
-- Integration testing
-- User Acceptance Testing (UAT)
-- Performance validation
-
-### 6. Deployment
-
-- Migration to production
-- User training
-- Documentation delivery
-- Post-deployment support
-
-### 7. Maintenance
-
-- Ongoing support
-- Enhancement requests
-- Issue resolution
-- Documentation updates
-
-## ANA-050 Functional Specification
-
-### Purpose
-
-- **Blueprint for Implementation**: Detailed guide for developers, testers, and business analysts
-- **Alignment**: Clear communication of business requirements to technical teams
-- **Reference**: Used throughout project lifecycle for design, development, testing, and UAT
-
-### Standard Sections
-
-1. **Introduction** - High-level process/feature overview
-2. **Scope** - Inclusions and exclusions
-3. **Business Requirements** - Detailed business perspective requirements
-4. **Process Flow** - Workflow diagrams and step-by-step descriptions
-5. **Data Requirements** - Data sources, fields, validation rules
-6. **User Roles & Permissions** - Access control definitions
-7. **Integration Points** - ION, SFTP, API interfaces
-8. **Error Handling** - Error scenarios and management strategies
-9. **Reporting & Notifications** - Reports, alerts, email requirements
-10. **Approval Workflow** - Approval steps and routing details (if applicable)
-11. **Appendix** - Supporting information
-
-### Key Content
+**Key Content**:
 
 - Business objectives and scenarios
 - Functional requirements with acceptance criteria
@@ -254,28 +169,24 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - Integration specifications
 - Test scenarios
 
-## DES-020 Technical Specification
+### DES-020 Technical Specification
 
-### Purpose
+**Purpose**: Technical blueprint providing developers with implementation instructions
 
-- **Technical Blueprint**: Provides developers with clear implementation instructions
-- **Alignment**: Ensures technical implementation matches business requirements
-- **Reference**: Used throughout development, testing, deployment, and maintenance
+**Standard Sections**:
 
-### Standard Sections
+1. Introduction - Technical solution overview
+2. Technical Architecture - System components and interaction diagrams
+3. Data Mapping & Transformation - Field mappings and transformation logic
+4. Interface Specifications - API definitions, file formats, integration points
+5. Configuration Details - System settings, environment variables, parameters
+6. Security & Access Controls - User roles, permissions, data protection
+7. Error Handling & Logging - Error management and logging strategies
+8. Development Steps - Detailed build and deployment instructions
+9. Testing & Validation - Technical test cases and validation procedures
+10. Appendix - Supporting diagrams, tables, references
 
-1. **Introduction** - Technical solution overview and objectives
-2. **Technical Architecture** - System components and interaction diagrams
-3. **Data Mapping & Transformation** - Field mappings and transformation logic
-4. **Interface Specifications** - API definitions, file formats, integration points
-5. **Configuration Details** - System settings, environment variables, parameters
-6. **Security & Access Controls** - User roles, permissions, data protection
-7. **Error Handling & Logging** - Error management and logging strategies
-8. **Development Steps** - Detailed build and deployment instructions
-9. **Testing & Validation** - Technical test cases and validation procedures
-10. **Appendix** - Supporting diagrams, tables, references
-
-### Key Content
+**Key Content**:
 
 - Technical architecture diagrams
 - Detailed field mappings with data types
@@ -286,47 +197,36 @@ description: RICE methodology (Reports, Interfaces, Conversions, Enhancements), 
 - Deployment procedures
 - Technical test cases
 
-## Document Relationships
+### Document Relationships
 
-### ANA-050 → DES-020 Flow
+**ANA-050 → DES-020 Flow**:
 
-- **ANA-050** defines the "what" (business requirements)
-- **DES-020** defines the "how" (technical implementation)
-- **Combined Template** merges both for comprehensive documentation
+- ANA-050 defines the "what" (business requirements)
+- DES-020 defines the "how" (technical implementation)
+- Combined template merges both for comprehensive documentation
 
-### Usage in Project Lifecycle
+**Usage in Project Lifecycle**:
 
 - **Project Initiation**: ANA-050 establishes requirements
 - **Design & Development**: DES-020 guides technical implementation
 - **Testing & UAT**: Both serve as validation references
 - **Documentation**: Record for maintenance and enhancements
 
-### Relationship to IPA Development
+## AI Analysis Workflow
 
-Both specifications serve as primary inputs for:
+**CRITICAL**: When analyzing ANA-050 documents, follow this 4-step process in order.
 
-- IPA flow design and implementation
-- LPL script development
-- Integration configuration (ION, File Channels)
-- Application configuration setup
-- Test case creation and validation
-- User acceptance criteria
+### Step 1: Identify RICE Type
 
-## ANA-050 Requirement Analysis Guidelines
+**Every ANA-050 document represents a RICE item.** Identify the category FIRST before technical analysis.
 
-**AI Action**: When analyzing ANA-050 documents, follow this 4-step process in order.
+**Identification Methods**:
 
-### Step 1: Identify RICE Type (FIRST STEP - CRITICAL)
+1. **Check document title and RICE ID**:
+   - "FPI-ANA-050-MATCH-REPORT" → Interface
+   - "CLIENT-ANA-050-INVOICE-APPROVAL" → Enhancement
 
-**Every ANA-050 document represents a RICE item.** Before any technical analysis, identify the RICE category.
-
-**How to Identify RICE Type from ANA-050**:
-
-1. **Check document title and RICE ID**
-   - Example: "FPI-ANA-050-MATCH-REPORT" suggests Interface
-   - Example: "CLIENT-ANA-050-INVOICE-APPROVAL" suggests Enhancement
-
-2. **Look for keywords in content**:
+2. **Look for keywords**:
    - "extract", "import", "export", "integration" → **Interface**
    - "report", "analytics", "dashboard" → **Report**
    - "migration", "conversion", "legacy data" → **Conversion**
@@ -338,58 +238,55 @@ Both specifications serve as primary inputs for:
    - One-time data load → **Conversion**
    - Process improvement or customization → **Enhancement**
 
-### Step 2: Determine IPA vs LPL Requirement
+### Step 2: Determine IPA vs LPL
 
-**Based on RICE type and requirements, determine if IPA, LPL, or both are needed:**
+**Decision Matrix**:
 
-| Requirement Type | IPA Required | LPL Required | Workunit Created |
-|------------------|--------------|--------------|------------------|
-| Data integration with external system | ✅ Yes | ❌ No | ✅ Yes |
-| Scheduled data extract/export | ✅ Yes | ❌ No | ✅ Yes |
-| File-triggered processing | ✅ Yes | ❌ No | ✅ Yes |
-| Approval workflow | ✅ Yes | Maybe | ✅ Yes |
-| UI form modification only | ❌ No | ✅ Yes | ❌ No |
-| New field on business class | ❌ No | ✅ Yes | ❌ No |
-| Menu/navigation change only | ❌ No | ✅ Yes | ❌ No |
-| LPL action triggering process | ✅ Yes | ✅ Yes | ✅ Yes |
+| Requirement Type | IPA | LPL | Workunit |
+|------------------|-----|-----|----------|
+| Data integration with external system | ✅ | ❌ | ✅ |
+| Scheduled data extract/export | ✅ | ❌ | ✅ |
+| File-triggered processing | ✅ | ❌ | ✅ |
+| Approval workflow | ✅ | Maybe | ✅ |
+| UI form modification only | ❌ | ✅ | ❌ |
+| New field on business class | ❌ | ✅ | ❌ |
+| Menu/navigation change only | ❌ | ✅ | ❌ |
+| LPL action triggering process | ✅ | ✅ | ✅ |
 
-**Key Insight**: IPA is most commonly used for **Interfaces** (the "I" in RICE) where data or processes move between FSM and external systems.
+**Key Insight**: IPA is most commonly used for **Interfaces** where data or processes move between FSM and external systems.
 
-### Step 3: Determine Solution Deliverables
+### Step 3: Determine Deliverables
 
-**Based on RICE type and IPA/LPL determination, identify required deliverables:**
+**Based on RICE type and IPA/LPL determination, identify required deliverables.**
 
-#### Interface (I) - File-Triggered
+**Interface (I) - File-Triggered**:
 
 ```text
-Deliverables:
 ├── 00_Solution_Summary.md
 ├── 01_Requirements_Analysis.md
 ├── 02_IPA_Technical_Specification.md
-├── 03_[ProjectName].lpd (IPA file)
-├── 04_File_Channel_Configuration.md  ← REQUIRED for file-triggered
+├── 03_[ProjectName].lpd
+├── 04_File_Channel_Configuration.md  ← REQUIRED
 ├── 05_Testing_Guide.md
 ├── 06_Deployment_Guide.md
 └── ANA-050_DES-020_Combined_Specification.docx
 ```
 
-#### Interface (I) - Scheduled Outbound
+**Interface (I) - Scheduled Outbound**:
 
 ```text
-Deliverables:
 ├── 00_Solution_Summary.md
 ├── 01_Requirements_Analysis.md
 ├── 02_IPA_Technical_Specification.md
-├── 03_[ProjectName].lpd (IPA file)
+├── 03_[ProjectName].lpd
 ├── 05_Testing_Guide.md  ← NO File Channel (scheduled via Process Server Admin)
 ├── 06_Deployment_Guide.md
 └── ANA-050_DES-020_Combined_Specification.docx
 ```
 
-#### Enhancement (E) - LPL Only (No IPA)
+**Enhancement (E) - LPL Only**:
 
 ```text
-Deliverables:
 ├── 00_Solution_Summary.md
 ├── 01_Requirements_Analysis.md
 ├── 07_LPL_Configuration_Codes.md
@@ -401,14 +298,13 @@ Deliverables:
 └── ANA-050_DES-020_Combined_Specification.docx
 ```
 
-#### Enhancement (E) - IPA + LPL
+**Enhancement (E) - IPA + LPL**:
 
 ```text
-Deliverables:
 ├── 00_Solution_Summary.md
 ├── 01_Requirements_Analysis.md
 ├── 02_IPA_Technical_Specification.md
-├── 03_[ProjectName].lpd (IPA file)
+├── 03_[ProjectName].lpd
 ├── 07_LPL_Configuration_Codes.md
 ├── [LPL files as needed]
 ├── 05_Testing_Guide.md
@@ -416,11 +312,11 @@ Deliverables:
 └── ANA-050_DES-020_Combined_Specification.docx
 ```
 
-### Step 4: Separate IPA vs LPL Requirements
+### Step 4: Separate Requirements
 
-When analyzing ANA-050 documents, distinguish between:
+**Distinguish between IPA and LPL requirements when analyzing ANA-050 documents.**
 
-#### **IPA Flow Requirements** (Process Automation)
+**IPA Flow Requirements** (Process Automation):
 
 - Approval routing logic and approver determination
 - Email notifications and content
@@ -432,7 +328,7 @@ When analyzing ANA-050 documents, distinguish between:
 - Scheduled data extraction
 - File processing and transformation
 
-#### **Configuration Console Requirements** (LPL/UI Changes)
+**Configuration Console Requirements** (LPL/UI Changes):
 
 - Field protection and read-only settings
 - Form field display and visibility
@@ -452,63 +348,27 @@ When analyzing ANA-050 documents, distinguish between:
 3. **Separate Concerns**: UI modifications require LPL changes via Configuration Console, not IPA flows
 4. **Document Both**: Clearly separate IPA requirements from Configuration Console requirements in analysis
 
-## Solution Deliverables by RICE Type
+**Example: Invoice Approval Enhancement**
 
-### Reports (R)
+**IPA Requirements**:
 
-**Typical Deliverables**:
+- Determine approver based on invoice amount and department
+- Send email notification to approver
+- Wait for approval action
+- Escalate if no response within 2 business days
+- Update invoice status upon approval/rejection
+- Log all approval actions
 
-- Report specification document
-- Report definition files (BI, Spreadsheet Designer)
-- Data source configurations
-- Testing guide
-- User documentation
-- ANA-050 + DES-020 specification
+**LPL Requirements**:
 
-**IPA/LPL**: Usually neither (unless report generation is automated via IPA)
+- Protect invoice amount field after submission
+- Hide approval history section from non-approvers
+- Add "Submit for Approval" button to invoice form
+- Display approval status indicator
+- Set default values for department and cost center
+- Enable Service Definition for approval process
 
-### Interfaces (I)
-
-**Typical Deliverables**:
-
-- IPA process files (.lpd) - **MOST COMMON**
-- File Channel configurations (if file-triggered)
-- Field mapping specifications
-- Interface testing guide
-- Deployment procedures
-- Error handling documentation
-- ANA-050 + DES-020 specification
-
-**IPA/LPL**: IPA required, LPL optional
-
-### Conversions (C)
-
-**Typical Deliverables**:
-
-- Data mapping specifications
-- Conversion scripts/IPAs
-- Data validation reports
-- Rollback procedures
-- Testing and validation guide
-- ANA-050 + DES-020 specification
-
-**IPA/LPL**: IPA common, LPL optional
-
-### Enhancements (E)
-
-**Typical Deliverables**:
-
-- IPA process files (if workflow automation)
-- LPL configuration code (if UI changes)
-- Menu definitions
-- Form modifications
-- Security configurations
-- Testing guide
-- ANA-050 + DES-020 specification
-
-**IPA/LPL**: Both common, depends on requirements
-
-## IPA vs LPL Determination
+## IPA vs LPL Decision Matrix
 
 ### When IPA is Required
 
@@ -536,62 +396,19 @@ When analyzing ANA-050 documents, distinguish between:
 - **Complex Enhancements**: Both process logic and UI changes needed
 - **Integrated Solutions**: End-to-end functionality requiring both layers
 
-## Separating IPA vs LPL Requirements
+## Solution Deliverables
 
-### Example: Invoice Approval Enhancement
+### Automated RICE Analysis
 
-**IPA Requirements** (Process Automation):
-
-- Determine approver based on invoice amount and department
-- Send email notification to approver
-- Wait for approval action
-- Escalate if no response within 2 business days
-- Update invoice status upon approval/rejection
-- Log all approval actions
-
-**LPL Requirements** (UI/Configuration):
-
-- Protect invoice amount field after submission
-- Hide approval history section from non-approvers
-- Add "Submit for Approval" button to invoice form
-- Display approval status indicator
-- Set default values for department and cost center
-- Enable Service Definition for approval process
-
-**Key Distinction**: IPA handles the workflow logic and automation, LPL handles the user interface and form behavior.
-
-## Automated RICE Analysis
-
-### IPA Analyzer Capabilities
-
-The **IPA Analyzer** (`ReusableTools/IPA_Analyzer/`) can automatically analyze ANA-050 documents:
+**IPA Analyzer** (`ReusableTools/IPA_Analyzer/`) automatically analyzes ANA-050 documents:
 
 **Features**:
 
-1. **RICE Type Identification**
-   - Analyzes document content and filename
-   - Determines Report/Interface/Conversion/Enhancement
-   - Uses keyword matching and pattern recognition
-
-2. **IPA vs LPL Determination**
-   - Identifies process automation requirements
-   - Identifies UI/configuration requirements
-   - Recommends IPA Only, LPL Only, or Both
-
-3. **Requirements Extraction**
-   - Extracts numbered requirements and bullet points
-   - Filters noise and focuses on actionable items
-   - Limits to top 50 requirements for manageability
-
-4. **Requirements Traceability**
-   - Maps requirements to implemented activities
-   - Uses keyword matching between requirements and activity captions
-   - Identifies "Implemented" vs "Not Found" status
-
-5. **Gap Analysis**
-   - Identifies missing features (requirements not traced)
-   - Highlights potential scope gaps
-   - Provides severity assessment
+1. **RICE Type Identification** - Analyzes document content and filename
+2. **IPA vs LPL Determination** - Identifies process automation vs UI requirements
+3. **Requirements Extraction** - Extracts numbered requirements and bullet points (top 50)
+4. **Requirements Traceability** - Maps requirements to implemented activities
+5. **Gap Analysis** - Identifies missing features and scope gaps
 
 **Usage**:
 
@@ -600,7 +417,7 @@ from ReusableTools.IPA_Analyzer.ipa_analyzer import analyze_ipa_project
 
 result = analyze_ipa_project(
     project_name='ProjectName',
-    lpd_files=['path/to/file.lpd', ...],
+    lpd_files=['path/to/file.lpd'],
     wu_log_file='path/to/log.txt',
     functional_spec='path/to/ANA-050.docx'  # Enables RICE analysis
 )
@@ -611,8 +428,6 @@ ipa_vs_lpl = result.functional_spec_analysis['ipa_vs_lpl']
 traceability = result.functional_spec_analysis['traceability']
 gaps = result.functional_spec_analysis['gaps']
 ```
-
-**See Also**: `00_Kiro_General_Rules.md` - Reusable Tools section
 
 ## Document Formatting Standards
 
@@ -638,71 +453,11 @@ gaps = result.functional_spec_analysis['gaps']
 - **Tables**: Black header background, white text, 8pt font
 - **Colors**: Infor Blue (#13A3F7) for highlights
 
-**Critical**: NO "Part I" or "Part II" headers - use continuous numbered sections
-
-## Best Practices
-
-### RICE Item Management
-
-1. **Single Source of Truth**: One RICE item = one complete solution
-2. **Clear Scope**: Define inclusions and exclusions upfront
-3. **Traceability**: Maintain requirements traceability throughout lifecycle
-4. **Version Control**: Track all changes to specifications and deliverables
-5. **Stakeholder Alignment**: Regular reviews with business and technical teams
-
-### Specification Development
-
-1. **Start with ANA-050**: Define business requirements before technical design
-2. **Collaborate**: Involve business analysts, developers, and testers
-3. **Be Specific**: Provide detailed field mappings, business rules, and test scenarios
-4. **Use Examples**: Include sample data and expected outcomes
-5. **Review Thoroughly**: Multiple review cycles before development begins
-
-### IPA vs LPL Separation
-
-1. **Analyze First**: Determine IPA vs LPL requirements before development
-2. **Separate Concerns**: Keep process automation (IPA) separate from UI (LPL)
-3. **Document Both**: Clearly document both IPA and LPL requirements
-4. **Test Independently**: Test IPA processes and LPL configurations separately
-5. **Integrate Last**: Combine and test end-to-end after individual testing
-
-### Solution Delivery
-
-1. **Complete Package**: Deliver all required deliverables per RICE type
-2. **Documentation**: Provide comprehensive testing and deployment guides
-3. **Training**: Include user documentation and training materials
-4. **Support**: Plan for post-deployment support and maintenance
-5. **Knowledge Transfer**: Ensure client team can maintain the solution
+**CRITICAL**: NO "Part I" or "Part II" headers - use continuous numbered sections
 
 ## Related Steering Files
 
-- `00_Kiro_General_Rules.md` - Reusable Tools (IPA Analyzer)
+- `00_Core_System_Rules.md` - Reusable Tools (IPA Analyzer)
 - `01_IPA_and_IPD_Complete_Guide.md` - IPA/IPD concepts and implementation
 - `06_FSM_Business_Classes_and_API.md` - RICE tracking and business classes
 - `10_IPA_Report_Generation.md` - IPA peer review and client handover documentation
-
-## Summary
-
-**RICE methodology** provides a structured approach to managing Infor FSM implementation projects:
-
-- **R**eports - Information delivery
-- **I**nterfaces - Data integration (most common for IPA)
-- **C**onversions - Data migration
-- **E**nhancements - Customizations (often IPA + LPL)
-
-**Key Principles**:
-
-1. One RICE item = one complete solution (may include multiple IPAs + LPL)
-2. ANA-050 defines "what", DES-020 defines "how"
-3. IPA handles process automation, LPL handles UI/configuration
-4. Separate concerns early in analysis phase
-5. Maintain traceability throughout lifecycle
-
-**Automated Support**:
-
-- IPA Analyzer can automatically identify RICE type from ANA-050
-- Validates requirements traceability
-- Identifies gaps between specification and implementation
-- Provides context-aware recommendations
-
-This methodology ensures consistent, high-quality solution delivery across all Infor FSM projects.

@@ -4,11 +4,11 @@ name: data-fabric-guide
 description: Infor OS Data Fabric architecture, Compass API, Data Lake, Metagraph, Orchestrator, Data Catalog, Data Warehouse, Ingestion, SQL queries, BOD, ION, OAuth2. Use when working with Data Fabric APIs or Infor OS integration.
 ---
 
-# Infor OS and Data Fabric Guide
+# Infor OS Data Fabric Integration Guide
 
-**Reference Documentation**: `D:\Kiro\WorkUnit_Analyzer_ReferenceDocuments\DataFabric_API\`
+**Purpose**: Guide AI assistant in selecting and implementing Data Fabric APIs for IPA processes, data extraction, and integration workflows.
 
-**Purpose**: Guide AI assistant in recommending and implementing Data Fabric API integrations for IPA processes and data extraction workflows.
+**Reference**: `D:\Kiro\WorkUnit_Analyzer_ReferenceDocuments\DataFabric_API\`
 
 ## Table of Contents
 

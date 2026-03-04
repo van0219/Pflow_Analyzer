@@ -1,7 +1,7 @@
 ---
 inclusion: auto
 name: workflow-engineering
-description: Subagent architecture, hook design, context budget planning, workflow splitting, orchestration optimization, and multi-phase execution strategies.
+description: Subagent architecture, hook design, context budget planning, workflow splitting, orchestration optimization, and multi-phase execution strategies. Use when working with workflow engineering, subagents, hooks, or multi-phase orchestration.
 ---
 
 # Workflow Engineering Principles

@@ -9,213 +9,183 @@ inclusion: always
 - [Execution Philosophy](#execution-philosophy)
   - [Core Principles](#core-principles)
   - [Decision Matrix](#decision-matrix)
-  - [Verification Before Analysis](#verification-before-analysis)
-  - [Client Handover Workflow Requirements](#client-handover-workflow-requirements)
-- [Communication Style](#communication-style)
-  - [Interactive User Input](#interactive-user-input)
-  - [Progress Indicators](#progress-indicators)
-- [File Writing Strategy](#file-writing-strategy)
-- [File Management](#file-management)
+  - [Pre-Analysis Verification](#pre-analysis-verification)
+- [Communication Guidelines](#communication-guidelines)
+  - [User Interaction Patterns](#user-interaction-patterns)
+  - [Progress Reporting](#progress-reporting)
+- [File Operations](#file-operations)
+  - [File Writing Strategy](#file-writing-strategy)
   - [Directory Structure](#directory-structure)
-  - [Git Ignore Pattern](#git-ignore-pattern)
   - [Workspace Cleanup](#workspace-cleanup)
 - [Code Standards](#code-standards)
-  - [Python Scripts](#python-scripts)
-  - [IPA JavaScript (ES5 Only)](#ipa-javascript-es5-only)
+  - [Python Conventions](#python-conventions)
+  - [IPA JavaScript ES5](#ipa-javascript-es5)
 - [Knowledge Management](#knowledge-management)
-  - [Documentation Strategy](#documentation-strategy)
-  - [Table of Contents Standards](#table-of-contents-standards)
   - [Steering File Organization](#steering-file-organization)
-- [Key Architectural Patterns](#key-architectural-patterns)
-  - [Template Modification Rule](#template-modification-rule)
-  - [Data Flow Tracing](#data-flow-tracing)
-  - [Production Report Quality](#production-report-quality)
-  - [Matplotlib Emoji Rendering](#matplotlib-emoji-rendering)
-  - [Nested Data Flattening](#nested-data-flattening)
-  - [Regex Patterns for Formatted Numbers](#regex-patterns-for-formatted-numbers)
-  - [EDI Transformation Patterns](#edi-transformation-patterns)
+  - [Keyword-Based Context Loading](#keyword-based-context-loading)
+  - [Documentation Standards](#documentation-standards)
+- [Architectural Patterns](#architectural-patterns)
+  - [Template Modification](#template-modification)
+  - [Data Flow Debugging](#data-flow-debugging)
+  - [Report Quality Standards](#report-quality-standards)
+  - [Common Pitfalls](#common-pitfalls)
+- [Domain-Specific Workflows](#domain-specific-workflows)
+  - [Client Handover Pipeline](#client-handover-pipeline)
 
 ## Execution Philosophy
 
 ### Core Principles
 
-**ACT IMMEDIATELY** - Execute clear directives without overthinking or unnecessary questions.
+**ACT IMMEDIATELY** on clear directives. Don't overthink or ask unnecessary clarifying questions.
 
-**STOP IMMEDIATELY** - When user says "stop", "wait", "oh wait", or "hold on", STOP ALL ACTIONS immediately. Acknowledge and wait for new instructions.
+**STOP IMMEDIATELY** when user says "stop", "wait", "oh wait", or "hold on". Acknowledge and await new instructions.
 
 ### Decision Matrix
 
 | Situation | Action |
 |-----------|--------|
-| Clear commands ("update X", "fix Y", "analyze Z") | Act without asking |
-| Routine operations (reading files, running scripts) | Act without asking |
-| Destructive operations (deleting files, dropping databases) | Ask first |
-| Ambiguous requests with multiple interpretations | Ask first |
-| User says "stop", "wait", "oh wait", "hold on" | Stop immediately |
-| File operation fails with "Operation was aborted" | Stop immediately |
+| Clear commands ("update X", "fix Y", "analyze Z") | Execute immediately |
+| Routine operations (reading files, running scripts) | Execute immediately |
+| Destructive operations (deleting files, dropping databases) | Confirm first |
+| Ambiguous requests with multiple valid interpretations | Ask for clarification |
+| User interruption signals ("stop", "wait", "hold on") | Stop all actions immediately |
+| File operation returns "Operation was aborted" | Stop immediately, report status |
 
-### Verification Before Analysis
+### Pre-Analysis Verification
 
-Before ANY analysis, verify:
+Before performing ANY analysis task, verify these prerequisites:
 
-- [ ] All required files successfully read
-- [ ] No truncation warnings unresolved
-- [ ] Binary files handled with appropriate tools (excel_reader.py for Excel files)
-- [ ] Data structures complete and valid
+1. All required files successfully read (no read errors)
+2. No truncation warnings unresolved
+3. Binary files handled with appropriate tools (`excel_reader.py` for Excel, not raw text reads)
+4. Data structures complete and valid (no partial loads)
 
-**If ANY checkbox fails, STOP and fix before proceeding.**
+**If any prerequisite fails, STOP and resolve the issue before proceeding with analysis.**
 
-### Client Handover Workflow Requirements
+## Communication Guidelines
 
-**BLOCKING REQUIREMENT**: When generating client handover documentation, MUST follow stateless pipeline:
+### User Interaction Patterns
 
-**Phase 0 (MANDATORY FIRST):**
-```bash
-python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spec>
+**CRITICAL LIMITATION**: The `userInput` tool has context-specific availability:
+
+- ✅ Available: Hook-triggered workflows (userTriggered hooks with `newSession: true`)
+- ❌ Unavailable: Skills activated via `discloseContext()` in any session
+
+**When userInput is available:**
+
+Use the `userInput` tool for structured choices:
+
+```python
+userInput(
+    question="Select a client:",
+    options=["BayCare", "FPI", "SONH"],
+    reason="general-question"
+)
 ```
 
-Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`
+**When userInput is unavailable (skills context):**
 
-**Phases 1-4:** Create analysis JSONs (business, workflow, configuration, risk)
-
-**Phase 5 (MANDATORY LAST):**
-```bash
-python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <client> <rice>
-```
-
-**Common Mistake**: Skipping Phase 0 and manually extracting data
-- Results in missing `lpd_structure.json` and `metrics_summary.json`
-- Assembly script shows "Process Count: 0" and "Total Activities: 0"
-- Report is incomplete
-
-**Verification**: Before Phase 5, confirm these files exist:
-- `Temp/lpd_structure.json` ✓
-- `Temp/metrics_summary.json` ✓
-- `Temp/business_analysis.json` ✓
-- `Temp/workflow_analysis.json` ✓
-- `Temp/configuration_analysis.json` ✓
-- `Temp/risk_assessment.json` ✓
-
-See `.kiro/steering/10_IPA_Report_Generation.md` for complete workflow documentation.
-
-## Communication Style
-
-### Interactive User Input
-
-**MANDATORY RULE**: ALWAYS use the `userInput` syntax for ANY user interaction requiring a response.
-
-**userInput Syntax:**
-
-`userInput` is NOT a tool - it's a special text syntax that Kiro intercepts and transforms into interactive UI elements.
-
-**Correct Usage:**
+Use plain text questions and parse responses:
 
 ```text
-userInput(question="Select a client:", options=["BayCare", "FPI", "SONH"], reason="general-question")
+Which option would you like? (A, B, or C)
 ```
 
-**Parameters:**
+Then wait for user's text response and parse accordingly.
 
-- `question`: The prompt text to display
-- `options`: Array of choices (as Python list syntax)
-- `reason`: Context for the input (e.g., "general-question")
+### Progress Reporting
 
-**When to use userInput:**
-
-- Selecting from lists
-- Yes/No confirmations
-- Multiple choice decisions
-- Any time there are clear, discrete options
-
-**CRITICAL LIMITATION (March 2, 2026):**
-
-userInput does NOT work when skills are triggered directly:
-
-- ✅ Works: Hook-triggered workflows (userTriggered hooks with newSession: true)
-- ❌ Does NOT work: Skills activated via discloseContext() in existing sessions
-- ❌ Does NOT work: Skills activated via discloseContext() in new sessions
-
-**When to use userInput:**
-
-- ONLY in hook-triggered workflows
-- NEVER in skills (use plain text questions instead)
-
-**When skills are activated:**
-
-- Use plain text questions: "Which option? (A, B, C)"
-- Wait for user's text response
-- Parse response and continue workflow
-
-### Progress Indicators
-
-Show clear progress for multi-step workflows:
+For multi-step workflows (5+ steps) or long operations (>5 seconds), show clear progress:
 
 ```text
-✓ Step 1/5: Steering files loaded (6 files)
+✓ Step 1/5: Loaded steering files (6 files)
 → Step 2/5: Extracting data from MatchReport_Outbound.lpd...
 ```
 
-Use for: Multi-step workflows (5+ steps), long-running operations (>5 seconds), domain-segmented analysis
+Use progress indicators for:
 
-## File Writing Strategy
+- Multi-step workflows with 5+ distinct phases
+- Long-running operations exceeding 5 seconds
+- Domain-segmented analysis tasks
 
-**Rule**: In long sessions (10+ messages), use specialized tools instead of direct fsWrite to avoid context-related failures.
+## File Operations
 
-**For Hook Files**: Use `ReusableTools/hook_manager.py` Python tool
+### File Writing Strategy
 
-- Provides validation, backups, and operates outside context system
-- Commands: `validate`, `backup`, `restore`, `analyze`, `repair`
-- Use for ANY hook editing in long sessions
+**Context-Aware Fallback Pattern**: In long sessions (10+ messages), direct `fsWrite` may fail due to context limitations. Use specialized tools:
 
-**For Other Files**: Use `file-writer-helper` subagent
+**For Hook Files:**
 
-- Use after ANY fsWrite failure
-- Use for large file writes (>200 lines)
-- Use for multiple file edits in sequence
+Use `ReusableTools/hook_manager.py`:
 
-**Fallback Workflow**:
+```bash
+python ReusableTools/hook_manager.py validate <hook_file>
+python ReusableTools/hook_manager.py backup <hook_file>
+```
 
-1. Try direct fsWrite first (if context is light AND not a hook file)
-2. If fsWrite fails once → Immediately delegate to appropriate tool
-3. Do NOT retry fsWrite multiple times
-4. Continue working without interruption
+Commands: `validate`, `backup`, `restore`, `analyze`, `repair`
 
-**The user should NEVER have to ask you to continue after a file write failure.**
+**For Other Files:**
 
-## File Management
+Use `file-writer-helper` subagent:
+
+- Trigger after ANY `fsWrite` failure
+- Use for large files (>200 lines)
+- Use for multiple sequential edits
+
+**CRITICAL**: The `file-writer-helper` subagent MUST NOT call `invokeSubAgent` (prevents infinite recursion).
+
+**Fallback Workflow:**
+
+1. Try direct `fsWrite` (if context is light AND not a hook file)
+2. On first failure → Immediately delegate to appropriate tool
+3. Do NOT retry `fsWrite` multiple times
+4. Continue workflow without user intervention
+
+**The user should never need to prompt you to continue after a file write failure.**
 
 ### Directory Structure
 
-| Directory | Purpose |
-|-----------|---------|
-| **Master templates** | Workspace root |
-| **Temporary scripts** | `Temp/` folder |
-| **Reports** | `Client_Handover_Results/`, `Coding_Standards_Results/`, `Performance_Results/` |
-| **Credentials** | `Credentials/` folder (NEVER commit to git) |
+| Directory | Purpose | Git Tracking |
+|-----------|---------|--------------|
+| Workspace root | Master templates | Tracked |
+| `Temp/` | Temporary scripts and intermediate files | Ignored (keep `.gitkeep`) |
+| `Client_Handover_Results/` | Generated client handover reports | Ignored (keep `.gitkeep`) |
+| `Coding_Standards_Results/` | Generated coding standards reports | Ignored (keep `.gitkeep`) |
+| `Performance_Results/` | Generated performance reports | Ignored (keep `.gitkeep`) |
+| `Credentials/` | API credentials and connection files | Ignored (NEVER commit) |
 
-### Git Ignore Pattern
-
-Keep folder structure in Git but ignore generated contents:
+**Git Ignore Pattern:**
 
 ```gitignore
-# Ignore contents but keep folder structure
+# Keep folder structure, ignore generated contents
 Temp/*
 !Temp/.gitkeep
 
 Coding_Standards_Results/*
 !Coding_Standards_Results/.gitkeep
+
+Performance_Results/*
+!Performance_Results/.gitkeep
+
+Client_Handover_Results/*
+!Client_Handover_Results/.gitkeep
+
+Credentials/*
 ```
 
 ### Workspace Cleanup
 
-Temp folder accumulates files that cause IDE indexing overhead.
+The `Temp/` folder accumulates intermediate files that cause IDE indexing overhead.
 
-- Automatically check Temp folder after operations
+**Automatic Cleanup Policy:**
+
+- Check `Temp/` folder after operations
 - Only prompt if >10 files exist
-- Safely remove only OLD files (>5 minutes old)
+- Remove only OLD files (>5 minutes old)
 - Preserve current session data
 
-**Manual Cleanup (if needed):**
+**Manual Cleanup (PowerShell):**
 
 ```powershell
 $oldFiles = Get-ChildItem Temp -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddMinutes(-5) }
@@ -224,60 +194,88 @@ $oldFiles | Remove-Item -Force
 
 ## Code Standards
 
-### Python Scripts
+### Python Conventions
 
-- Include shebang `#!/usr/bin/env python3`
+All Python scripts must follow these standards:
+
+```python
+#!/usr/bin/env python3
+
+import sys
+from pathlib import Path
+
+# Dynamic import resolution
+sys.path.append(str(Path(__file__).parent))
+
+# ... script logic ...
+
+if __name__ == "__main__":
+    main()
+```
+
+**Key Requirements:**
+
+- Include shebang: `#!/usr/bin/env python3`
 - Include main guard: `if __name__ == "__main__":`
 - Use `sys.path` resolution for dynamic imports
 - Convert sets to lists before JSON serialization
-- Use specialized libraries (pandas, numpy, matplotlib) rather than limiting to basic libraries
+- Prefer specialized libraries (pandas, numpy, matplotlib) over basic implementations
 
-### IPA JavaScript (ES5 Only)
+### IPA JavaScript ES5
 
-**CRITICAL**: IPA JavaScript nodes run in ES5 environment. Modern syntax causes immediate runtime errors.
+**CRITICAL**: IPA JavaScript nodes execute in ES5 environment. Modern syntax causes immediate runtime errors.
 
 **ES5 Compliance Checklist:**
 
-- [ ] Use `var` exclusively (no `let`, `const`)
-- [ ] No arrow functions (use `function` declarations)
-- [ ] No template literals (use string concatenation)
-- [ ] No destructuring (use explicit assignment)
-- [ ] No modern array methods like map/filter/reduce (use `for` loops)
-- [ ] No default parameters (check inside function)
-- [ ] Ternary operators ARE valid ES5: `var x = condition ? value1 : value2;`
+| Feature | ES5 Compliant | Modern (Forbidden) |
+|---------|---------------|-------------------|
+| Variables | `var x = 1;` | `let x = 1;` `const x = 1;` |
+| Functions | `function f() {}` | `() => {}` `async/await` |
+| Strings | `"Hello " + name` | `` `Hello ${name}` `` |
+| Assignment | `var x = obj.prop;` | `var {prop} = obj;` |
+| Loops | `for (var i = 0; i < n; i++)` | `arr.map()` `arr.filter()` |
+| Parameters | Check inside function | `function f(x = 1)` |
+| Conditionals | `var x = cond ? a : b;` ✅ | N/A |
 
 **IPA Assign Node Architecture:**
 
-- Entire script wrapped in function: `function transformImport(importFileContent, fileName)`
-- No top-level `return` statements (Assign nodes don't allow them)
-- Function invoked at end: `transformImport(ImportFile, FileName);`
-- Configuration variables inside function (not at top level)
+```javascript
+// Entire script wrapped in function
+function transformImport(importFileContent, fileName) {
+    // Configuration variables INSIDE function
+    var CONFIG_VALUE = "setting";
+    
+    // ... transformation logic ...
+    
+    // NO top-level return statements
+}
+
+// Function invoked at end
+transformImport(ImportFile, FileName);
+```
 
 **Production Safety Patterns:**
 
-1. **Floating Point Comparison**: Always round before comparison
+1. **Floating Point Comparison** - Always round before comparison:
 
    ```javascript
-   // ✅ SAFE
    var roundedSum = roundToDecimals(sumQty, ROUND_DECIMALS);
-   if (roundedSum === 0)
+   if (roundedSum === 0) { /* safe comparison */ }
    ```
 
-2. **Null/Undefined Guards**: Check inputs before use
+2. **Null/Undefined Guards** - Validate inputs:
 
    ```javascript
-   // ✅ SAFE
    if (!inputFileContent || typeof inputFileContent !== "string") {
        inputFileContent = "";
    }
    ```
 
-3. **Defensive Division**: Check denominator before dividing
+3. **Defensive Division** - Check denominator:
 
    ```javascript
-   // ✅ SAFE
    if (originalQuantity === 0) {
-       exceptions.push({...});
+       exceptions.push({error: "Division by zero"});
        continue;
    }
    var unitCost = extendedAmount / originalQuantity;
@@ -285,166 +283,203 @@ $oldFiles | Remove-Item -Force
 
 ## Knowledge Management
 
-### Documentation Strategy
-
-Update relevant steering files in `.kiro/steering/` when new patterns or approaches are established.
-
-### Table of Contents Standards
-
-All steering files MUST include a proper Table of Contents (TOC):
-
-- Place TOC immediately after the main title (H1)
-- Use markdown anchor links: `[Section Name](#section-name)`
-- Include all H2 sections (##) as top-level TOC items
-- Include H3 sections (###) as nested items under their parent H2
-- Use proper indentation for nested items (2 spaces per level)
-
 ### Steering File Organization
 
-| Learning Type | Steering File |
-|---------------|---------------|
-| Error patterns | `02_Work_Unit_Analysis.md` |
-| Process patterns | `03_Process_Patterns_Library.md` |
-| Report formatting | `04_WU_Report_Generation.md` |
-| SQL patterns | `05_Compass_SQL_CheatSheet.md` |
-| FSM business classes | `06_FSM_Business_Classes_and_API.md` |
-| Infor OS/ION/Data Fabric | `07_Infor_OS_Data_Fabric_Guide.md` |
-| IDM integration | `08_Infor_IDM_Guide.md` |
-| FSM navigation | `09_FSM_Navigation_Guide.md` |
-| IPA reports | `10_IPA_Report_Generation.md` |
-| RICE methodology | `11_RICE_Methodology_and_Specifications.md` |
-| External API OAuth2 | `12_External_API_OAuth2_Integration_Guide.md` |
-| Agent automation | `13_Kiro_Agent_Automation_Guide.md` |
-| Workflow engineering | `00_Workflow_Engineering_Principles.md` (auto-loaded) |
+| Domain | Steering File | Keywords |
+|--------|---------------|----------|
+| Workflow engineering | `00_Workflow_Engineering_Principles.md` | workflow, subagent, orchestration |
+| IPA/IPD fundamentals | `01_IPA_and_IPD_Complete_Guide.md` | IPA, IPD, LPD, process designer |
+| Work unit analysis | `02_Work_Unit_Analysis.md` | wu, log, work unit, error |
+| Process patterns | `03_Process_Patterns_Library.md` | approval, workflow, pattern |
+| WU report generation | `04_WU_Report_Generation.md` | wu report, performance, analysis |
+| Compass SQL | `05_Compass_SQL_CheatSheet.md` | SQL, Compass, Data Fabric |
+| FSM business classes | `06_FSM_Business_Classes_and_API.md` | FSM, Landmark, business class, API |
+| Data Fabric/ION | `07_Infor_OS_Data_Fabric_Guide.md` | Data Fabric, ION, BOD, Data Lake |
+| IDM integration | `08_Infor_IDM_Guide.md` | IDM, document, ContentDocument |
+| FSM navigation | `09_FSM_Navigation_Guide.md` | FSM UI, navigation, Playwright |
+| IPA reports | `10_IPA_Report_Generation.md` | client handover, coding standards |
+| RICE methodology | `11_RICE_Methodology_and_Specifications.md` | RICE, ANA-050, DES-020 |
+| External API OAuth2 | `12_External_API_OAuth2_Integration_Guide.md` | OAuth2, external API, third-party |
+| Agent automation | `13_Kiro_Agent_Automation_Guide.md` | hook, skill, power, automation |
 
-### Keyword-Based Steering File Loading
+### Keyword-Based Context Loading
 
-**BLOCKING REQUIREMENT**: BEFORE proceeding with user requests, check for task-specific keywords and load appropriate steering files FIRST.
+**BLOCKING REQUIREMENT**: Before proceeding with user requests, detect task-specific keywords and load appropriate steering files FIRST.
 
-**Keyword Detection & Required Files:**
+**Keyword Detection Rules:**
 
-📊 **WORK UNIT ANALYSIS** (wu, log, work unit, error):
-```
-readMultipleFiles(['.kiro/steering/02_Work_Unit_Analysis.md', '.kiro/steering/04_WU_Report_Generation.md'])
+📊 **WORK UNIT ANALYSIS** - Keywords: `wu`, `log`, `work unit`, `error`
+
+Load: `02_Work_Unit_Analysis.md`, `04_WU_Report_Generation.md`
+
+🔍 **CODING STANDARDS** - Keywords: `coding standards`, `peer review`, `LPD`, `analyze process`
+
+Load: `01_IPA_and_IPD_Complete_Guide.md`, `02_Work_Unit_Analysis.md`, `03_Process_Patterns_Library.md`, `05_Compass_SQL_CheatSheet.md`, `10_IPA_Report_Generation.md`, `11_RICE_Methodology_and_Specifications.md`
+
+📋 **CLIENT HANDOVER** - Keywords: `client handover`, `documentation`, `handover report`
+
+Load: `01_IPA_and_IPD_Complete_Guide.md`, `10_IPA_Report_Generation.md`, `11_RICE_Methodology_and_Specifications.md`
+
+� **FSM/LANDMARK API** - Keywords: `FSM`, `Landmark`, `business class`, `WebRun`, `API`
+
+Load: `06_FSM_Business_Classes_and_API.md`, `01_IPA_and_IPD_Complete_Guide.md`
+
+� **DATA FABRIC** - Keywords: `Compass SQL`, `Data Fabric`, `Data Lake`, `ION`, `BOD`
+
+Load: `05_Compass_SQL_CheatSheet.md`, `07_Infor_OS_Data_Fabric_Guide.md`
+
+📄 **IDM** - Keywords: `IDM`, `document management`, `ContentDocument`, `CaptureDocument`
+
+Load: `08_Infor_IDM_Guide.md`, `01_IPA_and_IPD_Complete_Guide.md`
+
+🌐 **EXTERNAL API** - Keywords: `OAuth2`, `external API`, `Lightspeed`, `Stripe`, `third-party`
+
+Load: `12_External_API_OAuth2_Integration_Guide.md`
+
+🤖 **AUTOMATION** - Keywords: `hook`, `skill`, `power`, `steering`, `spec`, `automation`
+
+Load: `13_Kiro_Agent_Automation_Guide.md`
+
+🎯 **RICE SPECS** - Keywords: `RICE`, `ANA-050`, `DES-020`, `functional spec`, `technical spec`
+
+Load: `11_RICE_Methodology_and_Specifications.md`
+
+**If no keywords detected, proceed with the original request.**
+
+### Documentation Standards
+
+**MANDATORY Front Matter Requirements:**
+
+ALL steering files MUST include front matter with this EXACT format:
+
+```yaml
+---
+inclusion: auto
+name: short-kebab-case-name
+description: Brief description of what this steering file covers and when to use it.
+---
 ```
 
-🔍 **CODING STANDARDS** (coding standards, peer review, LPD, analyze process):
-```
-readMultipleFiles(['.kiro/steering/01_IPA_and_IPD_Complete_Guide.md', '.kiro/steering/02_Work_Unit_Analysis.md', '.kiro/steering/03_Process_Patterns_Library.md', '.kiro/steering/05_Compass_SQL_CheatSheet.md', '.kiro/steering/10_IPA_Report_Generation.md', '.kiro/steering/11_RICE_Methodology_and_Specifications.md'])
+**Front Matter Rules:**
+
+- `inclusion: auto` is MANDATORY for all steering files (NOT "always", NOT just "auto" alone)
+- `name:` MUST be a short, kebab-case identifier (e.g., "process-patterns", "ipa-report-generation")
+- `description:` MUST explain what the file covers and when to activate it
+- Front matter MUST be followed by a blank line before the main title
+
+**Example:**
+
+```markdown
+---
+inclusion: auto
+name: process-patterns
+description: IPA process patterns library with 450+ analyzed workflows. Use when creating new LPD files or analyzing existing processes.
+---
+
+# Process Patterns Library
 ```
 
-📋 **CLIENT HANDOVER** (client handover, documentation, handover report):
-```
-readMultipleFiles(['.kiro/steering/01_IPA_and_IPD_Complete_Guide.md', '.kiro/steering/10_IPA_Report_Generation.md', '.kiro/steering/11_RICE_Methodology_and_Specifications.md'])
-```
+**Table of Contents Requirements:**
 
-🔌 **FSM/LANDMARK API** (FSM, Landmark, business class, WebRun, API):
-```
-readMultipleFiles(['.kiro/steering/06_FSM_Business_Classes_and_API.md', '.kiro/steering/01_IPA_and_IPD_Complete_Guide.md'])
-```
+All steering files MUST include a proper TOC:
 
-📊 **DATA FABRIC** (Compass SQL, Data Fabric, Data Lake, ION, BOD):
-```
-readMultipleFiles(['.kiro/steering/05_Compass_SQL_CheatSheet.md', '.kiro/steering/07_Infor_OS_Data_Fabric_Guide.md'])
-```
+- Place TOC immediately after main title (H1)
+- Use markdown anchor links: `[Section Name](#section-name)`
+- Include all H2 sections as top-level TOC items
+- Include H3 sections as nested items (2-space indentation)
 
-📄 **IDM** (IDM, document management, ContentDocument, CaptureDocument):
-```
-readMultipleFiles(['.kiro/steering/08_Infor_IDM_Guide.md', '.kiro/steering/01_IPA_and_IPD_Complete_Guide.md'])
-```
+**Steering File Updates:**
 
-🌐 **EXTERNAL API** (OAuth2, external API, Lightspeed, Stripe, third-party):
-```
-readMultipleFiles(['.kiro/steering/12_External_API_OAuth2_Integration_Guide.md'])
-```
+When establishing new patterns or approaches, update relevant steering files in `.kiro/steering/`.
 
-🤖 **AUTOMATION** (hook, skill, power, steering, spec, automation):
-```
-readMultipleFiles(['.kiro/steering/13_Kiro_Agent_Automation_Guide.md'])
-```
+## Architectural Patterns
 
-🎯 **RICE SPECS** (RICE, ANA-050, DES-020, functional spec, technical spec):
-```
-readMultipleFiles(['.kiro/steering/11_RICE_Methodology_and_Specifications.md'])
-```
+### Template Modification
 
-**If NO keywords detected, proceed with the original request.**
-
-## Key Architectural Patterns
-
-### Template Modification Rule
-
-**CRITICAL**: NEVER modify working templates without verification.
+**CRITICAL RULE**: Never modify working templates without verification.
 
 **Before modifying ANY template or working code:**
 
-1. Check what it ALREADY supports
-2. Read the existing code carefully
+1. Verify what it ALREADY supports
+2. Read existing code carefully
 3. Look for similar patterns already implemented
 4. Test with existing code first
 
-**Most "template issues" are actually data flow issues upstream.** Fix the data source, not the template.
+**Root Cause Principle**: Most "template issues" are actually data flow issues upstream. Fix the data source, not the template.
 
-### Data Flow Tracing
+### Data Flow Debugging
 
-When reports have missing data, trace from source to destination:
+When reports have missing data, trace the pipeline from source to destination:
 
-- extraction → organization → analysis → merge → consolidation → generate → template
-- Identify where data exists vs where code is looking for it
-- Use tools like `excel_reader.py` to inspect actual Excel contents
-- Fix at the source, not at the destination
+```text
+extraction → organization → analysis → merge → consolidation → generate → template
+```
 
-### Production Report Quality
+**Debugging Steps:**
 
-**DPI Settings:**
+1. Identify where data exists vs where code looks for it
+2. Use `excel_reader.py` to inspect actual Excel contents
+3. Verify data structure at each pipeline stage
+4. Fix at the source, not at the destination
 
-- 150 DPI: Acceptable for drafts, blurry when zoomed
-- 300 DPI: Production quality, sharp at all zoom levels
-- **Always use 300 DPI for client-facing documents**
+### Report Quality Standards
 
-### Matplotlib Emoji Rendering
+**DPI Settings for Client-Facing Documents:**
 
-**Problem**: Matplotlib cannot render emojis - causes corrupted/garbled diagram output.
+| DPI | Quality | Use Case |
+|-----|---------|----------|
+| 150 | Acceptable for drafts | Blurry when zoomed |
+| 300 | Production quality | Sharp at all zoom levels ✅ |
 
-**Solution**: Strip ALL emojis from matplotlib text using regex pattern before rendering.
+**Always use 300 DPI for client-facing documents.**
+
+### Common Pitfalls
+
+#### Matplotlib Emoji Rendering
+
+**Problem**: Matplotlib cannot render emojis, causing corrupted diagram output.
+
+**Solution**: Strip ALL emojis before rendering:
 
 ```python
 import re
 
 def remove_emojis(text):
-    """Remove all emojis from text to prevent matplotlib rendering issues"""
+    """Remove emojis to prevent matplotlib rendering issues"""
     emoji_pattern = re.compile("["
         u"\U0001F600-\U0001F64F"  # emoticons
         u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F680-\U0001F6FF"  # transport & map
         u"\U0001F1E0-\U0001F1FF"  # flags
         u"\U00002300-\U000023FF"  # misc technical
-        u"\U00002600-\U000027BF"  # misc symbols & dingbats
+        u"\U00002600-\U000027BF"  # misc symbols
         u"\U00002702-\U000027B0"  # dingbats
         u"\U000024C2-\U0001F251"
-        u"\U0001F900-\U0001F9FF"  # supplemental symbols
+        u"\U0001F900-\U0001F9FF"  # supplemental
         "]+", flags=re.UNICODE)
     return emoji_pattern.sub('', text).strip()
 ```
 
-**Emoji Usage Guidelines**:
+**Emoji Usage Guidelines:**
 
-- Excel sheet names: Emojis OK
-- Excel cell content: Emojis OK
-- Matplotlib diagrams: NO EMOJIS
-- Python logging/console: Emojis OK
+| Context | Emojis Allowed |
+|---------|----------------|
+| Excel sheet names | ✅ Yes |
+| Excel cell content | ✅ Yes |
+| Matplotlib diagrams | ❌ No |
+| Python logging/console | ✅ Yes |
 
-### Nested Data Flattening
+#### Nested Data Flattening
 
-**Problem**: Using `str(dict)` to display nested data creates unreadable JSON strings in Excel.
+**Problem**: Using `str(dict)` creates unreadable JSON strings in Excel.
 
-**Solution**: Extract meaningful fields from nested structures.
+**Solution**: Extract meaningful fields from nested structures:
 
 ```python
-# ❌ BAD: Converts everything to strings
+# ❌ BAD: Unreadable JSON strings
 for key, value in data.items():
     if isinstance(value, (dict, list)):
-        cell.value = str(value)  # Unreadable JSON
+        cell.value = str(value)
 
 # ✅ GOOD: Flatten nested structures
 if 'nested_section' in data:
@@ -453,23 +488,169 @@ if 'nested_section' in data:
         row_data.append((field_name, field_value, status))
 ```
 
-### Regex Patterns for Formatted Numbers
+#### Regex for Formatted Numbers
 
-Work unit numbers can have commas: "36,829", "1,234,567"
+**Problem**: Work unit numbers can have commas: "36,829", "1,234,567"
+
+**Solution**: Include commas in regex pattern:
 
 ```python
-# ❌ WRONG: Only captures digits
-pattern = r'Workunit\s+(\d+)\s+started'  # Stops at comma
+# ❌ WRONG: Stops at comma
+pattern = r'Workunit\s+(\d+)\s+started'
 
 # ✅ CORRECT: Captures formatted numbers
-pattern = r'Workunit\s+([\d,]+)\s+started'  # Includes commas
+pattern = r'Workunit\s+([\d,]+)\s+started'
 ```
 
-### EDI Transformation Patterns
+#### Duplicate Formatting in Data Pipeline
+
+**Problem**: Formatting applied in multiple places causes duplication (e.g., double check marks "✓ ✓").
+
+**Solution**: Apply formatting in ONE place only - preferably the template:
+
+```python
+# ❌ BAD: Generation function adds formatting
+def generate_key_features(data):
+    return [f"✓ {feature}" for feature in features]
+
+# Template also adds formatting
+ws[f'A{row}'] = f"✓ {feature}"  # Results in "✓ ✓ Feature"
+
+# ✅ GOOD: Generation function returns plain text
+def generate_key_features(data):
+    return features  # No formatting
+
+# Template handles ALL formatting
+ws[f'A{row}'] = f"✓ {feature}"  # Results in "✓ Feature"
+```
+
+**Rule**: Let templates handle visual elements (check marks, emojis, colors). Data functions should return plain content.
+
+#### Template Data Structure Mismatch
+
+**Problem**: Assembly script passes data in one format, but template expects a different format.
+
+**Example**: System Configuration sheet empty because template expects list-of-lists but receives list-of-dicts.
+
+**Solution**: Verify template expectations BEFORE passing data:
+
+```python
+# ❌ BAD: Assume template accepts any format
+configuration_data = [
+    {"variable": "OauthCreds", "value": "...", "purpose": "..."},
+    {"variable": "OutputFile", "value": "...", "purpose": "..."}
+]
+
+# ✅ GOOD: Convert to format template expects
+# Template expects: [["Variable", "Value", "Purpose"], ["OauthCreds", "...", "..."]]
+configuration_data = [
+    ["Variable Name", "Value", "Purpose"],
+    ["OauthCreds", "...", "..."],
+    ["OutputFile", "...", "..."]
+]
+```
+
+**Debugging Steps**:
+
+1. Read template code to see what data structure it expects
+2. Check if data is accessed as `row[0]` (list) or `row['field']` (dict)
+3. Convert data format in assembly script, not in template
+4. Verify output by inspecting generated Excel file
+
+**Common Template Expectations**:
+
+- **LEGACY templates**: Expect list-of-lists `[["col1", "col2"], ["val1", "val2"]]`
+- **MODERN templates**: Accept list-of-dicts `[{"col1": "val1", "col2": "val2"}]`
+- **Check template code**: Look for `row[0]` vs `row.get('field')` to determine format
+
+#### Missing Data Enrichment
+
+**Problem**: Raw LPD data lacks human-readable descriptions needed for client documentation.
+
+**Example**: Process sheet shows activity IDs and types but "Description" column is empty (NaN).
+
+**Solution**: Enrich raw data with descriptions BEFORE passing to template:
+
+```python
+# ❌ BAD: Pass raw LPD data directly
+activities = process.get('activities', [])  # Only has id, type, caption
+
+# ✅ GOOD: Enrich with descriptions
+enriched_activities = []
+for activity in process.get('activities', []):
+    activity_type = activity.get('type', '')
+    
+    # Add type-based description
+    type_descriptions = {
+        'START': 'Process entry point - initializes variables',
+        'ASSGN': 'Variable assignment - executes JavaScript',
+        'WEBRN': 'HTTP API call - external web service',
+        'BRANCH': 'Conditional routing - directs flow'
+    }
+    
+    enriched_activities.append({
+        'id': activity.get('id'),
+        'type': activity_type,
+        'caption': activity.get('caption'),
+        'description': type_descriptions.get(activity_type, f'{activity_type} activity'),
+        'when_it_runs': 'Sequential execution - after previous activity'
+    })
+```
+
+**Rule**: Raw extraction data is for machines. Client documentation needs enriched, human-readable content.
+
+# ✅ CORRECT: Captures formatted numbers
+pattern = r'Workunit\s+([\d,]+)\s+started'
+```
+
+#### EDI Transformation Patterns
 
 For position-sensitive data (EDI documents):
 
-1. **Clarification Before Code**: Create detailed implementation plan FIRST, ask explicit questions about ambiguous requirements
-2. **In-Place Modification**: Create working copy, modify in-place, preserve all elements (safer than rebuilding arrays)
-3. **Change Detection Flags**: Only trigger recalculation when actual modifications occur
-4. **Safety Guards**: Validate structure before modification to prevent corruption
+1. **Clarification Before Code**: Create detailed implementation plan FIRST
+2. **In-Place Modification**: Modify working copy, preserve all elements
+3. **Change Detection Flags**: Only recalculate when modifications occur
+4. **Safety Guards**: Validate structure before modification
+
+## Domain-Specific Workflows
+
+### Client Handover Pipeline
+
+**BLOCKING REQUIREMENT**: When generating client handover documentation, MUST follow stateless pipeline.
+
+**Phase 0 (MANDATORY FIRST):**
+
+```bash
+python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spec>
+```
+
+Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`
+
+**Phases 1-4:**
+
+Create analysis JSONs: `business_analysis.json`, `workflow_analysis.json`, `configuration_analysis.json`, `risk_assessment.json`
+
+**Phase 5 (MANDATORY LAST):**
+
+```bash
+python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <client> <rice>
+```
+
+**Common Mistake**: Skipping Phase 0 and manually extracting data
+
+Results in:
+
+- Missing `lpd_structure.json` and `metrics_summary.json`
+- Assembly script shows "Process Count: 0" and "Total Activities: 0"
+- Incomplete report
+
+**Pre-Phase 5 Verification Checklist:**
+
+- `Temp/lpd_structure.json` exists
+- `Temp/metrics_summary.json` exists
+- `Temp/business_analysis.json` exists
+- `Temp/workflow_analysis.json` exists
+- `Temp/configuration_analysis.json` exists
+- `Temp/risk_assessment.json` exists
+
+**Reference**: See `.kiro/steering/10_IPA_Report_Generation.md` for complete workflow documentation.

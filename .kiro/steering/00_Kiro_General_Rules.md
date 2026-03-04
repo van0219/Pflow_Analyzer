@@ -1,10 +1,10 @@
 ---
-inclusion: manual
-name: legacy-general-rules
-description: Historical reference for previous monolithic general rules before modular split. Content has been distributed to 00_Core_System_Rules.md and 00_Workflow_Engineering_Principles.md.
+inclusion: auto
+name: kiro-general-rules
+description: Advanced IPA workflows, subagent architecture patterns, hook management, and domain-specific implementation details. Use when working with IPA analysis, subagents, hooks, workflow orchestration, or context budget planning.
 ---
 
-# Kiro General Rules and Settings
+# Core System Rules
 
 ## Table of Contents
 
@@ -228,11 +228,12 @@ generate_report(ipa_data)
 
 **Correct Usage:**
 
-```
+```text
 userInput(question="Select a client:", options=["BayCare", "FPI", "SONH"], reason="general-question")
 ```
 
 **Parameters:**
+
 - `question`: The prompt text to display
 - `options`: Array of choices (as Python list syntax)
 - `reason`: Context for the input (e.g., "general-question")
@@ -251,21 +252,25 @@ userInput(question="Select a client:", options=["BayCare", "FPI", "SONH"], reaso
 **CRITICAL LIMITATION (March 2, 2026):**
 
 userInput does NOT work when skills are triggered directly:
+
 - ✅ Works: Hook-triggered workflows (userTriggered hooks with newSession: true)
 - ❌ Does NOT work: Skills activated via discloseContext() in existing sessions
 - ❌ Does NOT work: Skills activated via discloseContext() in new sessions
 
 **When to use userInput:**
+
 - ONLY in hook-triggered workflows
 - NEVER in skills (use plain text questions instead)
 
 **When skills are activated:**
+
 - Use plain text questions: "Which client? (BayCare, FPI, SONH)"
 - Wait for user's text response
 - Parse response and continue workflow
 
 **Example - Skill Workflow:**
-```
+
+```text
 ❌ WRONG: userInput(question="Select a client:", options=["BayCare", "FPI", "SONH"], reason="general-question")
 ✅ CORRECT: "Which client would you like to analyze? Available: BayCare, FPI, SONH"
 ```
@@ -275,6 +280,7 @@ See `.kiro/hooks/ipa-client-handover.kiro.hook` for working userInput examples i
 **Skills vs Hooks**
 
 Skills and hooks are different:
+
 - **Skills**: Execute workflows directly when activated via discloseContext
 - **Hooks**: Triggered by IDE events or manual user action
 
@@ -287,10 +293,12 @@ When a user requests a workflow (e.g., "client handover", "coding standards", "p
 3. **IF NO SKILL**: Then suggest the hook as an alternative
 
 **Example - Client Handover Request:**
+
 - ✅ CORRECT: Activate `ipa-client-handover` skill and execute workflow
 - ❌ WRONG: Direct user to trigger the hook manually
 
 **When to use hooks instead of skills:**
+
 - User explicitly asks to use the hook
 - Skill doesn't exist for the requested workflow
 - User wants a fresh session (hooks have newSession: true)
