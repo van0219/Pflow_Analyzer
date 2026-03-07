@@ -148,33 +148,92 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    }
    ```
 
-5. **Phase 3: Configuration & Technical Components** (AI)
-   - Input: `lpd_structure.json`, `metrics_summary.json`
-   - Task: Identify file channels, web services, security roles, configuration dependencies
-   - **CRITICAL**: Must extract `file_channel_config`, `process_variables`, and `configuration_dependencies`
+5. **Phase 3: Configuration & Technical Components** (AI - Incremental)
+   - **Script**: `ReusableTools/IPA_ClientHandover/build_configuration_analysis.py`
+   - Input: `lpd_process_N.json` files
+   - Task: Extract and analyze configuration by category
+   - **CRITICAL**: Use Python script to extract and chunk configuration data
    - Output: `configuration_analysis.json`
    - Return: "Phase 3 complete. configuration_analysis.json written."
    
-   **Phase 3 Required Data Structures:**
+   **Phase 3 Incremental Approach:**
+   
+   1. Run `python ReusableTools/IPA_ClientHandover/build_configuration_analysis.py`
+   2. Script extracts configuration by category:
+      - Process variables (START activity with _configuration references)
+      - File channels (ACCFIL activities)
+      - Web services (WEBRN activities)
+      - Security roles
+      - Config dependencies
+   3. Saves chunks: `config_chunk_process_variables.json`, etc.
+   4. AI analyzes each chunk (~1-2 KB output per category)
+   5. AI saves as `config_chunk_CATEGORY_analyzed.json`
+   6. Run `python ReusableTools/IPA_ClientHandover/build_configuration_analysis.py merge`
+   7. Output: Complete `configuration_analysis.json`
+   
+   **AI Analysis Task (per chunk):**
    ```json
    {
-     "file_channel_config": [
-       {"variable": "FileChannelFileName", "purpose": "...", "example_value": "...", "modification_instructions": "..."}
-     ],
-     "process_variables": [
-       {"variable": "OauthCreds", "purpose": "...", "example_value": "...", "modification_instructions": "..."}
-     ],
-     "configuration_dependencies": [
-       {"config_set": "Interface", "property": "API_AuthCred_AGW", "purpose": "...", "modification_instructions": "..."}
+     "analysis": [
+       {
+         "variable": "vTestFlag",
+         "purpose": "Controls test mode routing",
+         "example_value": "true/false",
+         "modification_instructions": "Set to false in production"
+       }
      ]
    }
    ```
+   
+   **Phase 3 Final Output Structure:**
+   ```json
+   {
+     "file_channel_config": [...],
+     "process_variables": [...],
+     "configuration_dependencies": [...]
+   }
+   ```
 
-6. **Phase 4: Risk & Compliance Review** (AI)
-   - Input: All prior JSON outputs
-   - Task: Identify technical risks, maintenance risks, scalability concerns
+6. **Phase 4: Risk & Compliance Review** (AI - Incremental)
+   - **Script**: `ReusableTools/IPA_ClientHandover/build_risk_assessment.py`
+   - Input: Previous analysis outputs (business, workflow, configuration, metrics)
+   - Task: Analyze risks by category (3-5 key risks per category)
+   - **CRITICAL**: Keep output small - focus on key risks only
    - Output: `risk_assessment.json`
    - Return: "Phase 4 complete. risk_assessment.json written."
+   
+   **Phase 4 Incremental Approach:**
+   
+   1. Run `python ReusableTools/IPA_ClientHandover/build_risk_assessment.py`
+   2. Script loads previous analysis outputs and extracts risk context
+   3. Creates 5 risk chunks by category:
+      - Technical risks (integration failures, data quality)
+      - Maintenance risks (configuration drift, documentation)
+      - Scalability concerns (performance, volume)
+      - Compliance requirements (audit trail, authorization)
+      - Data quality risks (validation, completeness)
+   4. Saves chunks: `risk_chunk_technical_risks.json`, etc.
+   5. AI analyzes each chunk (~1-2 KB output, 3-5 risks max)
+   6. AI saves as `risk_chunk_CATEGORY_analyzed.json`
+   7. Run `python ReusableTools/IPA_ClientHandover/build_risk_assessment.py merge`
+   8. Output: Complete `risk_assessment.json`
+   
+   **AI Analysis Task (per chunk - KEEP SMALL):**
+   ```json
+   {
+     "risks": [
+       {
+         "risk": "Hyland OnBase interface failures",
+         "severity": "Critical",
+         "impact": "Invoices not received for approval",
+         "mitigation": "Implement monitoring and retry logic",
+         "monitoring": "Real-time interface health checks"
+       }
+     ]
+   }
+   ```
+   
+   **CRITICAL**: Return only 3-5 key risks per category, not exhaustive lists.
 
 7. **Phase 4.5: Executive Summary Diagram** (AI - Multi-Process Only)
    - **WHEN**: Only for RICE items with 2+ processes
@@ -282,9 +341,25 @@ This skill uses the following Python tools from `ReusableTools/IPA_ClientHandove
 
 - `preprocess_client_handover.py` - Extracts and structures data for analysis phases
 
+**Phase 2 (Workflow Analysis - Incremental):**
+
+- `build_workflow_analysis.py` - Chunks activities, orchestrates AI analysis, merges results
+
+**Phase 3 (Configuration Analysis - Incremental):**
+
+- `build_configuration_analysis.py` - Extracts config by category, orchestrates AI analysis, merges results
+
+**Phase 4 (Risk Assessment - Incremental):**
+
+- `build_risk_assessment.py` - Chunks risks by category, orchestrates AI analysis, merges results
+
 **Phase 5 (Report Assembly):**
 
 - `assemble_client_handover_report.py` - Merges JSON outputs and generates Excel report
+
+**Pipeline Orchestration:**
+
+- `run_incremental_pipeline.py` - Master orchestrator for all phases
 
 **Validation & Testing:**
 
@@ -295,6 +370,7 @@ This skill uses the following Python tools from `ReusableTools/IPA_ClientHandove
 
 - `JSON_SCHEMAS.md` - Complete JSON schema documentation
 - `TROUBLESHOOTING.md` - Common issues and solutions
+- `INCREMENTAL_PIPELINE_GUIDE.md` - Incremental architecture guide
 - `README.md` - Quick start guide
 
 **Legacy Tools (Deprecated):**
@@ -322,23 +398,30 @@ Template: `ipa_client_handover_template.py` (workspace root)
 
 ## Performance
 
-**Stateless Pipeline (New Architecture):**
+**Incremental Pipeline (Current Architecture):**
 
 - Phase 0 (Preprocessing): ~2-3s per file
-- Phase 1 (Business Analysis): ~30-45s
-- Phase 2 (Workflow Analysis): ~30-45s
-- Phase 3 (Configuration Analysis): ~30-45s
-- Phase 4 (Risk Analysis): ~30-45s
+- Phase 1 (Business Analysis): ~30-45s (direct AI analysis)
+- Phase 2 (Workflow Analysis): ~5-10 min (11 chunks × 30s each + merge)
+- Phase 3 (Configuration Analysis): ~2-5 min (5 chunks × 30s each + merge)
+- Phase 4 (Risk Analysis): ~2-5 min (5 chunks × 30s each + merge)
 - Phase 5 (Report Assembly): ~5-10s
-- **Total**: ~3-4 min per process (stable, no crashes)
+- **Total**: ~10-15 min per RICE item (stable, no crashes)
 
-**Legacy Multi-Subagent (Deprecated):**
+**Key Improvements:**
+- ✅ No AI output >3 KB (was 11 KB causing crashes)
+- ✅ No context accumulation (each chunk isolated)
+- ✅ Crash-safe (can resume from any chunk)
+- ✅ Scalable (works for 50 or 5,000 activities)
+
+**Legacy Multi-Subagent (Deprecated - Crashed at 530 activities):**
 
 - Extraction: ~1s per file
 - Organization: ~2s per process
 - AI analysis (5 subagents sequential): ~2-3 min per process
 - Consolidation: ~2s
 - Report generation: <10s
+- **Issue**: Crashed at Phase 4 due to 11 KB output attempt
 - **Total**: ~2-3 min per process + consolidation
 - **Issue**: Crashed at 80 KB context accumulation
 

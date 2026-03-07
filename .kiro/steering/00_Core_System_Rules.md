@@ -675,9 +675,9 @@ def create_process_sheet(wb, process, idx):
 
 Or mention "client handover documentation" in your request.
 
-**Architecture**: Stateless Pipeline (Crash-Safe)
+**Architecture**: Incremental Pipeline (Crash-Safe)
 
-The skill uses a file-based stateless pipeline to prevent context accumulation:
+The skill uses an incremental, file-based pipeline to prevent context accumulation and crashes:
 
 **Phase 0 (Preprocessing - Python Only):**
 
@@ -685,15 +685,48 @@ The skill uses a file-based stateless pipeline to prevent context accumulation:
 python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spec> [wu_log]
 ```
 
-Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`, `wu_log.json` (if provided)
+Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`, `wu_log_data.json` (if provided)
 
-**Phases 1-4 (Analysis - AI):**
+**Phase 1 (Business Analysis - AI Direct):**
 
-Independent analysis phases, each reads JSON input and writes JSON output:
-- `business_analysis.json`
-- `workflow_analysis.json`
-- `configuration_analysis.json`
-- `risk_assessment.json`
+AI analyzes spec_raw.json directly (~7 KB output acceptable)
+- Output: `business_analysis.json`
+
+**Phase 2 (Workflow Analysis - Incremental):**
+
+```bash
+python ReusableTools/IPA_ClientHandover/build_workflow_analysis.py
+```
+
+1. Python extracts activities and creates chunks (50 activities each)
+2. AI analyzes each chunk (~2-3 KB output per chunk)
+3. AI saves as `workflow_chunk_N_analyzed.json`
+4. Run merge: `python ReusableTools/IPA_ClientHandover/build_workflow_analysis.py merge`
+5. Output: `workflow_analysis.json`
+
+**Phase 3 (Configuration Analysis - Incremental):**
+
+```bash
+python ReusableTools/IPA_ClientHandover/build_configuration_analysis.py
+```
+
+1. Python extracts config by category (process variables, file channels, web services)
+2. AI analyzes each category (~1-2 KB output per category)
+3. AI saves as `config_chunk_CATEGORY_analyzed.json`
+4. Run merge: `python ReusableTools/IPA_ClientHandover/build_configuration_analysis.py merge`
+5. Output: `configuration_analysis.json`
+
+**Phase 4 (Risk Assessment - Incremental):**
+
+```bash
+python ReusableTools/IPA_ClientHandover/build_risk_assessment.py
+```
+
+1. Python loads previous outputs and creates risk chunks by category
+2. AI analyzes each category (~1-2 KB output, 3-5 risks max per category)
+3. AI saves as `risk_chunk_CATEGORY_analyzed.json`
+4. Run merge: `python ReusableTools/IPA_ClientHandover/build_risk_assessment.py merge`
+5. Output: `risk_assessment.json`
 
 **Phase 5 (Report Assembly - Python Only):**
 
@@ -703,10 +736,23 @@ python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <clie
 
 **Key Benefits**:
 
-- No context accumulation (each phase isolated at ~10 KB)
-- No crashes (stable execution regardless of file size)
-- Faster execution (reduced reasoning overhead)
-- Multi-process support (1-N LPDs → ONE report)
+- ✅ No large AI outputs (max 3 KB per response, was 11 KB causing crashes)
+- ✅ No context accumulation (each chunk isolated at ~2-3 KB)
+- ✅ Crash-safe (can resume from any chunk)
+- ✅ Scalable (works for 50 or 5,000 activities)
+- ✅ Multi-process support (1-N LPDs → ONE report)
+
+**Critical Rule: AI Output Size Limits**
+
+| Phase | Max Output per Chunk | Chunk Count | Total Output |
+|-------|---------------------|-------------|--------------|
+| Phase 1 | 7 KB | 1 | ~7 KB |
+| Phase 2 | 3 KB | 11 | ~33 KB |
+| Phase 3 | 2 KB | 5 | ~10 KB |
+| Phase 4 | 2 KB | 5 | ~10 KB |
+| **Total** | **~2.5 KB avg** | **22** | **~60 KB** |
+
+**Previous Architecture (Crashed)**: Phase 4 tried to generate 11 KB in one response → CRASH at 6m 13s
 
 **Common Mistake**: Skipping Phase 0 and manually extracting data
 

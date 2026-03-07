@@ -1771,6 +1771,16 @@ Use consistently across all reports:
 
 **Data-Driven**: Use `ipa_data['workflow_steps']` if provided, otherwise use generic fallback covering common IPA patterns.
 
+**IMPORTANT - Multi-Process RICE Items** (Fixed 2026-03-07):
+
+The assembly script (`assemble_client_handover_report.py`) now correctly generates workflow diagrams for multi-process RICE items by using the actual `workflow_steps` from `workflow_analysis.json` instead of just listing process names. This ensures the Executive Summary diagram shows the actual approval/interface workflow logic (e.g., 9-step approval flow) rather than a simplified 3-step process list.
+
+**Data Flow**:
+1. Phase 2 creates `workflow_analysis.json` with `workflow_steps` array
+2. Assembly script passes `workflow_description` to template (converted from `workflow_steps`)
+3. Template converts `workflow_description` to internal `workflow_steps` format for rendering
+4. Diagram shows actual business workflow regardless of single or multi-process RICE item
+
 ## Report Structure
 
 ### Client Handover Report (8 sheets minimum)

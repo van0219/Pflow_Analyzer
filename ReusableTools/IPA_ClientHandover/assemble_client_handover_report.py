@@ -867,47 +867,30 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
     key_features = generate_key_features(business_analysis)
     
     # Build workflow_description for Executive Summary diagram
-    # For multi-process RICE items, show high-level overview, not detailed process steps
+    # Always show the main workflow steps (from workflow_steps), not just process names
     workflow_description = []
     
-    if len(processes) > 1:
-        # Multi-process: Show RICE-level overview
-        process_overview = workflow_analysis.get('process_overview', '')
-        
-        # Extract high-level steps from process descriptions
-        for process in workflow_analysis.get('processes', []):
-            process_name = process.get('name', '')
-            process_purpose = process.get('purpose', '')
-            
-            # Simplify process name for diagram
-            if 'nightly' in process_name.lower() or 'trigger' in process_name.lower():
-                step_name = 'Nightly Batch Submission'
-            elif 'reject' in process_name.lower():
-                step_name = 'Auto-Reject Processing'
-            elif 'approval' in process_name.lower() and 'nightly' not in process_name.lower():
-                step_name = 'Invoice Approval Workflow'
-            else:
-                # Extract key words from process name
-                words = process_name.replace('_', ' ').split()
-                step_name = ' '.join(words[:3]) if len(words) > 3 else process_name
-            
-            workflow_description.append({
-                'step_name': step_name,
-                'description': process_purpose
-            })
+    # Use workflow_steps from workflow_analysis (shows actual approval flow)
+    workflow_steps_data = workflow_analysis.get('workflow_steps', [])
+    
+    if isinstance(workflow_steps_data, list) and len(workflow_steps_data) > 0:
+        for step in workflow_steps_data:
+            if isinstance(step, dict):
+                # Use 'name' field as step_name
+                step_name = step.get('name', step.get('phase', 'Process Step'))
+                workflow_description.append({
+                    'step_name': step_name,
+                    'description': step.get('description', '')
+                })
     else:
-        # Single process: Show process-specific workflow steps
-        workflow_steps_data = workflow_analysis.get('workflow_steps', [])
-        
-        if isinstance(workflow_steps_data, list):
-            for step in workflow_steps_data:
-                if isinstance(step, dict):
-                    # Use 'phase' field as step_name (not 'step' which is an integer)
-                    step_name = step.get('name', step.get('phase', 'Process Step'))
-                    workflow_description.append({
-                        'step_name': step_name,
-                        'description': step.get('description', '')
-                    })
+        # Fallback: If no workflow_steps, create generic approval workflow
+        workflow_description = [
+            {'step_name': 'Invoice Submission', 'description': 'Invoice submitted for approval'},
+            {'step_name': 'Validation', 'description': 'Validate invoice data and routing'},
+            {'step_name': 'Approval Routing', 'description': 'Route to appropriate approvers'},
+            {'step_name': 'User Action', 'description': 'Approver reviews and takes action'},
+            {'step_name': 'Final Processing', 'description': 'Complete approval workflow'}
+        ]
     
     # Assemble final ipa_data dictionary
     ipa_data = {

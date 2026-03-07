@@ -1,0 +1,22 @@
+{
+  "process_count": 1,
+  "total_activities": 450,
+  "activity_types": {
+    "START": 1,
+    "": 259,
+    "END": 1,
+    "LM": 68,
+    "ASSGN": 88,
+    "BRANCH": 27,
+    "UA": 5,
+    "EMAIL": 1
+  },
+  "script_lengths": {},
+  "es6_patterns_detected": [],
+  "sql_statements": [],
+  "external_integrations": [],
+  "file_channels": [],
+  "web_services": [],
+  "data_fabric_usage": false,
+  "idm_integration": false
+}
