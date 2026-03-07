@@ -612,6 +612,55 @@ For position-sensitive data (EDI documents):
 3. **Change Detection Flags**: Only recalculate when modifications occur
 4. **Safety Guards**: Validate structure before modification
 
+#### Excel Sheet Name Limits
+
+**Problem**: Excel has a 31-character limit for sheet names. Long process names or duplicate names after truncation cause workbook corruption.
+
+**Root Cause**: When multiple processes have long names, simple truncation creates duplicates:
+- `InvoiceApproval_APIA_NONPOROUTING` → `⚙️ InvoiceApproval_APIA_NONPORO` (31 chars)
+- `InvoiceApproval_APIA_NONPOROUTING_Reject` → `⚙️ InvoiceApproval_APIA_NONPORO` (DUPLICATE!)
+
+Excel rejects duplicate sheet names, causing corruption with error: "Repaired Records: Worksheet properties from /xl/workbook.xml part (Workbook)"
+
+**Solution**: Implement intelligent sheet name generation with collision detection:
+
+```python
+def create_process_sheet(wb, process, idx):
+    """Create individual process sheet with unique name"""
+    process_name = process.get('name', f'Process {idx}')
+    base_sheet_name = f"⚙️ {process_name}"
+    
+    # Excel sheet name limit is 31 chars - ensure uniqueness
+    if len(base_sheet_name) > 31:
+        # Truncate and add index to ensure uniqueness
+        max_name_length = 28 - len(str(idx))
+        sheet_name = f"{base_sheet_name[:max_name_length]}{idx}"
+    else:
+        sheet_name = base_sheet_name
+    
+    # Ensure sheet name is unique (collision detection)
+    existing_names = [sheet.title for sheet in wb.worksheets]
+    if sheet_name in existing_names:
+        counter = 1
+        while f"{sheet_name[:29]}{counter}" in existing_names:
+            counter += 1
+        sheet_name = f"{sheet_name[:29]}{counter}"
+    
+    ws = wb.create_sheet(sheet_name)
+    return ws
+```
+
+**Key Protection Layers**:
+
+1. **Length Check**: Truncate if >31 characters
+2. **Index Suffix**: Add process index for uniqueness
+3. **Collision Detection**: Check existing sheet names before creating
+4. **Counter Fallback**: Add numeric suffix if collision still occurs
+
+**Result**: Sheet names like `⚙️ InvoiceApproval_APIA_NON1`, `NON2`, `NON3` - all unique and under 31 characters.
+
+**Prevention**: Always use this pattern when creating dynamic sheet names in Excel templates.
+
 ## Domain-Specific Workflows
 
 ### Client Handover Pipeline

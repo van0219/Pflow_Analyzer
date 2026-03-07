@@ -429,6 +429,20 @@ Comprehensive documentation is available in the `references/` folder:
   - Step-by-step fixes
   - Prevention strategies
 
+- **`COMMON_ISSUES.md`** - Catalog of known issues and fixes (NEW)
+  - Excel file corruption and sheet name limits
+  - Template rendering issues (priority colors, missing data)
+  - Data structure mismatches
+  - Performance and context issues
+  - Best practices and prevention strategies
+
+- **`IPA_DOMAIN_KNOWLEDGE.md`** - IPA concepts for client documentation (NEW)
+  - Activity type descriptions in business-friendly language
+  - Common process patterns (approval, interface, integration)
+  - Data access patterns (Compass API vs Landmark)
+  - ANA-050 specification structure
+  - Business requirements extraction patterns
+
 - **`TOOLS_README.md`** - Python tool usage and examples
   - Tool descriptions and parameters
   - Command-line examples
@@ -441,7 +455,9 @@ Comprehensive documentation is available in the `references/` folder:
 - **Phase 3 configuration issues?** → See `PHASE3_CONFIGURATION_GUIDE.md`
 - **JSON structure questions?** → Check `JSON_SCHEMAS.md`
 - **Report generation problems?** → Consult `TROUBLESHOOTING.md`
+- **Known issues or errors?** → Check `COMMON_ISSUES.md` first
 - **Tool usage questions?** → Reference `TOOLS_README.md`
+- **IPA concepts and patterns?** → See `IPA_DOMAIN_KNOWLEDGE.md`
 
 ### Loading Reference Documentation
 

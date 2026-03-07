@@ -79,7 +79,8 @@ def validate_report(report_path):
                 print(f"✓ {sheet_name}: {non_empty_rows} rows")
         
         # Check for Process sheets (should have at least one)
-        process_sheets = [s for s in sheet_names if s.startswith('⚙️ Process_')]
+        # Process sheets can be named "⚙️ Process_<name>" or "⚙️ <ProcessName>" (for multi-process)
+        process_sheets = [s for s in sheet_names if s.startswith('⚙️') and s not in expected_sheets]
         if not process_sheets:
             issue = "❌ No Process sheets found"
             results['issues'].append(issue)

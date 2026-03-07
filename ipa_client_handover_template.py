@@ -461,9 +461,10 @@ def create_business_requirements(wb, ipa_data):
         
         # Add structured requirements
         priority_colors = {
-            'High': 'FF6B6B',
-            'Medium': 'FFA500',
-            'Low': '4ECDC4'
+            'Critical': 'C62828',  # Red - highest priority
+            'High': 'FF6B6B',      # Light red
+            'Medium': 'FFA500',    # Orange
+            'Low': '4ECDC4'        # Teal
         }
         
         for req in requirements:
@@ -1040,7 +1041,26 @@ def create_process_sheet(wb, process, idx):
     """Create individual process sheet with modern design"""
     # Use process name for sheet title (truncate if too long for Excel)
     process_name = process.get('name', f'Process {idx}')
-    sheet_name = f"⚙️ {process_name}"[:31]  # Excel sheet name limit is 31 chars
+    base_sheet_name = f"⚙️ {process_name}"
+    
+    # Excel sheet name limit is 31 chars - ensure uniqueness
+    if len(base_sheet_name) > 31:
+        # Truncate and add index to ensure uniqueness
+        # Format: "⚙️ ProcessName" (28 chars) + idx (up to 3 chars)
+        max_name_length = 28 - len(str(idx))
+        sheet_name = f"{base_sheet_name[:max_name_length]}{idx}"
+    else:
+        sheet_name = base_sheet_name
+    
+    # Ensure sheet name is unique (in case of collisions)
+    existing_names = [sheet.title for sheet in wb.worksheets]
+    if sheet_name in existing_names:
+        # Add numeric suffix
+        counter = 1
+        while f"{sheet_name[:29]}{counter}" in existing_names:
+            counter += 1
+        sheet_name = f"{sheet_name[:29]}{counter}"
+    
     ws = wb.create_sheet(sheet_name)
     styles = get_styles()
     

@@ -423,8 +423,8 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
     process_details = {
         'Client': client_name,
         'RICE Item': rice_item,
-        'Process Count': len(processes),
-        'Total Activities': metrics_summary.get('total_activities', 0),
+        'Process Count': str(len(processes)),
+        'Total Activities': str(metrics_summary.get('total_activities', 0)),
         'Report Date': datetime.now().strftime('%B %d, %Y')
     }
     
@@ -709,7 +709,7 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
     # Build processes list for detailed sheets
     process_list = []
     for idx, process in enumerate(processes):
-        process_name = process.get('name', f'Process_{idx+1}')
+        process_name = process.get('process_name', process.get('name', f'Process_{idx+1}'))
         
         # Handle workflow_analysis.decision_points - can be dict or list
         decision_points_data = workflow_analysis.get('decision_points', [])
