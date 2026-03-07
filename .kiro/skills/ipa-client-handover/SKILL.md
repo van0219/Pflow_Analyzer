@@ -110,8 +110,24 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
 5. **Phase 3: Configuration & Technical Components** (AI)
    - Input: `lpd_structure.json`, `metrics_summary.json`
    - Task: Identify file channels, web services, security roles, configuration dependencies
+   - **CRITICAL**: Must extract `file_channel_config`, `process_variables`, and `configuration_dependencies`
    - Output: `configuration_analysis.json`
    - Return: "Phase 3 complete. configuration_analysis.json written."
+   
+   **Phase 3 Required Data Structures:**
+   ```json
+   {
+     "file_channel_config": [
+       {"variable": "FileChannelFileName", "purpose": "...", "example_value": "...", "modification_instructions": "..."}
+     ],
+     "process_variables": [
+       {"variable": "OauthCreds", "purpose": "...", "example_value": "...", "modification_instructions": "..."}
+     ],
+     "configuration_dependencies": [
+       {"config_set": "Interface", "property": "API_AuthCred_AGW", "purpose": "...", "modification_instructions": "..."}
+     ]
+   }
+   ```
 
 6. **Phase 4: Risk & Compliance Review** (AI)
    - Input: All prior JSON outputs
@@ -361,7 +377,16 @@ python ReusableTools/IPA_ClientHandover/validate_analysis_jsons.py
 
 **"Process Count: 0"** → Phase 0 was skipped, run preprocessing first
 
-**"File not found"** → Missing JSON file, check Phase 0 completed
+**"File not found: wu_log_data.json"** → Phase 0 outputs `wu_log_data.json` (not `wu_log.json`). If you see this error, the preprocessing script needs to be updated.
+
+**"Config variables: 0" or missing file channel/process variables"** → Phase 3 `configuration_analysis.json` is missing required data structures. Phase 3 MUST extract:
+- `file_channel_config` - File channel variables (FileChannelFileName, FileChannelMonitorDirectory, etc.)
+- `process_variables` - START activity variables (OauthCreds, OutputFileName, RunDate, etc.)
+- `configuration_dependencies` - System Configuration variables (Interface.API_AuthCred_*, etc.)
+
+**ROOT CAUSE**: The assembly script `build_ipa_data()` function expects these specific keys in `configuration_analysis.json`. If Phase 3 doesn't generate them, the System Configuration sheet will be empty.
+
+**"Production Validation showing N/A"** → Work unit log file not found or `wu_log_data.json` missing. Verify Phase 0 extracted WU log successfully.
 
 **"Invalid client_name"** → Use positional args, not `--client`
 
@@ -370,6 +395,57 @@ python ReusableTools/IPA_ClientHandover/validate_analysis_jsons.py
 **Empty sheets** → Analysis JSONs incomplete, validate structure
 
 See `TROUBLESHOOTING.md` for complete guide.
+
+## Reference Documentation
+
+Comprehensive documentation is available in the `references/` folder:
+
+### Core Guides
+
+- **`WORKFLOW_GUIDE.md`** - Complete step-by-step workflow for generating client handover documentation
+  - Prerequisites and file organization
+  - Phase-by-phase instructions (Phases 0-5)
+  - Multi-process workflow
+  - Validation and troubleshooting
+  - Quick reference table
+
+- **`PHASE3_CONFIGURATION_GUIDE.md`** - Critical Phase 3 requirements and extraction patterns
+  - Required data structures (`file_channel_config`, `process_variables`, `configuration_dependencies`)
+  - Root cause analysis for empty configuration sheets
+  - Extraction patterns with code examples
+  - Validation commands
+  - Common mistakes and best practices
+
+- **`JSON_SCHEMAS.md`** - Complete JSON structure reference for all phases
+  - Phase 0 outputs (lpd_structure, metrics_summary, spec_raw)
+  - Phase 1-4 analysis JSON schemas
+  - Required fields and validation rules
+  - Assembly script behavior
+  - Graceful degradation patterns
+
+- **`TROUBLESHOOTING.md`** - Common issues and solutions
+  - Quick diagnosis commands
+  - Root cause analysis
+  - Step-by-step fixes
+  - Prevention strategies
+
+- **`TOOLS_README.md`** - Python tool usage and examples
+  - Tool descriptions and parameters
+  - Command-line examples
+  - Integration with workflow
+  - Testing and validation
+
+### When to Use Each Guide
+
+- **Starting a new handover?** → Read `WORKFLOW_GUIDE.md` first
+- **Phase 3 configuration issues?** → See `PHASE3_CONFIGURATION_GUIDE.md`
+- **JSON structure questions?** → Check `JSON_SCHEMAS.md`
+- **Report generation problems?** → Consult `TROUBLESHOOTING.md`
+- **Tool usage questions?** → Reference `TOOLS_README.md`
+
+### Loading Reference Documentation
+
+Reference files are loaded on-demand when needed. The skill is self-contained and portable - all necessary information is included in this skill package.
 
 ## Confidentiality
 

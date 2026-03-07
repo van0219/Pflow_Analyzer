@@ -28,14 +28,21 @@ Guide for generating IPA (Infor Process Automation) reports: Client Handover Doc
 **ALWAYS run this BEFORE any AI analysis:**
 
 ```bash
-python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd_file> <spec_file> [output_dir]
+python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd_file> <spec_file> [wu_log_file] [output_dir]
 ```
+
+**Arguments:**
+- `lpd_file`: Path to LPD file (required)
+- `spec_file`: Path to ANA-050 specification (required)
+- `wu_log_file`: Path to work unit log file (optional)
+- `output_dir`: Output directory (optional, defaults to 'Temp')
 
 **What it creates:**
 
 - `spec_raw.json` - Extracted ANA-050 content
 - `lpd_structure.json` - Extracted LPD process structure (REQUIRED by assembly script)
 - `metrics_summary.json` - Pre-calculated metrics (REQUIRED by assembly script)
+- `wu_log.json` - Extracted work unit log data (if WU log provided)
 
 **Why this matters:**
 
@@ -49,8 +56,56 @@ After Phase 0 completes, create these analysis files:
 
 - `business_analysis.json` - Business requirements and objectives
 - `workflow_analysis.json` - Process flow and decision points
-- `configuration_analysis.json` - Configuration dependencies and settings
+- `configuration_analysis.json` - Configuration dependencies and settings (**CRITICAL: See Phase 3 Requirements below**)
 - `risk_assessment.json` - Technical risks and maintenance concerns
+
+#### Phase 3 Requirements (CRITICAL)
+
+**ROOT CAUSE OF EMPTY CONFIGURATION SHEETS**: The assembly script's `build_ipa_data()` function expects specific data structures in `configuration_analysis.json`. If these are missing, the System Configuration sheet will be empty or incomplete.
+
+**REQUIRED DATA STRUCTURES:**
+
+```json
+{
+  "file_channel_config": [
+    {
+      "variable": "FileChannelFileName",
+      "purpose": "Name of the trigger file being processed",
+      "example_value": "MatchReportTrigger_P962_FMFC20260116233831.txt",
+      "modification_instructions": "Automatically populated by file channel - no manual modification needed"
+    }
+  ],
+  "process_variables": [
+    {
+      "variable": "OauthCreds",
+      "purpose": "Selected OAuth credentials based on Finance Enterprise Group",
+      "example_value": "JSON string with client_id, client_secret, grant_type, scope",
+      "modification_instructions": "Automatically selected from Interface config based on FEG - update source config variables instead"
+    }
+  ],
+  "configuration_dependencies": [
+    {
+      "config_set": "Interface",
+      "property": "API_AuthCred_AGW",
+      "type": "JSON",
+      "purpose": "OAuth credentials for AGW Finance Enterprise Group",
+      "required": true,
+      "modification_instructions": "Update JSON object with client_id, client_secret, grant_type, and scope for AGW"
+    }
+  ]
+}
+```
+
+**HOW TO EXTRACT THESE:**
+
+1. **file_channel_config**: Extract from START activity properties where `FileChannel` variables are defined
+2. **process_variables**: Extract from START activity variable initialization (all variables set in START node)
+3. **configuration_dependencies**: Extract from `_configuration.ConfigSet.Property` references in JavaScript blocks
+
+**VERIFICATION**: After Phase 3, verify these keys exist in `configuration_analysis.json`:
+```bash
+python -c "import json; data = json.load(open('Temp/configuration_analysis.json')); print('file_channel_config:', len(data.get('file_channel_config', []))); print('process_variables:', len(data.get('process_variables', []))); print('configuration_dependencies:', len(data.get('configuration_dependencies', [])))"
+```
 
 ### Phase 5: Report Assembly (Python Only - FINAL STEP)
 
@@ -68,7 +123,15 @@ python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <clie
 - `workflow_analysis.json` (from Phase 2)
 - `configuration_analysis.json` (from Phase 3)
 - `risk_assessment.json` (from Phase 4)
-- `wu_log_data.json` (optional - for production validation)
+- `wu_log_data.json` (optional - for production validation) **← CRITICAL: Must be named `wu_log_data.json`, NOT `wu_log.json`**
+
+**ROOT CAUSE OF MISSING PRODUCTION VALIDATION**: The assembly script looks for `wu_log_data.json` (line 51 in `assemble_client_handover_report.py`). If Phase 0 outputs `wu_log.json` instead, production validation will show N/A values.
+
+**FIX**: Ensure `preprocess_client_handover.py` line 91 writes to `wu_log_data.json`:
+```python
+wu_log_path = os.path.join(output_dir, "wu_log_data.json")  # ← CORRECT
+# NOT: wu_log_path = os.path.join(output_dir, "wu_log.json")  # ← WRONG
+```
 
 ### Transformation Functions (NEW)
 

@@ -659,7 +659,7 @@ def create_system_configuration(wb, ipa_data):
                 ws.row_dimensions[row].height = 80
                 row += 1
     
-    # LEGACY: Handle old format (backward compatibility)
+    # LEGACY: Handle old format (backward compatibility) - ONLY if config_vars is empty
     elif 'oauth_credentials' in ipa_data or 'file_channel_config' in ipa_data or 'process_variables' in ipa_data or 'global_config_variables' in ipa_data:
         ws[f'A{row}'] = '🔐 OAuth2 Credentials'
         ws.merge_cells(f'A{row}:D{row}')
@@ -755,8 +755,8 @@ def create_system_configuration(wb, ipa_data):
         
         row += 1
     
-    # Global Configuration Variables Section (if applicable)
-    if 'global_config_variables' in ipa_data:
+    # Global Configuration Variables Section (LEGACY - only if config_vars not used)
+    if 'global_config_variables' in ipa_data and not (config_vars and len(config_vars) > 0):
         ws[f'A{row}'] = '🌐 Global System Configuration Variables'
         ws.merge_cells(f'A{row}:D{row}')
         ws[f'A{row}'].fill = styles['header_fill']
@@ -1121,15 +1121,24 @@ def create_process_sheet(wb, process, idx):
     # Activities
     activities = process.get('activities', [])
     for activity in activities:
+        # Skip empty activities (connectors/spacers in LPD)
         if isinstance(activity, dict):
+            activity_id = activity.get('id', '')
+            activity_type = activity.get('type', '')
+            # Skip if both id and type are empty
+            if not activity_id and not activity_type:
+                continue
+            
             # New format: extract specific fields
-            ws.cell(row=row, column=1, value=activity.get('id', ''))
-            ws.cell(row=row, column=2, value=activity.get('type', ''))
+            ws.cell(row=row, column=1, value=activity_id)
+            ws.cell(row=row, column=2, value=activity_type)
             ws.cell(row=row, column=3, value=activity.get('caption', ''))
             ws.cell(row=row, column=4, value=activity.get('description', ''))
             ws.cell(row=row, column=5, value=activity.get('when_it_runs', ''))
         else:
-            # Old format: list of values
+            # Old format: list of values - skip if first element is empty
+            if not activity or not activity[0]:
+                continue
             for col_idx, value in enumerate(activity, start=1):
                 ws.cell(row=row, column=col_idx, value=value)
         

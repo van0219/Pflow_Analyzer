@@ -24,13 +24,14 @@ from IPA_Analyzer.extract_lpd_data import extract_lpd_data
 from IPA_Analyzer.extract_spec import extract_spec
 
 
-def preprocess_client_handover(lpd_file, spec_file, output_dir="Temp"):
+def preprocess_client_handover(lpd_file, spec_file, wu_log_file=None, output_dir="Temp"):
     """
     Phase 0: Preprocessing for client handover generation.
     
     Args:
         lpd_file: Path to LPD file
         spec_file: Path to ANA-050 specification document
+        wu_log_file: Path to work unit log file (optional)
         output_dir: Output directory for JSON files
     
     Returns:
@@ -57,7 +58,7 @@ def preprocess_client_handover(lpd_file, spec_file, output_dir="Temp"):
     print(f"   ✓ Written: {spec_raw_path}")
     
     # Step 2: Extract LPD structure
-    print("\n[2/3] Extracting LPD process structure...")
+    print("\n[2/4] Extracting LPD process structure...")
     lpd_structure_path = os.path.join(output_dir, "lpd_structure.json")
     lpd_data = extract_lpd_data([lpd_file])
     
@@ -68,7 +69,7 @@ def preprocess_client_handover(lpd_file, spec_file, output_dir="Temp"):
     print(f"   ✓ Written: {lpd_structure_path}")
     
     # Step 3: Calculate metrics summary
-    print("\n[3/3] Calculating metrics summary...")
+    print("\n[3/4] Calculating metrics summary...")
     metrics_summary_path = os.path.join(output_dir, "metrics_summary.json")
     metrics = calculate_metrics(lpd_data)
     
@@ -77,6 +78,27 @@ def preprocess_client_handover(lpd_file, spec_file, output_dir="Temp"):
     
     output_files['metrics_summary'] = metrics_summary_path
     print(f"   ✓ Written: {metrics_summary_path}")
+    
+    # Step 4: Extract WU log (optional)
+    if wu_log_file and os.path.exists(wu_log_file):
+        print(f"\n[4/4] Extracting work unit log from {os.path.basename(wu_log_file)}...")
+        try:
+            from IPA_Analyzer.extract_wu_log import extract_wu_log
+            wu_log_path = os.path.join(output_dir, "wu_log_data.json")
+            wu_data = extract_wu_log(wu_log_file)
+            
+            with open(wu_log_path, 'w', encoding='utf-8') as f:
+                json.dump(wu_data, f, indent=2, ensure_ascii=False)
+            
+            output_files['wu_log'] = wu_log_path
+            print(f"   ✓ Written: {wu_log_path}")
+        except Exception as e:
+            print(f"   ⚠ Warning: Could not extract WU log: {e}")
+    elif wu_log_file:
+        print(f"\n[4/4] WU log file not found: {wu_log_file}")
+        print("   ⚠ Skipping work unit log extraction")
+    else:
+        print("\n[4/4] No work unit log provided - skipping")
     
     print("\n" + "=" * 80)
     print("PHASE 0 COMPLETE")
@@ -211,14 +233,37 @@ def detect_es6_patterns(script):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python preprocess_client_handover.py <lpd_file> <spec_file> [output_dir]")
+        print("Usage: python preprocess_client_handover.py <lpd_file> <spec_file> [wu_log_file] [output_dir]")
+        print("\nArguments:")
+        print("  lpd_file      : Path to LPD file (required)")
+        print("  spec_file     : Path to ANA-050 specification (required)")
+        print("  wu_log_file   : Path to work unit log file (optional)")
+        print("  output_dir    : Output directory for JSON files (optional, defaults to 'Temp')")
+        print("\nExamples:")
+        print("  python preprocess_client_handover.py process.lpd spec.docx")
+        print("  python preprocess_client_handover.py process.lpd spec.docx wu_log.txt")
+        print("  python preprocess_client_handover.py process.lpd spec.docx wu_log.txt Output")
         sys.exit(1)
     
     lpd_file = sys.argv[1]
     spec_file = sys.argv[2]
-    output_dir = sys.argv[3] if len(sys.argv) > 3 else "Temp"
     
-    output_files = preprocess_client_handover(lpd_file, spec_file, output_dir)
+    # Parse optional arguments
+    wu_log_file = None
+    output_dir = "Temp"
+    
+    if len(sys.argv) > 3:
+        # Check if third argument is a file (WU log) or directory (output_dir)
+        third_arg = sys.argv[3]
+        if os.path.isfile(third_arg) or third_arg.endswith('.txt') or third_arg.endswith('.log'):
+            wu_log_file = third_arg
+            if len(sys.argv) > 4:
+                output_dir = sys.argv[4]
+        else:
+            # Third argument is output_dir
+            output_dir = third_arg
+    
+    output_files = preprocess_client_handover(lpd_file, spec_file, wu_log_file, output_dir)
     
     print("\nNext steps:")
     print("  Phase 1: Business Requirements Analysis")
@@ -227,3 +272,6 @@ if __name__ == "__main__":
     print(f"    Input: {output_files['lpd_structure']}")
     print("  Phase 3: Configuration & Technical Components")
     print(f"    Input: {output_files['lpd_structure']}, {output_files['metrics_summary']}")
+    if 'wu_log' in output_files:
+        print("  Phase 4: Production Validation")
+        print(f"    Input: {output_files['wu_log']}")

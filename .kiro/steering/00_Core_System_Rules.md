@@ -633,10 +633,10 @@ The skill uses a file-based stateless pipeline to prevent context accumulation:
 **Phase 0 (Preprocessing - Python Only):**
 
 ```bash
-python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spec>
+python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spec> [wu_log]
 ```
 
-Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`
+Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`, `wu_log.json` (if provided)
 
 **Phases 1-4 (Analysis - AI):**
 
@@ -672,8 +672,42 @@ Results in:
 - `Temp/lpd_structure.json` exists
 - `Temp/metrics_summary.json` exists
 - `Temp/business_analysis.json` exists
-- `Temp/workflow_analysis.json` exists
+- `Temp/workflow_analysis.json` exists (with `activity_descriptions` and `activity_purposes`)
 - `Temp/configuration_analysis.json` exists
 - `Temp/risk_assessment.json` exists
+
+**CRITICAL: Phase 2 (workflow_analysis.json) Requirements:**
+
+The `workflow_analysis.json` file MUST include `activity_descriptions` and `activity_purposes` dictionaries for comprehensive activity documentation:
+
+```json
+{
+  "activity_descriptions": {
+    "activity_id": "Specific description based on JavaScript/SQL/branch analysis"
+  },
+  "activity_purposes": {
+    "activity_id": "When and why this activity runs"
+  }
+}
+```
+
+**How to Generate Activity Descriptions:**
+
+1. Read `Temp/lpd_structure.json` completely to get all JavaScript blocks, SQL queries, and branch conditions
+2. For EACH activity (all 39 real activities, excluding empty connectors):
+   - ASSGN: Analyze JavaScript code to describe transformations, extractions, validations
+   - WEBRN: Analyze SQL queries and API endpoints to describe data operations
+   - BRANCH: Analyze branch conditions to describe routing logic
+   - Timer: Describe wait duration and purpose
+   - ACCFIL: Describe file operations (read/write/delete)
+   - SUBPROC: Describe subprocess purpose
+3. Use business-friendly language focused on WHAT, not HOW
+4. Include specific details: field names, API endpoints, transformation logic, error conditions
+
+**Assembly Script Priority Order:**
+
+1. **PRIORITY 1**: `activity_descriptions[activity_id]` and `activity_purposes[activity_id]` (RECOMMENDED)
+2. **PRIORITY 2**: `workflow_steps` matching (legacy fallback)
+3. **PRIORITY 3**: Generic type-based descriptions (last resort)
 
 **Reference**: See `.kiro/steering/11_IPA_Report_Generation.md` for complete workflow documentation and `.kiro/skills/ipa-client-handover/` for skill implementation.

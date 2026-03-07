@@ -580,61 +580,83 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
                 'how_to_modify': f"Navigate to FSM > Configuration > System Configuration > {config_set}, locate {var_name}, update value"
             })
     
-    # File channel config - ALWAYS extract
-    for fc_var in configuration_analysis.get('file_channel_config', []):
-        config_variables.append({
-            'name': fc_var.get('variable', ''),
-            'type': 'File Channel Variable',
-            'description': fc_var.get('purpose', ''),
-            'default_value': fc_var.get('example_value', ''),
-            'modification_instructions': fc_var.get('modification_instructions', ''),
-            'location': 'File Channel Configuration',
-            'current_value': fc_var.get('example_value', ''),
-            'how_to_modify': fc_var.get('modification_instructions', '')
-        })
+    # File channel config - ALWAYS extract (check if already list format)
+    file_channel_raw = configuration_analysis.get('file_channel_config', [])
+    if file_channel_raw and isinstance(file_channel_raw[0], dict) if len(file_channel_raw) > 0 else False:
+        # Dict format - convert to config_variables
+        for fc_var in file_channel_raw:
+            config_variables.append({
+                'name': fc_var.get('variable', ''),
+                'type': 'File Channel Variable',
+                'description': fc_var.get('purpose', ''),
+                'default_value': fc_var.get('example_value', ''),
+                'modification_instructions': fc_var.get('modification_instructions', ''),
+                'location': 'File Channel Configuration',
+                'current_value': fc_var.get('example_value', ''),
+                'how_to_modify': fc_var.get('modification_instructions', '')
+            })
     
-    # Process variables - ALWAYS extract
-    for pv in configuration_analysis.get('process_variables', []):
-        config_variables.append({
-            'name': pv.get('variable', ''),
-            'type': 'Process Variable',
-            'description': pv.get('purpose', ''),
-            'default_value': pv.get('default_value', ''),
-            'modification_instructions': pv.get('modification_instructions', ''),
-            'location': 'Process Designer > Start Node > Properties',
-            'current_value': pv.get('default_value', ''),
-            'how_to_modify': pv.get('modification_instructions', '')
-        })
+    # Process variables - ALWAYS extract (check if already list format)
+    process_vars_raw = configuration_analysis.get('process_variables', [])
+    if process_vars_raw and isinstance(process_vars_raw[0], dict) if len(process_vars_raw) > 0 else False:
+        # Dict format - convert to config_variables
+        for pv in process_vars_raw:
+            config_variables.append({
+                'name': pv.get('variable', ''),
+                'type': 'Process Variable',
+                'description': pv.get('purpose', ''),
+                'default_value': pv.get('default_value', ''),
+                'modification_instructions': pv.get('modification_instructions', ''),
+                'location': 'Process Designer > Start Node > Properties',
+                'current_value': pv.get('default_value', ''),
+                'how_to_modify': pv.get('modification_instructions', '')
+            })
     
     # Convert file_channel_config and process_variables to list format for template
     # Template expects list of lists, not list of dicts
     file_channel_list = []
-    for fc_var in configuration_analysis.get('file_channel_config', []):
-        file_channel_list.append([
-            fc_var.get('variable', ''),
-            fc_var.get('example_value', ''),
-            fc_var.get('purpose', ''),
-            fc_var.get('modification_instructions', '')
-        ])
+    if file_channel_raw and isinstance(file_channel_raw[0], dict) if len(file_channel_raw) > 0 else False:
+        # Convert from dict format
+        for fc_var in file_channel_raw:
+            file_channel_list.append([
+                fc_var.get('variable', ''),
+                fc_var.get('example_value', ''),
+                fc_var.get('purpose', ''),
+                fc_var.get('modification_instructions', '')
+            ])
+    else:
+        # Already in list format
+        file_channel_list = file_channel_raw
     
     process_variables_list = []
-    for pv in configuration_analysis.get('process_variables', []):
-        process_variables_list.append([
-            pv.get('variable', ''),
-            pv.get('default_value', ''),
-            pv.get('purpose', ''),
-            pv.get('modification_instructions', '')
-        ])
+    if process_vars_raw and isinstance(process_vars_raw[0], dict) if len(process_vars_raw) > 0 else False:
+        # Convert from dict format
+        for pv in process_vars_raw:
+            process_variables_list.append([
+                pv.get('variable', ''),
+                pv.get('default_value', ''),
+                pv.get('purpose', ''),
+                pv.get('modification_instructions', '')
+            ])
+    else:
+        # Already in list format
+        process_variables_list = process_vars_raw
     
     global_config_list = []
-    for global_var in configuration_analysis.get('global_config_variables', []):
-        global_config_list.append([
-            global_var.get('variable', ''),
-            global_var.get('config_set', ''),
-            global_var.get('example', ''),
-            global_var.get('purpose', ''),
-            global_var.get('modification_instructions', '')
-        ])
+    global_vars_raw = configuration_analysis.get('global_config_variables', [])
+    if global_vars_raw and isinstance(global_vars_raw[0], dict) if len(global_vars_raw) > 0 else False:
+        # Convert from dict format
+        for global_var in global_vars_raw:
+            global_config_list.append([
+                global_var.get('variable', ''),
+                global_var.get('config_set', ''),
+                global_var.get('example', ''),
+                global_var.get('purpose', ''),
+                global_var.get('modification_instructions', '')
+            ])
+    else:
+        # Already in list format
+        global_config_list = global_vars_raw
     # If already lists, they'll be passed through directly to ipa_data
     
     # Build activity guide section
@@ -731,19 +753,21 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
             activity_type = activity.get('type', '')
             activity_caption = activity.get('caption', '')
             
-            # Try to get activity-specific description from workflow_steps
-            activity_description = ''
-            activity_when_runs = ''
+            # PRIORITY 1: Try to get activity-specific description from activity_descriptions dictionary
+            activity_description = workflow_analysis.get('activity_descriptions', {}).get(activity_id, '')
+            activity_when_runs = workflow_analysis.get('activity_purposes', {}).get(activity_id, '')
             
-            for step in process_workflow_steps:
-                step_activities = step.get('activities', [])
-                # Check if this activity is mentioned in this workflow step
-                if activity_caption in step_activities or activity_id in step_activities or any(activity_caption in str(act) for act in step_activities):
-                    activity_description = step.get('description', '')
-                    activity_when_runs = step.get('business_purpose', '')
-                    break
+            # PRIORITY 2: If not found, try workflow_steps
+            if not activity_description:
+                for step in process_workflow_steps:
+                    step_activities = step.get('activities', [])
+                    # Check if this activity is mentioned in this workflow step
+                    if activity_caption in step_activities or activity_id in step_activities or any(activity_caption in str(act) for act in step_activities):
+                        activity_description = step.get('description', '')
+                        activity_when_runs = step.get('business_purpose', '')
+                        break
             
-            # If not found in workflow_steps, use generic type description
+            # PRIORITY 3: If still not found, use generic type description
             if not activity_description:
                 type_descriptions = {
                     'START': 'Process entry point - initializes variables and begins execution',
