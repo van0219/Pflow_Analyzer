@@ -32,6 +32,8 @@ description: IPA process patterns library with 450+ analyzed workflows, approval
 - [File Generation Patterns](#file-generation-patterns)
 - [EDI Processing Patterns](#edi-processing-patterns)
 - [IPD Sample Solutions](#ipd-sample-solutions)
+- [Troubleshooting Patterns](#troubleshooting-patterns)
+  - [Column Mapping Mismatch in File Transformations](#column-mapping-mismatch-in-file-transformations)
 - [Implementation Guidelines](#implementation-guidelines)
 - [Pattern Library Summary](#pattern-library-summary)
 - [Quick Pattern Lookup](#quick-pattern-lookup)
@@ -968,6 +970,86 @@ DetailFile = DataFileDirectory + "/" + GetHeader_CSVFileNameOutputFileName + Fil
 - Connection management: CloudSuite HTTPS endpoints
 - User context: Role-based access control
 - Debug support: Development and troubleshooting tools
+
+## Troubleshooting Patterns
+
+**Purpose**: Common troubleshooting scenarios and diagnostic approaches for IPA process failures. Use these patterns to quickly identify and resolve production issues.
+
+### Column Mapping Mismatch in File Transformations
+
+**Symptom**: All records fail validation with the same error (e.g., "Item: 0 does not exist") despite input file containing valid data.
+
+**Root Cause**: JavaScript column index configuration doesn't match actual input file format.
+
+**Example Case** (WU 4014 - RHR_SCM_POS_Inbound_Agilisys):
+
+**Input File Format**:
+```
+"E","20260305",3007,30,0,2606, 19.00,1.0000, 19.00
+ [0]    [1]    [2] [3][4] [5]   [6]    [7]    [8]
+```
+
+**Incorrect Configuration**:
+```javascript
+var COL_ITEM = 4;           // Reading field [4] = 0 (placeholder)
+var COL_UNIT_PRICE = 5;     // Reading field [5] = 2606 (actual item!)
+var COL_QUANTITY = 6;       // Reading field [6] = 19.00 (actual price)
+var COL_EXTENDED_AMOUNT = 7; // Reading field [7] = 1.0000 (actual qty)
+```
+
+**Result**: Process reads "0" as item number, fails validation, logs exception "Item: 0 does not exist" for every line.
+
+**Diagnostic Steps**:
+
+1. **Examine Exception Pattern**: If ALL records fail with identical error value, suspect column mapping issue
+2. **Review Sample Input Data**: Look at raw input file content in work unit log (ReadFile_outputData variable)
+3. **Count Fields**: Manually count comma-separated fields in sample data
+4. **Compare to Configuration**: Check JavaScript COL_* variable definitions in Transform activity
+5. **Verify Field Positions**: Confirm each COL_* index matches actual data position
+
+**Resolution**:
+
+```javascript
+// Correct configuration
+var COL_ITEM = 5;           // Now reads field [5] = 2606 ✓
+var COL_UNIT_PRICE = 6;     // Now reads field [6] = 19.00 ✓
+var COL_QUANTITY = 7;       // Now reads field [7] = 1.0000 ✓
+var COL_EXTENDED_AMOUNT = 8; // Now reads field [8] = 19.00 ✓
+```
+
+**Prevention**:
+
+1. **Document File Format**: Maintain clear documentation of expected input format with field positions
+2. **Sample Data Testing**: Test with actual sample data during development
+3. **Field Count Validation**: Add JavaScript validation to check expected field count:
+   ```javascript
+   if (fields.length < EXPECTED_FIELD_COUNT) {
+       exceptions.push({
+           lineNumber: lineNumber,
+           reason: "Malformed line - expected " + EXPECTED_FIELD_COUNT + " fields, got " + fields.length
+       });
+       continue;
+   }
+   ```
+4. **Configuration Comments**: Document field positions in JavaScript:
+   ```javascript
+   // Input format: "RecordType","Date",Location,Unused,Placeholder,Item,Price,Qty,ExtAmt
+   var COL_RECORD_TYPE = 0;  // "E"
+   var COL_POS_DATE = 1;     // "20260305"
+   var COL_LOCATION = 2;     // 3007
+   var COL_UNUSED = 3;       // 30
+   var COL_PLACEHOLDER = 4;  // 0 (not used)
+   var COL_ITEM = 5;         // 2606 (actual item number)
+   ```
+
+**Related Patterns**:
+
+- Fixed-width file parsing with incorrect position/length specifications
+- CSV files with optional fields causing index shifts
+- Header row presence/absence causing off-by-one errors
+- Quote-enclosed fields with embedded commas breaking simple split logic
+
+**Key Takeaway**: When all records fail with the same constant value, the issue is almost always in the parsing logic, not the data itself. Always verify column mapping against actual input data format.
 
 ## Implementation Guidelines
 

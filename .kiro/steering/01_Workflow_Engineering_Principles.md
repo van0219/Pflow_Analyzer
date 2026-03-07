@@ -197,15 +197,15 @@ Subagents must use `discloseContext()` to load domain-specific steering files at
 
 **Steering File Name Mapping**:
 
-- `00_Workflow_Engineering_Principles.md` → `discloseContext(name="workflow-engineering")`
-- `01_IPA_and_IPD_Complete_Guide.md` → `discloseContext(name="ipa-ipd-guide")`
-- `02_Work_Unit_Analysis.md` → `discloseContext(name="work-unit-analysis")`
-- `03_Process_Patterns_Library.md` → `discloseContext(name="process-patterns")`
-- `04_WU_Report_Generation.md` → `discloseContext(name="wu-report-generation")`
-- `05_Compass_SQL_CheatSheet.md` → `discloseContext(name="compass-sql")`
-- `06_FSM_Business_Classes_and_API.md` → `discloseContext(name="fsm-business-classes")`
-- `10_IPA_Report_Generation.md` → `discloseContext(name="ipa-report-generation")`
-- `11_RICE_Methodology_and_Specifications.md` → `discloseContext(name="rice-methodology")`
+- `01_Workflow_Engineering_Principles.md` → `discloseContext(name="workflow-engineering")`
+- `02_IPA_and_IPD_Complete_Guide.md` → `discloseContext(name="ipa-ipd-guide")`
+- `03_Work_Unit_Analysis.md` → `discloseContext(name="work-unit-analysis")`
+- `04_Process_Patterns_Library.md` → `discloseContext(name="process-patterns")`
+- `05_WU_Report_Generation.md` → `discloseContext(name="wu-report-generation")`
+- `06_Compass_SQL_CheatSheet.md` → `discloseContext(name="compass-sql")`
+- `07_FSM_Business_Classes_and_API.md` → `discloseContext(name="fsm-business-classes")`
+- `11_IPA_Report_Generation.md` → `discloseContext(name="ipa-report-generation")`
+- `12_RICE_Methodology_and_Specifications.md` → `discloseContext(name="rice-methodology")`
 
 **RULE 5: Explicit Context Passing**
 

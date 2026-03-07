@@ -345,7 +345,7 @@ Then follow the interactive prompts to:
 - `.kiro/steering/01_IPA_and_IPD_Complete_Guide.md` - IPA concepts and patterns
 - `.kiro/steering/10_IPA_Report_Generation.md` - Report generation guidelines
 - `.kiro/steering/11_RICE_Methodology_and_Specifications.md` - RICE methodology
-- `.kiro/hooks/ipa-client-handover.kiro.hook` - Hook implementation (if exists)
+- `.kiro/skills/ipa-client-handover/` - Skill implementation (active)
 - `ReusableTools/IPA_ClientHandover/JSON_SCHEMAS.md` - JSON structure reference
 - `ReusableTools/IPA_ClientHandover/TROUBLESHOOTING.md` - Issue resolution guide
 

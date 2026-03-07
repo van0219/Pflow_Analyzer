@@ -1419,57 +1419,31 @@ Array.shift(): 20 times × 1ms = 0.02 sec (0.067%) = VERY LOW priority
 - Consolidated executive summary, business requirements, validation
 - Backward compatible: single LPD works exactly as before
 
-**Two-Phase Workflow** (NEW - 2026-03-02):
+**Workflow** (Updated 2026-03-07):
 
-The client handover workflow is available in two forms:
+Use the `ipa-client-handover` skill for client handover documentation:
 
-**Option 1: Skill (Recommended for Interactive Use)**
-
-Use the `ipa-client-handover` skill for conversational, guided workflow:
-- Activation: `/ipa-client-handover` or mention "client handover documentation"
-- Interactive prompts guide you through the process
-- Flexible - can customize on-the-fly
-- Single-phase execution with sequential subagents
+**Activation**: 
+- `/ipa-client-handover` or mention "client handover documentation"
 - Location: `.kiro/skills/ipa-client-handover/`
 
-**Option 2: Two-Phase Hooks (Recommended for Automation)**
+**Architecture**: Stateless Pipeline (Crash-Safe)
+- Phase 0: Preprocessing (Python) - Extract and structure data
+- Phases 1-4: Analysis (AI) - Independent analysis phases with JSON I/O
+- Phase 5: Report Assembly (Python) - Merge and generate Excel report
 
-The client handover workflow is split into TWO hooks to prevent context accumulation crashes:
-
-**Phase 1: Data Preparation** (`ipa-client-handover-prep.kiro.hook`)
-- Extract data from LPD files, specs, and WU logs (Python)
-- Organize data by documentation sections (Python)
-- Creates 5 section files per process:
-  - `_section_business.json` - Business requirements
-  - `_section_workflow.json` - Process workflow
-  - `_section_configuration.json` - Configuration variables
-  - `_section_activities.json` - Activity guide
-  - `_section_validation.json` - Production validation
-- NO subagents in Phase 1 (keeps context minimal)
-- User triggers Phase 2 after completion
-
-**Phase 2: Analysis + Report** (`ipa-client-handover-analyze.kiro.hook`)
-- Starts with CLEAN CONTEXT (no accumulation from Phase 1)
-- Launches 5 specialized subagents SEQUENTIALLY:
-  1. Business Requirements Analyzer
-  2. Workflow Analyzer
-  3. Configuration Analyzer
-  4. Activity Guide Generator
-  5. Validation Analyzer
-- Merges subagent outputs (Python)
-- Consolidates multiple processes (Python)
-- Generates Excel report (Python)
-
-**Why Two Phases?**
-- Sequential subagent execution accumulates context (80+ KB by subagent #3)
-- Phase 2 starting with clean context prevents crashes
-- Proven reliable for processes of any size
+**Key Features**:
+- No context accumulation (each phase isolated at ~10 KB)
+- No crashes (stable execution regardless of file size)
+- Faster execution (reduced reasoning overhead)
+- Enterprise-grade quality maintained
+- Multi-process support (1-N LPDs → ONE report)
 
 **Usage**:
-1. Run "Client Handover - Data Prep" hook
-2. Wait for "✓ Data extraction complete"
-3. Run "Client Handover - Analysis" hook
-4. Wait for report generation (~2-3 min per process)
+1. Activate skill: `/ipa-client-handover`
+2. Follow interactive prompts to select client, RICE item, and LPD files
+3. Confirm spec and WU log availability
+4. Wait for report generation (~3-4 min per process)
 
 **Report Structure (Single Process)**:
 - 📊 Executive Summary

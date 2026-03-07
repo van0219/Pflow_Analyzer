@@ -539,7 +539,7 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
     # NEW: Extract from oauth_credentials and global_config_variables structure (ALWAYS run this)
     # OAuth credentials - only process if they're dicts (not already lists)
     oauth_creds_raw = configuration_analysis.get('oauth_credentials', [])
-    if oauth_creds_raw and isinstance(oauth_creds_raw[0], dict):
+    if oauth_creds_raw and len(oauth_creds_raw) > 0 and isinstance(oauth_creds_raw[0], dict):
         # Process dict format
         for oauth in oauth_creds_raw:
             var_name = oauth.get('variable', '')
@@ -564,7 +564,7 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
     
     # Global config variables - only process if they're dicts (not already lists)
     global_vars_raw = configuration_analysis.get('global_config_variables', [])
-    if global_vars_raw and isinstance(global_vars_raw[0], dict):
+    if global_vars_raw and len(global_vars_raw) > 0 and isinstance(global_vars_raw[0], dict):
         # Process dict format
         for global_var in global_vars_raw:
             var_name = global_var.get('variable', '')
@@ -579,6 +579,62 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
                 'current_value': global_var.get('example', ''),
                 'how_to_modify': f"Navigate to FSM > Configuration > System Configuration > {config_set}, locate {var_name}, update value"
             })
+    
+    # File channel config - ALWAYS extract
+    for fc_var in configuration_analysis.get('file_channel_config', []):
+        config_variables.append({
+            'name': fc_var.get('variable', ''),
+            'type': 'File Channel Variable',
+            'description': fc_var.get('purpose', ''),
+            'default_value': fc_var.get('example_value', ''),
+            'modification_instructions': fc_var.get('modification_instructions', ''),
+            'location': 'File Channel Configuration',
+            'current_value': fc_var.get('example_value', ''),
+            'how_to_modify': fc_var.get('modification_instructions', '')
+        })
+    
+    # Process variables - ALWAYS extract
+    for pv in configuration_analysis.get('process_variables', []):
+        config_variables.append({
+            'name': pv.get('variable', ''),
+            'type': 'Process Variable',
+            'description': pv.get('purpose', ''),
+            'default_value': pv.get('default_value', ''),
+            'modification_instructions': pv.get('modification_instructions', ''),
+            'location': 'Process Designer > Start Node > Properties',
+            'current_value': pv.get('default_value', ''),
+            'how_to_modify': pv.get('modification_instructions', '')
+        })
+    
+    # Convert file_channel_config and process_variables to list format for template
+    # Template expects list of lists, not list of dicts
+    file_channel_list = []
+    for fc_var in configuration_analysis.get('file_channel_config', []):
+        file_channel_list.append([
+            fc_var.get('variable', ''),
+            fc_var.get('example_value', ''),
+            fc_var.get('purpose', ''),
+            fc_var.get('modification_instructions', '')
+        ])
+    
+    process_variables_list = []
+    for pv in configuration_analysis.get('process_variables', []):
+        process_variables_list.append([
+            pv.get('variable', ''),
+            pv.get('default_value', ''),
+            pv.get('purpose', ''),
+            pv.get('modification_instructions', '')
+        ])
+    
+    global_config_list = []
+    for global_var in configuration_analysis.get('global_config_variables', []):
+        global_config_list.append([
+            global_var.get('variable', ''),
+            global_var.get('config_set', ''),
+            global_var.get('example', ''),
+            global_var.get('purpose', ''),
+            global_var.get('modification_instructions', '')
+        ])
     # If already lists, they'll be passed through directly to ipa_data
     
     # Build activity guide section
@@ -664,6 +720,10 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
         else:
             process_description = ''
         
+        # Use process_type as fallback if process_description is empty
+        if not process_description:
+            process_description = workflow_analysis.get('process_type', 'IPA Process')
+        
         # CRITICAL FIX: Enrich activities with descriptions and when_it_runs
         enriched_activities = []
         for activity in process.get('activities', []):
@@ -671,35 +731,52 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
             activity_type = activity.get('type', '')
             activity_caption = activity.get('caption', '')
             
-            # Generate description based on activity type
-            type_descriptions = {
-                'START': 'Process entry point - initializes variables and begins execution',
-                'END': 'Process completion - marks successful end of workflow',
-                'ASSGN': 'Variable assignment - sets values, executes JavaScript, transforms data',
-                'WEBRN': 'HTTP API call - makes external web service requests (OAuth, Compass API)',
-                'BRANCH': 'Conditional routing - directs flow based on conditions',
-                'Timer': 'Delay execution - waits for specified time period',
-                'ACCFIL': 'File operation - reads, writes, or manipulates files in FSM File Storage',
-                'SUBPROC': 'Subprocess call - invokes another IPA process',
-                'MSGBD': 'Message builder - constructs formatted messages',
-                'LM': 'Landmark transaction - queries or updates FSM business classes',
-                'FileTransfer': 'SFTP operation - transfers files to/from external servers'
-            }
-            description = type_descriptions.get(activity_type, f'{activity_type} activity')
+            # Try to get activity-specific description from workflow_steps
+            activity_description = ''
+            activity_when_runs = ''
             
-            # Generate when_it_runs based on position and type
-            if activity_type == 'START':
-                when_it_runs = 'Process start - triggered by file channel'
-            elif activity_type == 'END':
-                when_it_runs = 'Process completion - after all activities finish'
-            elif activity_type == 'BRANCH':
-                when_it_runs = 'After previous activity - evaluates conditions to determine next step'
-            elif activity_type == 'Timer':
-                when_it_runs = 'Polling delay - waits between status checks'
-            elif 'Error' in activity_caption or 'error' in activity_caption.lower():
-                when_it_runs = 'Error handling - when errors occur in previous activities'
-            else:
-                when_it_runs = 'Sequential execution - after previous activity completes'
+            for step in process_workflow_steps:
+                step_activities = step.get('activities', [])
+                # Check if this activity is mentioned in this workflow step
+                if activity_caption in step_activities or activity_id in step_activities or any(activity_caption in str(act) for act in step_activities):
+                    activity_description = step.get('description', '')
+                    activity_when_runs = step.get('business_purpose', '')
+                    break
+            
+            # If not found in workflow_steps, use generic type description
+            if not activity_description:
+                type_descriptions = {
+                    'START': 'Process entry point - initializes variables and begins execution',
+                    'END': 'Process completion - marks successful end of workflow',
+                    'ASSGN': 'Variable assignment - sets values, executes JavaScript, transforms data',
+                    'WEBRN': 'HTTP API call - makes external web service requests (OAuth, Compass API)',
+                    'BRANCH': 'Conditional routing - directs flow based on conditions',
+                    'Timer': 'Delay execution - waits for specified time period',
+                    'ACCFIL': 'File operation - reads, writes, or manipulates files in FSM File Storage',
+                    'SUBPROC': 'Subprocess call - invokes another IPA process',
+                    'MSGBD': 'Message builder - constructs formatted messages',
+                    'LM': 'Landmark transaction - queries or updates FSM business classes',
+                    'FileTransfer': 'SFTP operation - transfers files to/from external servers'
+                }
+                activity_description = type_descriptions.get(activity_type, f'{activity_type} activity')
+            
+            # Generate when_it_runs based on workflow analysis or position/type
+            if not activity_when_runs:
+                if activity_type == 'START':
+                    activity_when_runs = 'Process start - triggered by file channel'
+                elif activity_type == 'END':
+                    activity_when_runs = 'Process completion - after all activities finish'
+                elif activity_type == 'BRANCH':
+                    activity_when_runs = 'After previous activity - evaluates conditions to determine next step'
+                elif activity_type == 'Timer':
+                    activity_when_runs = 'Polling delay - waits between status checks'
+                elif 'Error' in activity_caption or 'error' in activity_caption.lower():
+                    activity_when_runs = 'Error handling - when errors occur in previous activities'
+                else:
+                    activity_when_runs = 'Sequential execution - after previous activity completes'
+            
+            description = activity_description
+            when_it_runs = activity_when_runs
             
             enriched_activities.append({
                 'id': activity_id,
@@ -739,11 +816,12 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
         'risk_assessment': risk_assessment,
         'metrics_summary': metrics_summary,
         'key_features': key_features,
-        # Pass through raw configuration data for LEGACY template format
-        'oauth_credentials': configuration_analysis.get('oauth_credentials', []),
-        'file_channel_config': configuration_analysis.get('file_channel_config', []),
-        'process_variables': configuration_analysis.get('process_variables', []),
-        'global_config_variables': configuration_analysis.get('global_config_variables', [])
+        # Pass through configuration data in LIST format for template
+        'file_channel_config': file_channel_list,
+        'process_variables': process_variables_list,
+        'global_config_variables': global_config_list,
+        # Keep OAuth credentials in original format (template handles it differently)
+        'oauth_credentials': configuration_analysis.get('oauth_credentials', [])
     }
     
     return ipa_data

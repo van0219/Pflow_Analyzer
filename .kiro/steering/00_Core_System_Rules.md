@@ -287,20 +287,20 @@ transformImport(ImportFile, FileName);
 
 | Domain | Steering File | Keywords |
 |--------|---------------|----------|
-| Workflow engineering | `00_Workflow_Engineering_Principles.md` | workflow, subagent, orchestration |
-| IPA/IPD fundamentals | `01_IPA_and_IPD_Complete_Guide.md` | IPA, IPD, LPD, process designer |
-| Work unit analysis | `02_Work_Unit_Analysis.md` | wu, log, work unit, error |
-| Process patterns | `03_Process_Patterns_Library.md` | approval, workflow, pattern |
-| WU report generation | `04_WU_Report_Generation.md` | wu report, performance, analysis |
-| Compass SQL | `05_Compass_SQL_CheatSheet.md` | SQL, Compass, Data Fabric |
-| FSM business classes | `06_FSM_Business_Classes_and_API.md` | FSM, Landmark, business class, API |
-| Data Fabric/ION | `07_Infor_OS_Data_Fabric_Guide.md` | Data Fabric, ION, BOD, Data Lake |
-| IDM integration | `08_Infor_IDM_Guide.md` | IDM, document, ContentDocument |
-| FSM navigation | `09_FSM_Navigation_Guide.md` | FSM UI, navigation, Playwright |
-| IPA reports | `10_IPA_Report_Generation.md` | client handover, coding standards |
-| RICE methodology | `11_RICE_Methodology_and_Specifications.md` | RICE, ANA-050, DES-020 |
-| External API OAuth2 | `12_External_API_OAuth2_Integration_Guide.md` | OAuth2, external API, third-party |
-| Agent automation | `13_Kiro_Agent_Automation_Guide.md` | hook, skill, power, automation |
+| Workflow engineering | `01_Workflow_Engineering_Principles.md` | workflow, subagent, orchestration |
+| IPA/IPD fundamentals | `02_IPA_and_IPD_Complete_Guide.md` | IPA, IPD, LPD, process designer |
+| Work unit analysis | `03_Work_Unit_Analysis.md` | wu, log, work unit, error |
+| Process patterns | `04_Process_Patterns_Library.md` | approval, workflow, pattern |
+| WU report generation | `05_WU_Report_Generation.md` | wu report, performance, analysis |
+| Compass SQL | `06_Compass_SQL_CheatSheet.md` | SQL, Compass, Data Fabric |
+| FSM business classes | `07_FSM_Business_Classes_and_API.md` | FSM, Landmark, business class, API |
+| Data Fabric/ION | `08_Infor_OS_Data_Fabric_Guide.md` | Data Fabric, ION, BOD, Data Lake |
+| IDM integration | `09_Infor_IDM_Guide.md` | IDM, document, ContentDocument |
+| FSM navigation | `10_FSM_Navigation_Guide.md` | FSM UI, navigation, Playwright |
+| IPA reports | `11_IPA_Report_Generation.md` | client handover, coding standards |
+| RICE methodology | `12_RICE_Methodology_and_Specifications.md` | RICE, ANA-050, DES-020 |
+| External API OAuth2 | `13_External_API_OAuth2_Integration_Guide.md` | OAuth2, external API, third-party |
+| Agent automation | `14_Kiro_Agent_Automation_Guide.md` | hook, skill, power, automation |
 
 ### Keyword-Based Context Loading
 
@@ -310,39 +310,39 @@ transformImport(ImportFile, FileName);
 
 📊 **WORK UNIT ANALYSIS** - Keywords: `wu`, `log`, `work unit`, `error`
 
-Load: `02_Work_Unit_Analysis.md`, `04_WU_Report_Generation.md`
+Load: `03_Work_Unit_Analysis.md`, `05_WU_Report_Generation.md`
 
 🔍 **CODING STANDARDS** - Keywords: `coding standards`, `peer review`, `LPD`, `analyze process`
 
-Load: `01_IPA_and_IPD_Complete_Guide.md`, `02_Work_Unit_Analysis.md`, `03_Process_Patterns_Library.md`, `05_Compass_SQL_CheatSheet.md`, `10_IPA_Report_Generation.md`, `11_RICE_Methodology_and_Specifications.md`
+Load: `02_IPA_and_IPD_Complete_Guide.md`, `03_Work_Unit_Analysis.md`, `04_Process_Patterns_Library.md`, `06_Compass_SQL_CheatSheet.md`, `11_IPA_Report_Generation.md`, `12_RICE_Methodology_and_Specifications.md`
 
 📋 **CLIENT HANDOVER** - Keywords: `client handover`, `documentation`, `handover report`
 
-Load: `01_IPA_and_IPD_Complete_Guide.md`, `10_IPA_Report_Generation.md`, `11_RICE_Methodology_and_Specifications.md`
+Load: `02_IPA_and_IPD_Complete_Guide.md`, `11_IPA_Report_Generation.md`, `12_RICE_Methodology_and_Specifications.md`
 
-� **FSM/LANDMARK API** - Keywords: `FSM`, `Landmark`, `business class`, `WebRun`, `API`
+🔧 **FSM/LANDMARK API** - Keywords: `FSM`, `Landmark`, `business class`, `WebRun`, `API`
 
-Load: `06_FSM_Business_Classes_and_API.md`, `01_IPA_and_IPD_Complete_Guide.md`
+Load: `07_FSM_Business_Classes_and_API.md`, `02_IPA_and_IPD_Complete_Guide.md`
 
-� **DATA FABRIC** - Keywords: `Compass SQL`, `Data Fabric`, `Data Lake`, `ION`, `BOD`
+💾 **DATA FABRIC** - Keywords: `Compass SQL`, `Data Fabric`, `Data Lake`, `ION`, `BOD`
 
-Load: `05_Compass_SQL_CheatSheet.md`, `07_Infor_OS_Data_Fabric_Guide.md`
+Load: `06_Compass_SQL_CheatSheet.md`, `08_Infor_OS_Data_Fabric_Guide.md`
 
 📄 **IDM** - Keywords: `IDM`, `document management`, `ContentDocument`, `CaptureDocument`
 
-Load: `08_Infor_IDM_Guide.md`, `01_IPA_and_IPD_Complete_Guide.md`
+Load: `09_Infor_IDM_Guide.md`, `02_IPA_and_IPD_Complete_Guide.md`
 
 🌐 **EXTERNAL API** - Keywords: `OAuth2`, `external API`, `Lightspeed`, `Stripe`, `third-party`
 
-Load: `12_External_API_OAuth2_Integration_Guide.md`
+Load: `13_External_API_OAuth2_Integration_Guide.md`
 
 🤖 **AUTOMATION** - Keywords: `hook`, `skill`, `power`, `steering`, `spec`, `automation`
 
-Load: `13_Kiro_Agent_Automation_Guide.md`
+Load: `14_Kiro_Agent_Automation_Guide.md`
 
 🎯 **RICE SPECS** - Keywords: `RICE`, `ANA-050`, `DES-020`, `functional spec`, `technical spec`
 
-Load: `11_RICE_Methodology_and_Specifications.md`
+Load: `12_RICE_Methodology_and_Specifications.md`
 
 **If no keywords detected, proceed with the original request.**
 
@@ -616,9 +616,21 @@ For position-sensitive data (EDI documents):
 
 ### Client Handover Pipeline
 
-**BLOCKING REQUIREMENT**: When generating client handover documentation, MUST follow stateless pipeline.
+**BLOCKING REQUIREMENT**: When generating client handover documentation, use the `ipa-client-handover` skill.
 
-**Phase 0 (MANDATORY FIRST):**
+**Activation**:
+
+```text
+/ipa-client-handover
+```
+
+Or mention "client handover documentation" in your request.
+
+**Architecture**: Stateless Pipeline (Crash-Safe)
+
+The skill uses a file-based stateless pipeline to prevent context accumulation:
+
+**Phase 0 (Preprocessing - Python Only):**
 
 ```bash
 python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spec>
@@ -626,15 +638,26 @@ python ReusableTools/IPA_ClientHandover/preprocess_client_handover.py <lpd> <spe
 
 Creates: `lpd_structure.json`, `metrics_summary.json`, `spec_raw.json`
 
-**Phases 1-4:**
+**Phases 1-4 (Analysis - AI):**
 
-Create analysis JSONs: `business_analysis.json`, `workflow_analysis.json`, `configuration_analysis.json`, `risk_assessment.json`
+Independent analysis phases, each reads JSON input and writes JSON output:
+- `business_analysis.json`
+- `workflow_analysis.json`
+- `configuration_analysis.json`
+- `risk_assessment.json`
 
-**Phase 5 (MANDATORY LAST):**
+**Phase 5 (Report Assembly - Python Only):**
 
 ```bash
 python ReusableTools/IPA_ClientHandover/assemble_client_handover_report.py <client> <rice>
 ```
+
+**Key Benefits**:
+
+- No context accumulation (each phase isolated at ~10 KB)
+- No crashes (stable execution regardless of file size)
+- Faster execution (reduced reasoning overhead)
+- Multi-process support (1-N LPDs → ONE report)
 
 **Common Mistake**: Skipping Phase 0 and manually extracting data
 
@@ -653,4 +676,4 @@ Results in:
 - `Temp/configuration_analysis.json` exists
 - `Temp/risk_assessment.json` exists
 
-**Reference**: See `.kiro/steering/10_IPA_Report_Generation.md` for complete workflow documentation.
+**Reference**: See `.kiro/steering/11_IPA_Report_Generation.md` for complete workflow documentation and `.kiro/skills/ipa-client-handover/` for skill implementation.

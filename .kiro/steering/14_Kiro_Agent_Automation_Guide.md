@@ -1824,10 +1824,9 @@ Subagent #3: 5 KB (cumulative: 80 KB) ← CRASH
 - ⚠️ User must trigger two hooks instead of one
 - ⚠️ Slightly longer workflow (two separate executions)
 
-**Real-World Example**: Client Handover Documentation workflow split into:
+**Historical Example**: Client Handover Documentation workflow was previously split into two hooks (`ipa-client-handover-prep.kiro.hook` and `ipa-client-handover-analyze.kiro.hook`) but has been replaced by the `ipa-client-handover` skill which uses a stateless pipeline architecture.
 
-- `ipa-client-handover-prep.kiro.hook` - Extract + organize data
-- `ipa-client-handover-analyze.kiro.hook` - Launch 5 subagents + generate report
+**Current Approach**: The `ipa-client-handover` skill uses file-based state transfer (JSON files) instead of hook splitting, eliminating context accumulation entirely.
 
 #### Context Budget Planning
 
