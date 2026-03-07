@@ -49,7 +49,14 @@ def preprocess_client_handover(lpd_file, spec_file, wu_log_file=None, output_dir
     # Step 1: Extract ANA-050 content
     print("\n[1/3] Extracting ANA-050 specification content...")
     spec_raw_path = os.path.join(output_dir, "spec_raw.json")
-    spec_data = extract_spec(spec_file)
+    
+    if spec_file and os.path.exists(spec_file):
+        spec_data = extract_spec(spec_file)
+    else:
+        print("   ⚠ No spec file provided or file not found - creating placeholder")
+        spec_data = {
+            "error": f"Could not read document: Package not found at '{spec_file or '--skip-spec'}'"
+        }
     
     with open(spec_raw_path, 'w', encoding='utf-8') as f:
         json.dump(spec_data, f, indent=2, ensure_ascii=False)
@@ -236,17 +243,23 @@ if __name__ == "__main__":
         print("Usage: python preprocess_client_handover.py <lpd_file> <spec_file> [wu_log_file] [output_dir]")
         print("\nArguments:")
         print("  lpd_file      : Path to LPD file (required)")
-        print("  spec_file     : Path to ANA-050 specification (required)")
-        print("  wu_log_file   : Path to work unit log file (optional)")
+        print("  spec_file     : Path to ANA-050 specification (required, use '--skip-spec' to skip)")
+        print("  wu_log_file   : Path to work unit log file (optional, use '--skip-wu' to skip)")
         print("  output_dir    : Output directory for JSON files (optional, defaults to 'Temp')")
         print("\nExamples:")
         print("  python preprocess_client_handover.py process.lpd spec.docx")
         print("  python preprocess_client_handover.py process.lpd spec.docx wu_log.txt")
         print("  python preprocess_client_handover.py process.lpd spec.docx wu_log.txt Output")
+        print("  python preprocess_client_handover.py process.lpd --skip-spec --skip-wu")
+        print("  python preprocess_client_handover.py process.lpd spec.docx --skip-wu Temp")
         sys.exit(1)
     
     lpd_file = sys.argv[1]
     spec_file = sys.argv[2]
+    
+    # Handle --skip-spec flag
+    if spec_file == '--skip-spec':
+        spec_file = None
     
     # Parse optional arguments
     wu_log_file = None
@@ -255,7 +268,14 @@ if __name__ == "__main__":
     if len(sys.argv) > 3:
         # Check if third argument is a file (WU log) or directory (output_dir)
         third_arg = sys.argv[3]
-        if os.path.isfile(third_arg) or third_arg.endswith('.txt') or third_arg.endswith('.log'):
+        
+        # Skip flags like --skip-wu or --skip-spec
+        if third_arg.startswith('--skip'):
+            # This is a skip flag, not a file or directory
+            if len(sys.argv) > 4 and not sys.argv[4].startswith('--skip'):
+                # Fourth argument might be output_dir
+                output_dir = sys.argv[4]
+        elif os.path.isfile(third_arg) or third_arg.endswith('.txt') or third_arg.endswith('.log'):
             wu_log_file = third_arg
             if len(sys.argv) > 4:
                 output_dir = sys.argv[4]

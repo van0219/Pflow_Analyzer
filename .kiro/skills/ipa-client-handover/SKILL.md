@@ -101,11 +101,52 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `business_analysis.json`
    - Return: "Phase 1 complete. business_analysis.json written."
 
-4. **Phase 2: Workflow Architecture Analysis** (AI)
-   - Input: `lpd_structure.json`
-   - Task: Identify process branches, decision nodes, transformations, external calls
-   - Output: `workflow_analysis.json`
+4. **Phase 2: Workflow Architecture Analysis** (AI - Incremental Writing)
+   - Input: `lpd_structure.json` (or individual `lpd_process_N.json` files for multi-process)
+   - Task: Generate specific activity descriptions for EACH activity based on JavaScript code, SQL queries, and branch conditions
+   - **CRITICAL**: Use Python script to WRITE workflow_analysis.json incrementally, NOT by reading everything into memory
+   - Output: `workflow_analysis.json` with `activity_descriptions` and `activity_purposes` dictionaries
    - Return: "Phase 2 complete. workflow_analysis.json written."
+   
+   **Phase 2 Correct Approach - Incremental Writing:**
+   
+   For ANY size process (single or multiple):
+   1. Create Python script: `Temp/build_workflow_analysis.py`
+   2. Script reads lpd_structure in CHUNKS (e.g., 50 activities at a time)
+   3. For each chunk, AI analyzes and returns descriptions
+   4. Script APPENDS to workflow_analysis.json incrementally
+   5. Final result: Complete workflow_analysis.json without loading everything into memory
+   
+   **Example Python approach:**
+   ```python
+   # Read activity count from metrics
+   # Loop through activities in chunks of 50
+   # For each chunk: AI analyzes → returns dict → append to JSON
+   # Result: workflow_analysis.json built incrementally
+   ```
+   
+   **WRONG APPROACH (causes crashes):**
+   - ❌ Read entire lpd_structure.json into AI context
+   - ❌ Generate entire workflow_analysis.json in one response
+   - ❌ Write massive JSON output all at once
+   
+   **RIGHT APPROACH (crash-safe):**
+   - ✅ Python script orchestrates the workflow
+   - ✅ AI analyzes small chunks (50 activities)
+   - ✅ Python appends results incrementally
+   - ✅ No memory/context overload
+   
+   **Phase 2 Required Output:**
+   ```json
+   {
+     "activity_descriptions": {
+       "ActivityID": "Specific description based on JavaScript/SQL/branch analysis"
+     },
+     "activity_purposes": {
+       "ActivityID": "When and why this activity runs"
+     }
+   }
+   ```
 
 5. **Phase 3: Configuration & Technical Components** (AI)
    - Input: `lpd_structure.json`, `metrics_summary.json`
@@ -135,7 +176,43 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `risk_assessment.json`
    - Return: "Phase 4 complete. risk_assessment.json written."
 
-7. **Phase 5: Report Assembly** (Python Only - No AI)
+7. **Phase 4.5: Executive Summary Diagram** (AI - Multi-Process Only)
+   - **WHEN**: Only for RICE items with 2+ processes
+   - **WHY**: Executive summary diagram requires understanding cross-process interactions
+   - Input: `metrics_summary.json` (process names, counts, types), `business_analysis.json` (RICE purpose)
+   - Task: Create high-level RICE workflow showing how processes interact
+   - Output: `executive_diagram.json` with diagram structure
+   - Return: "Phase 4.5 complete. executive_diagram.json written."
+   
+   **Phase 4.5 Approach:**
+   ```python
+   # Check process count from metrics_summary.json
+   if process_count == 1:
+       # Skip Phase 4.5, use individual process diagram
+       pass
+   else:
+       # Generate cross-process interaction diagram
+       # Example: Main Process → Reject Handler → Nightly Trigger
+       # Focus on: triggers, data flow, error handling
+   ```
+   
+   **Phase 4.5 Required Output:**
+   ```json
+   {
+     "diagram_type": "multi_process_interaction",
+     "processes": [
+       {"name": "Main", "role": "Primary workflow", "triggers": ["Manual", "API"]},
+       {"name": "Reject", "role": "Error handler", "triggers": ["Main process failure"]},
+       {"name": "Nightly", "role": "Scheduler", "triggers": ["Timer"]}
+     ],
+     "interactions": [
+       {"from": "Main", "to": "Reject", "condition": "Validation failure"},
+       {"from": "Nightly", "to": "Main", "condition": "Daily 2 AM"}
+     ]
+   }
+   ```
+
+8. **Phase 5: Report Assembly** (Python Only - No AI)
    - Merge: All JSON outputs
    - Transform: Use specialized transformation functions
      - `transform_requirements()` - Adds IDs, categories, priorities, stakeholders

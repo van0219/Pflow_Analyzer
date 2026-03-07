@@ -172,18 +172,38 @@ ls -lh Temp/*.json
 3. **PRIORITY 3**: Generic type-based descriptions (last resort)
 
 **Analysis Steps**:
-1. Read `lpd_structure.json` completely
-2. For EACH activity (all real activities, excluding empty connectors):
+1. **Check process count**: If `lpd_structure.json` has multiple processes (>1), use chunked processing
+2. **For Single Process**: Analyze `lpd_structure.json` directly
+3. **For Multiple Processes** (RECOMMENDED for 3+ processes or 300+ total activities):
+   - Run `python ReusableTools/IPA_ClientHandover/split_lpd_by_process.py`
+   - This creates `lpd_process_1.json`, `lpd_process_2.json`, etc.
+   - Analyze EACH process file individually (prevents context overload)
+   - Merge results into `workflow_analysis.json`
+4. For EACH activity in EACH process:
    - ASSGN: Analyze JavaScript code to describe transformations
-   - WEBRN: Analyze SQL queries and API endpoints
+   - WEBRN/LM: Analyze SQL queries and API endpoints
    - BRANCH: Analyze branch conditions to describe routing logic
    - Timer: Describe wait duration and purpose
    - ACCFIL: Describe file operations
    - SUBPROC: Describe subprocess purpose
-3. Create `activity_descriptions` with specific, business-friendly descriptions
-4. Create `activity_purposes` with when/why explanations
-5. Map workflow steps in sequential order
-6. Identify decision nodes and their conditions
+5. Create `activity_descriptions` with specific, business-friendly descriptions
+6. Create `activity_purposes` with when/why explanations
+7. Map workflow steps in sequential order
+8. Identify decision nodes and their conditions
+
+**Multi-Process Example**:
+```bash
+# Step 1: Split combined LPD structure
+python ReusableTools/IPA_ClientHandover/split_lpd_by_process.py
+
+# Step 2: Analyze each process individually
+# Process 1 (450 activities) - manageable context
+# Process 2 (35 activities) - manageable context  
+# Process 3 (45 activities) - manageable context
+
+# Step 3: Merge results
+python Temp/merge_activity_descriptions.py
+```
 
 ### Step 5: Phase 3 - Configuration & Technical Components
 

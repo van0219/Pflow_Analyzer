@@ -189,6 +189,73 @@ def transform_requirements(business_analysis):
 
 ## Data Structure Issues
 
+### Issue: Generic Activity Descriptions in Process Sheets
+
+**Symptoms:**
+- Process sheets show generic type-based descriptions like "Landmark transaction 'PayablesInvoice' - queries or updates FSM business classes"
+- Descriptions don't reflect actual JavaScript code, SQL queries, or branch conditions
+- All ASSGN activities have same generic description despite different logic
+
+**Root Cause:**
+Phase 2 tried to analyze all 500+ activities at once (multi-process combined), causing context overload. Instead of reading actual JavaScript/SQL/branch code, it generated programmatic type-based descriptions.
+
+**Example of Generic Description:**
+```
+Activity: APIA_NONPOROUTING_Assign7160
+Type: ASSGN
+Description: "Variable assignment 'Assign' - executes JavaScript for data transformation"
+```
+
+**What It Should Be:**
+```
+Activity: APIA_NONPOROUTING_Assign7160
+Type: ASSGN
+Description: "Extracts invoice amount and currency code from PayablesInvoice, formats as '$1,234.56 USD' for email notifications"
+```
+
+**Solution:**
+Use chunked processing for multi-process RICE items:
+
+1. **Split Combined LPD:**
+   ```bash
+   python ReusableTools/IPA_ClientHandover/split_lpd_by_process.py
+   ```
+   Creates: `lpd_process_1.json`, `lpd_process_2.json`, `lpd_process_3.json`
+
+2. **Analyze Each Process Individually:**
+   - Process 1 (450 activities): Read complete structure, analyze JavaScript/SQL/branches
+   - Process 2 (35 activities): Read complete structure, analyze JavaScript/SQL/branches
+   - Process 3 (45 activities): Read complete structure, analyze JavaScript/SQL/branches
+
+3. **Merge Results:**
+   Combine all process analyses into `workflow_analysis.json` with:
+   - `activity_descriptions`: Specific descriptions based on code analysis
+   - `activity_purposes`: When and why each activity runs
+
+**Phase 2 Requirements:**
+```json
+{
+  "activity_descriptions": {
+    "ActivityID": "Specific description based on JavaScript/SQL/branch analysis"
+  },
+  "activity_purposes": {
+    "ActivityID": "When and why this activity runs"
+  }
+}
+```
+
+**Prevention:**
+- For single IPA: Analyze `lpd_structure.json` directly
+- For multiple IPAs (3+ processes or 300+ activities): Use chunked processing
+- Always READ complete JSON data before analysis (IPA Workflow Enforcement STEP 2)
+- Verify `activity_descriptions` has specific content, not generic type descriptions
+
+**Status:** Identified (2026-03-07) - Solution documented, requires Phase 2 regeneration
+
+**Reference:** See `WORKFLOW_GUIDE.md` Phase 2 section for chunked processing strategy
+
+---
+
 ### Issue: Process Sheet Detection Fails in Validation
 
 **Symptoms:**

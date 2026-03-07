@@ -38,6 +38,10 @@ def assemble_client_handover_report(client_name, rice_item, temp_dir="Temp", out
     print("PHASE 5: CLIENT HANDOVER REPORT ASSEMBLY")
     print("=" * 80)
     
+    # Auto-repair JSON files before loading
+    print("\n[0/3] Validating and repairing JSON files...")
+    repair_json_files(temp_dir)
+    
     # Load all JSON outputs from phases 1-4
     print("\n[1/3] Loading analysis outputs...")
     
@@ -109,6 +113,44 @@ def assemble_client_handover_report(client_name, rice_item, temp_dir="Temp", out
     
     return output_path
 
+
+def repair_json_files(temp_dir):
+    """Auto-repair common JSON syntax errors in analysis files"""
+    from repair_analysis_jsons import JSONRepairTool
+    
+    analysis_files = [
+        'business_analysis.json',
+        'workflow_analysis.json',
+        'configuration_analysis.json',
+        'risk_assessment.json'
+    ]
+    
+    repairer = JSONRepairTool(create_backup=False)
+    repairs_made = False
+    
+    for file_name in analysis_files:
+        file_path = os.path.join(temp_dir, file_name)
+        
+        if not os.path.exists(file_path):
+            continue
+        
+        # Check if file is valid
+        is_valid, error = repairer.validate_json(file_path)
+        
+        if is_valid:
+            continue
+        
+        # Attempt repair
+        success, message, repairs = repairer.repair_file(file_path)
+        
+        if success and repairs:
+            print(f"   ✓ Repaired {file_name}")
+            for repair in repairs:
+                print(f"     - {repair}")
+            repairs_made = True
+    
+    if not repairs_made:
+        print("   ✓ All JSON files valid")
 
 def load_json(filepath):
     """Load JSON file with error handling"""
@@ -824,6 +866,49 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
     # Generate key features using transformation function
     key_features = generate_key_features(business_analysis)
     
+    # Build workflow_description for Executive Summary diagram
+    # For multi-process RICE items, show high-level overview, not detailed process steps
+    workflow_description = []
+    
+    if len(processes) > 1:
+        # Multi-process: Show RICE-level overview
+        process_overview = workflow_analysis.get('process_overview', '')
+        
+        # Extract high-level steps from process descriptions
+        for process in workflow_analysis.get('processes', []):
+            process_name = process.get('name', '')
+            process_purpose = process.get('purpose', '')
+            
+            # Simplify process name for diagram
+            if 'nightly' in process_name.lower() or 'trigger' in process_name.lower():
+                step_name = 'Nightly Batch Submission'
+            elif 'reject' in process_name.lower():
+                step_name = 'Auto-Reject Processing'
+            elif 'approval' in process_name.lower() and 'nightly' not in process_name.lower():
+                step_name = 'Invoice Approval Workflow'
+            else:
+                # Extract key words from process name
+                words = process_name.replace('_', ' ').split()
+                step_name = ' '.join(words[:3]) if len(words) > 3 else process_name
+            
+            workflow_description.append({
+                'step_name': step_name,
+                'description': process_purpose
+            })
+    else:
+        # Single process: Show process-specific workflow steps
+        workflow_steps_data = workflow_analysis.get('workflow_steps', [])
+        
+        if isinstance(workflow_steps_data, list):
+            for step in workflow_steps_data:
+                if isinstance(step, dict):
+                    # Use 'phase' field as step_name (not 'step' which is an integer)
+                    step_name = step.get('name', step.get('phase', 'Process Step'))
+                    workflow_description.append({
+                        'step_name': step_name,
+                        'description': step.get('description', '')
+                    })
+    
     # Assemble final ipa_data dictionary
     ipa_data = {
         'client_name': client_name,
@@ -845,7 +930,9 @@ def build_ipa_data(client_name, rice_item, business_analysis, workflow_analysis,
         'process_variables': process_variables_list,
         'global_config_variables': global_config_list,
         # Keep OAuth credentials in original format (template handles it differently)
-        'oauth_credentials': configuration_analysis.get('oauth_credentials', [])
+        'oauth_credentials': configuration_analysis.get('oauth_credentials', []),
+        # Add workflow_description for diagram generation
+        'workflow_description': workflow_description
     }
     
     return ipa_data
