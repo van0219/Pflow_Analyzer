@@ -28,14 +28,13 @@ Use this skill when you need to:
 
 ## Key Features
 
-- **Interactive Selection**: Guided workflow with client/RICE/LPD selection
-- **Batch Processing**: Analyze multiple LPDs in one RICE item sequentially
-- **Domain-Segmented Analysis**: Analyzes 5 domains separately (Naming, JavaScript, SQL, Error Handling, Structure)
-- **Project Standards Integration**: Loads and applies client-specific coding standards
-- **Incremental Processing**: Chunks large processes to prevent context overload
-- **Crash-Safe**: Resumable from any phase
-- **Scalable**: Works with any process size (tested with 450+ activities)
-- **Individual Reports**: Generates ONE Excel report per process (not consolidated)
+- Interactive selection with client/RICE/LPD options
+- Batch processing for multiple LPDs in one RICE item
+- Domain-segmented analysis across 5 domains
+- Project standards integration with client-specific rules
+- Incremental processing to prevent context overload
+- Crash-safe and resumable from any phase
+- Scalable for any process size
 
 ## Analysis Domains
 
@@ -93,13 +92,129 @@ For each process:
 
 ## Workflow Overview
 
-**Stateless Pipeline Architecture (Crash-Safe)**
+**Stateless Pipeline Architecture**
 
-This skill uses a stateless, file-based pipeline that eliminates context accumulation:
+This skill uses a file-based pipeline that eliminates context accumulation. Each phase reads JSON inputs and writes JSON outputs independently.
+
+**Key Principles:**
+
+- Read `references/DOMAIN_ANALYSIS_GUIDE.md` before Phase 1
+- AI analyzes code and identifies violations (Python only extracts/chunks/merges data)
+- Consolidate similar violations during analysis (e.g., 25 generic captions → 1 violation with count)
+- Project standards override steering file defaults
+- Each phase operates in isolation (~2-3 KB context per chunk)
+
+## Analysis Quality Enforcement
+
+**CRITICAL REQUIREMENT**: Analysis quality is NEVER sacrificed for speed or convenience.
+
+### Mandatory Data Reading Rules
+
+**BLOCKING REQUIREMENTS** for all analysis phases (Phases 1-5):
+
+1. **Read Complete Domain Files**
+   - ALWAYS read the ENTIRE domain JSON file before analysis
+   - NO shortcuts due to time constraints or large file size
+   - NO relying on summary statistics or preprocessing flags
+   - NO manual creation of analysis files without reading source data
+
+2. **Handle Large Files Properly**
+   - If file is truncated on first read, read in chunks until 100% complete
+   - Use readFile() with line ranges if needed: `readFile(path, start_line=1, end_line=500)`, then `readFile(path, start_line=501, end_line=1000)`, etc.
+   - Continue reading until no truncation warnings remain
+   - Verify file completely consumed before proceeding to analysis
+
+3. **Verify Data Completeness**
+   - Check file size and line count before analysis
+   - Confirm all activities/blocks/queries loaded
+   - Cross-reference with metrics_summary.json counts
+   - If counts don't match, re-read the file completely
+
+4. **Follow IPA WORKFLOW ENFORCEMENT**
+   - **STEP 1**: Data extracted? (Phase 0 complete)
+   - **STEP 2**: Data read completely? (MOST CRITICAL - this step prevents incomplete analysis)
+   - **STEP 3**: Analysis complete? (All violations identified)
+   - **STEP 4**: Root cause identified? (Recommendations provided)
+
+### Common Violations to Avoid
+
+**❌ WRONG - Taking Shortcuts:**
+
+```text
+"I see the JavaScript domain file is 1001 lines. Let me read the first 1000 lines and create the analysis based on that."
+```
+
+**✅ CORRECT - Reading Complete Data:**
+
+```text
+"The JavaScript domain file is 1001 lines. Let me read it completely:
+- First read: lines 1-1000
+- Second read: lines 1001-1001
+Now I have the complete data and can perform accurate analysis."
+```
+
+**❌ WRONG - Manual Analysis Creation:**
+
+```text
+"Based on the preprocessing flags, I'll manually create javascript_analysis.json with violations for ES6 patterns."
+```
+
+**✅ CORRECT - Data-Driven Analysis:**
+
+```text
+"Let me read domain_javascript.json completely to see all JavaScript blocks, then analyze each one for ES5 compliance, performance issues, and best practices."
+```
+
+### Quality vs Speed Trade-off
+
+**ABSOLUTE RULE**: Quality ALWAYS wins over speed.
+
+- Incomplete analysis (80% data read) = **UNACCEPTABLE**
+- Complete analysis (100% data read) = **REQUIRED**
+- Extra 2-3 minutes to read complete data = **MANDATORY**
+- Accurate findings with all violations = **NON-NEGOTIABLE**
+
+### Root Cause of Incomplete Analysis
+
+**#1 Cause**: Reading only partial domain files (~80-90% of data)
+
+**Impact**:
+- Missing violations in unread sections
+- Inaccurate violation counts
+- Incomplete recommendations
+- False confidence in report quality
+
+**Prevention**:
+- Always verify file completely read
+- Check for truncation warnings
+- Read in chunks if needed
+- Cross-reference counts with metrics_summary.json
+
+### Enforcement Mechanism
+
+**Pre-Analysis Checklist** (MUST complete before writing analysis JSON):
+
+```text
+[ ] Domain file path identified
+[ ] File size and line count verified
+[ ] Complete file read (no truncation warnings)
+[ ] All activities/blocks/queries loaded
+[ ] Counts match metrics_summary.json
+[ ] Ready to analyze and identify violations
+```
+
+**If ANY checkbox is unchecked, STOP and complete that step before proceeding.**
 
 ### Step 0: Interactive Selection (MANDATORY)
 
-**BLOCKING REQUIREMENT**: ALWAYS present options and wait for user selection before proceeding.
+**Pre-Selection Cleanup:**
+
+Before starting, clean up the Temp folder to ensure a fresh start:
+
+```powershell
+# Remove all files in Temp/ except .gitkeep
+Get-ChildItem Temp -File | Where-Object { $_.Name -ne '.gitkeep' } | Remove-Item -Force
+```
 
 **Selection Process:**
 
@@ -131,19 +246,27 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Show estimated time (8-12 min per process)
    - Wait for user confirmation to proceed
 
-**Batch Processing Mode:**
+**Batch Processing:**
 
-When user selects batch mode for RICE items with multiple LPDs:
+When user selects batch mode:
 
 - Process each LPD sequentially (one at a time)
+- Preprocessing automatically cleans Temp folder before each process
 - Generate individual report for each process
 - Show progress: "Processing 2 of 3: InvoiceApproval_APIA_NONPOROUTING_Reject.lpd"
 - Provide summary at end with all generated report paths
 - Total time: ~8-12 min × number of processes
 
+**Batch Processing Best Practices:**
+
+- Sequential processing: One process completes fully before starting the next
+- Independent reports: Each process gets its own Excel report
+- Error isolation: If one process fails, others continue
+- Progress tracking: Clear indication of which process is being analyzed
+
 **Example Interaction:**
 
-```
+```text
 Available Clients:
 1. BayCare
 2. FPI
@@ -182,76 +305,67 @@ Proceed? (yes/no) → User confirms "yes"
 ### Step 1: Phase 0 - Preprocessing (Per Process)
 
 **Phase 0: Preprocessing** (Python Only - No AI)
-   - Extract LPD structure → `lpd_structure.json`
-   - Calculate metrics → `metrics_summary.json`
-   - Load project standards → `project_standards.json`
-   - Pre-calculate: ES6 patterns, generic names, SQL types, error-prone activities
+
+- Extract LPD structure → `lpd_structure.json`
+- Calculate metrics → `metrics_summary.json`
+- Load project standards → `project_standards.json`
+- Pre-calculate: ES6 patterns, generic names, SQL types, error-prone activities
 
 ### Step 2: Phase 1 - Naming Analysis (AI - Incremental)
-   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk
-   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
-   - Input: `lpd_structure.json` (naming data only), `project_standards.json`
-   - Task: Analyze filename, node captions, config sets, hardcoded values
-   - **CRITICAL**: Consolidate similar violations (e.g., 25 generic captions → 1 violation with count)
-   - Process: Python chunks data → AI analyzes chunks → Python merges
-   - Output: `naming_analysis.json`
-   - Return: "Phase 1 complete. naming_analysis.json written."
+
+- Input: `lpd_structure.json` (naming data only), `project_standards.json`
+- Task: Analyze filename, node captions, config sets, hardcoded values
+- Output: `naming_analysis.json`
+- Return: "Phase 1 complete. naming_analysis.json written."
 
 ### Step 3: Phase 2 - JavaScript Analysis (AI - Incremental)
-   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
-   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
-   - Input: `lpd_structure.json` (JavaScript blocks only), `project_standards.json`
-   - Task: Analyze ES5 compliance, performance, function order, variable scoping
-   - **CRITICAL**: Consolidate similar violations (e.g., 3 late functions → 1 violation with list)
-   - Process: Python chunks JS blocks → AI analyzes chunks → Python merges
-   - Output: `javascript_analysis.json`
-   - Return: "Phase 2 complete. javascript_analysis.json written."
+
+- Input: `lpd_structure.json` (JavaScript blocks only), `project_standards.json`
+- Task: Analyze ES5 compliance, performance, function order, variable scoping
+- Output: `javascript_analysis.json`
+- Return: "Phase 2 complete. javascript_analysis.json written."
 
 ### Step 4: Phase 3 - SQL Analysis (AI - Incremental)
-   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
-   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
-   - Input: `lpd_structure.json` (SQL queries only), `project_standards.json`
-   - Task: Analyze Compass SQL, pagination, SELECT *, optimization
-   - **CRITICAL**: Check COMPLETE `lpd_structure.json` for Compass API pagination (InitQuery → GetResult with limit/offset)
-   - Process: Python chunks queries → AI analyzes chunks → Python merges
-   - Output: `sql_analysis.json`
-   - Return: "Phase 3 complete. sql_analysis.json written."
+
+- Input: `lpd_structure.json` (SQL queries only), `project_standards.json`
+- Task: Analyze Compass SQL, pagination, SELECT *, optimization
+- Note: Check COMPLETE `lpd_structure.json` for Compass API pagination (InitQuery → GetResult with limit/offset)
+- Output: `sql_analysis.json`
+- Return: "Phase 3 complete. sql_analysis.json written."
 
 ### Step 5: Phase 4 - Error Handling Analysis (AI - Incremental)
-   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
-   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
-   - Input: `lpd_structure.json` (error-prone activities only), `project_standards.json`
-   - Task: Analyze OnError tabs, GetWorkUnitErrors, error coverage
-   - Process: Python chunks activities → AI analyzes chunks → Python merges
-   - Output: `errorhandling_analysis.json`
-   - Return: "Phase 4 complete. errorhandling_analysis.json written."
+
+- Input: `lpd_structure.json` (error-prone activities only), `project_standards.json`
+- Task: Analyze OnError tabs, GetWorkUnitErrors, error coverage
+- Output: `errorhandling_analysis.json`
+- Return: "Phase 4 complete. errorhandling_analysis.json written."
 
 ### Step 6: Phase 5 - Structure Analysis (AI - Direct)
-   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing (if not already read in Phase 1)
-   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
-   - Input: `lpd_structure.json` (process-level data), `metrics_summary.json`, `project_standards.json`
-   - Task: Analyze auto-restart, process type, activity distribution
-   - Output: `structure_analysis.json`
-   - Return: "Phase 5 complete. structure_analysis.json written."
+
+- Input: `lpd_structure.json` (process-level data), `metrics_summary.json`, `project_standards.json`
+- Task: Analyze auto-restart, process type, activity distribution
+- Output: `structure_analysis.json`
+- Return: "Phase 5 complete. structure_analysis.json written."
 
 ### Step 7: Phase 6 - Report Assembly (Python Only - No AI)
-   - Merge: All analysis JSON outputs
-   - **Enrich Activities**: Add metadata flags (`has_javascript`, `has_sql`, `has_error_handling`) to each activity
-     * Loads domain files (not analysis files) to get raw activity data
-     * Builds lookup sets from `domain_javascript.json`, `domain_sql.json`, `domain_errorhandling.json`
-     * Adds boolean flags to each activity object before passing to template
-     * Enables accurate "Has JavaScript", "Has SQL", "Has Error Handling" columns in Activity Details table
-   - Build: ipa_data structure using `build_ipa_data_helper.py`
-   - Generate: Excel report using `ipa_coding_standards_template_enhanced.py`
-   - Save to: `Coding_Standards_Results/`
+
+- Merge: All analysis JSON outputs
+- **Enrich Activities**: Add metadata flags (`has_javascript`, `has_sql`, `has_error_handling`) to each activity
+  - Loads domain files (not analysis files) to get raw activity data
+  - Builds lookup sets from `domain_javascript.json`, `domain_sql.json`, `domain_errorhandling.json`
+  - Adds boolean flags to each activity object before passing to template
+  - Enables accurate "Has JavaScript", "Has SQL", "Has Error Handling" columns in Activity Details table
+- Build: ipa_data structure using `build_ipa_data_helper.py`
+- Generate: Excel report using `ipa_coding_standards_template_enhanced.py`
+- Save to: `Coding_Standards_Results/`
 
 **Key Benefits:**
 
-- ✅ No context accumulation (each phase isolated at ~2-3 KB)
-- ✅ No crashes (stable execution regardless of file size)
-- ✅ Faster execution (reduced reasoning overhead)
-- ✅ Enterprise-grade quality maintained
-- ✅ Clear separation: AI analyzes, Python processes
+- No context accumulation (each phase isolated at ~2-3 KB)
+- No crashes (stable execution regardless of file size)
+- Faster execution (reduced reasoning overhead)
+- Enterprise-grade quality maintained
+- Clear separation: AI analyzes, Python processes
 
 ## Python Tools
 
@@ -288,23 +402,9 @@ This skill uses the following Python tools from `ReusableTools/IPA_CodingStandar
 
 ## Performance
 
-**Incremental Pipeline (Current Architecture):**
-
-- Phase 0 (Preprocessing): ~2-3s
-- Phase 1 (Naming Analysis): ~1-2 min (chunked)
-- Phase 2 (JavaScript Analysis): ~2-3 min (chunked)
-- Phase 3 (SQL Analysis): ~1-2 min (chunked)
-- Phase 4 (Error Handling Analysis): ~1-2 min (chunked)
-- Phase 5 (Structure Analysis): ~30-60s (direct)
-- Phase 6 (Report Assembly): ~5-10s
-- **Total**: ~8-12 min per process (stable, no crashes)
-
-**Key Improvements:**
-
-- ✅ No AI output >3 KB (was variable with subagents)
-- ✅ No context accumulation (each chunk isolated)
-- ✅ Crash-safe (can resume from any chunk)
-- ✅ Scalable (works for 50 or 5,000 activities)
+- Total time: ~8-12 min per process (stable, no crashes)
+- Batch mode: ~8-12 min × number of processes
+- No context accumulation, scalable for any process size
 
 ## Output
 
@@ -315,6 +415,7 @@ Excel report saved to: `Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_C
 **Batch Process Mode:**
 
 Multiple Excel reports saved to `Coding_Standards_Results/`:
+
 - `<Client>_<RICE>_<Process1>_CodingStandards_<timestamp>.xlsx`
 - `<Client>_<RICE>_<Process2>_CodingStandards_<timestamp>.xlsx`
 - `<Client>_<RICE>_<Process3>_CodingStandards_<timestamp>.xlsx`
@@ -343,7 +444,7 @@ The skill will guide you through selection:
 
 **Single Process Example:**
 
-```
+```text
 → Client: BayCare
 → RICE: APIA
 → Mode: Single
@@ -355,7 +456,7 @@ The skill will guide you through selection:
 
 **Batch Process Example:**
 
-```
+```text
 → Client: BayCare
 → RICE: APIA
 → Mode: Batch (3 processes)
@@ -372,8 +473,6 @@ Progress:
 
 ## Architecture Notes
 
-### Optional: Flow Phase Generation
-
 ### Stateless Pipeline Design
 
 **Problem**: Sequential subagent execution caused variable context usage and potential failures.
@@ -386,11 +485,11 @@ Progress:
 
 **Key Principles:**
 
-1. **Intelligence from focused analysis, not cumulative memory**
-2. **Each phase operates in isolation** (~2-3 KB context per chunk)
-3. **File-based state transfer** (JSON files replace conversational memory)
-4. **Minimal AI output** ("Phase N complete. file.json written.")
-5. **No context accumulation** (stable execution regardless of file size)
+1. Intelligence from focused analysis, not cumulative memory
+2. Each phase operates in isolation (~2-3 KB context per chunk)
+3. File-based state transfer (JSON files replace conversational memory)
+4. Minimal AI output ("Phase N complete. file.json written.")
+5. No context accumulation (stable execution regardless of file size)
 
 ### Project Standards Integration
 
@@ -410,11 +509,6 @@ Progress:
 - JavaScript: No ES6 features allowed
 - SQL: Pagination required for queries returning >100 rows
 
-### Role Separation
-
-- **Python**: Extract data, parse files, structure raw data, format reports, perform calculations, chunk data, merge results
-- **AI (Kiro)**: Assess code quality, identify violations, determine severity, make recommendations, score quality metrics
-
 ## Critical Rules
 
 1. **INTERACTIVE SELECTION MANDATORY**
@@ -428,34 +522,55 @@ Progress:
    - Batch mode processes sequentially, not consolidated
    - No multi-process consolidation (different use case than Client Handover)
 
-3. **STATELESS PHASE EXECUTION**
+3. **AI MUST ANALYZE EVERY PROCESS (Batch Mode)**
+   - **BLOCKING REQUIREMENT**: AI reads and analyzes data for EVERY process
+   - AI is the analyst; Python preprocessing is a helper
+   - Create violations for ANY issues found, whether Python flagged them or not
+   - NO empty violation files
+   - NO skipping analysis phases
+   - Each process gets full Phases 1-5 analysis
+   - Python only helps with data prep and merging, NOT analysis
+
+4. **STATELESS PHASE EXECUTION**
    - Each phase reads ONLY required JSON files
    - Each phase writes ONLY one JSON output
    - Each phase returns minimal confirmation
    - No context accumulation across phases
 
-4. **PROJECT STANDARDS PRECEDENCE**
+5. **PROJECT STANDARDS PRECEDENCE**
    - Phase 0 ALWAYS loads project standards (if available)
    - Each analysis phase reads project standards FIRST
    - Project standards override steering defaults
    - If no project standards, use steering defaults only
 
-5. **PYTHON LIFTS HEAVY LOAD**
+6. **PYTHON LIFTS HEAVY LOAD**
    - Python: Extract, organize, chunk, merge, format
    - AI: Analyze chunks, identify violations, recommend fixes
    - Python does NOT make judgments
 
-6. **INCREMENTAL WRITING**
+7. **INCREMENTAL WRITING**
    - Large domains (JavaScript, SQL) processed in chunks
    - AI analyzes small chunks (~20-50 items)
    - Python merges chunk results
    - Prevents context overload
 
-7. **INTERNAL REVIEW FOCUS**
+8. **INTERNAL REVIEW FOCUS**
    - Technical language and code criticism allowed
    - Severity ratings (High, Medium, Low)
    - Specific code examples and recommendations
    - Focus on HOW to fix, not just WHAT is wrong
+
+9. **COMPLETE DATA ANALYSIS MANDATORY** ⚠️ CRITICAL
+   - **BLOCKING REQUIREMENT**: Analysis quality MUST NEVER be sacrificed due to time constraints or data volume
+   - **ALWAYS read complete domain files** before analysis, even if files are large or truncated
+   - **NO shortcuts allowed** - read files in chunks until 100% complete
+   - **NO manual creation** of analysis files without reading complete source data
+   - **VERIFY file completely read** before proceeding to analysis phase
+   - **Follow IPA WORKFLOW ENFORCEMENT** rules from steering files (Step 2: DATA READ COMPLETELY)
+   - **Quality > Speed** - Incomplete analysis is worse than slower analysis
+   - **Root Cause**: Reading only partial data (~80%) is the #1 cause of incomplete analysis
+   - **Consequence**: Incomplete reports with missing violations and inaccurate findings
+   - **Solution**: Use readFile() with line ranges or multiple reads until entire file consumed
 
 ## Related Documentation
 
@@ -518,4 +633,3 @@ Reference files are loaded on-demand when needed. The skill is self-contained an
 ## Confidentiality
 
 Internal code quality review. Technical language and code criticism appropriate.
-

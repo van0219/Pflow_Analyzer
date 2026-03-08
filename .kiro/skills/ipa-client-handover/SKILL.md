@@ -83,6 +83,17 @@ For each process:
 
 This skill uses a stateless, file-based pipeline that eliminates context accumulation:
 
+**Pre-Workflow Cleanup:**
+
+Before starting the workflow, clean up the Temp folder to ensure a fresh start:
+
+```powershell
+# Remove all files in Temp/ except .gitkeep
+Get-ChildItem Temp -File | Where-Object { $_.Name -ne '.gitkeep' } | Remove-Item -Force
+```
+
+This prevents stale data from previous runs from interfering with the current analysis.
+
 1. **User Selection** (Interactive)
    - Select client from Projects/ directory
    - Select RICE item

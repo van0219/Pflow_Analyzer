@@ -197,7 +197,33 @@ The `Temp/` folder accumulates intermediate files that cause IDE indexing overhe
 
 **Automatic Cleanup Policy:**
 
-- Check `Temp/` folder after operations
+- IPA analysis scripts (preprocessing) automatically clean Temp/ at the start
+- Only removes files (preserves `.gitkeep`)
+- Prevents stale data from previous runs
+- No manual cleanup needed in normal workflows
+
+**Manual Cleanup (if needed):**
+
+```powershell
+# Remove all files except .gitkeep
+Get-ChildItem Temp -File | Where-Object { $_.Name -ne '.gitkeep' } | Remove-Item -Force
+```
+
+**UTF-8 BOM Issue Prevention:**
+
+When manually creating JSON files in PowerShell, avoid UTF-8 BOM:
+
+```powershell
+# WRONG - Adds BOM, causes JSON parsing errors
+'{"data": "value"}' | Out-File "Temp/file.json"
+
+# CORRECT - No BOM
+'{"data": "value"}' | Out-File "Temp/file.json" -Encoding ASCII
+
+# CORRECT - .NET method without BOM
+$content = '{"data": "value"}'
+[System.IO.File]::WriteAllText("Temp/file.json", $content, (New-Object System.Text.UTF8Encoding $false))
+```
 - Only prompt if >10 files exist
 - Remove only OLD files (>5 minutes old)
 - Preserve current session data

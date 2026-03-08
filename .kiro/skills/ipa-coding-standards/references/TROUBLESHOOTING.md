@@ -54,10 +54,32 @@ Test-Path Temp/structure_analysis.json
 **Cause**: Excel file format incorrect
 
 **Fix**:
+
 1. Verify sheet name is "Standards"
 2. Check column headers match expected format
 3. Ensure no empty rows
 4. Re-run Phase 0
+
+### Issue: "JSONDecodeError: Unexpected UTF-8 BOM"
+
+**Cause**: Files created with PowerShell `Out-File` include UTF-8 BOM by default, which Python's JSON parser rejects
+
+**Fix**:
+
+When creating JSON files manually in PowerShell, use one of these methods:
+
+**Method 1: Use ASCII encoding**
+```powershell
+'{"violations": []}' | Out-File "Temp/file.json" -Encoding ASCII
+```
+
+**Method 2: Use .NET WriteAllText without BOM**
+```powershell
+$content = '{"violations": []}'
+[System.IO.File]::WriteAllText("Temp/file.json", $content, (New-Object System.Text.UTF8Encoding $false))
+```
+
+**Prevention**: The preprocessing script now automatically cleans the Temp folder at the start of each process, preventing this issue in normal workflows.
 
 ---
 

@@ -43,6 +43,16 @@ def preprocess_coding_standards(lpd_file, client_name, output_dir="Temp"):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
     
+    # Clean up old analysis files from previous runs (keep .gitkeep)
+    print("\n[0/4] Cleaning up previous analysis files...")
+    for file in Path(output_dir).glob("*"):
+        if file.is_file() and file.name != ".gitkeep":
+            try:
+                file.unlink()
+            except Exception as e:
+                print(f"   Warning: Could not delete {file.name}: {e}")
+    print("   ✓ Temp folder cleaned")
+    
     output_files = {}
     
     # Step 1: Extract LPD structure
