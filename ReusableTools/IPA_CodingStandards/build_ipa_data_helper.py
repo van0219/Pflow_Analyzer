@@ -115,12 +115,12 @@ def build_ipa_data_from_violations(
             'priority': priority,
             'category': category,
             'rule_id': v['rule_id'],
-            'issue': v['finding'],  # EXACT COPY - DO NOT RETYPE
-            'current': v['current'],
+            'issue': v.get('finding') or v.get('issue', ''),  # Support both field names
+            'current': v.get('current') or v.get('current_state', ''),  # Support both field names
             'recommendation': v['recommendation'],
             'effort': effort,
             'impact': impact,
-            'activities': v['activities']
+            'activities': v.get('activities') or v.get('activity_id', 'N/A')  # Support both field names
         }
         
         # Phase 1 Enhancement: Preserve enhanced fields if present
@@ -167,11 +167,11 @@ def build_ipa_data_from_violations(
     for v in violations:
         section = domain_to_section.get(v['domain'], 'ipa_rules')
         coding_standards[section].append([
-            v['activities'],           # Column 0: Activity
+            v.get('activities') or v.get('activity_id', 'N/A'),  # Column 0: Activity - support both field names
             v['rule_name'],           # Column 1: Rule Name (with ID)
             v['severity'],            # Column 2: Severity
-            v['finding'],             # Column 3: Finding (EXACT COPY)
-            v['current'],             # Column 4: Current
+            v.get('finding') or v.get('issue', ''),  # Column 3: Finding - support both field names
+            v.get('current') or v.get('current_state', ''),  # Column 4: Current - support both field names
             'Needs Improvement',      # Column 5: Status
             v['recommendation']       # Column 6: Action
         ])

@@ -267,53 +267,42 @@ class DomainOrganizer:
         }
     
     def organize_sql_domain(self) -> Dict[str, Any]:
-        """Organize SQL-related data."""
-        activities = self.process.get('activities', [])
+        """Organize SQL-related data using pre-extracted queries."""
+        # Use pre-extracted SQL queries from lpd_structure
+        sql_queries_raw = self.process.get('sql_queries', [])
         
-        sql_keywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP']
-        
+        # Enrich with pattern detection
         sql_queries = []
-        for activity in activities:
-            activity_id = activity.get('id')
-            activity_type = activity.get('type')
-            properties = activity.get('properties', {})
+        for query_data in sql_queries_raw:
+            query_text = query_data.get('query', '')
+            query_type = query_data.get('query_type', 'Unknown')
             
-            # Check various property fields for SQL
-            sql_fields = ['requestBody', 'callString', 'expression', 'query', 'sql']
+            # Detect Compass SQL patterns
+            is_compass = 'compass' in query_text.lower() or 'DATAFABRIC' in query_text or 'FPI_FSM' in query_text
             
-            for field in sql_fields:
-                value = properties.get(field, '')
-                if value and any(keyword in value.upper() for keyword in sql_keywords):
-                    # Detect query type
-                    query_type = 'Unknown'
-                    for keyword in sql_keywords:
-                        if keyword in value.upper():
-                            query_type = keyword
-                            break
-                    
-                    # Detect Compass SQL patterns
-                    is_compass = 'compass' in value.lower() or '/data/' in value.lower()
-                    
-                    # Detect potential issues
-                    has_select_star = 'SELECT *' in value.upper()
-                    has_where = 'WHERE' in value.upper()
-                    has_limit = any(keyword in value.upper() for keyword in ['LIMIT', 'TOP', 'FETCH'])
-                    has_pagination = any(keyword in value.upper() for keyword in ['LIMIT', 'TOP', 'OFFSET', 'FETCH', 'PAGESIZE', 'MAXRECORDS'])
-                    
-                    sql_queries.append({
-                        'activity_id': activity_id,
-                        'activity_type': activity_type,
-                        'query_type': query_type,
-                        'query': value,
-                        'query_length': len(value),
-                        'is_compass_sql': is_compass,
-                        'patterns_detected': {
-                            'select_star': has_select_star,
-                            'has_where_clause': has_where,
-                            'has_limit': has_limit,
-                            'has_pagination': has_pagination
-                        }
-                    })
+            # Detect potential issues
+            has_select_star = 'SELECT *' in query_text.upper() or 'SELECT*' in query_text.upper()
+            has_where = 'WHERE' in query_text.upper()
+            has_limit = any(keyword in query_text.upper() for keyword in ['LIMIT', 'TOP', 'FETCH'])
+            has_pagination = any(keyword in query_text.upper() for keyword in ['LIMIT', 'TOP', 'OFFSET', 'FETCH', 'PAGESIZE', 'MAXRECORDS'])
+            
+            sql_queries.append({
+                'activity_id': query_data.get('activity_id'),
+                'activity_type': query_data.get('activity_type'),
+                'activity_caption': query_data.get('activity_caption'),
+                'property_name': query_data.get('property_name'),
+                'query_type': query_type,
+                'query': query_text,
+                'query_length': len(query_text),
+                'line_count': query_data.get('line_count', 0),
+                'is_compass_sql': is_compass,
+                'patterns_detected': {
+                    'select_star': has_select_star,
+                    'has_where_clause': has_where,
+                    'has_limit': has_limit,
+                    'has_pagination': has_pagination
+                }
+            })
         
         return {
             'total_sql_queries': len(sql_queries),
