@@ -1,667 +1,380 @@
-# Domain Analysis Guide
+# Domain Analysis Guide - IPA Coding Standards
 
-Domain-specific analysis patterns for IPA Coding Standards.
+**CRITICAL**: This guide MUST be read BEFORE analyzing ANY domain chunk in Phases 1-5.
 
-## External Knowledge Sources
+## Core Principle: You Are The Analyst
 
-**CRITICAL**: Before performing domain analysis, load relevant steering files for deep domain expertise.
+**Python preprocessing is a HELPER, not a CONSTRAINT.**
 
-### Required Steering Files
+- Python flags potential issues using regex patterns
+- YOU are the final authority on what's a violation
+- YOU must read and understand the actual code
+- YOU must create violations for ANY issues you find, whether Python flagged them or not
 
-Load these steering files BEFORE analyzing their respective domains:
+## Analysis Workflow (ALL Domains)
 
-**Phase 2 (JavaScript Analysis)**:
-```
-discloseContext(name="ipa-ipd-guide")
-```
-- Contains: IPA JavaScript ES5 compliance rules, Start node global variables pattern, function declaration order
+### Step 1: Read Project Standards FIRST
 
-**Phase 3 (SQL Analysis)**:
-```
-discloseContext(name="compass-sql")
-discloseContext(name="data-fabric-guide")
-```
-- Contains: Compass SQL dialect, Data Fabric API patterns, pagination patterns (limit/offset in URLs)
-
-**Phase 4 (Error Handling Analysis)**:
-```
-discloseContext(name="ipa-ipd-guide")
-```
-- Contains: OnError tab requirements, GetWorkUnitErrors pattern, error-prone activity types
-
-**Phase 5 (Structure Analysis)**:
-```
-discloseContext(name="process-patterns")
-```
-- Contains: 450+ real-world process patterns, auto-restart appropriateness by process type
-
-### Why Load Steering Files?
-
-Steering files contain:
-- Real-world patterns from 450+ analyzed processes
-- IPA-specific implementation details (Start node properties, Compass API)
-- Client-specific variations and edge cases
-- Production-validated best practices
-
-**Without steering files**: Analysis relies on generic patterns and may miss IPA-specific nuances.
-
-**With steering files**: Analysis uses production-validated patterns and catches real issues.
-
-## Overview
-
-The IPA Coding Standards skill analyzes 5 domains separately to prevent context overload and ensure comprehensive coverage.
-
-## Domain 1: Naming Conventions
-
-### What to Analyze
-
-- **Filename format**: Must match process type pattern
-- **Node captions**: Must be descriptive, not generic
-- **Config set names**: Must include vendor/system name
-- **Hardcoded values**: Should use ${ConfigSet.Variable} syntax
-
-### Analysis Patterns
-
-**Rule 1.1.1: Filename Format**
-
-Approval Workflow: `<Prefix>_WF_<Description>.lpd`
-Interface Process: `<Prefix>_INT_<Source>_<Dest>_<Description>.lpd`
-Scheduled Process: `<Prefix>_SCH_<Description>.lpd`
-
-**Rule 1.1.2: Node Naming**
-
-Generic (violation): "Assign 1", "Branch 1", "WebRun 1"
-Descriptive (compliant): "Calculate Total Amount", "Route to Manager", "Call Approval API"
-
-**Rule 1.4.1: Config Set Naming**
-
-Generic (violation): "Config", "Settings"
-Vendor-specific (compliant): "Hyland_OnBase_Config", "Infor_FSM_Settings"
-
-**Rule 1.4.3: Hardcoded Values**
-
-Hardcoded (violation): `var apiUrl = "https://api.example.com"`
-Config-based (compliant): `var apiUrl = "${API.BaseURL}"`
-
-### Project Standards Override
-
-If `project_standards.json` contains naming rules, they take precedence over steering defaults.
-
-Example:
-```json
-{
-  "rule_id": "1.1.1",
-  "pattern": "<Client>_<Type>_<Description>.lpd",
-  "severity": "High"
-}
+```text
+BEFORE analyzing any chunk, read project_standards.json completely.
 ```
 
-## Domain 2: JavaScript ES5 Compliance
+Project standards OVERRIDE steering file defaults. Know the rules before you judge.
 
-### What to Analyze
+### Step 2: Read The Actual Code/Data
 
-- **ES6 features**: let, const, arrow functions, template literals, destructuring
-- **Performance patterns**: Regex compilation in loops, string concatenation
-- **Function order**: Functions declared before use
-- **Variable scoping**: var keyword in Assign nodes, no var on Start node
+```text
+DO NOT rely solely on Python's pre-computed flags.
+READ the actual code snippets, SQL queries, node captions, etc.
+```
 
-### Analysis Patterns
-
-**CRITICAL: Check Start Node Properties FIRST**
-
-Before flagging missing global variables, ALWAYS check Start node properties:
+**Example - JavaScript Analysis:**
 
 ```json
 {
-  "id": "Start",
-  "type": "START",
-  "properties": {
-    "queryID": "\"\"",
-    "auth": "\"\"",
-    "rowCount": "0"
-  }
+  "activity_id": "Assign7960",
+  "code_snippet": "for(var i=0; i<arr.length; i++) {\n  arr[i] = arr[i].replace(/pattern/g, val);\n}\noutput += result;",
+  "performance_patterns_detected": {}  // EMPTY - Python missed it!
 }
 ```
 
-Variables defined in Start node properties are AUTOMATICALLY global (no var keyword needed).
+**Your job:**
 
-**Variable Scoping Rules**
+1. Read the code_snippet
+2. Spot the regex `/pattern/g` being compiled inside the loop
+3. Spot the `output +=` string concatenation
+4. CREATE violations for BOTH issues, even though Python didn't flag them
 
-1. **Start Node Properties** (global variables):
-   - Defined in Properties tab, NOT as JavaScript code
-   - No `var` keyword needed
-   - Accessible throughout entire process
-   - Example: `queryID = ""`, `rowCount = 0`
+### Step 3: Apply Domain-Specific Rules
 
-2. **Assign Node WITHOUT var** (modifies global):
-   - Valid IF variable exists in Start node properties
-   - Invalid IF variable NOT in Start node properties (creates unintended global)
+Each domain has specific things to look for. See domain sections below.
 
-3. **Assign Node WITH var** (local variable):
-   - Creates local variable scoped to that Assign node
-   - Example: `var tempArray = data.split(',');`
+### Step 4: Consolidate Similar Violations
 
-**Analysis Workflow**:
-1. Load lpd_structure.json
-2. Find Start node and extract properties
-3. Build list of global variables from Start node properties
-4. When analyzing Assign nodes:
-   - If variable assignment WITHOUT var → Check if in Start node properties
-   - If in Start node properties → COMPLIANT (modifying global)
-   - If NOT in Start node properties → VIOLATION (unintended global)
+If you find 25 nodes with generic captions, create ONE violation with count and examples, not 25 individual violations.
 
-**ES5 Compliance**
+### Step 5: Write Complete Violation Objects
 
-ES6 (violation):
+Every violation MUST have:
+
+- `rule_id`: From project standards or steering defaults
+- `activity_id`: Specific node or "Multiple" for consolidated
+- `activity_caption`: Node caption or descriptive summary
+- `issue`: Clear description of the problem
+- `current_state`: What the code/config looks like now
+- `recommendation`: How to fix it (be specific)
+- `severity`: High, Medium, or Low
+- `code_example`: Before/after comparison (for code violations)
+
+## Domain 1: Naming Analysis
+
+### What Python Provides
+
+- Filename
+- List of nodes with captions
+- Config set names
+- Hardcoded value detection (basic)
+
+### What YOU Must Do
+
+**1. Filename Format (Rule 1.1.1)**
+
+- Check against project standards format
+- Interface: `<Prefix>_INT_<Source>_<Destination>_<Description>.lpd`
+- Workflow: `<Prefix>_WF_<Description>.lpd`
+- Flag if doesn't match
+
+**2. Node Captions (Rule 1.1.4)**
+
+- Read EVERY node caption in the chunk
+- Identify generic names: "Assign", "Branch", "Wait", "WebRun"
+- Consolidate into ONE violation if multiple found
+- Count affected nodes and list examples
+
+**3. Config Set Names (Rule 1.1.3)**
+
+- Check if names are vendor-specific or generic
+- "Interface" is generic - should be "VendorName_Purpose"
+- Flag generic names
+
+**4. Hardcoded Values (Rule 1.4.2)**
+
+- Look for URLs, credentials, environment-specific values in code
+- Python's detection is basic - YOU must read the code
+- Check JavaScript blocks for hardcoded strings
+
+### Common Mistakes to Avoid
+
+- ❌ Creating 25 individual violations for 25 generic captions
+- ✅ Create 1 consolidated violation with count and examples
+
+## Domain 2: JavaScript Analysis
+
+### What Python Provides
+
+- ES6 feature detection (let/const, arrow functions, template literals)
+- Performance pattern hints (regex_in_loop, string_concat_in_loop, etc.)
+- Function declaration detection
+- Code snippets (truncated to ~200 chars)
+
+### What YOU Must Do
+
+**CRITICAL: Python's performance detection is INCOMPLETE. You MUST read the code yourself.**
+
+**1. ES5 Compliance (Rule 1.2.3)**
+
+- Check Python's `es6_features_detected`
+- BUT ALSO read code snippets for:
+  - Destructuring: `const {prop} = obj`
+  - Spread operators: `...array`
+  - Default parameters: `function f(x = 1)`
+  - async/await: `async function` or `await`
+
+**2. Performance Issues (Rules 1.5.4, 1.5.5)**
+
+**Rule 1.5.4: Regex Compilation**
+
+- Python looks for: `new RegExp` or `/pattern/` inside loops
+- YOU must also check:
+  - Is the regex complex? (nested groups, lookaheads)
+  - Is it used in pagination logic? (high iteration count)
+  - Could it be pre-compiled outside the loop?
+
+**Example violation:**
+
 ```javascript
-let x = 10;
-const y = 20;
-const add = (a, b) => a + b;
+// CURRENT (BAD):
+for(var i=0; i<arr.length; i++) {
+    arr[i] = arr[i].replace(/,(?=(?:(?:[^\"]*\"){2})*[^\"]*$)/g, delimiter);
+}
+
+// RECOMMENDED (GOOD):
+var commaRegex = /,(?=(?:(?:[^\"]*\"){2})*[^\"]*$)/g;
+for(var i=0; i<arr.length; i++) {
+    arr[i] = arr[i].replace(commaRegex, delimiter);
+}
 ```
 
-ES5 (compliant):
+**Rule 1.5.5: String Concatenation**
+
+- Python looks for: `variable +=` inside loops
+- YOU must also check:
+  - Is `+=` used repeatedly in pagination logic?
+  - Is it building large strings? (CSV output, file content)
+  - Would array.join() be better?
+
+**Example violation for string concatenation:**
+
 ```javascript
-var x = 10;
-var y = 20;
-function add(a, b) { return a + b; }
+// CURRENT (BAD - O(n²) complexity):
+OutputRecords += GetResultOut + "\r\n";  // Called in pagination loop
+
+// RECOMMENDED (GOOD - O(n) complexity):
+var recordsArray = [];
+// In loop:
+recordsArray.push(GetResultOut);
+// After loop:
+OutputRecords = recordsArray.join("\r\n");
 ```
 
-**Performance Patterns**
+**3. Function Declaration Order (Rule 1.2.2)**
 
-**CRITICAL: Verify Regex Actually Exists**
+- Check Python's `functions_declared_late` flag
+- BUT ALSO read the code to understand context
+- Functions should be declared at the top of the script
+- Executable code should come after function declarations
 
-Before flagging regex compilation issues, verify the code ACTUALLY contains regex patterns:
-- Look for `/pattern/` syntax
-- Look for `new RegExp()` calls
-- Do NOT flag string operations (`.split()`, `.replace()`, `.substring()`) as regex
+**4. Variable Scoping (Rule 1.2.1)**
 
-Example - NO REGEX (false positive):
+- Check if variables are properly scoped
+- Global variables should be on Start node (no `var` keyword)
+- Local variables should use `var` in Assign nodes
+- Look for accidental globals (missing `var`)
+
+### Common Mistakes to Avoid
+
+- ❌ Only flagging issues Python detected
+- ✅ Read the actual code and find issues Python missed
+- ❌ Ignoring performance issues because Python didn't flag them
+- ✅ Understand the business logic (pagination, file processing) and assess performance impact
+
+## Domain 3: SQL Analysis
+
+### What Python Provides
+
+- SQL query text
+- Query type detection (SELECT, INSERT, UPDATE, DELETE)
+- Basic pattern detection (SELECT *, LIMIT clause)
+
+### What YOU Must Do
+
+**CRITICAL: Understand Compass API pagination vs SQL LIMIT clause**
+
+**1. Pagination (Rule 1.5.2)**
+
+**Compass API Pattern (CORRECT - not a violation):**
+
 ```javascript
-function formatDate(dt) {
-    var d = new Date(dt);
-    var padMonth = (d.getMonth()+1).toString().length == 1 ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
-    return year + padMonth + padDay;
-}
+// Start node has: limit = 5000, offset = 0
+// InitQuery: SELECT ... (no LIMIT clause)
+// Loop: GetResult with ?limit=<!limit>&offset=<!offset>
+// Increment: offset += parseInt(limit)
 ```
 
-Example - HAS REGEX (valid violation):
-```javascript
-for (var i = 0; i < items.length; i++) {
-    if (items[i].match(/pattern/)) { }  // Regex compiled in loop
-}
-```
+This is CORRECT pagination. The LIMIT is in the API call, not the SQL query.
 
-Regex compiled once (compliant):
-```javascript
-var pattern = /pattern/;
-for (var i = 0; i < items.length; i++) {
-    if (pattern.test(items[i])) { }
-}
-```
+**SQL LIMIT Pattern (CORRECT):**
 
-### Best Practice Suggestions (Low Severity)
-
-**CRITICAL**: Even when code is ES5 compliant and has no violations, ALWAYS provide improvement suggestions.
-
-**Analysis Approach**:
-1. Review ALL JavaScript blocks for improvement opportunities
-2. Flag suggestions as "Low" severity (not violations)
-3. Focus on code quality, maintainability, and performance
-4. Provide specific examples and recommendations
-
-**Categories for Suggestions**:
-
-**1. Code Organization and Readability**
-
-Look for:
-- Long functions (>50 lines) that could be split
-- Complex nested conditionals that could be simplified
-- Magic numbers without explanation
-- Inconsistent formatting or indentation
-- Poor variable naming (single letters, abbreviations)
-
-Example suggestion:
-```json
-{
-  "rule_id": "2.9.1",
-  "severity": "Low",
-  "finding": "Function formatDate2 is 65 lines long and handles multiple responsibilities",
-  "current": "Single function handles date formatting, padding, and validation",
-  "recommendation": "Consider splitting into smaller functions: padNumber(), validateDate(), formatDate()",
-  "activities": "Assign1540",
-  "domain": "javascript"
-}
-```
-
-**2. Performance Optimizations**
-
-Look for:
-- String concatenation in loops (use array.join())
-- Repeated property access (cache in variable)
-- Inefficient array operations
-- Unnecessary type conversions
-
-Example suggestion:
-```json
-{
-  "rule_id": "2.9.2",
-  "severity": "Low",
-  "finding": "String concatenation using += operator in loop",
-  "current": "for (var i=0; i<arr.length; i++) { result += arr[i]; }",
-  "recommendation": "Use array.join() for better performance: result = arr.join('')",
-  "activities": "Assign7960",
-  "domain": "javascript"
-}
-```
-
-**3. Error Handling Patterns**
-
-Look for:
-- Missing try-catch blocks for JSON.parse()
-- No validation before accessing object properties
-- Silent failures without logging
-
-Example suggestion:
-```json
-{
-  "rule_id": "2.9.3",
-  "severity": "Low",
-  "finding": "JSON.parse() without error handling",
-  "current": "var obj = JSON.parse(InitQuery_result);",
-  "recommendation": "Add try-catch: try { var obj = JSON.parse(InitQuery_result); } catch(e) { /* handle error */ }",
-  "activities": "Assign4580",
-  "domain": "javascript"
-}
-```
-
-**4. Code Maintainability**
-
-Look for:
-- Duplicate code blocks (DRY principle)
-- Hardcoded values that should be constants
-- Complex expressions that need comments
-- Inconsistent patterns across similar operations
-
-Example suggestion:
-```json
-{
-  "rule_id": "2.9.4",
-  "severity": "Low",
-  "finding": "Duplicate date formatting logic across multiple activities",
-  "current": "formatDate() and formatDate2() have similar logic with slight variations",
-  "recommendation": "Consolidate into single function with parameters for format type",
-  "activities": "Assign1540, Filename",
-  "domain": "javascript"
-}
-```
-
-**5. Modern ES5 Patterns**
-
-Look for:
-- Opportunities to use Array methods (map, filter, reduce) instead of loops
-- Better use of ternary operators for simple conditionals
-- Improved use of logical operators for default values
-
-Example suggestion:
-```json
-{
-  "rule_id": "2.9.5",
-  "severity": "Low",
-  "finding": "Manual array iteration could use Array.filter()",
-  "current": "for loop with if condition to filter array",
-  "recommendation": "Use arr.filter(function(item) { return condition; }) for cleaner code",
-  "activities": "Assign7960",
-  "domain": "javascript"
-}
-```
-
-**When to Generate Suggestions**:
-- ALWAYS generate 3-5 suggestions per process (even if ES5 compliant)
-- Focus on most impactful improvements first
-- Provide specific code examples in recommendations
-- Reference actual activity IDs where improvements apply
-
-**When NOT to Generate Suggestions**:
-- Don't suggest ES6 features (arrow functions, let/const, template literals)
-- Don't flag intentional design choices without clear benefit
-- Don't suggest changes that would break IPA compatibility
-
-### Project Standards Override
-
-If `project_standards.json` contains JavaScript rules, they take precedence.
-
-## Domain 3: SQL Queries
-
-### What to Analyze
-
-- **Pagination**: Required for queries returning >100 rows
-- **Compass SQL**: Use Compass API, not direct SQL
-- **SELECT ***: Avoid, specify columns
-- **WHERE clauses**: Required for UPDATE/DELETE
-
-### Analysis Patterns
-
-**CRITICAL: Recognize Compass API Pagination Pattern**
-
-Compass API uses a two-step pattern:
-1. **InitQuery** (or similar): POST to `/jobs/` - Creates query job, returns queryID
-2. **GetResult** (or similar): GET to `/jobs/{queryID}/result?limit=X&offset=Y` - Retrieves paginated results
-
-**Analysis Workflow**:
-1. Check if process uses Compass API (look for `/DATAFABRIC/compass/` in URLs)
-2. If Compass API:
-   - Find the activity that retrieves results (usually GET to `/jobs/{queryID}/result`)
-   - Check if URL contains `limit=` and `offset=` parameters
-   - If YES → Pagination EXISTS (compliant)
-   - If NO → Pagination MISSING (violation)
-3. If direct SQL (not Compass API):
-   - Check for LIMIT/OFFSET in SQL query
-   - If YES → Pagination EXISTS (compliant)
-   - If NO → Pagination MISSING (violation)
-
-**Example - Compass API WITH Pagination (COMPLIANT)**:
-
-InitQuery activity (creates job):
-```javascript
-// POST to /DATAFABRIC/compass/v2/jobs/
-// Body contains SQL query
-```
-
-GetResult activity (retrieves results):
-```javascript
-// GET to /DATAFABRIC/compass/v2/jobs/{queryID}/result?limit=<!limit>&offset=<!offset>
-// Pagination in URL parameters
-```
-
-**Rule 1.5.2: Pagination**
-
-No pagination (violation):
 ```sql
-SELECT * FROM APINVOICE
+SELECT * FROM table WHERE condition LIMIT 1000
 ```
 
-With pagination (compliant):
+**Missing Pagination (VIOLATION):**
+
 ```sql
-SELECT * FROM APINVOICE LIMIT 100 OFFSET 0
+SELECT * FROM large_table WHERE condition
+-- No LIMIT clause AND no Compass API pagination loop
 ```
 
-**Compass SQL**
+**How to verify:**
 
-Direct SQL (violation):
-```sql
-SELECT * FROM EMPLOYEE WHERE EMP_ID = '12345'
-```
+1. Read the COMPLETE `lpd_structure.json` (not just the SQL chunk)
+2. Check Start node for `limit` and `offset` variables
+3. Look for GetResult activity with limit/offset parameters
+4. Look for offset increment logic: `offset += parseInt(limit)`
+5. If Compass API pagination exists, DO NOT flag missing LIMIT clause
 
-Compass API (compliant):
-```javascript
-var query = "Employee?filter=EmployeeId eq '12345'&select=EmployeeId,Name,Department";
-```
+**2. SELECT * (Performance)**
 
-**SELECT ***
+- Flag if SELECT * is used
+- Recommend specifying only needed columns
+- Exception: Small lookup tables (<100 rows)
 
-SELECT * (violation):
-```sql
-SELECT * FROM APINVOICE
-```
+**3. Compass SQL Compliance (Rule 1.5.2)**
 
-Specific columns (compliant):
-```sql
-SELECT INVOICE_NUM, VENDOR, AMOUNT FROM APINVOICE
-```
+- Check for Compass-specific syntax
+- Verify proper use of Data Fabric tables
+- Check for proper filtering (WHERE clauses)
 
-### Best Practice Suggestions (Low Severity)
+### Common Mistakes to Avoid
 
-**CRITICAL**: Even when SQL queries are compliant, ALWAYS provide improvement suggestions based on Compass SQL best practices.
+- ❌ Flagging Compass API queries for missing LIMIT clause
+- ✅ Verify pagination implementation before flagging
+- ❌ Assuming all queries need LIMIT in the SQL
+- ✅ Understand the difference between SQL LIMIT and API pagination
 
-**MUST LOAD**: Before analyzing SQL, load steering file 06 (Compass SQL CheatSheet) for correct syntax and patterns.
+## Domain 4: Error Handling Analysis
 
-**Analysis Approach**:
-1. Review ALL SQL queries for optimization opportunities
-2. Flag suggestions as "Low" severity (not violations)
-3. Reference Compass SQL CheatSheet for correct syntax
-4. Provide specific examples with Compass SQL syntax
+### What Python Provides
 
-**Categories for Suggestions**:
+- List of error-prone activities (WEBRN, ACCFIL, Timer, SUBPROC, etc.)
+- stopOnError property values
+- has_error_handling flags
 
-**1. Query Optimization**
+### What YOU Must Do
 
-Look for:
-- Missing indexes on WHERE clause columns
-- Inefficient JOIN patterns
-- Unnecessary DISTINCT operations
-- Complex subqueries that could be CTEs
+**1. OnError Tab Coverage (Rule 1.3.1)**
 
-Example suggestion:
+- Check if error-prone activities have OnError tabs
+- Required for: WEBRN, WEBRUN, ACCFIL, Timer, SUBPROC, ITBEG
+- Not required for: START, END, ASSGN, BRANCH, MSGBD
+
+**2. GetWorkUnitErrors Subprocess (Rule 1.3.2)**
+
+- Check if process has a SUBPROC node for centralized error logging
+- This is a best practice, not always required
+- Flag as Medium severity if missing
+
+**3. stopOnError Property (Rule 1.3.3)**
+
+- Should be "false" for nodes with OnError tabs
+- Allows graceful error handling
+- Flag if "true" when OnError exists
+
+### Common Mistakes to Avoid
+
+- ❌ Flagging ASSGN or BRANCH nodes for missing OnError
+- ✅ Only flag activity types that support OnError tabs
+- ❌ Treating GetWorkUnitErrors as Critical
+- ✅ It's a Medium severity best practice
+
+## Domain 5: Structure Analysis
+
+### What Python Provides
+
+- Process type (Interface, Workflow, etc.)
+- Auto-restart value
+- Activity type distribution
+- Complexity metrics
+
+### What YOU Must Do
+
+**1. Auto-Restart Configuration (Rule 1.4.3)**
+
+- Interface/Outbound: Should be 0 (prevents duplicate processing)
+- Approval/Inbound: Should be 1 (allows retry on failure)
+- Check if current value matches process type
+
+**2. Process Type Validation**
+
+- Verify process type matches filename convention
+- Interface processes should have INT in filename
+- Workflow processes should have WF in filename
+
+**3. Complexity Assessment**
+
+- Review activity distribution
+- Flag if process is overly complex (>100 activities)
+- Recommend splitting into subprocesses if needed
+
+### Common Mistakes to Avoid
+
+- ❌ Flagging auto-restart without understanding process type
+- ✅ Context-aware assessment based on interface vs workflow
+- ❌ Treating all large processes as violations
+- ✅ Assess if complexity is justified by business requirements
+
+## Output Format
+
+Each analysis phase MUST output a JSON file with this structure:
+
 ```json
 {
-  "rule_id": "3.9.1",
-  "severity": "Low",
-  "finding": "Complex query could benefit from Common Table Expression (CTE)",
-  "current": "Single large query with multiple aggregations and joins",
-  "recommendation": "Use WITH clause to break into logical steps: WITH RecentOrders AS (...) SELECT ...",
-  "activities": "InitQuery",
-  "domain": "sql"
+  "chunk_id": 1,
+  "violations": [
+    {
+      "rule_id": "1.5.4",
+      "activity_id": "Assign7960",
+      "activity_caption": "Assign",
+      "issue": "Complex regex pattern compiled inside loop causing O(n) regex compilations",
+      "current_state": "Regex /,(?=(?:(?:[^\"]*\"){2})*[^\"]*$)/g compiled on every iteration of pagination loop",
+      "recommendation": "Pre-compile regex outside loop and reuse the compiled pattern",
+      "severity": "High",
+      "code_example": "Current:\nfor(var i=0; i<arr.length; i++) {\n  arr[i] = arr[i].replace(/,(?=(?:(?:[^\"]*\"){2})*[^\"]*$)/g, delimiter);\n}\n\nExpected:\nvar commaRegex = /,(?=(?:(?:[^\"]*\"){2})*[^\"]*$)/g;\nfor(var i=0; i<arr.length; i++) {\n  arr[i] = arr[i].replace(commaRegex, delimiter);\n}",
+      "affected_nodes": ["Assign7960"]
+    }
+  ]
 }
 ```
 
-**2. Column Selection Specificity**
+## Final Checklist (Before Saving Analysis)
 
-Look for:
-- Selecting more columns than needed
-- Redundant column selections
-- Missing column aliases for clarity
+- [ ] Read project standards completely
+- [ ] Read ALL code snippets/data in the chunk (not just Python flags)
+- [ ] Identified ALL violations (not just what Python flagged)
+- [ ] Consolidated similar violations (not 25 individual items)
+- [ ] Wrote complete violation objects (all required fields)
+- [ ] Provided specific code examples (before/after)
+- [ ] Assessed severity based on production impact
+- [ ] Verified rule_id matches project standards or steering defaults
 
-Example suggestion:
-```json
-{
-  "rule_id": "3.9.2",
-  "severity": "Low",
-  "finding": "Query selects columns that may not be used in output",
-  "current": "SELECT includes 15 columns but output file only uses 8",
-  "recommendation": "Remove unused columns to improve query performance and reduce data transfer",
-  "activities": "InitQuery",
-  "domain": "sql"
-}
-```
+## Remember
 
-**3. CAST Operations with NULL Checks**
+**You are a senior code reviewer, not a script executor.**
 
-Look for:
-- CAST operations without NULL validation
-- Missing COALESCE for default values
-- Type conversions that could fail silently
+- Python helps you find issues faster
+- YOU make the final judgment calls
+- YOUR analysis determines report quality
+- YOUR recommendations guide developers
 
-Example suggestion:
-```json
-{
-  "rule_id": "3.9.3",
-  "severity": "Low",
-  "finding": "CAST operation without NULL check",
-  "current": "CAST(SUM(NetTransactionAmount) AS DECIMAL(18,2))",
-  "recommendation": "Add NULL handling: COALESCE(CAST(SUM(NetTransactionAmount) AS DECIMAL(18,2)), 0.00)",
-  "activities": "InitQuery",
-  "domain": "sql"
-}
-```
-
-**4. Compass SQL Specific Patterns**
-
-Look for:
-- Opportunities to use Compass SQL functions
-- Better use of CONCAT vs string operations
-- Proper use of RPAD/LPAD for formatting
-- Efficient use of CASE statements
-
-Example suggestion:
-```json
-{
-  "rule_id": "3.9.4",
-  "severity": "Low",
-  "finding": "Complex CASE statement could be simplified",
-  "current": "CASE WHEN ISNULL(field,'0000') = '' THEN '0000' ELSE ISNULL(field,'0000') END",
-  "recommendation": "Simplify to: COALESCE(NULLIF(field, ''), '0000')",
-  "activities": "InitQuery",
-  "domain": "sql"
-}
-```
-
-**5. Query Readability**
-
-Look for:
-- Missing comments for complex logic
-- Inconsistent formatting
-- Unclear column aliases
-- Complex expressions without explanation
-
-Example suggestion:
-```json
-{
-  "rule_id": "3.9.5",
-  "severity": "Low",
-  "finding": "Complex CONCAT expression without explanation",
-  "current": "CONCAT(FinanceDimension1,FinanceDimension3, FinanceDimension4)",
-  "recommendation": "Add comment explaining business logic: -- Combines Cost Center + Department + Location",
-  "activities": "InitQuery",
-  "domain": "sql"
-}
-```
-
-**6. Aggregation Patterns**
-
-Look for:
-- GROUP BY with many columns (could use subquery)
-- Missing HAVING clauses for filtered aggregations
-- Inefficient COUNT(*) vs COUNT(column)
-
-Example suggestion:
-```json
-{
-  "rule_id": "3.9.6",
-  "severity": "Low",
-  "finding": "GROUP BY clause repeats complex expressions",
-  "current": "GROUP BY with 5 complex CONCAT/RPAD expressions",
-  "recommendation": "Use subquery or CTE to calculate expressions once, then GROUP BY aliases",
-  "activities": "InitQuery",
-  "domain": "sql"
-}
-```
-
-**When to Generate Suggestions**:
-- ALWAYS generate 2-4 suggestions per SQL query (even if compliant)
-- Focus on Compass SQL specific optimizations
-- Reference steering file 06 for correct Compass SQL syntax
-- Provide specific code examples in recommendations
-
-**When NOT to Generate Suggestions**:
-- Don't suggest standard SQL features not supported by Compass SQL
-- Don't flag Compass API pagination patterns as missing LIMIT clause
-- Don't suggest DML operations (INSERT/UPDATE/DELETE) - Compass SQL is read-only
-
-**CRITICAL**: Always verify suggestions against Compass SQL CheatSheet (steering file 06) to ensure compatibility.
-
-### Project Standards Override
-
-If `project_standards.json` contains SQL rules, they take precedence.
-
-## Domain 4: Error Handling
-
-### What to Analyze
-
-- **OnError tabs**: Required for error-prone activities (WEBRN, WEBRUN, ACCFIL)
-- **stopOnError flag**: Should be false for activities with OnError tabs
-- **GetWorkUnitErrors**: Required activity node for error reporting
-- **Error coverage**: Percentage of error-prone activities with error handling
-
-### Analysis Patterns
-
-**Rule 1.3.1: OnError Tabs**
-
-No OnError tab (violation):
-```xml
-<activity type="WEBRN" stopOnError="true">
-  <!-- No OnError tab -->
-</activity>
-```
-
-With OnError tab (compliant):
-```xml
-<activity type="WEBRN" stopOnError="false">
-  <onError>
-    <!-- Error handling logic -->
-  </onError>
-</activity>
-```
-
-**Rule 1.3.2: GetWorkUnitErrors**
-
-Missing (violation): No GetWorkUnitErrors activity in process
-
-Present (compliant): GetWorkUnitErrors activity exists and is used
-
-### Project Standards Override
-
-If `project_standards.json` contains error handling rules, they take precedence.
-
-## Domain 5: Process Structure
-
-### What to Analyze
-
-- **Auto-restart configuration**: Appropriate for process type
-- **Process type**: Approval, Interface, Scheduled, etc.
-- **Activity distribution**: Balance of activity types
-
-### Analysis Patterns
-
-**Auto-Restart Appropriateness**
-
-Context-aware analysis:
-- Approval workflows: Auto-restart usually NOT appropriate (user interaction)
-- Interface processes: Auto-restart usually appropriate (automated)
-- Scheduled processes: Auto-restart usually appropriate (automated)
-
-**Process Type Determination**
-
-Based on characteristics:
-- User interaction activities → Approval Workflow
-- File access + web services → Interface Process
-- Timer activities → Scheduled Process
-
-### Project Standards Override
-
-If `project_standards.json` contains structure rules, they take precedence.
-
-## Incremental Processing
-
-For large processes, domains are processed in chunks:
-
-- **Naming**: 50 nodes per chunk
-- **JavaScript**: 20 JS blocks per chunk
-- **SQL**: 30 queries per chunk
-- **Error Handling**: 40 activities per chunk
-- **Structure**: Direct analysis (small dataset)
-
-Each chunk is analyzed separately, then results are merged.
-
-## AI Output Format
-
-Each domain analysis should return JSON array of violations:
-
-```json
-[
-  {
-    "rule_id": "1.1.1",
-    "severity": "High",
-    "finding": "Filename does not match approval workflow pattern",
-    "current": "ProcessName.lpd",
-    "recommendation": "Rename to <Prefix>_WF_<Description>.lpd",
-    "activities": "N/A (filename)",
-    "domain": "naming"
-  }
-]
-```
-
----
-
-For more information, see:
-- [`CODING_STANDARDS_REFERENCE.md`](CODING_STANDARDS_REFERENCE.md) - Complete rules reference
-- [`JSON_SCHEMAS.md`](JSON_SCHEMAS.md) - JSON structure details
+**If Python missed something obvious, that's a Python bug - but it's YOUR responsibility to catch it anyway.**

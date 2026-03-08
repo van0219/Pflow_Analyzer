@@ -108,7 +108,8 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Pre-calculate: ES6 patterns, generic names, SQL types, error-prone activities
 
 3. **Phase 1: Naming Analysis** (AI - Incremental)
-   - **BEFORE FIRST ANALYSIS IN SESSION**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` ONCE (covers all phases)
+   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk
+   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (naming data only), `project_standards.json`
    - Task: Analyze filename, node captions, config sets, hardcoded values
    - **CRITICAL**: Consolidate similar violations (e.g., 25 generic captions → 1 violation with count)
@@ -117,6 +118,8 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Return: "Phase 1 complete. naming_analysis.json written."
 
 4. **Phase 2: JavaScript Analysis** (AI - Incremental)
+   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
+   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (JavaScript blocks only), `project_standards.json`
    - Task: Analyze ES5 compliance, performance, function order, variable scoping
    - **CRITICAL**: Consolidate similar violations (e.g., 3 late functions → 1 violation with list)
@@ -125,6 +128,8 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Return: "Phase 2 complete. javascript_analysis.json written."
 
 5. **Phase 3: SQL Analysis** (AI - Incremental)
+   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
+   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (SQL queries only), `project_standards.json`
    - Task: Analyze Compass SQL, pagination, SELECT *, optimization
    - **CRITICAL**: Check COMPLETE `lpd_structure.json` for Compass API pagination (InitQuery → GetResult with limit/offset)
@@ -133,6 +138,8 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Return: "Phase 3 complete. sql_analysis.json written."
 
 6. **Phase 4: Error Handling Analysis** (AI - Incremental)
+   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
+   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (error-prone activities only), `project_standards.json`
    - Task: Analyze OnError tabs, GetWorkUnitErrors, error coverage
    - Process: Python chunks activities → AI analyzes chunks → Python merges
@@ -140,6 +147,8 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Return: "Phase 4 complete. errorhandling_analysis.json written."
 
 7. **Phase 5: Structure Analysis** (AI - Direct)
+   - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing (if not already read in Phase 1)
+   - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (process-level data), `metrics_summary.json`, `project_standards.json`
    - Task: Analyze auto-restart, process type, activity distribution
    - Output: `structure_analysis.json`

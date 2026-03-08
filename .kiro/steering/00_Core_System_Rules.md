@@ -126,20 +126,36 @@ python ReusableTools/hook_manager.py backup <hook_file>
 
 Commands: `validate`, `backup`, `restore`, `analyze`, `repair`
 
-**For Other Files:**
+**For Large File Modifications:**
 
-Use `file-writer-helper` subagent:
+When replacing large sections of code or entire functions:
 
-- Trigger after ANY `fsWrite` failure
-- Use for large files (>200 lines)
-- Use for multiple sequential edits
+1. Create a Python script in `Temp/` to perform the replacement using regex or line-based operations
+2. Use `executePwsh` to run the script
+3. This avoids context limitations and ensures reliable file modifications
 
-**CRITICAL**: The `file-writer-helper` subagent MUST NOT call `invokeSubAgent` (prevents infinite recursion).
+**Example Pattern:**
+
+```python
+# Temp/replace_function.py
+from pathlib import Path
+import re
+
+file_path = Path("path/to/file.py")
+content = file_path.read_text(encoding='utf-8')
+
+# Use regex to replace function
+pattern = r'(def old_function\(.*?\):.*?)(\n\ndef |$)'
+content_new = re.sub(pattern, new_function_text, content, flags=re.DOTALL)
+
+file_path.write_text(content_new, encoding='utf-8')
+print("✓ Successfully updated file")
+```
 
 **Fallback Workflow:**
 
-1. Try direct `fsWrite` (if context is light AND not a hook file)
-2. On first failure → Immediately delegate to appropriate tool
+1. Try direct `fsWrite` for small changes (<50 lines)
+2. For large changes → Create Python script to handle replacement
 3. Do NOT retry `fsWrite` multiple times
 4. Continue workflow without user intervention
 

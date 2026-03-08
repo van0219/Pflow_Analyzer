@@ -197,8 +197,14 @@ class DomainOrganizer:
         
         # Performance patterns to detect
         performance_patterns = {
-            'regex_in_loop': r'for\s*\([^)]*\)\s*\{[^}]*new\s+RegExp',
-            'string_concat_in_loop': r'for\s*\([^)]*\)\s*\{[^}]*\w+\s*\+=\s*["\']'
+            # Matches both new RegExp() and /pattern/g inside loops
+            'regex_in_loop': r'for\s*\([^)]*\)\s*\{[^}]*(?:new\s+RegExp|/[^/\n]+/[gim]*)',
+            # Matches string concatenation with += inside loops (any value, not just literals)
+            'string_concat_in_loop': r'for\s*\([^)]*\)\s*\{[^}]*\w+\s*\+=',
+            # Matches string concatenation with += outside loops (potential O(n²) if used repeatedly)
+            'string_concat_repeated': r'\w+\s*\+=\s*(?:\w+|["\'])',
+            # Matches regex compilation that could be pre-compiled
+            'regex_not_precompiled': r'/[^/\n]+/[gim]*'
         }
         
         js_analysis = []
@@ -216,11 +222,27 @@ class DomainOrganizer:
                         'examples': matches[:3]  # First 3 examples
                     }
             
-            # Detect performance issues
+            # Detect performance issues with context
             perf_detected = {}
             for issue, pattern in performance_patterns.items():
-                if re.search(pattern, code, re.DOTALL):
-                    perf_detected[issue] = True
+                matches = re.findall(pattern, code, re.DOTALL)
+                if matches:
+                    perf_detected[issue] = {
+                        'count': len(matches),
+                        'found': True
+                    }
+                    # Add specific examples for critical issues
+                    if issue == 'regex_in_loop' and matches:
+                        # Extract the actual regex pattern
+                        regex_matches = re.findall(r'/([^/\n]+)/[gim]*', code)
+                        if regex_matches:
+                            perf_detected[issue]['examples'] = regex_matches[:2]  # First 2 patterns
+                    elif issue == 'string_concat_repeated' and len(matches) > 3:
+                        # Only flag if used more than 3 times (likely in a loop or repeated operation)
+                        perf_detected[issue]['likely_performance_issue'] = True
+                    elif issue == 'string_concat_in_loop':
+                        # This is always a performance issue
+                        perf_detected[issue]['severity'] = 'high'
             
             # Function declarations
             function_declarations = re.findall(r'function\s+(\w+)', code)
