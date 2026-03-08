@@ -363,6 +363,29 @@ When working with file operations:
 
 ## Performance Best Practices
 
+### JavaScript Performance
+
+**CRITICAL**: For comprehensive JavaScript performance optimization, use the `ipa-javascript-es5-analyzer` skill.
+
+**Key Performance Patterns**:
+
+1. **Array Accumulation vs String Concatenation**
+   - String concatenation in loops: O(n²) complexity
+   - Array accumulation: O(n) complexity
+   - Real-world impact: 50-833x speedup for large datasets
+
+2. **Lookup Maps for Repeated Searches**
+   - Nested loops: O(n²) complexity
+   - Lookup maps: O(n) complexity
+   - Example: 5M comparisons → 6K operations
+
+3. **Hoist Invariant Calculations**
+   - Calculate once outside loop
+   - Reuse result inside loop
+   - Prevents redundant computation
+
+**Reference**: See `.kiro/skills/ipa-javascript-es5-analyzer/` for complete performance optimization guide.
+
 ### Node Optimization
 
 - **Minimize Nodes**: Fewer nodes = better performance

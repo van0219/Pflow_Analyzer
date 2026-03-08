@@ -5,6 +5,11 @@ IPA Data Builder Helper - Prevents Duplicate Action Items
 This helper ensures that recommendations and coding_standards use EXACT same text
 from violations array, preventing duplicate action items in the report.
 
+AUTOMATIC FILTERING: Filters out informational findings that are not actual violations:
+- Entries with "No violations found", "No action required", "Compliant", etc.
+- Low severity entries with "None" impact
+- Informational findings that don't require action
+
 Usage:
     from ReusableTools.IPA_CodingStandards.build_ipa_data_helper import build_ipa_data_from_violations
     
@@ -21,6 +26,71 @@ Usage:
         key_findings=key_findings_array
     )
 """
+
+
+def is_actual_violation(violation):
+    """
+    Filter out non-issue entries from violations.
+    
+    Returns False if the violation is informational only (not an actual issue).
+    
+    Args:
+        violation: Violation dict with issue, recommendation, severity, impact fields
+    
+    Returns:
+        True if actual violation requiring action, False if informational
+    """
+    issue = violation.get('issue', '').lower()
+    recommendation = violation.get('recommendation', '').lower()
+    current_state = violation.get('current_state', '').lower()
+    severity = violation.get('severity', '')
+    impact = violation.get('impact', '')
+    priority_score = violation.get('priority_score', 50)
+    testing_notes = violation.get('testing_notes', '').lower()
+    code_example = violation.get('code_example', '').lower()
+    
+    # Filter out informational findings
+    informational_phrases = [
+        'no violations found',
+        'no action required',
+        'compliant',
+        'correctly set',
+        'appropriate',
+        'properly defined',
+        'informational finding only',
+        'good practice maintained',
+        'good practice -',
+        'continue current',
+        'continue using',
+        'continue to avoid',
+        'n/a - no violations',
+        'no violations detected',
+        'informational finding',
+        'no hardcoded values',
+        'no sql queries',
+        'no error-prone activities',
+        'current architecture is acceptable'
+    ]
+    
+    # Check if issue, recommendation, current_state, testing_notes, or code_example contains informational phrases
+    for phrase in informational_phrases:
+        if (phrase in issue or phrase in recommendation or phrase in current_state or 
+            phrase in testing_notes or phrase in code_example):
+            return False
+    
+    # Filter out Low severity with None or N/A impact
+    if severity == 'Low' and (impact in ['None', 'N/A', '']):
+        return False
+    
+    # Filter out entries with priority_score of 0 (informational only)
+    if priority_score == 0:
+        return False
+    
+    # Filter out entries where recommendation starts with "Continue" (informational)
+    if recommendation.startswith('continue '):
+        return False
+    
+    return True
 
 
 def build_ipa_data_from_violations(
@@ -45,6 +115,8 @@ def build_ipa_data_from_violations(
     
     This ensures recommendations and coding_standards use EXACT same text,
     preventing duplicate action items.
+    
+    Automatically filters out informational findings that are not actual violations.
     
     Args:
         violations: List of violation dicts with keys:
@@ -74,6 +146,14 @@ def build_ipa_data_from_violations(
         best_practices = []
     if technical_deep_dive is None:
         technical_deep_dive = {'architecture': {'pattern': '', 'components': [], 'strengths': [], 'weaknesses': []}}
+    
+    # Filter out non-issue entries
+    original_count = len(violations)
+    violations = [v for v in violations if is_actual_violation(v)]
+    filtered_count = original_count - len(violations)
+    
+    if filtered_count > 0:
+        print(f"   → Filtered out {filtered_count} informational entries (not actual violations)")
     
     # Calculate summary metrics
     summary_metrics = {

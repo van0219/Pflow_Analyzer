@@ -250,7 +250,8 @@ Get-ChildItem Temp -File | Where-Object { $_.Name -ne '.gitkeep' } | Remove-Item
 
 When user selects batch mode:
 
-- Process each LPD sequentially (one at a time)
+- Process each LPD sequentially (one at a time) - same workflow as single process mode
+- Each process goes through complete Phases 0-6 independently
 - Preprocessing automatically cleans Temp folder before each process
 - Generate individual report for each process
 - Show progress: "Processing 2 of 3: InvoiceApproval_APIA_NONPOROUTING_Reject.lpd"
@@ -259,10 +260,19 @@ When user selects batch mode:
 
 **Batch Processing Best Practices:**
 
-- Sequential processing: One process completes fully before starting the next
+- Sequential processing: One process completes fully (Phases 0-6) before starting the next
 - Independent reports: Each process gets its own Excel report
 - Error isolation: If one process fails, others continue
 - Progress tracking: Clear indication of which process is being analyzed
+- Same quality: Each process receives full AI analysis, not abbreviated
+
+**Critical: Batch = Multiple Single Runs**
+
+Batch mode is NOT a different workflow. It's simply running single process mode N times in sequence. Each process gets:
+- Full Phase 0 preprocessing
+- Complete AI analysis (Phases 1-5)
+- Full Phase 6 report assembly
+- Individual Excel report output
 
 **Example Interaction:**
 
@@ -349,6 +359,10 @@ Proceed? (yes/no) → User confirms "yes"
 
 ### Step 7: Phase 6 - Report Assembly (Python Only - No AI)
 
+- **Add rule_name**: Automatically map rule_id to rule_name from project standards
+  - Helper script: `Temp/add_rule_names.py` (auto-created if needed)
+  - Prevents KeyError in build_ipa_data_helper.py
+  - Runs automatically before merge
 - Merge: All analysis JSON outputs
 - **Enrich Activities**: Add metadata flags (`has_javascript`, `has_sql`, `has_error_handling`) to each activity
   - Loads domain files (not analysis files) to get raw activity data

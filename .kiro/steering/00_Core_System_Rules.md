@@ -20,6 +20,7 @@ inclusion: always
 - [Code Standards](#code-standards)
   - [Python Conventions](#python-conventions)
   - [IPA JavaScript ES5](#ipa-javascript-es5)
+  - [Compass SQL](#compass-sql)
 - [Knowledge Management](#knowledge-management)
   - [Steering File Organization](#steering-file-organization)
   - [Keyword-Based Context Loading](#keyword-based-context-loading)
@@ -266,6 +267,19 @@ if __name__ == "__main__":
 
 ### IPA JavaScript ES5
 
+**SKILL AVAILABLE**: For comprehensive JavaScript analysis, code review, optimization, and debugging, use the `ipa-javascript-es5-analyzer` skill.
+
+**Activation**: 
+- Command: `/ipa-javascript-es5-analyzer`
+- Keywords: "JavaScript", "ES5", "IPA JavaScript", "JavaScript help"
+
+**Capabilities**: 
+- Code review and ES5 compliance validation
+- JavaScript creation and optimization
+- Debugging and troubleshooting
+- Best practices guidance
+- Performance analysis
+
 **CRITICAL**: IPA JavaScript nodes execute in ES5 environment. Modern syntax causes immediate runtime errors.
 
 **IPA Start Node Global Variables:**
@@ -322,7 +336,26 @@ transformImport(ImportFile, FileName);
 
 **Production Safety Patterns:**
 
-1. **Floating Point Comparison** - Always round before comparison:
+1. **String Concatenation in Loops** - Use array accumulation:
+
+   ```javascript
+   // ❌ BAD: O(n²) complexity
+   var result = "";
+   for (var i = 0; i < 1000; i++) {
+       result += data[i] + "
+";
+   }
+   
+   // ✅ GOOD: O(n) complexity
+   var resultArray = [];
+   for (var i = 0; i < 1000; i++) {
+       resultArray.push(data[i]);
+   }
+   var result = resultArray.join("
+");
+   ```
+
+2. **Floating Point Comparison** - Always round before comparison:
 
    ```javascript
    var roundedSum = roundToDecimals(sumQty, ROUND_DECIMALS);
@@ -346,6 +379,61 @@ transformImport(ImportFile, FileName);
    }
    var unitCost = extendedAmount / originalQuantity;
    ```
+
+### Compass SQL
+
+**SKILL AVAILABLE**: For comprehensive Compass SQL analysis, query optimization, and validation, use the `compass-sql-analyzer` skill.
+
+**Activation**: 
+- Command: `/compass-sql-analyzer`
+- Keywords: "Compass SQL", "SQL query", "Data Fabric query", "SQL analysis"
+
+**Capabilities**: 
+- Syntax validation (Compass SQL compliance)
+- Performance analysis (pagination, CAST usage, JOIN optimization)
+- Durability assessment (error handling, connection management)
+- Flexibility evaluation (parameterization, reusability)
+- Query optimization recommendations
+- Improved code generation
+
+**CRITICAL**: Compass SQL is NOT standard SQL. It's a dialect specific to Infor Data Fabric with unique syntax and limitations.
+
+**Key Compass SQL Patterns:**
+
+1. **Pagination Pattern** - Stateful pagination using query ID:
+   ```javascript
+   // InitQuery → GetStatus → GetResult loop
+   // Pagination via offset parameter, NOT SQL LIMIT clause
+   offset = 0;
+   limit = 1000;
+   // Query uses offset in API call, not in SQL
+   ```
+
+2. **Data Type Casting** - Use CAST for type conversions:
+   ```sql
+   CAST(field AS VARCHAR(50))
+   CAST(amount AS DECIMAL(15,2))
+   ```
+
+3. **JOIN Optimization** - Prefer INNER JOIN over implicit joins:
+   ```sql
+   -- GOOD
+   SELECT * FROM table1 t1
+   INNER JOIN table2 t2 ON t1.id = t2.id
+   
+   -- AVOID
+   SELECT * FROM table1 t1, table2 t2
+   WHERE t1.id = t2.id
+   ```
+
+**Common Mistakes:**
+
+- Flagging Compass API queries for missing LIMIT clause (pagination is in the loop, not the query)
+- Using standard SQL syntax not supported by Compass
+- Not handling query timeout scenarios
+- Missing error handling for API failures
+
+**Reference**: See `.kiro/steering/06_Compass_SQL_CheatSheet.md` for complete syntax guide and `.kiro/skills/compass-sql-analyzer/` for skill implementation.
 
 ## Knowledge Management
 

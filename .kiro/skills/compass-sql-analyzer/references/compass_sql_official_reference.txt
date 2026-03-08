@@ -1,0 +1,927 @@
+=== CHAPTER 11: COMPASS SQL REFERENCE ===
+Source: Infor Data Fabric User Guide
+Pages: 240-271
+
+--- Page 240 ---
+Chapter  11: Compass  SQL  Reference
+Each  SQL  query  is based  on a single  JSON  or DSV  custom  document.
+The  object  names  are not case-sensitive.  For example,  an object  schema  named  Customer  may  be queried
+as Customer  or customer.
+Property  names  are case-sensitive.  For example,  a property  name  of ProductID  must  be selected  in a query
+as “select  ProductID”.
+Use  double  quotes  if the object  name  or property  name  includes  spaces.  Double  quotes  are not required  if
+the object  or property  name  includes  underscores.  Object  or property  names  that  begin  with  a digit  must  be
+enclosed  within  double  quotes.  Enclose  property  names  that  are SQL  reserved  words  with  double  quotes.
+Query  structure
+This  section  describes  how  a query  is structured  to retrieve  data  or information.
+SELECT
+Use  SELECT  to select  values  from  data  objects  stored  in the Data  Lake .
+Each  value  that  is specified  in a SELECT  is either:
+• A property  that  is defined  in the metadata  for the data  object
+• A literal  value
+• A calculated  value  or expression
+The  results  are represented  in rows  and  columns.
+Data  Lake  is not a traditional  transactional  database.  Data  Lake  stores  every  variation,  or version,  of a record.
+Historic  data  is available,  and  historic  versions  of data  is available.  By default,  a query  retrieves  the highest
+variation  of a record  that  is not tagged  as deleted.
+See  Variation  handling  on page  223.
+In the examples  that  are provided,  object  represents  the Data  Catalog  object,  such  as a database  table.
+Property  represents  the Data  Catalog  object  property,  such  as a table  column.
+The  query  structure  follows  Microsoft  SQL  Server.
+Infor  Data  Fabric  User  Guide  | 240
+ Compass  SQL  Reference
+
+--- Page 241 ---
+Syntax
+SELECT one or more properties,  expressions,  or literals  FROM object 
+WHERE filter condition(s)
+GROUP BY expression
+HAVING filter condition(s)
+ORDER BY expression  [ ASC | DESC ]
+FROM
+Use  a FROM  clause  to specify  the data  objects  or subquery  from  which  the selected  values  are stored  or
+derived.
+Compass  queries  may  include  data  from  more  than  one  data  object.  See  query  functionality  for JOIN  and
+Subqueries  for information.
+WHERE
+Use  a WHERE  clause  to specify  filter  conditions  on which  to base  the results.  Most  Compass  queries  should
+include  a WHERE  clause  to limit  the query  results.
+Queries  executed  through  the Data  Lake  Compass  API endpoint  do not limit  query  results.  Therefore,  a query,
+by default,  returns  all data.
+You  can  use Data  Lake  as a source  of data  to populate  a data  warehouse  or a data  store.  It is common  to use
+initial  load  and  incremental  load  logic.  The  initial  load  retrieves  all data  from  Data  Lake . Subsequent  queries
+retrieve  incremental  data,  or data  loaded  since  the last  extract.  You  can  use the lastmodified  timestamp  on
+the WHERE  clause  of queries  to retrieve  incremental  data.
+See  Queries  for incremental  data  loads  on page  211.
+Note:  Queries  executed  through  the Compass  user  interface  limit  results  to 10,000  rows.
+GROUP  BY
+Use  a GROUP  BY to specify  properties  or expressions  on which  to group  the results.
+If the group  by contains  an expression,  the expression  must  be in the SELECT  clause  as well.  GROUP  BY does
+not support  aggregation  or windows  expressions.  GROUP  BY references  must  be property  names;  alias  cannot
+be used.
+HAVING
+Use  HAVING  to specify  conditions  to filter  the results.
+Infor  Data  Fabric  User  Guide  | 241
+ Compass  SQL  Reference
+
+--- Page 242 ---
+HAVING  is commonly  used  with  a SELECT  statement  for an aggregated  result  set.
+ORDER  BY
+Use  ORDER  BY to sort  the result  set columns.  Use  ASC  or DESC  to specify  ascending  or descending  order.
+Property  names  and  aliases  may  be used.  In Compass  data  storage,  string  values  are case-sensitive,  which
+affects  the result  order.
+UNION  | UNION  ALL
+Use  a UNION  to union  data  objects  into  a common  result  set.
+Each  selection  in the union  must  have  the same  number  of selected  properties,  and  the properties  must  have
+the same  data  types.  Use  a UNION  ALL  to retrieve  all values,  including  duplicates.
+Syntax
+Select * from object1 UNION
+Select * from object2
+EXCEPT
+Use  EXCEPT  to return  the results  of the first  query  that  are not included  in the results  of the second  query.
+Each  selection  must  have  the same  data  types.
+Syntax
+Select * from object1 EXCEPT
+Select * from object2
+INTERSECT
+Use  INTERSECT  to return  only  the rows  that  are in the results  of both  the first  and  second  queries.  Each
+selection  must  have  the same  data  types.
+Syntax
+Select * from object1 INTERSECT
+Select * from object2
+Infor  Data  Fabric  User  Guide  | 242
+ Compass  SQL  Reference
+
+--- Page 243 ---
+WITH
+Use  WITH  to define  a common  table  expression.
+The  common  table  expression  is used  above  the main  SELECT  clauses  of the query.  The  reason  for this  is that
+the properties  defined  in the common  table  expression  are referenced  in subsequent  SELECT  statements  for
+the overall  query.
+Syntax
+WITH commontablename  AS
+(SELECT property1  FROM object1)
+SELECT property1  FROM commontablename
+SELECT  ALL
+Use  select  * to retrieve  all values  from  the Data  Objects  referenced  in the FROM  clause  of the query  or subquery.
+Syntax
+SELECT * FROM object
+SELECT  LIMIT  number  of rows
+Use  the LIMIT  clause  to select  the number  of records  from  a result  set.  Use  an integer  to specify  the number
+of rows  in the result  set.
+The  functionality  is based  on Apache  Spark  syntax.
+Syntax
+SELECT * FROM object LIMIT number_of_rows
+SELECT  TOP  number  of rows
+Use  the TOP  clause  to select  the number  of records  from  a result  set.  Use  an integer  to specify  the number  of
+rows  in the result  set.  TOP  PERCENT  and  TOP  WITH  TIES  are not supported.
+Syntax
+SELECT TOP number_of_rows  * FROM object
+Infor  Data  Fabric  User  Guide  | 243
+ Compass  SQL  Reference
+
+--- Page 244 ---
+SELECT  DISTINCT
+Use  DISTINCT  to remove  duplicate  values  from  the result  set.  Use  a property  value  to specify  the property  in
+the data  object  on which  duplicate  values  are based.
+Syntax
+SELECT DISTINCT  property1  FROM object
+Note:  The  values  in Data  Lake  are case-sensitive.  The  same  values  can be displayed  in the results,  even  though
+the only  difference  is the capitalization.  For example,  values  ‘ABC’  and  ‘abc’  are different  and  both  values  are
+returned  in a select  distinct  query.  To perform  a select  distinct  on case-insensitive  values,  use upper  or lower
+functions  to convert  values  to upper-  or lower-case  characters.
+SUBQUERIES
+Subqueries  are used  to incorporate  more  than  one  SELECT  in a query.  The  second,  or subsequent  SELECT
+statements,  may  be in the main  SELECT,  the FROM  or the WHERE  and  HAVING  clauses.
+A subquery  in the FROM  clause  is referred  to as an inline  view.  Compass  queries  do not support  all alias
+functionality  for inline  views.  For example,  a property  alias  in an inline  view  cannot  have  a second  alias  in the
+outer  query.
+Compass  has limited  support  for correlated  subqueries.
+JOINS
+Joins  provide  a method  to query  data  from  more  than  one  object.  The  joined  objects,  or tables,  are joined
+based  on a relationship  defined  in the query.
+Compass  queries  supports  joins  for different  object  formats.  You  can  define  a query  joining  data  from  JSON
+objects  and  DSV  objects.
+Syntax
+SELECT object1.property1,  object1.property2,  object2.property1,  object2.prop  erty2, object2.prop
+erty3 
+FROM object1 
+[ INNER JOIN | OUTER JOIN | JOIN | LEFT INNER JOIN | LEFT OUTER JOIN | 
+RIGHT JOIN | CROSS JOIN] object2 
+ON object1.property1=object2.property1
+Infor  Data  Fabric  User  Guide  | 244
+ Compass  SQL  Reference
+
+--- Page 245 ---
+Select  individual  properties  from  an object
+Select  individual  properties  from  the data  object.  Object  names  are not case-sensitive.  Property  names  are
+case-sensitive.
+In the example  that  is mentioned  earlier,  “property1”  and  “property2”  are property  names.  The  case  that  is
+used  in the query  must  match  the case  of the property  names  in the Data  Catalog’s  metadata  definition.
+The  result  of a query  without  a WHERE  lastModified  condition  are the "rows"  of data  in a single  payload  object.
+The  rows  correspond  to the tuples  in the latest  object  loaded  into  the Data  Lake.  In BIRST  the properties  are
+returned  in alphabetical  order,  regardless  of the order  in which  they  are specified  in the select  statement.
+Syntax
+SELECT property1,  property2  from object
+Select  individual  properties  using  aliases  from  an object
+Select  individual  properties  from  the data  object  and  use aliases.  Enclose  aliases  in double  quotes  or square
+brackets.
+We recommend  that  you  use double  quotes  because  they  are supported  for all property  and  object  names.
+Square  brackets  are not supported  for names  that  include  all special  characters,  names  that  are reserved
+words,  or names  that  begin  with  a digit.
+Select  individual  properties  from  the data  object  and  use aliases.  Enclose  aliases  in square  brackets  or double
+quotes.
+Syntax
+SELECT property1  as alias1, property2  as alias2 from object
+Incorporate  comments  in a query
+Enclose  comments  within  /* and  */ characters.
+Syntax
+/*query that uses aliases*/  
+SELECT property1  as alias1, property2  as alias2 from object
+Infor  Data  Fabric  User  Guide  | 245
+ Compass  SQL  Reference
+
+--- Page 246 ---
+Select  properties  and  include  the Data  Object  load  timestamp
+Select  the lastModified  column  in the query  to return  the last  modified  datetime  of the data  object.
+The  last  modified  datetime  is the timestamp,  in UTC,  in which  the message  containing  the “row”  was  posted
+to Data  Lake . lastModified  is case-sensitive.  The  last  modified  timestamp  is a property  of the data  object  itself.
+It is not a property  inside  of the object  payload.
+Syntax
+SELECT property1,  property2,  infor.lastModified()  from object
+Select  records  based  on the last  modified  timestamp
+Select  records  using  the last  modified  datetime  to limit  the selection  to data  posted  to the Data  Lake  within
+a specific  time  frame.
+The  lastModified  value  represents  the timestamp,  in UTC,  for the datetime  in which  the data  object  was  added
+to the Data  Lake . This  syntax  is useful  because  you  can  append  the lastModified  condition  to retrieve  data
+objects  loaded  into  the Data  Lake  based  on the object's  load  time.  This  is the main  difference  between  selecting
+objects  using  the standard  Birst  object  selection  and  a query-based  selection.
+The  timestamp  is a property  of the object  itself.  It is not a property  inside  of the object  payload.  Through  Birst ,
+you  can  setup  a variable  to define  the timestamp  value,  which  can  be used  in place  of specifying  a timestamp
+value.  Enclose  the timestamp  value,  or the variable,  in single  quotes.  The  lastModified  timestamp  format  is
+a timestamp  in UTC.  The  timestamp  format  is: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'  (For  example:
+2021-07-16T19:23:51Z)
+A last  modified  reference  in a query  expression’s  WHERE  clause  can  use these  operators:
+• =
+• >=
+• <=
+• BETWEEN
+Syntax
+SELECT ... from object where infor.lastModified()  >= 'Timestamp  in UTC';
+Select  all records
+The  select  all syntax  is not recommended.  The  select  all syntax  allows  the Birst  query  to retrieve  all properties
+from  the object.
+This  functionality  is useful  when  the object  properties  are updated  over  time.  If the data  object  definition
+changes  over  time,  it may  not match  the Birst  table  schema  into  which  the data  is imported.
+Infor  Data  Fabric  User  Guide  | 246
+ Compass  SQL  Reference
+
+--- Page 247 ---
+Syntax
+SELECT * FROM object
+Select  the Data  Catalog  Locale  Selections
+The  query  returns  the locale  selections  that  are defined  in the Data  Catalog  Locale  Selection  function.
+The  CODE  is the locale  code.  The  POSITION  is the position  number  of the locale.  The  SEARCH_LIST  values  are
+the locales  used  by the query  to select  localized  values.  The  search  list locales  are searched  in priority  order
+until  a value  is found.  The  DEFAULTING  value  combines  two  properties.  The  Default  value  designates  the
+locale  code  of the default  locale.  The  default  locale  is automatically  assigned  to the locale  in position  1. The
+NoFallback  value  denotes  that  if a localized  value  is not found  in the data,  the position  is empty.  The  NoFallback
+option  is automatically  assigned.
+Syntax
+SELECT * from datacatalog.locale_selection
+Select  localized  values  for a property
+You  can  use the locale  function  to select  localized  values  from  the source  object.
+The  locale  function  is case-sensitive,  and  all letters  are lowercase.  The  number  of positions  defines  the number
+of numbered  columns  that  are returned  in the results.  The  locale  function  returns  localized  values  that  are
+based  on the locale  selections.
+The  query  results  are the property  name  with  a position  number  suffix,  such  as property_1,  property_2,
+property_3.  The  values  that  are populated  in the positions  are the localized  values  matching  the locale  code,
+or a search  list locale  code,  for each  position.
+If the data  object  does  not contain  localized  values,  then  the property’s  string  value  is returned  in position1.The
+remaining  position  columns  are empty.
+Syntax
+SELECT locale(localizedproperty,  number of positions)  FROM object
+Example  1
+The  Data  Catalog  has five  locale  selections:  1 for en_US , 2 for es_ES , 3 for fr_FR , 4 for cz_cz , and  5 for nl_NL . If
+five  positions  are selected,  then  these  values  are returned:
+• greeting_1  for English
+• greeting_2  for Spanish
+• greeting_3  for French
+Infor  Data  Fabric  User  Guide  | 247
+ Compass  SQL  Reference
+
+--- Page 248 ---
+• greeting_4  for Czech
+• greeting_5  for Dutch
+Syntax
+SELECT Id, locale(greeting,5)  from common_greetings
+This  table  shows  the common  greetings  that  correspond  for each  value  returned:
+greeting_5 greeting_4 greeting_3 greeting_2 greeting_1 Id
+hallo ahoj bonjour hola hello 1
+Example  2
+In this  example,  the Data  Catalog  has only  three  locale  selections:  1 for en_US , 2 for fr_FR , and  3 for es_ES . If
+five  positions  are selected,  then  these  values  are returned:
+• greeting_1  for English
+• greeting_2  for Spanish
+• greeting_3  for French  greeting_4  and  greeting_5  is null  because  no locales  are defined  for positions  4
+and  5.
+Syntax
+SELECT Id, locale(greeting,5)  from common_greetings
+This  table  shows  the common  greetings  that  correspond  for each  value  returned:
+greeting_5 greeting_4 greeting_3 greeting_2 greeting_1 Id
+bonjour hola hello 1
+Select  localized  values  for a property  and  autofill  unused
+property  positions
+The  locale  function  is used  to select  localized  values  from  the source  object.  The  locale  function  is
+case-sensitive,  and  all letters  are lower-case.  The  third  parameter,  'autofill',  is optional.  This  parameter  is
+used  to automatically  populate  the unused  locale  positions  with  the default  locale  value  returned  in position
+1.
+Note:  The  'autofill'  parameter  is case-insensitive  but must  be a literal,  enclosed  with  single  quotes.
+Syntax
+SELECT locale(localizedproperty,  number of positions,  'autofill' ) FROM object
+Infor  Data  Fabric  User  Guide  | 248
+ Compass  SQL  Reference
+
+--- Page 249 ---
+Example
+In this  example,  the Data  Catalog  has only  three  locale  selections:  1 for en_US,  2 for fr_FR,  and  3 for es_ES.  If
+five  positions  are selected,  these  values  are returned:
+• greeting_1  for English
+• greeting_2  for Spanish  •
+• greeting_3  for French  greeting_4  and  greeting_5  return  the default  value  in position  1 for English  because
+the value  is not defined.
+SELECT Id, locale(greeting,5,  'autofill' ) from common_greetings
+This  table  shows  an example:
+greeting_5 greeting_4 greeting_3 greeting_2 greeting_1 Id
+hello hello bonjour hola hello 1
+Select  localized  values  for a property  that  is not localized
+You  can  use the locale  function  to select  localized  values  from  the source  object.  The  number  of positions
+defines  the total  number  of numbered  columns  returned  in the results.  The  property  is not defined  as a
+localized  property  in the metadata.
+The  result  is the position  number  columns.  The  single  string  value  found  in the data  object  is returned  as the
+value  of position_1.  The  remaining  position  columns  are empty.
+Syntax
+SELECT locale(property,  number of positions)  FROM object
+Select  a localized  property  without  the locale  function
+If the locale  function  is not used,  then  a single  value,  in the default  locale,  is returned.  The  default  locale  is
+the locale  in position  1 of the Locale  Selections.
+If the data  does  not contain  a localized  value  for the default  locale,  or the locale’s  search  list locale  codes,
+the value  is empty.
+Syntax
+SELECT localizedproperty  FROM object
+Infor  Data  Fabric  User  Guide  | 249
+ Compass  SQL  Reference
+
+--- Page 250 ---
+Expressions  and  comparison  functions
+This  section  describes  the expression  and  comparison  functions  that  can  be used  in your  queries.
+CASE
+CASE  expressions  are used  to evaluate  a list of conditions  and  return  one  of multiple  values.
+Syntax
+CASE condition_expression
+     WHEN expression_value  THEN result_expression
+     WHEN expression_value  THEN result_expression
+     ELSE result_expression  END
+COALESCE
+Use  COALESCE  to evaluate  arguments  in order  from  left to right.  The  result  is the first  non-null  value.
+The  COALESCE  function  requires  a minimum  of two  arguments.  The  data  type  of the result  is based  on the
+data  type  of the arguments.
+Syntax
+COALESCE (argument1,  argument2,  argument3)
+ISNULL
+Use  ISNULL  to specify  a substitute  value  if the first  expression  is null.
+If the expression_value  is not NULL,  it is returned.  If it is NULL,  the substitute  value  is returned.
+Syntax
+ISNULL(expression,  substitute_value)
+GREATEST
+Use  GREATEST  to return  the highest  value  from  a list of arguments.  The  data  type  of the result  is based  on
+the data  type  of the arguments.
+Infor  Data  Fabric  User  Guide  | 250
+ Compass  SQL  Reference
+
+--- Page 251 ---
+Syntax
+GREATEST(argument1,  argument2,  argument3)
+LEAST
+Use  LEAST  to return  the lowest  value  from  a list of arguments.  The  data  type  of the result  is based  on the data
+type  of the arguments.
+Syntax
+LEAST(argument1,  argument2,  argument3)
+NVL
+Use  NVL  to evaluate  an expression  and  return  a substitute  value  if the expression  is NULL.  The  first  parameter
+is the expression.  The  second  parameter  is the substitute  value.
+Syntax
+NVL(expression,  substitute_value)
+NVL2
+Use  NVL2  to evaluate  an expression  and  determine  if the value  is NULL  or not NULL.
+Define  a substitute  value  for a not NULL  condition  and  a substitute  value  for a NULL  result.  The  first  parameter
+is the expression,  the second  parameter  is the substitute  value  for a not NULL  condition.  The  third  parameter
+is the substitute  for a NULL  condition.  The  second  and  third  parameters  must  be the same  data  type.
+Logical  and  comparison  operators
+These  operators  are supported:
+• AND
+• BETWEEN
+• IS NULL
+• IS NOT  NULL
+• LIKE
+Infor  Data  Fabric  User  Guide  | 251
+ Compass  SQL  Reference
+
+--- Page 252 ---
+• NOT  LIKE
+• OR
+• GREATER  THAN  using  the > character
+• GREATER  THAN  OR EQUAL  TO using  the >= characters
+• LESS  THAN  using  the < character
+• LESS  THAN  OR EQUAL  TO using  the <= characters
+• ANY
+• ALL
+• SOME
+Do not use the syntax  of single  quotes  with  or without  spaces  to evaluate  NULL  and  NOT  NULL  conditions.
+This  query  syntax  produces  unreliable  results:
+• =''
+• =' ' <>''
+• <>' '
+Wildcard  characters  using  % and  _ are supported.  Wildcard  characters  using  [ ] and  [^ ] are not supported.
+Compass  data  values  are case-sensitive.  Values  ‘abc’  and  ‘ABC’  are not equal.
+Compass  queries,  in general,  compare  strings  to integers  and  vice  versa,  for comparisons  such  as WHERE
+order_number  = 123 or order_number=  '123'.
+String  functions
+This  section  describes  the string  functions  that  are supported.
+CHAR
+Use  CHAR  to return  the ASCII  character.  The  parameter  is an ASCII  character  code.  Compass  queries  supports
+a range  higher  than  the 255 ASCII  codes.
+Syntax
+CHAR(ascii_code)
+Example
+SELECT CHAR(115), CHAR(116), CHAR(117), CHAR(118)
+Result  : s,t,u,v
+Infor  Data  Fabric  User  Guide  | 252
+ Compass  SQL  Reference
+
+--- Page 253 ---
+CHARINDEX
+Use  CHARINDEX  to search  a character  string  expression  for a specified  string.  The  result  is the position  number
+of the string  in the original  expression.
+Syntax
+CHARINDEX(string_to_find,  string_to_search,  starting_position)
+Example
+Result:  10
+SELECT CHARINDEX( 'team','baseball  team')
+CONCAT
+Use  CONCAT  to concatenate  one  or more  values  into  a string.  Use  single  quotes  around  string  literals.  Use
+double  quotes  to enclose  property  names  that  begin  with  a digit  or have  spaces  or other  special  characters.
+Syntax
+CONCAT(property1,property1,expression)  as concatenatedstring
+CONCATENATION  USING  ||
+Use  || to concatenate  values.  If one  of the expressions  in a concatenation  is NULL,  the result  is NULL.
+Syntax
+string_expression  ||'-' || string_expression
+INSTR
+Use  INSTR  to return  the position  of the first  occurrence  of a substring  within  a string.  The  first  parameter  is
+the string  to search.  The  second  parameter  is the string  to find  within  the search  string.
+Syntax
+INSTR(string_to_search,  string_to_find)
+Infor  Data  Fabric  User  Guide  | 253
+ Compass  SQL  Reference
+
+--- Page 254 ---
+Example
+SELECT INSTR('baseball  team', 'team')
+Result:  10
+LEFT
+Use  LEFT  to return  the left characters  of a string  expression,  string  literal  or property  value.  The  second
+parameter,  integer_value,  is an integer  that  defines  the number  of leftmost  characters  to return.
+Syntax
+LEFT(stringproperty,integer_value)
+LEN
+Use  LEN  to return  the length,  or size,  of a string  expression.  The  value  excludes  trailing  spaces.  An empty
+string  returns  0 length.
+Syntax
+LEN(string_expression)
+LENGTH
+Use  LENGTH  to return  the length,  or size,  of a string  expression.  The  value  excludes  trailing  spaces.  An empty
+string  returns  0 length.
+Syntax
+LENGTH(string_expression)
+LPAD
+Use  LPAD  to pad  the left of a string  with  values  up to an overall  string  length.  The  first  parameter  are the
+padding  characters;  enclose  the characters  with  single  quotes.  The  second  parameter  is the string  expression.
+The  third  parameter  is the overall  length.
+Infor  Data  Fabric  User  Guide  | 254
+ Compass  SQL  Reference
+
+--- Page 255 ---
+Syntax
+LPAD('padding_characters' ,string_expression,  overall_length)
+LOWER
+Use  the LOWER  function  to convert  a character  string  to lowercase.
+This  function  is useful  because  values  in Compass  data  storage  are case-sensitive.  You  can  use the LOWER
+and  UPPER  functions  to convert  characters  to the same  case  for result  or comparison  purposes.
+Syntax
+LOWER(stringproperty)
+LTRIM
+Use  LTRIM  to trim,  or eliminate,  the leading  spaces  of a character  string  or to trim  specific  characters  from  a
+string.
+The  first  parameter  is the string  property  or value  to trim.  A second  optional  parameter,  the trim  string,  is the
+character  or characters  to trim  from  the left of the string.  If the second  parameter  is omitted,  leading  spaces
+are trimmed  from  the left side  of the string.
+The  trim  string  characters  do not have  to be in pattern  order;  each  character  is trimmed  individually.  Supported
+trim  string  characters  are 0-9,  a-z, A-Z,  spaces,  and  select  special  characters.  Not  all special  characters  are
+supported.
+Syntax
+LTRIM(stringproperty)
+LTRIM(stringproperty,  trim_string)
+Example
+SELECT LTRIM('  1234Baseball' ), LTRIM('  1234Baseball' ,'21 ')
+Result:  1234Baseball,  34Baseball
+REPLACE
+Use  REPLACE  to substitute  a string  for another.  The  first  parameter  is the string  expression.  The  second
+parameter  is the original  string  to search.  The  third  parameter  is the replacement  string.
+Infor  Data  Fabric  User  Guide  | 255
+ Compass  SQL  Reference
+
+--- Page 256 ---
+Syntax
+REPLACE(string_expression,  search_string,  substitute_string)
+RIGHT
+Use  RIGHT  to return  the right  characters  of a string  expression,  string  literal  or property  value.  The  second
+parameter,  integer_value,  is an integer  that  defines  the number  of characters  to the right  to return.
+Syntax
+RIGHT(stringproperty,integer_value)
+RPAD
+Use  RPAD  to pad  the right  of a string  with  values  up to an overall  string  length.  The  first  parameter  are the
+padding  characters;  enclose  the characters  with  single  quotes.  The  second  parameter  is the string  expression.
+The  third  parameter  is the overall  length.
+Syntax
+RPAD('padding_characters' ,string_expression,  overall_length)
+RTRIM
+Use  RTRIM  to trim,  or eliminate,  the trailing  spaces  of a character  string  or to trim  specific  characters  from  a
+string.
+The  first  parameter  is the string  property  or value  to trim.  A second  optional  parameter,  the trim  string,  is the
+character  or characters  to trim  from  the right  of the string.  If the second  parameter  is omitted,  trailing  spaces
+are trimmed  from  the right  side  of the string.
+The  trim  string  characters  do not have  to be in pattern  order;  each  character  is trimmed  individually.  Supported
+trim  string  characters  are 0-9,  a-z, A-Z,  spaces,  and  select  special  characters.  Not  all special  characters  are
+supported.
+Syntax
+RTRIM(stringproperty)
+RTRIM(stringproperty,  trim_string)
+Infor  Data  Fabric  User  Guide  | 256
+ Compass  SQL  Reference
+
+--- Page 257 ---
+Example
+SELECT RTRIM('Baseball    '), RTRIM('Baseball-2020' ,'-20')
+Result:  Baseball,  Baseball
+SUBSTR
+Use  SUBSTR  to return  a substring  of a string.  The  first  parameter  is the string  expression.  The  second  parameter
+is starting  position  for the substring.  The  third  parameter  is the number  of characters  for the substring.  The
+third  parameter  is optional.
+Syntax
+SUBSTR(string_expression,  start_position,  number_of_characters)
+Example
+SELECT SUBSTR('baseball  team', 10)
+Result:  team
+SUBSTRING
+Use  SUBSTRING  to return  a substring  or portion  of a string  expression.
+The  first  parameter  is the string  expression.  The  second  parameter  is the starting  position  for the substring.
+The  third  parameter  is the number  of characters  for the substring.
+Syntax
+SUBSTRING (string_expression,  start_position,  number_of_characters)
+Example
+SELECT SUBSTRING ('baseball  team', 10)
+Result:  team
+Infor  Data  Fabric  User  Guide  | 257
+ Compass  SQL  Reference
+
+--- Page 258 ---
+TRIM
+Use  TRIM  to trim,  or eliminate,  leading  and  trailing  spaces  from  a character  string.
+Syntax
+TRIM(stringproperty)
+UPPER
+Use  the UPPER  function  to convert  a character  string  to uppercase.
+The  UPPER  function  is useful  because  values  in Compass  data  storage  are case-sensitive.  You  can  use the
+LOWER  and  UPPER  functions  to convert  characters  to the same  case  for result  or comparison  purposes.
+Syntax
+UPPER(stringproperty)
+Mathematical  operators
+These  mathematical  operators  are supported:
+• Addition  using  the + character
+• Subtraction  using  the - character
+• Multiplication  using  the * character
+• Division  using  the / character
+• Percentage  using  the % character
+You  may  also  use + to concatenate  values,  such  as strings.
+Mathematical  functions
+This  section  describes  the numeric  functions  that  are supported.
+ABS
+Use  ABS  to return  the absolute,  or positive  value  of a numeric  expression  value.
+Infor  Data  Fabric  User  Guide  | 258
+ Compass  SQL  Reference
+
+--- Page 259 ---
+Syntax
+ABS(numeric_expression)
+CEIL
+Use  CEIL  to return  the smallest  integer  greater  than  or equal  to the numeric  expression  value.
+Syntax
+CEIL(numeric_expression)
+CEILING
+Use  the CEILING  function  to return  the smallest  integer  equal  to or higher  than  the number  value.
+Syntax
+CEILING(numeric_expression)
+FLOOR
+Use  the FLOOR  function  to return  the highest  integer  equal  to or less  than  the number  value.
+Syntax
+FLOOR(number_value)
+INT
+Use  INT to cast  a number  to an integer.  The  INT function  rounds  down.  If a value  is not a valid  number,  the
+function  returns  NULL.
+Syntax
+INT(numeric_expression)
+Infor  Data  Fabric  User  Guide  | 259
+ Compass  SQL  Reference
+
+--- Page 260 ---
+ISNUMERIC
+Use  ISNUMERIC  to determine  if a value  or expression  is numeric.  If the expression  is numeric,  the result  is 1.
+If the result  is not numeric,  the value  is 0.
+Syntax
+ISNUMERIC(expression)
+POWER
+Use  POWER  to raise  one  number  to the power  of another  number.  The  first  argument  is the base  value.  The
+second  argument  is the exponent  to which  to raise  the base  number.
+If the first  argument  is a decimal,  Compass  casts  the value  to decimal  (38,15)  before  it is raised.  This  may
+result  in different  results  than  SQL  Server:  In SQL  Server,  the value  is cast  to the nearest  decimal  value  for the
+scale  and  precision  of the argument.
+If the result  of the POWER  function  is too large  to be cast,  an error  is returned.
+Syntax
+POWER(base_number,  exponent_number)
+ROUND
+Use  ROUND  to round  a numeric  value  to the specified  number  of decimal  places.
+Syntax
+ROUND(number_value,  number_of_decimal_places)
+Signed  expression
+Use  a signed  expression  to convert  a value  or numeric  expression  from  negative  to positive  or positive  to
+negative.
+Syntax
+SELECT –(numeric_expression)
+Infor  Data  Fabric  User  Guide  | 260
+ Compass  SQL  Reference
+
+--- Page 261 ---
+TRUNCATE
+Use  the TRUNCATE  function  to truncate  a numeric  value  to the specified  number  of decimal  places.
+Syntax
+TRUNCATE(number_value,  number_of_decimal_places)
+Aggregation  functions
+This  section  describes  the aggregation  functions  that  are supported.
+AVG
+Use  AVG  to average  the results  of numeric  values  in a result.
+Syntax
+AVG(numeric_expression)
+COUNT
+Use  COUNT  to count  the number  of records  returned  in a query.  COUNT  may  also  be used  with  COUNT
+DISTINCT  to count  the number  of unique  rows.
+Syntax
+COUNT(expression)
+COUNT(DISTINCT  expression)
+MAX
+Use  MAX  to return  the highest,  or maximum  value,  from  a set of values.  MAX  does  not support  Boolean
+properties.
+Syntax
+MAX(expression)
+Infor  Data  Fabric  User  Guide  | 261
+ Compass  SQL  Reference
+
+--- Page 262 ---
+MIN
+Use  MIN  to return  the lowest,  or minimum  value,  from  a set of values.  MIN  does  not support  Boolean  properties.
+Syntax
+MIN(expression)
+SUM
+Use  SUM  to add  numeric  values  and  return  a single  value.
+Syntax
+SUM(numeric_expression)
+Datetime  functions
+Compass  queries  base  all Data  Lake  timestamp  data  in the UTC  timezone.  Queries  that  use timestamp  values
+are always  considered  in UTC.
+ADD_MONTHS
+Use  ADD_MONTHS  to add  or subtract  months  from  a date.  The  first  parameter  is the date  expression.  The
+second  parameter  is the number  of months  to add  or subtract  from  the date.  This  function  is based  on Spark.
+Syntax
+ADD_MONTHS(date_expression,  number_of_months)
+CURRENT_DATE
+Use  the CURRENT_DATE  function  to return  the current  date.
+Syntax
+SELECT CURRENT_DATE
+Infor  Data  Fabric  User  Guide  | 262
+ Compass  SQL  Reference
+
+--- Page 263 ---
+Result  example  is 2022-04-25 .
+CURRENT_TIMESTAMP
+Use  the CURRENT_TIMESTAMP  function  to return  the current  datetime.  The  timestamp  value  returned  is in
+UTC  in ISO8601  RFC3339  format.
+Syntax
+CURRENT_TIMESTAMP
+Result  example  is 2019-09-01T09:30:00.000Z .
+DATEADD
+Use  the DATEADD  function  to add  or subtract  date  units  for a date.  The  result  is a date  or timestamp.
+The  first  parameter  is the datepart,  such  as yy for year  or month.  The  second  parameter  is the number  of units
+to add.  The  number  may  be positive  or negative.  The  third  parameter  is the date  or timestamp  value  or
+expression.
+Syntax
+DATEADD(datepart,number_of_units,date_expression)
+DATEDIFF
+Use  the DATEDIFF  function  to return  the number  of datepart  units  between  two  dates  or timestamps.  For
+example,  return  the number  of days  between  two  dates  or the number  of hours  between  two  timestamps.
+The  result  is a number.
+The  first  parameter  is the datepart,  such  as yy for year  or month.  The  second  and  third  parameters  are the
+date  or timestamp  values  to compare.
+Syntax
+DATEDIFF(datepart,date_expression,date_expression)
+Infor  Data  Fabric  User  Guide  | 263
+ Compass  SQL  Reference
+
+--- Page 264 ---
+DATEPART
+Use  the DATEPART  function  to return  the value  of a specific  part  of a date  or timestamp.  For example,  return
+the hour  of a timestamp  or the month  of a date.
+The  first  parameter  is the datepart,  such  as yy for year  or mm  for month.  The  second  parameter  is the date
+or timestamp  expression.
+These  datepart  formats  are not supported:  %D,  %U,  %u,  %V,  %w,  and  %X.
+Syntax
+DATEPART(datepart,date_expression)
+DATE_FORMAT
+Use  DATE_FORMAT  to convert  a datetime  to a string.  The  first  parameter  is the timestamp  expression.  The
+second  parameter  is the format  style,  for example,  ‘yyyy-MM-dd’.
+Syntax
+DATE_FORMAT(timestamp_expression,  format)
+DATE_SUB
+Use  DATE_SUB  to subtract  or add  a number  of days  from  a date.  A positive  number  subtracts  days.  A negative
+number  adds  days.
+Syntax
+DATE_SUB(date_expression,  number_of_days)
+DATE_TRUNC
+Use  DATE_TRUNC  to truncate  a timestamp  and  convert  it to the specified  datetime  unit.  The  first  parameter
+is the datetime  unit.  The  parameter  is enclosed  in single  quotes.  The  second  parameter  is the timestamp
+value.
+Syntax
+DATE_TRUNC( 'YYYY',timestamp_expression)
+Infor  Data  Fabric  User  Guide  | 264
+ Compass  SQL  Reference
+
+--- Page 265 ---
+DAY,  DAYOFMONTH,  DAY_OF_MONTH
+Use  DAY,  DAYOFMONTH,  or DAY_OF_MONTH  to return  the day  from  a date  expression.
+Syntax
+DAY(date_expression)
+DAYOFMONTH(date_expression)
+DAY_OF_MONTH(date_expression)  
+FROM_UTC_TIMESTAMP
+Use  the FROM_UTC_TIMESTAMP  function  to return  a timestamp  converted  from  UTC  to the selected  time
+zone.  The  first  parameter  is the UTC  timestamp.  The  second  parameter  is the timezone  with  which  to convert
+from  UTC.  The  result  is a timestamp  with  time  zone.
+Note:  All Compass  timestamps  are considered  UTC.
+Syntax
+FROM_UTC_TIMESTAMP(UTC_timestamp,timezone)
+Example
+SELECT FROM_UTC_TIMESTAMP( '2020-07-13T09:30:00Z' ,'America/New_York' )
+Result:  2020-07-13T05:30:00.000-04:00 .
+GETDATE
+Use  the GETDATE  function  to return  the current  date  and  time.  The  timestamp  is in UTC  in ISO8601  RFC3339.
+Syntax
+GETDATE()
+GETUTCDATE
+Use  the GETUTCDATE  function  to return  the current  date  and  time.  The  timestamp  is in UTC  in ISO8601
+RFC3339.
+Infor  Data  Fabric  User  Guide  | 265
+ Compass  SQL  Reference
+
+--- Page 266 ---
+Syntax
+GETUTCDATE()
+LAST_DAY
+Use  LAST_DAY  to return  the last  day  of the month  associated  with  a date  or datetime.
+Syntax
+LAST_DAY(date_expression)
+MONTH
+Use  MONTH  to return  the month  from  a date  expression.
+Syntax
+MONTH(date_expression)
+TO_DATE
+Use  the TO_DATE  function  to convert  a string  to a date.  The  first  parameter  must  be a string.  The  second
+parameter  is a date  expression,  such  as ‘yyyy-MM-dd’.
+Synax
+TO_DATE( '2020-05-07' , 'yyyy-MM-dd' )
+TRUNC
+Use  the TRUNC  function  to truncate  a date  or timestamp  to a year  or month.  The  result  is a date.
+Syntax
+INT(trunc(current_date ),'MM')
+Infor  Data  Fabric  User  Guide  | 266
+ Compass  SQL  Reference
+
+--- Page 267 ---
+UNIX_TIMESTAMP
+Use  UNIX_TIMESTAMP  to convert  a date  expression  to UNIX  timestamp  format.  The  first  parameter  is a date
+or timestamp.  The  second  parameter  is the format  of the date  expression,  such  as ‘yyyy-MM-dd’.  The
+date_format  parameter  is not required  if the date_expression  references  a date  or datetime  property  in
+Compass  data  storage.
+Syntax
+UNIX_TIMESTAMP(date_expression)
+Example
+SELECT UNIX_TIMESTAMP  ('2020-07-13  10:15:01' )
+Result  : 1594635301 .
+YEAR
+Use  YEAR  to return  the year  from  a date  expression.
+Syntax
+YEAR(date_expression)
+Conversion  functions
+This  section  describes  the conversion  functions  that  are supported.
+CAST
+Use  CAST  to cast  a value  or expression  to a data  type.  The  first  parameter  is the expression  or value.  The
+second  parameter  is the data  type  for the result.  If the value  cannot  be cast  to the requested  type,  the result
+is NULL.
+The  supported  data  types  for CAST  are:  varchar,  date,  datetime,  datetime2,  decimal,  integer,  bigint.
+Syntax
+CAST(expression  AS data_type)
+Infor  Data  Fabric  User  Guide  | 267
+ Compass  SQL  Reference
+
+--- Page 268 ---
+CONVERT
+Use  CONVERT  to convert  a value  or expression  to a data  type.  CONVERT  always  requires  three  parameters.
+CONVERT  datetime  to string
+Use  the CONVERT  function  to convert  a date  or datetime  to a string.  The  first  parameter  is the date  or datetime
+type.  The  second  parameter  is the string  expression.  The  third  parameter  is the date_style.  Date  expressions
+are not supported.
+Syntax
+CONVERT(datetime_expression,string_expression,  date_style)
+CONVERT  string  to datetime
+Use  the CONVERT  function  to convert  a string  to a specific  datetime  style.  The  first  parameter  is the string
+datatype  and  size,  such  as varchar(20).  The  second  parameter  is a datetime  expression.  The  third  parameter
+is the date_style,  or the style  number.  Style  numbers  are defined  by Microsoft  SQL  Server.  Date  expressions
+are not supported.  Date  time  styles  130 and  131 are not supported.
+Syntax
+CONVERT(string_type,  datetime_expression,  date_style)
+Analytic  functions
+This  section  describes  the analytic  functions  that  are supported.
+LEAD
+Use  the LEAD  function  to access  data  from  the following  or a subsequent  row  of a result  set. The  first  parameter
+is the expression  to select  a value  from  a subsequent  row.  The  second  parameter  is the offset,  such  as 1, to
+indicate  the following  row.  The  third  parameter  is the default,  or substitute,  value  to use if the subsequent
+row  reference  is not available.
+Infor  Data  Fabric  User  Guide  | 268
+ Compass  SQL  Reference
+
+--- Page 269 ---
+Syntax
+LEAD (expression,  offset_value,  default_value)  over (partition_by  … or der_by …)
+RANK  …OVER  … PARTITION  BY
+Use  the RANK  function  to rank,  or number,  the row  results.  If a partition  is used  the rank  is the number  of the
+row  within  the partition.  RANK  is used  WITH  TIES  to assign  the same  rank  value  to tied  results.
+Syntax
+RANK ( ) over ( [ PARTITION  BY value_expression1,  value_expression2,  … ]  order by …)
+ROW_NUMBER  … OVER  … PARTITION  BY
+Use  the ROW_NUMBER  function  to number  the result  set.  If a partition  is used,  the row  number  of the row
+within  the partition  is returned.  Use  ORDER BY to sort  the results.
+Syntax
+ROW_NUMBER  ( ) over ( [ PARTITION  BY value_expression1,  value_expression2,   … ] order by …)
+Views
+This  section  describes  the view  SQL  commands  that  are supported.
+For details  about  the UI menu  options  and  the syntax  for users,  see Compass  views  on page  202.
+For guidelines  on troubleshooting,  see Troubleshooting  Compass  queries  on page  297.
+CREATE  VIEW
+You  can  run a CREATE  VIEW  statement  to begin  using  Compass  views.
+Syntax:
+CREATE VIEW view_name  AS select_statement
+Infor  Data  Fabric  User  Guide  | 269
+ Compass  SQL  Reference
+
+--- Page 270 ---
+Example  1:
+CREATE VIEW example_view_name  AS (SELECT productname,  companyname  FROM orderDetailsObject)
+Example  2:
+CREATE VIEW sophisticatedExampleView  as (
+SELECT o.orderdate,
+       c.country,
+       ca.categoryname,
+       p.productname,
+       p.categoryid,
+       o.customerid,
+       c.companyname,
+       od.productid,
+       sum(od.quantity)  AS quantity,
+       sum(od.quantity*od.unitprice)  AS sales
+FROM nw_orderdetails  od
+INNER JOIN nw_orders  o
+    ON od.orderid=o.orderid
+INNER JOIN nw_customers  c
+    ON o.customerid=c.customerid
+INNER JOIN nw_products  p
+    ON od.productid=p.productid
+INNER JOIN nw_categories  ca
+    ON p.categoryid=ca.categoryid
+GROUP BY  o.orderdate,c.country,  o.customerid,  c.companyname,  od.productid,  p.productname,  
+p.categoryid,  ca.categoryname
+ORDER BY  o.customerid,  ca.categoryname,p.productname  ASC )
+ALTER  VIEW
+A previously  created  view  can  be modified  using  the ALTER  VIEW  statement.
+Syntax:
+ALTER VIEW view_name  AS select_statement
+Example  1:
+ALTER  VIEW example_view_name  AS (SELECT companyname,  productname  FROM orderDetailsObject)
+Example  2:
+ALTER VIEW sophisticatedExampleView  as (
+SELECT o.orderdate,
+       c.country,
+       ca.categoryname,
+       p.productname,
+       p.categoryid,
+       o.customerid,
+       c.companyname,
+       od.productid,
+       sum(od.discount)  AS discount,
+       sum(od.quantity)  AS quantity,
+       sum(od.quantity*od.unitprice)  AS sales
+FROM nw_orderdetails  od
+INNER JOIN nw_orders  o
+    ON od.orderid=o.orderid
+INNER JOIN nw_customers  c
+Infor  Data  Fabric  User  Guide  | 270
+ Compass  SQL  Reference
+
+--- Page 271 ---
+    ON o.customerid=c.customerid
+INNER JOIN nw_products  p
+    ON od.productid=p.productid
+INNER JOIN nw_categories  ca
+    ON p.categoryid=ca.categoryid
+GROUP BY  o.orderdate,c.country,  o.customerid,  c.companyname,  od.productid,  p.productname,  
+p.categoryid,  ca.categoryname
+ORDER BY  o.customerid,  ca.categoryname,p.productname  ASC )
+DROP  VIEW
+To drop  a view,  issue  a DROP  VIEW  statement.
+Syntax:
+DROP VIEW view_name  
+Example:
+DROP VIEW example_view_name  
+SELECT
+The  SELECT  statement  is used  to query  views.
+Syntax:
+SELECT columnName  FROM view_name  
+Example  1:
+SELECT * FROM example_view_name  
+Example  2:
+SELECT customertype,  SUM(quantity)  as unitsSold,  SUM(sales)  as sales 
+FROM example_view_name  v 
+INNER JOIN nw_customers  c on v.customerid=c.customerid  
+GROUP BY customertype  
+ORDER BY unitsSold  DESC, customertype  
+For limitations  in querying  views,  see Limitations  and  restrictions  for Views  on page  298.
+Infor  Data  Fabric  User  Guide  | 271
+ Compass  SQL  Reference
+

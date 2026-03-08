@@ -1051,6 +1051,76 @@ var COL_EXTENDED_AMOUNT = 8; // Now reads field [8] = 19.00 ✓
 
 **Key Takeaway**: When all records fail with the same constant value, the issue is almost always in the parsing logic, not the data itself. Always verify column mapping against actual input data format.
 
+## Performance Optimization Patterns
+
+### String Concatenation in Pagination Loops
+
+**Context**: Common in Compass API pagination, file processing, data aggregation
+
+**Anti-Pattern (O(n²) complexity)**:
+```javascript
+var OutputRecords = "";
+while (hasMoreData) {
+    var pageData = fetchPage();
+    OutputRecords += pageData + "
+";  // Creates new string each iteration
+    offset += limit;
+}
+```
+
+**Best Practice (O(n) complexity)**:
+```javascript
+var OutputRecordsArray = [];
+while (hasMoreData) {
+    var pageData = fetchPage();
+    OutputRecordsArray.push(pageData);  // Reuses array memory
+    offset += limit;
+}
+var OutputRecords = OutputRecordsArray.join("
+");  // Single allocation
+```
+
+**Performance Impact**:
+- 500 iterations: 45 minutes → 54 seconds (50x faster)
+- Memory: 1.25GB → 5MB (250x less copying)
+
+### Nested Loop Optimization
+
+**Context**: Matching invoices to PO lines, vendor lookups, data correlation
+
+**Anti-Pattern (O(n²) complexity)**:
+```javascript
+for (var i = 0; i < invoices.length; i++) {
+    for (var j = 0; j < poLines.length; j++) {
+        if (invoices[i].poNumber === poLines[j].poNumber) {
+            // Match found
+        }
+    }
+}
+```
+
+**Best Practice (O(n) complexity)**:
+```javascript
+// Build lookup map
+var poLookup = {};
+for (var i = 0; i < poLines.length; i++) {
+    poLookup[poLines[i].poNumber] = poLines[i];
+}
+
+// Single loop with O(1) lookup
+for (var i = 0; i < invoices.length; i++) {
+    var poLine = poLookup[invoices[i].poNumber];
+    if (poLine) {
+        // Match found
+    }
+}
+```
+
+**Performance Impact**:
+- 1,000 × 5,000 items: 5M comparisons → 6K operations (833x faster)
+
+**Reference**: See `.kiro/skills/ipa-javascript-es5-analyzer/` for complete optimization guide.
+
 ## Implementation Guidelines
 
 ### Common Success Factors
