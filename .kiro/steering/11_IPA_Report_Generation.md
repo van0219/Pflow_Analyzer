@@ -10,6 +10,32 @@ description: IPA report generation workflows including client handover documenta
 
 Guide for generating IPA (Infor Process Automation) reports: Client Handover Documentation, Coding Standards Reviews, and Performance Analysis.
 
+## Available Skills
+
+**RECOMMENDED**: Use skills for IPA report generation workflows.
+
+### Client Handover Skill
+
+**Activation**: `discloseContext(name="ipa-client-handover")`
+
+**Purpose**: Generate professional client-facing IPA documentation
+
+**Location**: `.kiro/skills/ipa-client-handover/`
+
+**Documentation**: See `SKILL.md` in skill folder
+
+### Coding Standards Skill
+
+**Activation**: `discloseContext(name="ipa-coding-standards")`
+
+**Purpose**: Automated IPA code quality analysis with domain-segmented review
+
+**Location**: `.kiro/skills/ipa-coding-standards/`
+
+**Documentation**: See `SKILL.md` in skill folder
+
+**Note**: Skills are self-contained with their own reference documentation and don't require loading this steering file.
+
 ## Core Principles
 
 1. **Extract Truth, Not AI Content**: ALWAYS extract from source files (ANA-050 spec, LPD Start node, LPD activities). Never generate AI content.
@@ -905,7 +931,7 @@ if project_standards is not None:
 
 5. **Save file** - Commit to git for version control
 
-6. **Run coding standards hook** - It will automatically detect and load your project standards
+6. **Run coding standards skill** - Activate with `/ipa-coding-standards` - It will automatically detect and load your project standards
 
 **Example Rules:**
 
@@ -919,7 +945,7 @@ if project_standards is not None:
 
 **Automatic Detection:**
 
-During Step 4.6 of the coding standards hook, Kiro checks for and loads project standards:
+During Phase 0 of the coding standards skill, Kiro checks for and loads project standards:
 
 ```python
 standards_file = f'Projects/{client}/project_standards.xlsx'
@@ -2326,28 +2352,40 @@ Include legend explaining:
 
 ## Generation Workflow
 
-### Coding Standards Hook Workflow
+### Coding Standards Skill Workflow
 
-The coding standards hook follows this 10-step workflow:
+**RECOMMENDED**: Use the `ipa-coding-standards` skill for all coding standards analysis.
 
-1. **User selects client and RICE item** - Interactive prompts
-2. **List LPD files** - Shows available files
-3. **User confirms** - Proceed with analysis
-4. **Load steering files** - Files 01, 02, 03, 05, 10, 11 (Step 4.5)
-5. **Load project standards (optional)** - Check for `Projects/<Client>/project_standards.xlsx` (Step 4.6)
-6. **Extract data** - Python creates JSON file
-7. **Read JSON** - Kiro reads extracted data
-8. **Analyze** - Kiro performs analysis using project standards (if exists) or default rules
-9. **Build ipa_data** - Kiro creates data structure
-10. **Generate report** - Python formats Excel report
+**Activation**: `/ipa-coding-standards` or `discloseContext(name="ipa-coding-standards")`
+
+The coding standards skill follows a stateless pipeline workflow:
+
+1. **User Selection** - Interactive prompts for client, RICE item, and LPD file
+2. **Phase 0: Preprocessing** (Python) - Extracts LPD structure, calculates metrics, loads project standards, organizes by 5 domains
+3. **Phase 1: Naming Analysis** (AI) - Analyzes filename, node captions, config sets against naming rules
+4. **Phase 2: JavaScript Analysis** (AI) - Analyzes ES5 compliance, performance patterns, function order
+5. **Phase 3: SQL Analysis** (AI) - Analyzes Compass SQL, pagination, query optimization
+6. **Phase 4: Error Handling Analysis** (AI) - Analyzes OnError tabs, GetWorkUnitErrors, error coverage
+7. **Phase 5: Structure Analysis** (AI) - Analyzes auto-restart, process type, activity distribution
+8. **Phase 6: Report Assembly** (Python) - Merges violations, builds ipa_data, generates Excel report
 
 **Key Points:**
 
-- Step 4.6 is optional - only runs if `project_standards.xlsx` exists for the client
-- Standards loaded in Step 4.6 are applied during analysis in Step 7
-- If project standards exist, they override default rules from steering files
-- If project standards don't exist, default rules from steering files are used
-- Analysis (Step 8) applies whichever standards were loaded
+- Phase 0 automatically loads project standards from `Projects/<Client>/project_standards_<Client>.xlsx` if it exists
+- Project standards override steering file defaults in all analysis phases
+- Each phase reads domain JSON + project standards, writes analysis JSON
+- No context accumulation - each phase isolated
+- Crash-safe - can resume from any phase
+- ONE Excel report per process (4 sheets: Executive Dashboard, Action Items, Detailed Analysis, Process Flow)
+
+**Reference**: See `.kiro/skills/ipa-coding-standards/SKILL.md` for complete documentation.
+
+### Legacy: Coding Standards Hook (DEPRECATED)
+
+The original coding standards hook has been replaced by the skill. The hook is backed up at:
+- `.kiro/hooks/.backups/coding-standards.kiro.hook.v41.DEPRECATED_USE_SKILL.backup`
+
+Use the skill instead for better reliability, documentation, and maintainability.
 
 ### Using Data Extraction Tools (RECOMMENDED)
 

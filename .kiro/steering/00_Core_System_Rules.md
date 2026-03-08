@@ -31,6 +31,7 @@ inclusion: always
   - [Common Pitfalls](#common-pitfalls)
 - [Domain-Specific Workflows](#domain-specific-workflows)
   - [Client Handover Pipeline](#client-handover-pipeline)
+  - [Coding Standards Pipeline](#coding-standards-pipeline)
 
 ## Execution Philosophy
 
@@ -806,3 +807,59 @@ The `workflow_analysis.json` file MUST include `activity_descriptions` and `acti
 3. **PRIORITY 3**: Generic type-based descriptions (last resort)
 
 **Reference**: See `.kiro/steering/11_IPA_Report_Generation.md` for complete workflow documentation and `.kiro/skills/ipa-client-handover/` for skill implementation.
+
+### Coding Standards Pipeline
+
+**BLOCKING REQUIREMENT**: When performing coding standards analysis, use the `ipa-coding-standards` skill.
+
+**Activation**:
+
+```text
+/ipa-coding-standards
+```
+
+Or mention "coding standards analysis" in your request.
+
+**Architecture**: Stateless Pipeline with Direct AI Analysis
+
+The skill uses a hybrid approach that's simpler than Client Handover:
+
+**Phase 0 (Preprocessing - Python Only):**
+
+```bash
+python ReusableTools/IPA_CodingStandards/preprocess_coding_standards.py <lpd> <client>
+```
+
+Creates: `lpd_structure.json`, `metrics_summary.json`, `project_standards.json`, and 5 domain JSON files
+
+**Phase 1-5 (AI Analysis - Direct):**
+
+AI analyzes each domain JSON file directly (no incremental scripts needed):
+- Phase 1: Naming conventions (`domain_naming.json`)
+- Phase 2: JavaScript ES5 compliance (`domain_javascript.json`)
+- Phase 3: SQL queries (`domain_sql.json`)
+- Phase 4: Error handling (`domain_errorhandling.json`)
+- Phase 5: Process structure (`domain_structure.json`)
+
+Each phase reads the domain JSON + `project_standards.json` and writes an analysis JSON.
+
+**Phase 6 (Report Assembly - Python Only):**
+
+```bash
+python ReusableTools/IPA_CodingStandards/merge_violations.py Temp/<ProcessName>
+# Then use existing build_ipa_data_helper.py and template
+```
+
+**Key Benefits:**
+
+- ✅ No context accumulation (domain files already small ~200-400 lines)
+- ✅ No crashes (stable execution)
+- ✅ Simpler than Client Handover (no incremental chunking scripts needed)
+- ✅ Project standards integration (client-specific rules override defaults)
+- ✅ One process at a time (generates ONE Excel report per process)
+
+**Why This Works:**
+
+`organize_by_domain.py` already chunks data into 5 small domain files during Phase 0. Each domain file is small enough for direct AI analysis without additional chunking.
+
+**Reference**: See `.kiro/steering/11_IPA_Report_Generation.md` for complete workflow documentation and `.kiro/skills/ipa-coding-standards/` for skill implementation.
