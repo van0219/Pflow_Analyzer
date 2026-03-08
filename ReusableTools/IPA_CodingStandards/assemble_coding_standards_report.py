@@ -194,9 +194,9 @@ def main():
     print()
     print("[4/4] Generating Excel report...")
     
-    # Import and use enhanced template
+    # Import and use V3 template
     sys.path.insert(0, str(Path(__file__).parent))
-    from ipa_coding_standards_template_enhanced import generate_report
+    from ipa_coding_standards_template_v3 import generate_report
     
     # Load ipa_data
     ipa_data = load_json(ipa_data_file)

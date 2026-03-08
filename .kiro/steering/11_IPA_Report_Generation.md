@@ -752,7 +752,7 @@ ipa_data = {
 import sys
 sys.path.insert(0, '.')
 
-from ReusableTools.IPA_CodingStandards.ipa_coding_standards_template import generate_report
+from ReusableTools.IPA_CodingStandards.ipa_coding_standards_template_v3 import generate_report
 
 # Generate ONE report per process
 output_path = generate_report(ipa_data)
@@ -1608,13 +1608,88 @@ Use the `ipa-client-handover` skill for client handover documentation:
 
 #### Coding Standards Report UI/UX Enhancements (2026-03-08)
 
-**Status**: ✅ Production Ready
+**Status**: ✅ Production Ready (V3.0 - 2026-03-08)
 
-**Purpose**: Transform coding standards reports from basic internal documents to professional-grade, interactive, accessible code review tools.
+**Purpose**: Transform coding standards reports from basic internal documents to professional-grade, stakeholder-ready, traceable code review tools.
 
-**Implementation**: All improvements are in the universal enhanced template (`ipa_coding_standards_template_enhanced.py`) and work for any client/project.
+**Implementation**: All improvements are in the universal V3 template (`ipa_coding_standards_template_v3.py`) and work for any client/project.
 
-**Phase 1: Critical Fixes** (Completed 2026-03-08)
+**V3.0 Professional Edition** (Completed 2026-03-08)
+
+Comprehensive enhancements for stakeholder presentations and traceability:
+
+1. **Grid-Aligned Executive Dashboard**
+   - KPI cards in strict grid layout (B-E, F-I, J-M, N-Q)
+   - All cards same width (4 columns each)
+   - Vertically aligned on same row
+   - Professional appearance for stakeholder presentations
+   - Technical Debt KPI added (points lost from base score)
+
+2. **Action ID System**
+   - Unique identifiers (ACT-001, ACT-002, etc.)
+   - Sequential numbering for all violations
+   - Enables traceability between sheets
+   - Professional reference system
+
+3. **Bidirectional Hyperlinks**
+   - Action Items → Detailed Analysis: Click Action ID
+   - Detailed Analysis → Action Items: Click severity badge
+   - Seamless navigation between related content
+   - Excel internal link format
+
+4. **Workbook Navigation**
+   - Navigation links on row 0 of all sheets
+   - Quick access to: Dashboard, Metrics, Action Items, Detailed Analysis, Process Flow
+   - Current sheet excluded from navigation
+   - Consistent styling (blue, underlined)
+
+5. **Metrics Calculation Sheet**
+   - Quality Score formula with example calculation
+   - Pass Rate formula with example calculation
+   - Technical Debt explanation
+   - Violation summary with verification
+   - Data sources and methodology
+   - Complete transparency for stakeholders
+
+6. **Enhanced Action Items Sheet**
+   - 16 columns (was 15 in V2.0)
+   - Action ID as first column with hyperlinks
+   - AutoFilter enabled on all columns
+   - Status dropdown (Not Started, In Progress, Complete, Blocked)
+   - Optimized column widths for readability
+
+7. **Enhanced Detailed Analysis Sheet**
+   - Action IDs displayed for each violation
+   - Severity badges are hyperlinks to Action Items
+   - Maintains all V2.0 impact analysis features
+   - Cross-referencing between sheets
+
+8. **Dynamic Charts**
+   - All charts reference cell data (no hardcoded values)
+   - Auto-update when data changes
+   - Severity Distribution: Clustered column chart
+   - Pass Rate: Donut chart with percentages
+
+9. **Visual Consistency**
+   - Severity colors verified and documented:
+     - High: #C62828 (Red)
+     - Medium: #F57C00 (Orange)
+     - Low: #FBC02D (Yellow)
+     - Pass: #2E7D32 (Green)
+   - Font standards applied consistently
+   - Spacing: 2 blank rows between sections
+
+**Benefits**:
+- Full traceability with Action ID system
+- Professional stakeholder-ready presentation
+- Complete metrics transparency
+- Seamless navigation between sheets
+- Enhanced visual consistency
+- Backward compatible with V2.0 data
+
+**Rollback**: If issues discovered, change import in `assemble_coding_standards_report.py` line 199 to use `ipa_coding_standards_template_enhanced`
+
+**Phase 1: Critical Fixes** (Completed 2026-03-08 - V2.0)
 
 Addressed data completeness and accuracy issues:
 
@@ -1743,7 +1818,7 @@ Process Flow Sheet:
 **Technical Architecture**
 
 Universal Implementation:
-- Template: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_enhanced.py`
+- Template: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_v3.py` (V3.0 - 2026-03-08)
 - Helper: `ReusableTools/IPA_CodingStandards/build_ipa_data_helper.py`
 - Works for any client/project (FPI, BayCare, SONH, future clients)
 
@@ -1761,8 +1836,8 @@ Phase 6: merge_violations.py
 Phase 7: build_ipa_data_helper.py
   ↓ Builds ipa_data structure (preserves enhanced fields)
   
-Phase 8: ipa_coding_standards_template_enhanced.py
-  ↓ Generates Excel report with all 4 phases of improvements
+Phase 8: ipa_coding_standards_template_v3.py
+  ↓ Generates Excel report with V3.0 improvements (grid layout, Action IDs, navigation, traceability)
 ```
 
 **Quality Metrics**
@@ -2351,19 +2426,43 @@ python ReusableTools/check_standard_flow.py MatchReport_Outbound.lpd
 - Output: `IPA_Report_Results/<ClientName>_<Process>.xlsx`
 - **Visual Features**: Workflow diagram, priority indicators, status badges, color-coded sections
 
-**2. ipa_coding_standards_template_enhanced.py** (Current - v2.0)
+**2. ipa_coding_standards_template_v3.py** (Current - v3.0)
+
+- Purpose: Professional stakeholder-ready code quality review with full traceability
+- Sheets: 5 sheets (Executive Dashboard, Metrics Calculation, Action Items, Detailed Analysis, Process Flow)
+- Input: `ipa_data` dictionary from Kiro's analysis
+- Output: `Coding_Standards_Results/<Client>_<RICE>_CodingStandards_<timestamp>.xlsx`
+- **NEW in V3.0** (2026-03-08):
+  - **Grid-Aligned Dashboard**: KPI cards in strict grid layout (B-E, F-I, J-M, N-Q)
+  - **Action ID System**: Unique IDs (ACT-001, ACT-002, etc.) for traceability
+  - **Bidirectional Hyperlinks**: Click Action ID to jump between sheets
+  - **Navigation Links**: Quick access to any sheet from row 0
+  - **Metrics Calculation Sheet**: Formula transparency and methodology
+  - **Technical Debt KPI**: Points lost from base score (100 - quality score)
+  - **Enhanced Visual Consistency**: Severity colors, fonts, spacing
+  - **Dynamic Charts**: No hardcoded values, auto-update with data
+  - **Status Tracking**: Dropdown for action items (Not Started, In Progress, Complete, Blocked)
+- **Enhanced Features**:
+  - Executive Dashboard: Grid-aligned KPI cards (4 cards), dynamic charts, risk indicator
+  - Metrics Calculation: Quality score formula, pass rate formula, technical debt explanation
+  - Action Items: 16 columns with Action ID, hyperlinks, status tracking, AutoFilter
+  - Detailed Analysis: Action IDs with hyperlinks back to Action Items, severity badges
+  - Process Flow: Complexity visualization with activity details
+  - Backward compatible with v2.0 data format
+- **Location**: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_v3.py`
+- **Version**: 3.0 (Professional Edition - 2026-03-08)
+- **Assembly Script**: `assemble_coding_standards_report.py` (updated to use v3 template)
+
+**2b. ipa_coding_standards_template_enhanced.py** (Legacy - v2.0)
 
 - Purpose: Internal code quality review with enhanced analysis
 - Sheets: 4 sheets (Executive Dashboard, Action Items, Detailed Analysis, Process Flow)
 - Input: `ipa_data` dictionary from Kiro's analysis
 - Output: `Coding_Standards_Results/<Client>_<RICE>_CodingStandards_<timestamp>.xlsx`
-- **Enhanced Features**:
-  - Action Items: 14 columns (Priority Score, Est. Fix Time, Affected %, Code Example, Testing Notes)
-  - Detailed Analysis: Impact assessment sections per violation
-  - Process Flow: NEW sheet with complexity visualization
-  - Backward compatible with old data format
+- **Status**: Superseded by V3 template (2026-03-08)
 - **Location**: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_enhanced.py`
-- **Version**: 2.0 (Enhanced Edition - 2026-02-22)
+- **Backup**: `ipa_coding_standards_template_enhanced.py.backup`
+- **Rollback**: Change import in `assemble_coding_standards_report.py` line 199 to use `ipa_coding_standards_template_enhanced`
 
 **2b. ipa_coding_standards_template.py** (Legacy - v1.0)
 
@@ -2641,19 +2740,41 @@ Include legend explaining:
 
 **Activation**: `/ipa-coding-standards` or `discloseContext(name="ipa-coding-standards")`
 
-The coding standards skill follows a stateless pipeline workflow:
+The coding standards skill follows a stateless pipeline workflow with interactive selection and batch processing support:
 
-1. **User Selection** - Interactive prompts for client, RICE item, and LPD file
-2. **Phase 0: Preprocessing** (Python) - Extracts LPD structure, calculates metrics, loads project standards, organizes by 5 domains
-3. **Phase 1: Naming Analysis** (AI) - Analyzes filename, node captions, config sets against naming rules
-4. **Phase 2: JavaScript Analysis** (AI) - Analyzes ES5 compliance, performance patterns, function order
-5. **Phase 3: SQL Analysis** (AI) - Analyzes Compass SQL, pagination, query optimization
-6. **Phase 4: Error Handling Analysis** (AI) - Analyzes OnError tabs, GetWorkUnitErrors, error coverage
-7. **Phase 5: Structure Analysis** (AI) - Analyzes auto-restart, process type, activity distribution
-8. **Phase 6: Report Assembly** (Python) - Merges violations, builds ipa_data, generates Excel report
+**Step 0: Interactive Selection (MANDATORY)**
+
+1. **Discover Available Clients** - List all directories in `Projects/`, present options, wait for user selection
+2. **Discover RICE Items** - List subdirectories in `Projects/<Client>/`, present options, wait for user selection
+3. **Discover LPD Files** - List all `.lpd` files in `Projects/<Client>/<RICE>/`, present mode options:
+   - **Single Process Mode**: Select ONE LPD file
+   - **Batch Mode**: Select ALL LPD files (if multiple exist)
+4. **Verify Project Standards** - Check for `Projects/<Client>/project_standards_<Client>.xlsx`, inform user
+5. **Confirm Execution** - Display summary (client, RICE, mode, estimated time), wait for confirmation
+
+**Batch Processing Mode:**
+
+When user selects batch mode for RICE items with multiple LPDs:
+- Process each LPD sequentially (one at a time)
+- Generate individual report for each process
+- Show progress: "Processing 2 of 3: filename.lpd"
+- Provide summary at end with all generated report paths
+- Total time: ~8-12 min × number of processes
+
+**Analysis Pipeline (Per Process):**
+
+1. **Phase 0: Preprocessing** (Python) - Extracts LPD structure, calculates metrics, loads project standards, organizes by 5 domains
+2. **Phase 1: Naming Analysis** (AI) - Analyzes filename, node captions, config sets against naming rules
+3. **Phase 2: JavaScript Analysis** (AI) - Analyzes ES5 compliance, performance patterns, function order
+4. **Phase 3: SQL Analysis** (AI) - Analyzes Compass SQL, pagination, query optimization
+5. **Phase 4: Error Handling Analysis** (AI) - Analyzes OnError tabs, GetWorkUnitErrors, error coverage
+6. **Phase 5: Structure Analysis** (AI) - Analyzes auto-restart, process type, activity distribution
+7. **Phase 6: Report Assembly** (Python) - Merges violations, builds ipa_data, generates Excel report
 
 **Key Points:**
 
+- **Interactive selection is mandatory** - NEVER auto-select without user confirmation
+- **Batch mode processes sequentially** - Individual reports per process, not consolidated
 - Phase 0 automatically loads project standards from `Projects/<Client>/project_standards_<Client>.xlsx` if it exists
 - Project standards override steering file defaults in all analysis phases
 - Each phase reads domain JSON + project standards, writes analysis JSON
@@ -2661,7 +2782,12 @@ The coding standards skill follows a stateless pipeline workflow:
 - Crash-safe - can resume from any phase
 - ONE Excel report per process (4 sheets: Executive Dashboard, Action Items, Detailed Analysis, Process Flow)
 
-**Reference**: See `.kiro/skills/ipa-coding-standards/SKILL.md` for complete documentation.
+**Output:**
+
+- Single Process Mode: `Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards_<timestamp>.xlsx`
+- Batch Mode: Multiple individual reports with summary at end
+
+**Reference**: See `.kiro/skills/ipa-coding-standards/skill.md` for complete documentation.
 
 ### Legacy: Coding Standards Hook (DEPRECATED)
 
@@ -2971,7 +3097,7 @@ if not issues:
 #!/usr/bin/env python3
 import sys
 sys.path.insert(0, '.')
-from ReusableTools.IPA_CodingStandards.ipa_coding_standards_template import generate_report
+from ReusableTools.IPA_CodingStandards.ipa_coding_standards_template_v3 import generate_report
 from validate_ipa_data import validate_ipa_data
 
 print('Starting report generation...')
@@ -3034,11 +3160,12 @@ print(f'✓ Report generated: {output_path}')
 
 **CRITICAL REFERENCE**: `Temp/IPA_Coding_Standards_Data_Structure_Reference.md`
 
-**TEMPLATE VERSION**: Enhanced Template v2.0 (2026-02-22)
+**TEMPLATE VERSION**: V3.0 Professional Edition (2026-03-08)
 
-- Location: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_enhanced.py`
-- Sheets: 4 (Executive Dashboard, Action Items, Detailed Analysis, Process Flow)
-- Enhanced Fields: impact_analysis, code_examples, testing_notes, priority_score
+- Location: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_v3.py`
+- Sheets: 5 (Executive Dashboard, Metrics Calculation, Action Items, Detailed Analysis, Process Flow)
+- Enhanced Fields: Action IDs, bidirectional hyperlinks, navigation links, metrics transparency
+- New Features: Grid-aligned dashboard, technical debt KPI, status tracking, formula documentation
 
 ### Enhanced Violation Structure (v2.0)
 

@@ -28,12 +28,14 @@ Use this skill when you need to:
 
 ## Key Features
 
+- **Interactive Selection**: Guided workflow with client/RICE/LPD selection
+- **Batch Processing**: Analyze multiple LPDs in one RICE item sequentially
 - **Domain-Segmented Analysis**: Analyzes 5 domains separately (Naming, JavaScript, SQL, Error Handling, Structure)
 - **Project Standards Integration**: Loads and applies client-specific coding standards
 - **Incremental Processing**: Chunks large processes to prevent context overload
 - **Crash-Safe**: Resumable from any phase
 - **Scalable**: Works with any process size (tested with 450+ activities)
-- **One Process at a Time**: Generates ONE Excel report per process
+- **Individual Reports**: Generates ONE Excel report per process (not consolidated)
 
 ## Analysis Domains
 
@@ -95,19 +97,97 @@ For each process:
 
 This skill uses a stateless, file-based pipeline that eliminates context accumulation:
 
-1. **User Selection** (Interactive)
-   - Select client from Projects/ directory
-   - Select RICE item
-   - Select ONE LPD file
-   - Confirm project standards availability
+### Step 0: Interactive Selection (MANDATORY)
 
-2. **Phase 0: Preprocessing** (Python Only - No AI)
+**BLOCKING REQUIREMENT**: ALWAYS present options and wait for user selection before proceeding.
+
+**Selection Process:**
+
+1. **Discover Available Clients**
+   - List all directories in `Projects/`
+   - Present client options to user
+   - Wait for user to select client
+
+2. **Discover RICE Items**
+   - List all subdirectories in `Projects/<Client>/`
+   - Present RICE item options to user
+   - Wait for user to select RICE item
+
+3. **Discover LPD Files**
+   - List all `.lpd` files in `Projects/<Client>/<RICE>/`
+   - Count total LPD files found
+   - Present options:
+     - **Single Process Mode**: Select ONE LPD file
+     - **Batch Mode**: Select ALL LPD files (if multiple exist)
+   - Wait for user to choose mode and selection
+
+4. **Verify Project Standards**
+   - Check for `Projects/<Client>/project_standards_<Client>.xlsx`
+   - Inform user if found or missing
+   - Proceed with or without project standards
+
+5. **Confirm Execution**
+   - Display summary of selections
+   - Show estimated time (8-12 min per process)
+   - Wait for user confirmation to proceed
+
+**Batch Processing Mode:**
+
+When user selects batch mode for RICE items with multiple LPDs:
+
+- Process each LPD sequentially (one at a time)
+- Generate individual report for each process
+- Show progress: "Processing 2 of 3: InvoiceApproval_APIA_NONPOROUTING_Reject.lpd"
+- Provide summary at end with all generated report paths
+- Total time: ~8-12 min × number of processes
+
+**Example Interaction:**
+
+```
+Available Clients:
+1. BayCare
+2. FPI
+3. SONH
+
+Which client? → User selects "1"
+
+Available RICE Items for BayCare:
+1. APIA
+
+Which RICE item? → User selects "1"
+
+Found 3 LPD files in BayCare/APIA:
+1. InvoiceApproval_APIA_NONPOROUTING.lpd
+2. InvoiceApproval_APIA_NONPOROUTING_Reject.lpd
+3. InvoiceApproval_APIA_NONPOROUTING_nightly_job_trigger.lpd
+
+Select mode:
+A. Single Process (select one LPD)
+B. Batch Process (analyze all 3 LPDs)
+
+Your choice? → User selects "B"
+
+Project Standards: Found ✓ (Projects/BayCare/project_standards_BayCare.xlsx)
+
+Summary:
+- Client: BayCare
+- RICE: APIA
+- Mode: Batch (3 processes)
+- Estimated time: ~24-36 minutes
+- Reports: 3 individual Excel files
+
+Proceed? (yes/no) → User confirms "yes"
+```
+
+### Step 1: Phase 0 - Preprocessing (Per Process)
+
+**Phase 0: Preprocessing** (Python Only - No AI)
    - Extract LPD structure → `lpd_structure.json`
    - Calculate metrics → `metrics_summary.json`
    - Load project standards → `project_standards.json`
    - Pre-calculate: ES6 patterns, generic names, SQL types, error-prone activities
 
-3. **Phase 1: Naming Analysis** (AI - Incremental)
+### Step 2: Phase 1 - Naming Analysis (AI - Incremental)
    - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk
    - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (naming data only), `project_standards.json`
@@ -117,7 +197,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `naming_analysis.json`
    - Return: "Phase 1 complete. naming_analysis.json written."
 
-4. **Phase 2: JavaScript Analysis** (AI - Incremental)
+### Step 3: Phase 2 - JavaScript Analysis (AI - Incremental)
    - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
    - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (JavaScript blocks only), `project_standards.json`
@@ -127,7 +207,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `javascript_analysis.json`
    - Return: "Phase 2 complete. javascript_analysis.json written."
 
-5. **Phase 3: SQL Analysis** (AI - Incremental)
+### Step 4: Phase 3 - SQL Analysis (AI - Incremental)
    - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
    - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (SQL queries only), `project_standards.json`
@@ -137,7 +217,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `sql_analysis.json`
    - Return: "Phase 3 complete. sql_analysis.json written."
 
-6. **Phase 4: Error Handling Analysis** (AI - Incremental)
+### Step 5: Phase 4 - Error Handling Analysis (AI - Incremental)
    - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing first chunk (if not already read in Phase 1)
    - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (error-prone activities only), `project_standards.json`
@@ -146,7 +226,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `errorhandling_analysis.json`
    - Return: "Phase 4 complete. errorhandling_analysis.json written."
 
-7. **Phase 5: Structure Analysis** (AI - Direct)
+### Step 6: Phase 5 - Structure Analysis (AI - Direct)
    - **BLOCKING REQUIREMENT**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` COMPLETELY before analyzing (if not already read in Phase 1)
    - **CRITICAL ENFORCEMENT**: You are the analyst. Python preprocessing is a helper. Create violations for ANY issues you find, whether Python flagged them or not.
    - Input: `lpd_structure.json` (process-level data), `metrics_summary.json`, `project_standards.json`
@@ -154,7 +234,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Output: `structure_analysis.json`
    - Return: "Phase 5 complete. structure_analysis.json written."
 
-8. **Phase 6: Report Assembly** (Python Only - No AI)
+### Step 7: Phase 6 - Report Assembly (Python Only - No AI)
    - Merge: All analysis JSON outputs
    - **Enrich Activities**: Add metadata flags (`has_javascript`, `has_sql`, `has_error_handling`) to each activity
      * Loads domain files (not analysis files) to get raw activity data
@@ -228,21 +308,67 @@ This skill uses the following Python tools from `ReusableTools/IPA_CodingStandar
 
 ## Output
 
+**Single Process Mode:**
+
 Excel report saved to: `Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards_<timestamp>.xlsx`
 
+**Batch Process Mode:**
+
+Multiple Excel reports saved to `Coding_Standards_Results/`:
+- `<Client>_<RICE>_<Process1>_CodingStandards_<timestamp>.xlsx`
+- `<Client>_<RICE>_<Process2>_CodingStandards_<timestamp>.xlsx`
+- `<Client>_<RICE>_<Process3>_CodingStandards_<timestamp>.xlsx`
+
+Summary report displayed at end with all generated file paths.
+
 ## Example Usage
+
+**Activation:**
 
 ```text
 /ipa-coding-standards
 ```
 
-Then follow the interactive prompts to:
+**Interactive Workflow:**
 
-1. Select client (e.g., "BayCare")
-2. Select RICE item (e.g., "APIA")
-3. Select LPD file (e.g., "InvoiceApproval_APIA_NONPOROUTING.lpd")
-4. Confirm project standards file
-5. Confirm report generation
+The skill will guide you through selection:
+
+1. **Select Client**: Choose from available clients in Projects/
+2. **Select RICE Item**: Choose from RICE items for selected client
+3. **Select Processing Mode**:
+   - Single Process: Analyze one LPD file
+   - Batch Process: Analyze all LPD files in RICE item
+4. **Confirm Standards**: Verify project standards file availability
+5. **Confirm Execution**: Review summary and proceed
+
+**Single Process Example:**
+
+```
+→ Client: BayCare
+→ RICE: APIA
+→ Mode: Single
+→ LPD: InvoiceApproval_APIA_NONPOROUTING.lpd
+→ Standards: ✓ Found
+→ Estimated time: ~8-12 minutes
+→ Output: 1 Excel report
+```
+
+**Batch Process Example:**
+
+```
+→ Client: BayCare
+→ RICE: APIA
+→ Mode: Batch (3 processes)
+→ LPDs: All 3 files in APIA folder
+→ Standards: ✓ Found
+→ Estimated time: ~24-36 minutes
+→ Output: 3 individual Excel reports
+
+Progress:
+✓ 1/3: InvoiceApproval_APIA_NONPOROUTING.lpd (12 min)
+→ 2/3: InvoiceApproval_APIA_NONPOROUTING_Reject.lpd...
+  3/3: InvoiceApproval_APIA_NONPOROUTING_nightly_job_trigger.lpd
+```
 
 ## Architecture Notes
 
@@ -291,34 +417,41 @@ Then follow the interactive prompts to:
 
 ## Critical Rules
 
-1. **ONE PROCESS AT A TIME**
-   - ONE LPD → ONE report
+1. **INTERACTIVE SELECTION MANDATORY**
+   - ALWAYS present client/RICE/LPD options to user
+   - NEVER auto-select without user confirmation
+   - Support both single and batch processing modes
+   - Show clear progress in batch mode
+
+2. **ONE PROCESS AT A TIME (Architecture)**
+   - ONE LPD → ONE report (individual reports)
+   - Batch mode processes sequentially, not consolidated
    - No multi-process consolidation (different use case than Client Handover)
 
-2. **STATELESS PHASE EXECUTION**
+3. **STATELESS PHASE EXECUTION**
    - Each phase reads ONLY required JSON files
    - Each phase writes ONLY one JSON output
    - Each phase returns minimal confirmation
    - No context accumulation across phases
 
-3. **PROJECT STANDARDS PRECEDENCE**
+4. **PROJECT STANDARDS PRECEDENCE**
    - Phase 0 ALWAYS loads project standards (if available)
    - Each analysis phase reads project standards FIRST
    - Project standards override steering defaults
    - If no project standards, use steering defaults only
 
-4. **PYTHON LIFTS HEAVY LOAD**
+5. **PYTHON LIFTS HEAVY LOAD**
    - Python: Extract, organize, chunk, merge, format
    - AI: Analyze chunks, identify violations, recommend fixes
    - Python does NOT make judgments
 
-5. **INCREMENTAL WRITING**
+6. **INCREMENTAL WRITING**
    - Large domains (JavaScript, SQL) processed in chunks
    - AI analyzes small chunks (~20-50 items)
    - Python merges chunk results
    - Prevents context overload
 
-6. **INTERNAL REVIEW FOCUS**
+7. **INTERNAL REVIEW FOCUS**
    - Technical language and code criticism allowed
    - Severity ratings (High, Medium, Low)
    - Specific code examples and recommendations
