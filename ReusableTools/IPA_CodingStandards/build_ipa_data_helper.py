@@ -123,18 +123,27 @@ def build_ipa_data_from_violations(
             'activities': v['activities']
         }
         
-        # Preserve enhanced fields if present
+        # Phase 1 Enhancement: Preserve enhanced fields if present
         if 'impact_analysis' in v:
             impact_analysis = v['impact_analysis']
             rec['priority_score'] = v.get('priority_score', 50)
             rec['estimated_fix_time'] = impact_analysis.get('estimated_fix_time', 'TBD')
             rec['affected_percentage'] = impact_analysis.get('affected_percentage', 0)
+        else:
+            # Default values if not provided
+            rec['priority_score'] = 50
+            rec['estimated_fix_time'] = 'TBD'
+            rec['affected_percentage'] = 0
         
         if 'code_examples' in v:
             rec['code_example'] = v['code_examples']
+        else:
+            rec['code_example'] = ''
         
         if 'testing_notes' in v:
             rec['testing_notes'] = v['testing_notes']
+        else:
+            rec['testing_notes'] = ''
         
         recommendations.append(rec)
     

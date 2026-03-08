@@ -48,17 +48,20 @@ The skill will prompt you for:
 **Script**: `python ReusableTools/IPA_CodingStandards/preprocess_coding_standards.py <lpd_path> <client>`
 
 **What it does:**
+
 - Extracts LPD structure
 - Calculates metrics (activity counts, JS blocks, SQL queries)
 - Loads project standards (if available)
 - Pre-calculates patterns (ES6, generic names, SQL types)
 
 **Outputs:**
+
 - `Temp/lpd_structure.json` - Complete LPD structure
 - `Temp/metrics_summary.json` - Process metrics
 - `Temp/project_standards.json` - Project-specific standards
 
 **Verification:**
+
 ```powershell
 Test-Path Temp/lpd_structure.json
 Test-Path Temp/metrics_summary.json
@@ -70,15 +73,18 @@ Test-Path Temp/project_standards.json
 **Script**: `python ReusableTools/IPA_CodingStandards/build_naming_analysis.py`
 
 **What it does:**
+
 - Extracts naming data (filename, node captions, config sets)
 - Creates chunks (50 nodes per chunk)
 - AI analyzes each chunk
 - Merges results
 
 **Output:**
+
 - `Temp/naming_analysis.json`
 
 **Verification:**
+
 ```powershell
 Test-Path Temp/naming_analysis.json
 ```
@@ -88,15 +94,18 @@ Test-Path Temp/naming_analysis.json
 **Script**: `python ReusableTools/IPA_CodingStandards/build_javascript_analysis.py`
 
 **What it does:**
+
 - Extracts JavaScript blocks
 - Creates chunks (20 JS blocks per chunk)
 - AI analyzes each chunk for ES5 compliance
 - Merges results
 
 **Output:**
+
 - `Temp/javascript_analysis.json`
 
 **Verification:**
+
 ```powershell
 Test-Path Temp/javascript_analysis.json
 ```
@@ -106,15 +115,18 @@ Test-Path Temp/javascript_analysis.json
 **Script**: `python ReusableTools/IPA_CodingStandards/build_sql_analysis.py`
 
 **What it does:**
+
 - Extracts SQL queries
 - Creates chunks (30 queries per chunk)
 - AI analyzes each chunk for Compass SQL compliance
 - Merges results
 
 **Output:**
+
 - `Temp/sql_analysis.json`
 
 **Verification:**
+
 ```powershell
 Test-Path Temp/sql_analysis.json
 ```
@@ -124,15 +136,18 @@ Test-Path Temp/sql_analysis.json
 **Script**: `python ReusableTools/IPA_CodingStandards/build_errorhandling_analysis.py`
 
 **What it does:**
+
 - Extracts error-prone activities (WEBRN, WEBRUN, ACCFIL)
 - Creates chunks (40 activities per chunk)
 - AI analyzes each chunk for error handling
 - Merges results
 
 **Output:**
+
 - `Temp/errorhandling_analysis.json`
 
 **Verification:**
+
 ```powershell
 Test-Path Temp/errorhandling_analysis.json
 ```
@@ -140,14 +155,17 @@ Test-Path Temp/errorhandling_analysis.json
 ### Step 9: Phase 5 - Structure Analysis (AI Direct)
 
 **What it does:**
+
 - AI reads structure data directly (~100 lines)
 - Analyzes auto-restart, process type, activity distribution
 - Writes output
 
 **Output:**
+
 - `Temp/structure_analysis.json`
 
 **Verification:**
+
 ```powershell
 Test-Path Temp/structure_analysis.json
 ```
@@ -157,15 +175,18 @@ Test-Path Temp/structure_analysis.json
 **Script**: `python ReusableTools/IPA_CodingStandards/assemble_coding_standards_report.py <client> <rice> <process_name>`
 
 **What it does:**
+
 - Loads all analysis JSONs
 - Merges violations
 - Builds ipa_data structure
 - Generates Excel report
 
 **Output:**
+
 - `Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards_<timestamp>.xlsx`
 
 **Verification:**
+
 ```powershell
 Test-Path Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards_*.xlsx
 ```
@@ -177,6 +198,7 @@ Test-Path Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards
 **Cause**: Phase 0 was skipped or failed
 
 **Fix**:
+
 1. Verify LPD file path is correct
 2. Re-run Phase 0
 3. Check `lpd_structure.json` exists
@@ -186,6 +208,7 @@ Test-Path Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards
 **Cause**: Project standards not loaded or analysis incomplete
 
 **Fix**:
+
 1. Check `project_standards.json` exists
 2. Verify all analysis JSONs exist (Phases 1-5)
 3. Re-run failed phases
@@ -195,6 +218,7 @@ Test-Path Coding_Standards_Results/<Client>_<RICE>_<ProcessName>_CodingStandards
 **Cause**: One of Phases 1-5 failed
 
 **Fix**:
+
 1. Check Temp/ folder for partial outputs
 2. Identify which phase failed
 3. Re-run that specific phase
@@ -226,6 +250,7 @@ After generating the report:
 ---
 
 For more detailed information, see:
+
 - [`DOMAIN_ANALYSIS_GUIDE.md`](DOMAIN_ANALYSIS_GUIDE.md) - Domain-specific patterns
 - [`JSON_SCHEMAS.md`](JSON_SCHEMAS.md) - JSON structure reference
 - [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) - Common issues

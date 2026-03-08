@@ -66,6 +66,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### WORKFLOW_GUIDE.md
 
 **What it covers:**
+
 - Prerequisites and file organization
 - Phase 0: Preprocessing (mandatory first step)
 - Phase 1: Naming Analysis
@@ -78,6 +79,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Quick reference table
 
 **Key sections:**
+
 - Complete Workflow (Steps 1-9)
 - Troubleshooting
 - Quick Reference
@@ -85,6 +87,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### DOMAIN_ANALYSIS_GUIDE.md
 
 **What it covers:**
+
 - Domain 1: Naming conventions
 - Domain 2: JavaScript ES5 compliance
 - Domain 3: SQL queries
@@ -95,6 +98,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Project standards integration
 
 **Key sections:**
+
 - Domain Definitions
 - Analysis Patterns
 - Code Examples
@@ -103,6 +107,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### JSON_SCHEMAS.md
 
 **What it covers:**
+
 - Phase 0 outputs (lpd_structure, metrics_summary, project_standards)
 - Phase 1-5 analysis JSON schemas
 - Required fields and validation rules
@@ -110,6 +115,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Best practices
 
 **Key sections:**
+
 - Phase 0 Outputs
 - Phase 1-5 Outputs (with RECOMMENDED structures)
 - Validation Rules
@@ -118,6 +124,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### TROUBLESHOOTING.md
 
 **What it covers:**
+
 - Quick diagnosis commands
 - Common issues with root cause analysis
 - Step-by-step fixes
@@ -125,6 +132,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Validation commands
 
 **Key sections:**
+
 - Quick Diagnosis
 - Common Issues (Process Count: 0, No violations found, etc.)
 - Validation Commands
@@ -133,6 +141,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### COMMON_ISSUES.md
 
 **What it covers:**
+
 - Excel file corruption and sheet name limits
 - Template rendering issues
 - Data structure mismatches
@@ -140,6 +149,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Best practices and prevention strategies
 
 **Key sections:**
+
 - Known Issues Catalog
 - Root Cause Analysis
 - Prevention Strategies
@@ -148,6 +158,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### CODING_STANDARDS_REFERENCE.md
 
 **What it covers:**
+
 - Complete coding standards rules (1.1.1 - 1.5.2)
 - Rule descriptions and rationale
 - Severity levels
@@ -155,6 +166,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Recommendations
 
 **Key sections:**
+
 - Naming Standards (1.1.x)
 - JavaScript Standards (1.2.x)
 - Error Handling Standards (1.3.x)
@@ -164,6 +176,7 @@ This guide provides complete step-by-step instructions from file organization th
 #### TOOLS_README.md
 
 **What it covers:**
+
 - Python tool descriptions
 - Command-line parameters
 - Usage examples
@@ -171,6 +184,7 @@ This guide provides complete step-by-step instructions from file organization th
 - Testing and validation
 
 **Key sections:**
+
 - Tool Descriptions
 - Command-Line Examples
 - Workflow Integration
@@ -205,11 +219,13 @@ These reference documents are maintained as part of the ipa-coding-standards ski
 ### 🔗 Related Resources
 
 **External Documentation:**
+
 - Python tools: `ReusableTools/IPA_CodingStandards/`
 - Templates: `ReusableTools/IPA_CodingStandards/ipa_coding_standards_template_enhanced.py`
 - Validation scripts: `ReusableTools/IPA_CodingStandards/validate_*.py`
 
 **Skill Documentation:**
+
 - Main skill file: `../SKILL.md`
 - Scripts folder: `../scripts/`
 

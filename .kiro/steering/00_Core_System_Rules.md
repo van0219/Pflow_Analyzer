@@ -226,6 +226,29 @@ if __name__ == "__main__":
 
 **CRITICAL**: IPA JavaScript nodes execute in ES5 environment. Modern syntax causes immediate runtime errors.
 
+**IPA Start Node Global Variables:**
+
+**CRITICAL KNOWLEDGE**: In IPA, Start node global variables are defined in the **Properties** tab, NOT as JavaScript code.
+
+- Each property on the Start node becomes a global variable
+- No `var` keyword needed - properties are automatically global
+- Properties are accessible throughout the entire process
+- Start node rarely has JavaScript code - variables are in Properties
+
+**Example Start Node Properties:**
+```
+queryID = ""
+auth = ""
+rowCount = 0
+tempCount = 0
+accessTokenResp = ""
+OutputRecords = ""
+offset = 0
+limit = 1000
+```
+
+**Common Analysis Mistake**: Looking for JavaScript code on Start node to verify global variables. The correct check is to inspect Start node **properties**, not JavaScript blocks.
+
 **ES5 Compliance Checklist:**
 
 | Feature | ES5 Compliant | Modern (Forbidden) |

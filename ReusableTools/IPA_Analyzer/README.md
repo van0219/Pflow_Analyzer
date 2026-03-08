@@ -30,6 +30,20 @@ data = extract_lpd_data(
 )
 ```
 
+**Command Line**:
+```bash
+# Single LPD file with custom output
+python ReusableTools/IPA_Analyzer/extract_lpd_data.py Projects/Client/Process.lpd Temp/output.json
+
+# Multiple LPD files with custom output
+python ReusableTools/IPA_Analyzer/extract_lpd_data.py Process1.lpd Process2.lpd Temp/output.json
+
+# Single LPD file with default output (Temp/lpd_data.json)
+python ReusableTools/IPA_Analyzer/extract_lpd_data.py Projects/Client/Process.lpd
+```
+
+**Note**: If the last argument ends with `.json`, it's treated as the output file. Otherwise, output defaults to `Temp/lpd_data.json`.
+
 **Key Features**:
 - Detects URL-encoded JavaScript (properties containing %0D%0A, %2B, %3D patterns)
 - Automatically decodes URL-encoded content using `urllib.parse.unquote`

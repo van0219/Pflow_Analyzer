@@ -421,11 +421,17 @@ if __name__ == "__main__":
     import sys
     
     if len(sys.argv) < 2:
-        print("Usage: python extract_lpd_data.py <lpd_file1> [lpd_file2] ...")
+        print("Usage: python extract_lpd_data.py <lpd_file1> [lpd_file2] ... [output_file.json]")
+        print("  If output_file is not provided, defaults to Temp/lpd_data.json")
         sys.exit(1)
     
-    lpd_files = sys.argv[1:]
-    output_file = 'Temp/lpd_data.json'
+    # Check if last argument is a JSON file (output file)
+    if sys.argv[-1].endswith('.json') and not sys.argv[-1].endswith('.lpd'):
+        lpd_files = sys.argv[1:-1]
+        output_file = sys.argv[-1]
+    else:
+        lpd_files = sys.argv[1:]
+        output_file = 'Temp/lpd_data.json'
     
     result = extract_lpd_data(lpd_files, output_file)
     print(f"\nExtracted:")

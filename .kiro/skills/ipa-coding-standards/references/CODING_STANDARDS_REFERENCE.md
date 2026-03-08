@@ -2,6 +2,17 @@
 
 Complete reference for IPA coding standards rules.
 
+## External References
+
+For comprehensive IPA knowledge, consult these steering files:
+
+- **`.kiro/steering/02_IPA_and_IPD_Complete_Guide.md`** - IPA concepts, LPD structure, activity nodes, Start node properties, JavaScript ES5, work units
+- **`.kiro/steering/06_Compass_SQL_CheatSheet.md`** - Compass SQL dialect, Data Fabric queries, pagination patterns
+- **`.kiro/steering/07_FSM_Business_Classes_and_API.md`** - FSM business classes, Landmark API, RICE methodology
+- **`.kiro/steering/04_Process_Patterns_Library.md`** - 450+ analyzed workflows, approval patterns, interface patterns
+
+These steering files contain production-tested knowledge from real implementations.
+
 ## Naming Standards (1.1.x)
 
 ### Rule 1.1.1: Filename Format
@@ -29,14 +40,24 @@ Complete reference for IPA coding standards rules.
 
 ### Rule 1.2.1: Process Variables
 
-**Description**: Process variables initialized on Start node (no var keyword)
+**Description**: Process-level variables must be defined on Start node
+
+**IPA Implementation**: In IPA, Start node variables are defined in the **Properties** tab, NOT as JavaScript code. Each property becomes a global variable accessible throughout the process.
 
 **Example**:
-```javascript
-// Start node (compliant)
-vApproverList = "";
-vTotalAmount = 0;
 ```
+Start Node Properties:
+- queryID = ""
+- auth = ""
+- rowCount = 0
+- tempCount = 0
+```
+
+These properties automatically become global variables (no `var` keyword needed).
+
+**Common Mistake**: Looking for JavaScript code on Start node. Start node rarely has JavaScript - variables are in Properties.
+
+**Reference**: See `.kiro/steering/02_IPA_and_IPD_Complete_Guide.md` for complete IPA variable scoping rules.
 
 **Severity**: Medium
 

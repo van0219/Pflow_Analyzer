@@ -162,6 +162,14 @@ def create_executive_dashboard(wb, ipa_data):
     ws = wb.add_worksheet('📊 Executive Dashboard')
     ws.hide_gridlines(2)
     
+    # Phase 4: Print optimization
+    ws.set_landscape()
+    ws.set_paper(9)  # A4
+    ws.fit_to_pages(1, 0)  # Fit to 1 page wide
+    ws.set_header('&C&14&B📊 IPA Coding Standards Dashboard')
+    ws.set_footer('&LGenerated: &D &T&C&P of &N&R' + ipa_data.get('client_name', 'Client') + ' • ' + ipa_data.get('rice_item', 'Project'))
+    ws.repeat_rows(0, 1)  # Repeat title rows when printing
+    
     # Hero section
     hero_format = wb.add_format({
         'bold': True,
@@ -186,9 +194,21 @@ def create_executive_dashboard(wb, ipa_data):
     ws.merge_range('A2:M2', f"{client} • {rice_item} | Generated: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}", meta_format)
     ws.set_row(1, 22)
     
+    # Phase 3: Navigation links
+    nav_format = wb.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'bg_color': COLORS['light_blue'],
+        'font_color': COLORS['deep_blue'],
+        'underline': True
+    })
+    ws.write_url('A3', "internal:'✅ Action Items'!A1", nav_format, string='→ Action Items')
+    ws.write_url('B3', "internal:'📐 Detailed Analysis'!A1", nav_format, string='→ Detailed Analysis')
+    ws.write_url('C3', "internal:'🔄 Process Flow'!A1", nav_format, string='→ Process Flow')
+    
     ws.set_row(2, 15)  # Spacer
     
-    # KPI Cards Row
+    # KPI Cards Row - Redesigned for full width (2 rows of 2 cards each)
     row = 3
     quality_scores = ipa_data.get('quality_scores', {})
     overall_score = quality_scores.get('overall', 0)
@@ -221,21 +241,38 @@ def create_executive_dashboard(wb, ipa_data):
     })
 
     
-    # Card 1: Overall Score
-    ws.merge_range(row, 0, row, 2, '🎯 OVERALL QUALITY', card_header)
-    ws.merge_range(row+1, 0, row+2, 2, overall_score, card_value)
-    ws.merge_range(row+3, 0, row+3, 2, 'Quality Score', card_label)
+    # Row 1: Overall Quality (left) and Action Items (right)
+    # Card 1: Overall Score (Columns A-F)
+    ws.merge_range(row, 0, row, 5, '🎯 OVERALL QUALITY', card_header)
+    ws.merge_range(row+1, 0, row+2, 5, overall_score, card_value)
+    ws.merge_range(row+3, 0, row+3, 5, 'Quality Score', card_label)
     
-    # Card 2: Process Count
+    # Card 2: Action Items (Columns G-L)
+    action_count = calculate_action_items_count(ipa_data)
+    ws.merge_range(row, 6, row, 11, '✅ ACTION ITEMS', card_header)
+    ws.merge_range(row+1, 6, row+2, 11, action_count, card_value)
+    ws.merge_range(row+3, 6, row+3, 11, 'Items to Address', card_label)
+    
+    ws.set_row(row, 25)
+    ws.set_row(row+1, 35)
+    ws.set_row(row+2, 35)
+    ws.set_row(row+3, 22)
+    
+    row += 5
+    ws.set_row(row, 10)  # Small spacer
+    row += 1
+    
+    # Row 2: Process Count (left) and Complexity (right)
     overview = ipa_data.get('overview', {})
     process_count = overview.get('process_count', 0)
     activity_count = overview.get('activity_count', 0)
     
-    ws.merge_range(row, 3, row, 5, '📋 PROCESSES', card_header)
-    ws.merge_range(row+1, 3, row+2, 5, process_count, card_value)
-    ws.merge_range(row+3, 3, row+3, 5, f'{activity_count} Activities', card_label)
+    # Card 3: Process Count (Columns A-F)
+    ws.merge_range(row, 0, row, 5, '📋 PROCESSES', card_header)
+    ws.merge_range(row+1, 0, row+2, 5, process_count, card_value)
+    ws.merge_range(row+3, 0, row+3, 5, f'{activity_count} Activities', card_label)
     
-    # Card 3: Complexity Score
+    # Card 4: Complexity Score (Columns G-L)
     activities = ipa_data.get('activities', [])
     branch_count = sum(1 for act in activities if act.get('type') == 'BRANCH')
     loop_count = sum(1 for act in activities if act.get('type') in ['ITBEG', 'ItEnd'])
@@ -269,16 +306,9 @@ def create_executive_dashboard(wb, ipa_data):
         'font_color': complexity_color
     })
     
-    ws.merge_range(row, 6, row, 8, '⚙️ COMPLEXITY', card_header)
-    ws.merge_range(row+1, 6, row+2, 8, complexity_score, complexity_value_format)
-    ws.merge_range(row+3, 6, row+3, 8, complexity_level, card_label)
-    
-    # Card 4: Action Items
-    action_count = calculate_action_items_count(ipa_data)
-    
-    ws.merge_range(row, 9, row, 11, '✅ ACTION ITEMS', card_header)
-    ws.merge_range(row+1, 9, row+2, 11, action_count, card_value)
-    ws.merge_range(row+3, 9, row+3, 11, 'Items to Address', card_label)
+    ws.merge_range(row, 6, row, 11, '⚙️ COMPLEXITY', card_header)
+    ws.merge_range(row+1, 6, row+2, 11, complexity_score, complexity_value_format)
+    ws.merge_range(row+3, 6, row+3, 11, complexity_level, card_label)
     
     ws.set_row(row, 25)
     ws.set_row(row+1, 35)
@@ -290,7 +320,7 @@ def create_executive_dashboard(wb, ipa_data):
     row += 1
 
     
-    # Charts Section
+    # Charts Section - Side by side layout
     section_header = wb.add_format({
         'bold': True,
         'font_size': 14,
@@ -308,13 +338,112 @@ def create_executive_dashboard(wb, ipa_data):
     ws.set_row(row, 28)
     row += 1
     
+    charts_start_row = row
+    
+    # Left side: Radar Chart (Columns A-F)
     if quality_scores:
         chart_img = create_radar_chart(quality_scores)
-        ws.insert_image(row, 0, 'radar_chart.png', {'image_data': chart_img, 'x_scale': 1.0, 'y_scale': 1.0})
+        ws.insert_image(row, 0, 'radar_chart.png', {'image_data': chart_img, 'x_scale': 0.9, 'y_scale': 0.9})
     
-    row += 25
-    ws.merge_range(row, 0, row, 11, '🔍 KEY FINDINGS', section_header)
+    # Right side: Bar Chart (Columns G-L)
+    if quality_scores:
+        # Prepare data for chart (exclude 'overall' score)
+        chart_categories = []
+        chart_values = []
+        for key, value in quality_scores.items():
+            if key != 'overall':
+                chart_categories.append(key.replace('_', ' ').title())
+                chart_values.append(value)
+        
+        # Write data to hidden cells for chart
+        data_start_row = row + 25
+        for idx, (cat, val) in enumerate(zip(chart_categories, chart_values)):
+            ws.write(data_start_row + idx, 6, cat)
+            ws.write(data_start_row + idx, 7, val)
+        
+        # Create bar chart
+        chart = wb.add_chart({'type': 'bar'})
+        chart.add_series({
+            'name': 'Quality Score',
+            'categories': ['📊 Executive Dashboard', data_start_row, 6, data_start_row + len(chart_categories) - 1, 6],
+            'values': ['📊 Executive Dashboard', data_start_row, 7, data_start_row + len(chart_categories) - 1, 7],
+            'fill': {'color': COLORS['deep_blue']},
+            'data_labels': {'value': True, 'position': 'outside_end'}
+        })
+        
+        chart.set_title({'name': 'Quality Scores by Category', 'name_font': {'size': 12, 'bold': True}})
+        chart.set_x_axis({'name': 'Score (0-100)', 'min': 0, 'max': 100})
+        chart.set_y_axis({'name': 'Category'})
+        chart.set_size({'width': 480, 'height': 360})
+        chart.set_legend({'position': 'none'})
+        
+        ws.insert_chart(row, 6, chart)
+    
+    row += 20
+    
+    # Severity Breakdown Chart - Full width below
+    ws.merge_range(row, 0, row, 11, '📊 SEVERITY BREAKDOWN', section_header)
     ws.set_row(row, 28)
+    row += 1
+    
+    # Calculate severity counts
+    all_violations = []
+    for rec in ipa_data.get('recommendations', []):
+        all_violations.append(rec.get('priority', 'Medium'))
+    for section_name, issues in ipa_data.get('coding_standards', {}).items():
+        for issue in issues:
+            if len(issue) >= 6 and issue[5] != 'Pass':
+                all_violations.append(issue[2] if len(issue) > 2 else 'Medium')
+    
+    severity_counts = {
+        'Critical': all_violations.count('Critical'),
+        'High': all_violations.count('High'),
+        'Medium': all_violations.count('Medium'),
+        'Low': all_violations.count('Low')
+    }
+    
+    # Write severity data for chart (Columns A-B, hidden below)
+    data_start_row = row + 20
+    severity_labels = ['Critical', 'High', 'Medium', 'Low']
+    severity_colors = [COLORS['red'], COLORS['amber'], '#FDD835', COLORS['green']]
+    
+    for idx, label in enumerate(severity_labels):
+        ws.write(data_start_row + idx, 0, label)
+        ws.write(data_start_row + idx, 1, severity_counts.get(label, 0))
+    
+    # Create pie chart for severity breakdown (Left side: Columns A-E)
+    severity_chart = wb.add_chart({'type': 'pie'})
+    severity_chart.add_series({
+        'name': 'Violations by Severity',
+        'categories': ['📊 Executive Dashboard', data_start_row, 0, data_start_row + 3, 0],
+        'values': ['📊 Executive Dashboard', data_start_row, 1, data_start_row + 3, 1],
+        'data_labels': {'value': True, 'category': True, 'position': 'best_fit'},
+        'points': [
+            {'fill': {'color': severity_colors[0]}},
+            {'fill': {'color': severity_colors[1]}},
+            {'fill': {'color': severity_colors[2]}},
+            {'fill': {'color': severity_colors[3]}}
+        ]
+    })
+    
+    severity_chart.set_title({'name': 'Violations by Severity', 'name_font': {'size': 12, 'bold': True}})
+    severity_chart.set_size({'width': 400, 'height': 300})
+    severity_chart.set_legend({'position': 'right', 'font': {'size': 9}})
+    
+    ws.insert_chart(row, 0, severity_chart)
+    
+    # Key Findings (Right side: Columns F-L)
+    findings_header = wb.add_format({
+        'bold': True,
+        'font_size': 12,
+        'bg_color': COLORS['medium_blue'],
+        'font_color': 'white',
+        'align': 'left',
+        'valign': 'vcenter',
+        'border': 1
+    })
+    ws.merge_range(row, 6, row, 11, '🔍 KEY FINDINGS', findings_header)
+    ws.set_row(row, 25)
     row += 1
     
     finding_format = wb.add_format({
@@ -349,17 +478,19 @@ def create_executive_dashboard(wb, ipa_data):
             'border': 1
         })
         
-        ws.write(row, 0, status, badge_format)
-        ws.merge_range(row, 1, row, 2, category, wb.add_format({
+        ws.write(row, 6, status, badge_format)
+        ws.write(row, 7, category, wb.add_format({
             'bold': True,
             'font_size': 10,
             'bg_color': COLORS['white'],
             'border': 1,
             'border_color': COLORS['gray']
         }))
-        ws.merge_range(row, 3, row, 11, details, finding_format)
+        ws.merge_range(row, 8, row, 11, details, finding_format)
         ws.set_row(row, 35)
         row += 1
+    
+    row += 15  # Space for pie chart
     
     ws.set_column('A:A', 12)
     ws.set_column('B:C', 15)
@@ -371,6 +502,15 @@ def create_action_items_enhanced(wb, ipa_data):
     """Create enhanced action items sheet with impact analysis and code examples"""
     ws = wb.add_worksheet('✅ Action Items')
     ws.hide_gridlines(2)
+    
+    # Phase 4: Print optimization
+    ws.set_landscape()
+    ws.set_paper(9)  # A4
+    ws.fit_to_pages(1, 0)  # Fit to 1 page wide
+    ws.set_header('&C&14&B✅ Action Items - Developer Checklist')
+    ws.set_footer('&LPage &P of &N&C' + ipa_data.get('client_name', 'Client') + ' • ' + ipa_data.get('rice_item', 'Project') + '&R&D')
+    ws.repeat_rows(0, 3)  # Repeat title and header rows when printing
+    ws.set_print_scale(85)  # Scale to 85% for better fit
     
     # Modern title
     title_format = wb.add_format({
@@ -394,7 +534,19 @@ def create_action_items_enhanced(wb, ipa_data):
     ws.merge_range('A2:N2', 'Items with impact analysis, code examples, and testing guidance', subtitle_format)
     ws.set_row(1, 20)
     
-    # Header format
+    # Phase 3: Back to Dashboard link
+    back_format = wb.add_format({
+        'font_size': 9,
+        'align': 'left',
+        'bg_color': COLORS['white'],
+        'font_color': COLORS['deep_blue'],
+        'underline': True
+    })
+    ws.write_url('A3', "internal:'📊 Executive Dashboard'!A1", back_format, string='← Back to Dashboard')
+    ws.set_row(2, 18)
+    
+    # Headers
+    row = 4  # Phase 3: Adjusted for navigation link
     header_format = wb.add_format({
         'bold': True,
         'font_size': 10,
@@ -445,11 +597,51 @@ def create_action_items_enhanced(wb, ipa_data):
     headers = [
         'Priority', 'Category', 'Rule ID', 'Activity', 'Issue', 'Current', 
         'Recommendation', 'Effort', 'Impact', 'Priority\nScore', 'Est. Fix\nTime', 
-        'Affected\n%', 'Code Example', 'Testing Notes'
+        'Affected\n%', 'Code Example', 'Testing Notes', 'Status'
     ]
     for col, header in enumerate(headers):
         ws.write(row, col, header, header_format)
     ws.set_row(row, 30)
+    
+    # Phase 2: Priority color formats with conditional formatting
+    critical_priority_format = wb.add_format({
+        'border': 1,
+        'border_color': COLORS['gray'],
+        'valign': 'top',
+        'bg_color': '#FFEBEE',  # Light red
+        'text_wrap': True,
+        'font_size': 9,
+        'bold': True,
+        'font_color': COLORS['red']
+    })
+    high_priority_format = wb.add_format({
+        'border': 1,
+        'border_color': COLORS['gray'],
+        'valign': 'top',
+        'bg_color': '#FFF3E0',  # Light amber
+        'text_wrap': True,
+        'font_size': 9,
+        'bold': True,
+        'font_color': COLORS['amber']
+    })
+    medium_priority_format = wb.add_format({
+        'border': 1,
+        'border_color': COLORS['gray'],
+        'valign': 'top',
+        'bg_color': '#FFFDE7',  # Light yellow
+        'text_wrap': True,
+        'font_size': 9,
+        'font_color': COLORS['dark_gray']
+    })
+    low_priority_format = wb.add_format({
+        'border': 1,
+        'border_color': COLORS['gray'],
+        'valign': 'top',
+        'bg_color': COLORS['white'],
+        'text_wrap': True,
+        'font_size': 9,
+        'font_color': COLORS['dark_gray']
+    })
     
     row += 1
     
@@ -530,7 +722,16 @@ def create_action_items_enhanced(wb, ipa_data):
     # Write issues
     for issue in all_issues:
         severity = issue['priority']
-        fmt = critical_format if severity == 'Critical' else high_format if severity == 'High' else medium_format if severity == 'Medium' else cell_format
+        
+        # Phase 2: Use priority-specific formats with color coding
+        if severity == 'Critical':
+            fmt = critical_priority_format
+        elif severity == 'High':
+            fmt = high_priority_format
+        elif severity == 'Medium':
+            fmt = medium_priority_format
+        else:
+            fmt = low_priority_format
         
         # Extract enhanced fields if available
         priority_score = issue.get('priority_score', 50)
@@ -563,9 +764,24 @@ def create_action_items_enhanced(wb, ipa_data):
         ws.write(row, 11, f"{affected_percentage}%" if affected_percentage > 0 else 'N/A', fmt)
         ws.write(row, 12, code_example, fmt)
         ws.write(row, 13, testing_notes, fmt)
+        ws.write(row, 14, 'Not Started', fmt)  # Phase 3: Status column with default value
         
         ws.set_row(row, 60)
         row += 1
+    
+    # Phase 3: Add AutoFilter to enable filtering
+    if row > 4:
+        ws.autofilter(3, 0, row - 1, 14)
+    
+    # Phase 3: Add data validation for Status column
+    ws.data_validation(f'O4:O{row}', {
+        'validate': 'list',
+        'source': ['Not Started', 'In Progress', 'Complete', 'Blocked'],
+        'input_title': 'Select Status',
+        'input_message': 'Choose current status of this action item',
+        'error_title': 'Invalid Status',
+        'error_message': 'Please select a valid status from the dropdown'
+    })
     
     # Column widths
     ws.set_column('A:A', 8)
@@ -582,6 +798,7 @@ def create_action_items_enhanced(wb, ipa_data):
     ws.set_column('L:L', 8)
     ws.set_column('M:M', 25)
     ws.set_column('N:N', 25)
+    ws.set_column('O:O', 12)  # Phase 3: Status column
 
 
 
@@ -589,6 +806,14 @@ def create_detailed_analysis_enhanced(wb, ipa_data):
     """Create enhanced detailed analysis sheet with impact analysis and code examples"""
     ws = wb.add_worksheet('📐 Detailed Analysis')
     ws.hide_gridlines(2)
+    
+    # Phase 4: Print optimization
+    ws.set_portrait()
+    ws.set_paper(9)  # A4
+    ws.fit_to_pages(1, 0)  # Fit to 1 page wide
+    ws.set_header('&C&14&B📐 Detailed Analysis')
+    ws.set_footer('&LPage &P of &N&C' + ipa_data.get('client_name', 'Client') + ' • ' + ipa_data.get('rice_item', 'Project') + '&R&D')
+    ws.repeat_rows(0, 2)  # Repeat title rows when printing
     
     # Modern title
     title_format = wb.add_format({
@@ -612,6 +837,17 @@ def create_detailed_analysis_enhanced(wb, ipa_data):
     ws.merge_range('A2:J2', 'Comprehensive technical analysis with code examples and testing guidance', subtitle_format)
     ws.set_row(1, 20)
     
+    # Phase 3: Back to Dashboard link
+    back_format = wb.add_format({
+        'font_size': 9,
+        'align': 'left',
+        'bg_color': COLORS['white'],
+        'font_color': COLORS['deep_blue'],
+        'underline': True
+    })
+    ws.write_url('A3', "internal:'📊 Executive Dashboard'!A1", back_format, string='← Back to Dashboard')
+    ws.set_row(2, 18)
+    
     # Section header format
     section_format = wb.add_format({
         'bold': True,
@@ -629,6 +865,48 @@ def create_detailed_analysis_enhanced(wb, ipa_data):
         'bg_color': COLORS['light_blue'],
         'border': 1,
         'border_color': COLORS['gray']
+    })
+    
+    # Phase 2: Severity badge formats (Phase 4: Enhanced for accessibility)
+    critical_badge_format = wb.add_format({
+        'bold': True,
+        'font_size': 10,
+        'bg_color': '#D32F2F',  # Phase 4: Darker red for better contrast
+        'font_color': 'white',
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 2,
+        'border_color': '#B71C1C'  # Phase 4: Darker border
+    })
+    high_badge_format = wb.add_format({
+        'bold': True,
+        'font_size': 10,
+        'bg_color': '#F57C00',  # Phase 4: Darker amber for better contrast
+        'font_color': 'white',
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 2,
+        'border_color': '#E65100'  # Phase 4: Darker border
+    })
+    medium_badge_format = wb.add_format({
+        'bold': True,
+        'font_size': 10,
+        'bg_color': '#FBC02D',  # Phase 4: Darker yellow for better contrast
+        'font_color': '#212121',  # Phase 4: Darker text
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 2,
+        'border_color': '#F57F17'  # Phase 4: Darker border
+    })
+    low_badge_format = wb.add_format({
+        'bold': True,
+        'font_size': 10,
+        'bg_color': '#388E3C',  # Phase 4: Darker green for better contrast
+        'font_color': 'white',
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 2,
+        'border_color': '#1B5E20'  # Phase 4: Darker border
     })
     
     # Data formats
@@ -700,8 +978,24 @@ def create_detailed_analysis_enhanced(wb, ipa_data):
     violations = ipa_data.get('violations', [])
     if violations:
         for idx, violation in enumerate(violations, 1):
-            # Violation header
-            ws.merge_range(row, 0, row, 9, f"Violation {idx}: {violation.get('rule_name', 'N/A')}", subsection_format)
+            # Phase 2: Violation header with severity badge
+            severity = violation.get('severity', 'Medium')
+            if severity == 'Critical':
+                badge_fmt = critical_badge_format
+                badge_text = '🔴 CRITICAL'  # Phase 4: Icon + text for accessibility
+            elif severity == 'High':
+                badge_fmt = high_badge_format
+                badge_text = '🟠 HIGH'  # Phase 4: Icon + text for accessibility
+            elif severity == 'Medium':
+                badge_fmt = medium_badge_format
+                badge_text = '🟡 MEDIUM'  # Phase 4: Icon + text for accessibility
+            else:
+                badge_fmt = low_badge_format
+                badge_text = '🟢 LOW'  # Phase 4: Icon + text for accessibility
+            
+            # Violation header with severity badge
+            ws.write(row, 0, badge_text, badge_fmt)
+            ws.merge_range(row, 1, row, 9, f"Violation {idx}: {violation.get('rule_name', 'N/A')}", subsection_format)
             row += 1
             
             # Basic info
@@ -792,6 +1086,14 @@ def create_process_flow(wb, ipa_data):
     ws = wb.add_worksheet('🔄 Process Flow')
     ws.hide_gridlines(2)
     
+    # Phase 4: Print optimization
+    ws.set_portrait()
+    ws.set_paper(9)  # A4
+    ws.fit_to_pages(1, 0)  # Fit to 1 page wide
+    ws.set_header('&C&14&B🔄 Process Flow Diagram')
+    ws.set_footer('&LPage &P of &N&C' + ipa_data.get('client_name', 'Client') + ' • ' + ipa_data.get('rice_item', 'Project') + '&R&D')
+    ws.repeat_rows(0, 2)  # Repeat title rows when printing
+    
     # Modern title
     title_format = wb.add_format({
         'bold': True,
@@ -813,6 +1115,17 @@ def create_process_flow(wb, ipa_data):
     })
     ws.merge_range('A2:H2', 'Visual representation of process structure and complexity', subtitle_format)
     ws.set_row(1, 20)
+    
+    # Phase 3: Back to Dashboard link
+    back_format = wb.add_format({
+        'font_size': 9,
+        'align': 'left',
+        'bg_color': COLORS['white'],
+        'font_color': COLORS['deep_blue'],
+        'underline': True
+    })
+    ws.write_url('A3', "internal:'📊 Executive Dashboard'!A1", back_format, string='← Back to Dashboard')
+    ws.set_row(2, 18)
     
     # Section header
     section_format = wb.add_format({
@@ -903,41 +1216,51 @@ TOTAL COMPLEXITY: {complexity_score} points"""
     ws.merge_range(row, 0, row, 7, 'ACTIVITY FLOW', section_format)
     row += 1
     
-    # Build simplified flow diagram
+    # Build simplified flow diagram with actual activity captions
     flow_lines = []
     flow_lines.append("PROCESS FLOW:")
     flow_lines.append("=" * 50)
     flow_lines.append("")
     
-    # Group activities by type for summary
-    activity_types = {}
-    for act in activities[:20]:  # Show first 20 activities
+    # Filter out empty connector activities (no type or id)
+    real_activities = [act for act in activities if act.get('type') and act.get('id')]
+    
+    # Show first 30 real activities with actual captions
+    for act in real_activities[:30]:
         act_type = act.get('type', 'UNKNOWN')
-        caption = act.get('caption', act.get('id', 'N/A'))
+        act_id = act.get('id', '')
+        caption = act.get('caption', act_id)
         
+        # Use actual caption from LPD data (even if generic like "Assign")
         if act_type == 'START':
-            flow_lines.append("├─ START")
+            flow_lines.append(f"├─ START: {caption}")
         elif act_type == 'BRANCH':
-            flow_lines.append(f"├─ BRANCH: {caption}")
+            flow_lines.append(f"├─ BRANCH: {caption} ({act_id})")
         elif act_type == 'ITBEG':
             flow_lines.append(f"├─ LOOP START: {caption}")
         elif act_type == 'ItEnd':
-            flow_lines.append(f"│  └─ LOOP END")
+            flow_lines.append(f"│  └─ LOOP END: {caption}")
         elif act_type == 'SUBPROC':
-            flow_lines.append(f"├─ SUBPROCESS: {caption}")
+            flow_lines.append(f"├─ SUBPROCESS: {caption} ({act_id})")
         elif act_type == 'UA':
             flow_lines.append(f"├─ USER ACTION: {caption}")
-        elif act_type == 'SCRIPT':
-            flow_lines.append(f"├─ JAVASCRIPT: {caption}")
-        elif act_type == 'SQL':
-            flow_lines.append(f"├─ SQL QUERY: {caption}")
+        elif act_type == 'ASSGN':
+            flow_lines.append(f"├─ ASSIGN: {caption} ({act_id})")
+        elif act_type == 'WEBRN':
+            flow_lines.append(f"├─ WEB RUN: {caption} ({act_id})")
+        elif act_type == 'Timer':
+            flow_lines.append(f"├─ TIMER: {caption} ({act_id})")
+        elif act_type == 'ACCFIL':
+            flow_lines.append(f"├─ FILE ACCESS: {caption} ({act_id})")
+        elif act_type == 'MSGBD':
+            flow_lines.append(f"├─ MESSAGE BUILDER: {caption} ({act_id})")
         elif act_type == 'END':
-            flow_lines.append("└─ END")
+            flow_lines.append(f"└─ END: {caption}")
         else:
-            flow_lines.append(f"├─ {act_type}: {caption}")
+            flow_lines.append(f"├─ {act_type}: {caption} ({act_id})")
     
-    if len(activities) > 20:
-        flow_lines.append(f"... ({len(activities) - 20} more activities)")
+    if len(real_activities) > 30:
+        flow_lines.append(f"... ({len(real_activities) - 30} more activities)")
     
     flow_text = "\n".join(flow_lines)
     

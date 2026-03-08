@@ -46,18 +46,22 @@ Use this skill when you need to:
 ## Report Structure
 
 ### Executive Dashboard
+
 - KPI cards: Overall Quality, Processes, Complexity, Action Items
 - Radar chart: Quality metrics visualization
 - Key findings: Top 5 findings with status badges
 
 ### Action Items (Enhanced)
+
 14 columns including:
+
 - Priority, Category, Rule ID, Activity, Issue
 - Current state, Recommendation, Effort, Impact
 - Priority Score (0-100), Est. Fix Time, Affected %
 - Code Example (before/after), Testing Notes
 
 ### Detailed Analysis (Enhanced)
+
 - Process Overview
 - Violations with Impact Analysis
 - Code Examples (before, after, explanation)
@@ -65,6 +69,7 @@ Use this skill when you need to:
 - Priority Score
 
 ### Process Flow
+
 - Process information
 - Complexity breakdown with scoring
 - Activity flow diagram
@@ -148,25 +153,31 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
 This skill uses the following Python tools from `ReusableTools/IPA_CodingStandards/`:
 
 **Phase 0 (Preprocessing):**
+
 - `preprocess_coding_standards.py` - Extracts and structures data for analysis phases
 
 **Phase 1-4 (Domain Analysis - Incremental):**
+
 - `build_naming_analysis.py` - Chunks naming data, orchestrates AI analysis, merges results
 - `build_javascript_analysis.py` - Chunks JS blocks, orchestrates AI analysis, merges results
 - `build_sql_analysis.py` - Chunks SQL queries, orchestrates AI analysis, merges results
 - `build_errorhandling_analysis.py` - Chunks error activities, orchestrates AI analysis, merges results
 
 **Phase 6 (Report Assembly):**
+
 - `assemble_coding_standards_report.py` - Merges JSON outputs and generates Excel report
 
 **Helpers:**
+
 - `build_ipa_data_helper.py` - Builds ipa_data from violations (prevents duplicates)
 
 **Legacy Tools (Still Used):**
+
 - `organize_by_domain.py` - Used by preprocessing script
 - `merge_violations.py` - Used by assembly script
 
 **Templates:**
+
 - `ipa_coding_standards_template_enhanced.py` - Current template (v2.0)
 - `ipa_coding_standards_template.py` - Legacy template (v1.0)
 
@@ -184,6 +195,7 @@ This skill uses the following Python tools from `ReusableTools/IPA_CodingStandar
 - **Total**: ~8-12 min per process (stable, no crashes)
 
 **Key Improvements:**
+
 - ✅ No AI output >3 KB (was variable with subagents)
 - ✅ No context accumulation (each chunk isolated)
 - ✅ Crash-safe (can resume from any chunk)
@@ -232,12 +244,14 @@ Then follow the interactive prompts to:
 **Critical Feature**: Project-specific standards override steering file defaults
 
 **Workflow**:
+
 1. Phase 0 loads `Projects/<Client>/project_standards_<Client>.xlsx`
 2. Converts to `project_standards.json`
 3. Each analysis phase reads `project_standards.json` FIRST
 4. Project standards take precedence over steering defaults
 
 **Example Standards**:
+
 - Filename format: `<Prefix>_WF_<Desc>.lpd` for approval workflows
 - Config set naming: Must include vendor name
 - JavaScript: No ES6 features allowed

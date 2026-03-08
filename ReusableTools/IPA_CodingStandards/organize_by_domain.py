@@ -164,11 +164,23 @@ class DomainOrganizer:
         start_node_id = start_nodes[0].get('id') if start_nodes else None
         
         # Check if START node has global variables
-        start_node_js = [js for js in js_blocks if js.get('activity_id') == start_node_id]
+        # In IPA, Start node global variables are defined in PROPERTIES, not JavaScript code
+        # Check both: properties (correct way) and JavaScript blocks (legacy check)
         has_global_vars_on_start = False
-        if start_node_js:
-            code = start_node_js[0].get('code', '')
-            has_global_vars_on_start = 'var ' in code
+        if start_nodes:
+            start_node = start_nodes[0]
+            properties = start_node.get('properties', {})
+            # Check if Start node has properties (excluding system properties)
+            system_props = ['_activityCheckPoint', 'Checkpoint', 'variableType']
+            user_props = [k for k in properties.keys() if k not in system_props]
+            has_global_vars_on_start = len(user_props) > 0
+            
+            # Also check for JavaScript blocks (legacy approach)
+            if not has_global_vars_on_start:
+                start_node_js = [js for js in js_blocks if js.get('activity_id') == start_node_id]
+                if start_node_js:
+                    code = start_node_js[0].get('code', '')
+                    has_global_vars_on_start = 'var ' in code or len(code.strip()) > 0
         
         # ES6 patterns to detect
         es6_patterns = {

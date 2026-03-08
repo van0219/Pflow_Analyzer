@@ -2,6 +2,15 @@
 
 Domain-specific analysis patterns for IPA Coding Standards.
 
+## External Knowledge Sources
+
+For deep domain expertise, reference these steering files during analysis:
+
+- **JavaScript ES5**: `.kiro/steering/02_IPA_and_IPD_Complete_Guide.md` (Section: JavaScript ES5 Compliance)
+- **Compass SQL**: `.kiro/steering/06_Compass_SQL_CheatSheet.md` (Complete SQL dialect reference)
+- **Process Patterns**: `.kiro/steering/04_Process_Patterns_Library.md` (450+ real-world examples)
+- **FSM/Landmark**: `.kiro/steering/07_FSM_Business_Classes_and_API.md` (Business class patterns)
+
 ## Overview
 
 The IPA Coding Standards skill analyzes 5 domains separately to prevent context overload and ensure comprehensive coverage.
