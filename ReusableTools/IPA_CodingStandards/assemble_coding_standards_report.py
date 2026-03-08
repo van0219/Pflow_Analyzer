@@ -96,6 +96,44 @@ def main():
     # Extract SQL queries from lpd_structure
     sql_queries_array = lpd_structure.get('processes', [{}])[0].get('sql_queries', [])
     
+    # Enrich activities with metadata from domain analyses
+    print("   → Enriching activities with metadata...")
+    
+    # Load domain files (not analysis files) for metadata
+    domain_naming = load_json(temp_dir / f"{process_name}_domain_naming.json")
+    domain_javascript = load_json(temp_dir / f"{process_name}_domain_javascript.json")
+    domain_sql = load_json(temp_dir / f"{process_name}_domain_sql.json")
+    domain_errorhandling = load_json(temp_dir / f"{process_name}_domain_errorhandling.json")
+    
+    # Build lookup dictionaries from domain files
+    js_activities = set()
+    if domain_javascript:
+        for js_block in domain_javascript.get('js_blocks', []):
+            js_activities.add(js_block.get('activity_id'))
+    
+    sql_activities = set()
+    if domain_sql:
+        for sql_query in domain_sql.get('sql_queries', []):
+            sql_activities.add(sql_query.get('activity_id'))
+    
+    error_handling_activities = set()
+    if domain_errorhandling:
+        for node in domain_errorhandling.get('nodes_analysis', []):
+            if node.get('has_error_handling'):
+                error_handling_activities.add(node.get('activity_id'))
+    
+    # Enrich each activity
+    for activity in activities:
+        activity_id = activity.get('id', '')
+        activity['has_javascript'] = activity_id in js_activities
+        activity['has_sql'] = activity_id in sql_activities
+        activity['has_error_handling'] = activity_id in error_handling_activities
+    
+    print(f"   ✓ Enriched {len(activities)} activities with metadata")
+    print(f"      - JavaScript: {len(js_activities)} activities")
+    print(f"      - SQL: {len(sql_activities)} activities")
+    print(f"      - Error Handling: {len(error_handling_activities)} activities")
+    
     # Calculate quality scores
     total_violations = len(all_violations)
     high_severity = len([v for v in all_violations if v.get('severity') == 'High'])

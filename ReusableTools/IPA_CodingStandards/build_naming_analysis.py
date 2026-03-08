@@ -145,7 +145,14 @@ def merge_mode():
     metadata = load_json(metadata_file)
     total_chunks = metadata['total_chunks']
     
-    print(f"[1/2] Loading {total_chunks} analyzed chunks...")
+    # Load project standards for rule_name mapping
+    standards_file = temp_dir / 'project_standards.json'
+    rule_map = {}
+    if standards_file.exists():
+        project_standards = load_json(standards_file)
+        rule_map = {std['Rule_ID']: std['Rule_Name'] for std in project_standards}
+    
+    print(f"[1/3] Loading {total_chunks} analyzed chunks...")
     
     # Initialize merged analysis
     merged = {
@@ -167,8 +174,18 @@ def merge_mode():
         merged['violations'].extend(violations)
         print(f"   ✓ Chunk {i}: {len(violations)} violations")
     
+    # Add rule_name to all violations
+    print(f"[2/3] Adding rule_name to violations...")
+    for v in merged['violations']:
+        rule_id = v.get('rule_id', 'Custom')
+        if rule_id in rule_map:
+            v['rule_name'] = f"{rule_id}: {rule_map[rule_id]}"
+        else:
+            v['rule_name'] = f"{rule_id}: {v.get('category', 'Custom Rule')}"
+    print(f"   ✓ Added rule_name to {len(merged['violations'])} violations")
+    
     # Save merged analysis
-    print(f"[2/2] Saving merged analysis...")
+    print(f"[3/3] Saving merged analysis...")
     output_file = temp_dir / 'naming_analysis.json'
     save_json(merged, output_file)
     print(f"   ✓ {output_file}")

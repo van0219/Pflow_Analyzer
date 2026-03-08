@@ -29,6 +29,48 @@ def main():
     print()
     
     temp_dir = Path('Temp')
+    
+    # Check if analysis already exists (AI has completed it)
+    output_file = temp_dir / 'structure_analysis.json'
+    if output_file.exists():
+        print("[1/2] Structure analysis found, adding rule_name...")
+        
+        # Load existing analysis
+        analysis = load_json(output_file)
+        
+        # Load project standards for rule_name mapping
+        standards_file = temp_dir / 'project_standards.json'
+        rule_map = {}
+        if standards_file.exists():
+            project_standards = load_json(standards_file)
+            rule_map = {std['Rule_ID']: std['Rule_Name'] for std in project_standards}
+        
+        # Add rule_name to all violations
+        violations = analysis.get('violations', [])
+        for v in violations:
+            if 'rule_name' not in v:  # Only add if missing
+                rule_id = v.get('rule_id', 'Custom')
+                if rule_id in rule_map:
+                    v['rule_name'] = f"{rule_id}: {rule_map[rule_id]}"
+                else:
+                    v['rule_name'] = f"{rule_id}: {v.get('category', 'Custom Rule')}"
+        
+        print(f"   ✓ Added rule_name to {len(violations)} violations")
+        
+        # Save updated analysis
+        print(f"[2/2] Saving updated analysis...")
+        save_json(analysis, output_file)
+        print(f"   ✓ {output_file}")
+        
+        print()
+        print("=" * 80)
+        print("PHASE 5 COMPLETE")
+        print("=" * 80)
+        print()
+        
+        return 0
+    
+    # If analysis doesn't exist, prepare data for AI
     domain_files = list(temp_dir.glob('*_domain_structure.json'))
     
     if not domain_files:
@@ -59,7 +101,6 @@ def main():
         'notes': 'AI analysis required for structure domain'
     }
     
-    output_file = temp_dir / 'structure_analysis.json'
     save_json(analysis, output_file)
     print(f"✓ Placeholder created: {output_file.name}")
     

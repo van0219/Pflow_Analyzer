@@ -167,6 +167,7 @@ class DomainOrganizer:
         # In IPA, Start node global variables are defined in PROPERTIES, not JavaScript code
         # Check both: properties (correct way) and JavaScript blocks (legacy check)
         has_global_vars_on_start = False
+        start_node_global_vars = []
         if start_nodes:
             start_node = start_nodes[0]
             properties = start_node.get('properties', {})
@@ -174,6 +175,7 @@ class DomainOrganizer:
             system_props = ['_activityCheckPoint', 'Checkpoint', 'variableType']
             user_props = [k for k in properties.keys() if k not in system_props]
             has_global_vars_on_start = len(user_props) > 0
+            start_node_global_vars = user_props  # List of global variable names
             
             # Also check for JavaScript blocks (legacy approach)
             if not has_global_vars_on_start:
@@ -256,6 +258,7 @@ class DomainOrganizer:
             'total_js_blocks': len(js_blocks),
             'start_node_has_global_vars': has_global_vars_on_start,
             'start_node_id': start_node_id,
+            'start_node_global_vars': start_node_global_vars,  # List of global variable names
             'js_blocks': js_analysis,
             'statistics': {
                 'blocks_with_es6': sum(1 for js in js_analysis if js['es6_features_detected']),
@@ -270,6 +273,34 @@ class DomainOrganizer:
         """Organize SQL-related data using pre-extracted queries."""
         # Use pre-extracted SQL queries from lpd_structure
         sql_queries_raw = self.process.get('sql_queries', [])
+        activities = self.process.get('activities', [])
+        
+        # Check for Compass API pagination pattern
+        # Compass API uses: POST /jobs/ (create) → GET /jobs/{id}/result?limit=X&offset=Y (retrieve)
+        compass_api_activities = []
+        for activity in activities:
+            activity_type = activity.get('type')
+            if activity_type in ['WEBRN', 'WEBRUN']:
+                properties = activity.get('properties', {})
+                program_name = properties.get('programName', '')
+                call_string = properties.get('callString', '')
+                
+                # Check if this is a Compass API call
+                is_compass_api = '/DATAFABRIC/compass/' in program_name or '/DATAFABRIC/compass/' in call_string
+                
+                if is_compass_api:
+                    # Check if URL has limit/offset parameters
+                    has_pagination_params = ('limit=' in program_name or 'limit=' in call_string) and \
+                                          ('offset=' in program_name or 'offset=' in call_string)
+                    
+                    compass_api_activities.append({
+                        'activity_id': activity.get('id'),
+                        'activity_caption': activity.get('caption'),
+                        'activity_type': activity_type,
+                        'program_name': program_name,
+                        'has_pagination': has_pagination_params,
+                        'is_result_retrieval': '/result' in program_name or '/result' in call_string
+                    })
         
         # Enrich with pattern detection
         sql_queries = []
@@ -307,8 +338,11 @@ class DomainOrganizer:
         return {
             'total_sql_queries': len(sql_queries),
             'sql_queries': sql_queries,
+            'compass_api_activities': compass_api_activities,  # NEW: Compass API pagination info
             'statistics': {
                 'compass_sql_count': sum(1 for q in sql_queries if q['is_compass_sql']),
+                'compass_api_count': len(compass_api_activities),
+                'compass_api_with_pagination': sum(1 for a in compass_api_activities if a['has_pagination']),
                 'select_queries': sum(1 for q in sql_queries if q['query_type'] == 'SELECT'),
                 'insert_queries': sum(1 for q in sql_queries if q['query_type'] == 'INSERT'),
                 'update_queries': sum(1 for q in sql_queries if q['query_type'] == 'UPDATE'),

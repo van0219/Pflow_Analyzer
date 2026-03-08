@@ -59,6 +59,13 @@ Use this skill when you need to:
 - Current state, Recommendation, Effort, Impact
 - Priority Score (0-100), Est. Fix Time, Affected %
 - Code Example (before/after), Testing Notes
+- Status (dropdown: Not Started, In Progress, Complete, Blocked)
+
+**Conditional Formatting:**
+
+- "Yes" values in metadata columns: Light green background (#D4EDDA), dark green bold text (#155724)
+- "No" values: Gray text (#6C757D) for less emphasis
+- Priority-based row colors: Critical (light red), High (light amber), Medium (light yellow), Low (white)
 
 ### Detailed Analysis (Enhanced)
 
@@ -72,7 +79,7 @@ Use this skill when you need to:
 
 - Process information
 - Complexity breakdown with scoring
-- Activity flow diagram
+- Activity details table with metadata (Has Error Handling, Has JavaScript, Has SQL)
 - Critical paths and recommendations
 
 ## Required Files
@@ -101,8 +108,10 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
    - Pre-calculate: ES6 patterns, generic names, SQL types, error-prone activities
 
 3. **Phase 1: Naming Analysis** (AI - Incremental)
+   - **BEFORE FIRST ANALYSIS IN SESSION**: Read `references/DOMAIN_ANALYSIS_GUIDE.md` ONCE (covers all phases)
    - Input: `lpd_structure.json` (naming data only), `project_standards.json`
    - Task: Analyze filename, node captions, config sets, hardcoded values
+   - **CRITICAL**: Consolidate similar violations (e.g., 25 generic captions → 1 violation with count)
    - Process: Python chunks data → AI analyzes chunks → Python merges
    - Output: `naming_analysis.json`
    - Return: "Phase 1 complete. naming_analysis.json written."
@@ -110,6 +119,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
 4. **Phase 2: JavaScript Analysis** (AI - Incremental)
    - Input: `lpd_structure.json` (JavaScript blocks only), `project_standards.json`
    - Task: Analyze ES5 compliance, performance, function order, variable scoping
+   - **CRITICAL**: Consolidate similar violations (e.g., 3 late functions → 1 violation with list)
    - Process: Python chunks JS blocks → AI analyzes chunks → Python merges
    - Output: `javascript_analysis.json`
    - Return: "Phase 2 complete. javascript_analysis.json written."
@@ -117,6 +127,7 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
 5. **Phase 3: SQL Analysis** (AI - Incremental)
    - Input: `lpd_structure.json` (SQL queries only), `project_standards.json`
    - Task: Analyze Compass SQL, pagination, SELECT *, optimization
+   - **CRITICAL**: Check COMPLETE `lpd_structure.json` for Compass API pagination (InitQuery → GetResult with limit/offset)
    - Process: Python chunks queries → AI analyzes chunks → Python merges
    - Output: `sql_analysis.json`
    - Return: "Phase 3 complete. sql_analysis.json written."
@@ -136,6 +147,11 @@ This skill uses a stateless, file-based pipeline that eliminates context accumul
 
 8. **Phase 6: Report Assembly** (Python Only - No AI)
    - Merge: All analysis JSON outputs
+   - **Enrich Activities**: Add metadata flags (`has_javascript`, `has_sql`, `has_error_handling`) to each activity
+     * Loads domain files (not analysis files) to get raw activity data
+     * Builds lookup sets from `domain_javascript.json`, `domain_sql.json`, `domain_errorhandling.json`
+     * Adds boolean flags to each activity object before passing to template
+     * Enables accurate "Has JavaScript", "Has SQL", "Has Error Handling" columns in Activity Details table
    - Build: ipa_data structure using `build_ipa_data_helper.py`
    - Generate: Excel report using `ipa_coding_standards_template_enhanced.py`
    - Save to: `Coding_Standards_Results/`
@@ -220,6 +236,8 @@ Then follow the interactive prompts to:
 5. Confirm report generation
 
 ## Architecture Notes
+
+### Optional: Flow Phase Generation
 
 ### Stateless Pipeline Design
 

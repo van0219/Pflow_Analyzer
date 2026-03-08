@@ -647,72 +647,54 @@ def create_action_items_enhanced(wb, ipa_data):
     all_issues = []
     seen_items = set()
     
-    # Add recommendations
-    for rec in ipa_data.get('recommendations', []):
-        activities = rec.get('activities', '')
-        if isinstance(activities, list):
-            activity = ', '.join(activities) if activities else ipa_data.get('overview', {}).get('process_name', '')
-        else:
-            activity = activities if activities else ipa_data.get('overview', {}).get('process_name', '')
-        
-        issue_text = rec.get('issue', '')
+    # Add violations from ipa_data['violations'] (primary source with complete data)
+    for violation in ipa_data.get('violations', []):
+        activity = violation.get('activity_caption', violation.get('activity_id', violation.get('activities', '')))
+        issue_text = violation.get('finding', violation.get('issue', ''))
         key = (activity.lower().strip(), issue_text.lower().strip())
         
         if key not in seen_items:
+            # Map domain to category
+            domain_to_category = {
+                'naming': 'Naming Convention',
+                'javascript': 'JavaScript Organization',
+                'sql': 'SQL Performance',
+                'errorhandling': 'Error Handling',
+                'structure': 'System Configuration'
+            }
+            category = domain_to_category.get(violation.get('domain', ''), 'General')
+            
+            # Calculate priority score based on severity and impact
+            severity = violation.get('severity', 'Medium')
+            impact = violation.get('impact', 'Medium')
+            priority_score = 50
+            if severity == 'High' and impact == 'High':
+                priority_score = 90
+            elif severity == 'High' or impact == 'High':
+                priority_score = 70
+            elif severity == 'Medium' and impact == 'Medium':
+                priority_score = 50
+            else:
+                priority_score = 30
+            
             all_issues.append({
-                'priority': rec.get('priority', 'Medium'),
-                'category': rec.get('category', 'General'),
-                'rule_id': rec.get('rule_id', 'AI Analysis'),
+                'priority': severity,
+                'category': category,
+                'rule_id': violation.get('rule_id', 'N/A'),
                 'activity': activity,
                 'issue': issue_text,
-                'current': rec.get('current', ''),
-                'recommendation': rec.get('recommendation', ''),
-                'effort': rec.get('effort', 'Medium'),
-                'impact': rec.get('impact', 'Medium'),
-                'priority_score': rec.get('priority_score', 50),
-                'estimated_fix_time': rec.get('estimated_fix_time', 'TBD'),
-                'affected_percentage': rec.get('affected_percentage', 0),
-                'code_example': rec.get('code_example', ''),
-                'testing_notes': rec.get('testing_notes', ''),
-                'status': rec.get('status', 'Needs Improvement')
+                'current': violation.get('current', violation.get('current_state', '')),
+                'recommendation': violation.get('recommendation', ''),
+                'effort': violation.get('effort', 'Medium'),
+                'impact': impact,
+                'priority_score': priority_score,
+                'estimated_fix_time': 'TBD',
+                'affected_percentage': 0,
+                'code_example': violation.get('code_example', ''),
+                'testing_notes': violation.get('testing_notes', ''),
+                'status': 'Not Started'
             })
             seen_items.add(key)
-
-    
-    # Add coding standards violations
-    import re
-    for section_name, issues in ipa_data.get('coding_standards', {}).items():
-        for issue in issues:
-            if len(issue) >= 7:
-                status = issue[5] if len(issue) > 5 else 'Needs Improvement'
-                category = section_name.replace('_', ' ').title()
-                activity = issue[0] if len(issue) > 0 else ''
-                issue_text = issue[3] if len(issue) > 3 else ''
-                key = (activity.lower().strip(), issue_text.lower().strip())
-                
-                if status in ['Verify', 'Needs Improvement'] and key not in seen_items:
-                    rule_name = issue[1] if len(issue) > 1 else ''
-                    rule_id_match = re.search(r'\(([A-Z]+\s+[\d.]+)\)', rule_name)
-                    rule_id = rule_id_match.group(1) if rule_id_match else 'Best Practice'
-                    
-                    all_issues.append({
-                        'priority': issue[2] if len(issue) > 2 else 'Medium',
-                        'category': category,
-                        'rule_id': rule_id,
-                        'activity': activity,
-                        'issue': issue_text,
-                        'current': issue[4] if len(issue) > 4 else '',
-                        'recommendation': issue[6] if len(issue) > 6 else '',
-                        'effort': 'Low',
-                        'impact': 'Medium',
-                        'priority_score': 50,
-                        'estimated_fix_time': 'TBD',
-                        'affected_percentage': 0,
-                        'code_example': '',
-                        'testing_notes': '',
-                        'status': status
-                    })
-                    seen_items.add(key)
     
     # Sort by priority score (descending)
     all_issues.sort(key=lambda x: x.get('priority_score', 50), reverse=True)
@@ -1216,127 +1198,8 @@ TOTAL: {complexity_score} points ({complexity_level})"""
     ws.merge_range(row, 0, row, 11, 'VISUAL PROCESS FLOW', section_format)
     row += 1
     
-    # Generate simplified high-level phase diagram
-    try:
-        # Filter real activities (exclude empty connectors)
-        real_activities = [act for act in activities if act.get('type') and act.get('id')]
-        
-        # Try to load AI-generated flow phases JSON
-        process_name = overview.get('process_name', 'Unknown')
-        flow_phases_file = Path('Temp') / f"{process_name}_flow_phases.json"
-        
-        phases = []
-        if flow_phases_file.exists():
-            # Use AI-generated phases
-            try:
-                with open(flow_phases_file, 'r', encoding='utf-8') as f:
-                    flow_data = json.load(f)
-                    phases = flow_data.get('phases', [])
-            except Exception as e:
-                print(f"Warning: Could not load flow phases JSON: {e}")
-                phases = []
-        
-        # Fallback to generic phases if JSON not found or empty
-        if not phases:
-            phases = [
-                {'name': 'Start', 'color': '#28a745', 'activities': 1, 'description': 'Process initialization'},
-                {'name': 'Processing', 'color': '#17a2b8', 'activities': len(real_activities) - 2, 'description': 'Main process logic'},
-                {'name': 'End', 'color': '#dc3545', 'activities': 1, 'description': 'Process completion'}
-            ]
-        
-        # Create horizontal swimlane diagram
-        fig, ax = plt.subplots(figsize=(14, max(6, len(phases) * 1.2)))
-        ax.set_xlim(0, 14)
-        ax.set_ylim(0, max(6, len(phases) * 1.2))
-        ax.axis('off')
-        
-        # Draw phases as horizontal boxes
-        y_pos = max(5.5, len(phases) * 1.1)
-        x_start = 1
-        box_width = 11
-        box_height = 0.8
-        
-        for i, phase in enumerate(phases):
-            # Draw phase box
-            box = mpatches.FancyBboxPatch((x_start, y_pos - box_height/2), box_width, box_height,
-                                          boxstyle="round,pad=0.05",
-                                          facecolor=phase['color'],
-                                          edgecolor='black',
-                                          linewidth=2,
-                                          alpha=0.8)
-            ax.add_patch(box)
-            
-            # Add phase name (left side)
-            ax.text(x_start + 0.3, y_pos, phase['name'],
-                   ha='left', va='center', fontsize=12, weight='bold',
-                   color='white')
-            
-            # Add activity count (right side)
-            ax.text(x_start + box_width - 0.3, y_pos, f"{phase['activities']} activities",
-                   ha='right', va='center', fontsize=9,
-                   color='white', style='italic')
-            
-            # Add description below box
-            ax.text(x_start + box_width/2, y_pos - box_height/2 - 0.15, phase['description'],
-                   ha='center', va='top', fontsize=8,
-                   color='#495057', style='italic')
-            
-            # Draw arrow to next phase
-            if i < len(phases) - 1:
-                arrow = FancyArrowPatch((x_start + box_width/2, y_pos - box_height/2 - 0.3),
-                                       (x_start + box_width/2, y_pos - box_height/2 - 0.7),
-                                       arrowstyle='->', mutation_scale=20,
-                                       color='#495057', linewidth=2)
-                ax.add_patch(arrow)
-            
-            y_pos -= 1.2
-        
-        # Add title
-        ax.text(7, max(6.5, len(phases) * 1.2 + 0.5), 'High-Level Process Flow',
-               ha='center', va='top', fontsize=16, weight='bold',
-               color='#212529')
-        
-        # Add branch/loop indicators if present
-        if branch_count > 0 or loop_count > 0:
-            indicators_y = 0.5
-            indicators_text = []
-            if branch_count > 0:
-                indicators_text.append(f"Decision Points: {branch_count}")
-            if loop_count > 0:
-                indicators_text.append(f"Loops: {loop_count}")
-            
-            ax.text(7, indicators_y, " | ".join(indicators_text),
-                   ha='center', va='center', fontsize=10,
-                   color='#6c757d', style='italic',
-                   bbox=dict(boxstyle='round,pad=0.5', facecolor='#f8f9fa', edgecolor='#dee2e6'))
-        
-        plt.tight_layout()
-        
-        # Save to buffer
-        img_buffer = io.BytesIO()
-        plt.savefig(img_buffer, format='png', dpi=300, bbox_inches='tight',
-                   facecolor='white', edgecolor='none')
-        img_buffer.seek(0)
-        plt.close()
-        
-        # Insert image into Excel
-        ws.insert_image(row, 0, 'flowchart.png',
-                       {'image_data': img_buffer, 'x_scale': 0.8, 'y_scale': 0.8})
-        
-        # Reserve space for image (adjust based on phase count)
-        row += max(25, len(phases) * 4 + 5)
-        
-    except Exception as e:
-        # Fallback to text if diagram fails
-        error_format = wb.add_format({
-            'font_size': 10,
-            'font_color': COLORS['red'],
-            'italic': True
-        })
-        ws.merge_range(row, 0, row, 11,
-                       f"Visual diagram generation failed: {str(e)}\nFalling back to text representation.",
-                       error_format)
-        row += 2
+    # High-Level Process Flow diagram removed per user request
+    # (Section commented out to skip diagram generation)
     
     # Activity Details Table
     ws.merge_range(row, 0, row, 11, 'ACTIVITY DETAILS', section_format)
@@ -1361,12 +1224,32 @@ TOTAL: {complexity_score} points ({complexity_level})"""
     ws.write(row, 6, 'Has SQL', header_format)
     row += 1
     
-    # Table data
+    # Table data with conditional formatting for "Yes" values
     cell_format = wb.add_format({
         'font_size': 9,
         'border': 1,
         'border_color': COLORS['gray'],
         'valign': 'top'
+    })
+    
+    # Format for "Yes" values (highlighted)
+    yes_format = wb.add_format({
+        'font_size': 9,
+        'border': 1,
+        'border_color': COLORS['gray'],
+        'valign': 'top',
+        'bg_color': '#D4EDDA',  # Light green background
+        'font_color': '#155724',  # Dark green text
+        'bold': True
+    })
+    
+    # Format for "No" values
+    no_format = wb.add_format({
+        'font_size': 9,
+        'border': 1,
+        'border_color': COLORS['gray'],
+        'valign': 'top',
+        'font_color': '#6C757D'  # Gray text
     })
     
     real_activities = [act for act in activities if act.get('type') and act.get('id')]
@@ -1375,9 +1258,15 @@ TOTAL: {complexity_score} points ({complexity_level})"""
         ws.write(row, 1, act.get('type', ''), cell_format)
         ws.write(row, 2, act.get('id', ''), cell_format)
         ws.write(row, 3, act.get('caption', ''), cell_format)
-        ws.write(row, 4, 'Yes' if act.get('has_error_handling') else 'No', cell_format)
-        ws.write(row, 5, 'Yes' if act.get('has_javascript') else 'No', cell_format)
-        ws.write(row, 6, 'Yes' if act.get('has_sql') else 'No', cell_format)
+        
+        # Apply conditional formatting for boolean columns
+        has_error = act.get('has_error_handling', False)
+        has_js = act.get('has_javascript', False)
+        has_sql = act.get('has_sql', False)
+        
+        ws.write(row, 4, 'Yes' if has_error else 'No', yes_format if has_error else no_format)
+        ws.write(row, 5, 'Yes' if has_js else 'No', yes_format if has_js else no_format)
+        ws.write(row, 6, 'Yes' if has_sql else 'No', yes_format if has_sql else no_format)
         row += 1
     
     if len(real_activities) > 50:

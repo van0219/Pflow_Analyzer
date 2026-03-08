@@ -91,6 +91,12 @@ Test-Path Temp/naming_analysis.json
 
 ### Step 6: Phase 2 - JavaScript Analysis (AI Incremental)
 
+**CRITICAL**: Load steering files BEFORE analysis:
+
+```text
+discloseContext(name="ipa-ipd-guide")
+```
+
 **Script**: `python ReusableTools/IPA_CodingStandards/build_javascript_analysis.py`
 
 **What it does:**
@@ -111,6 +117,13 @@ Test-Path Temp/javascript_analysis.json
 ```
 
 ### Step 7: Phase 3 - SQL Analysis (AI Incremental)
+
+**CRITICAL**: Load steering files BEFORE analysis:
+
+```text
+discloseContext(name="compass-sql")
+discloseContext(name="data-fabric-guide")
+```
 
 **Script**: `python ReusableTools/IPA_CodingStandards/build_sql_analysis.py`
 
@@ -133,6 +146,12 @@ Test-Path Temp/sql_analysis.json
 
 ### Step 8: Phase 4 - Error Handling Analysis (AI Incremental)
 
+**CRITICAL**: Load steering files BEFORE analysis:
+
+```text
+discloseContext(name="ipa-ipd-guide")
+```
+
 **Script**: `python ReusableTools/IPA_CodingStandards/build_errorhandling_analysis.py`
 
 **What it does:**
@@ -153,6 +172,12 @@ Test-Path Temp/errorhandling_analysis.json
 ```
 
 ### Step 9: Phase 5 - Structure Analysis (AI Direct)
+
+**CRITICAL**: Load steering files BEFORE analysis:
+
+```text
+discloseContext(name="process-patterns")
+```
 
 **What it does:**
 

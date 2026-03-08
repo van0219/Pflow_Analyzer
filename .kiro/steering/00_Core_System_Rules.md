@@ -431,6 +431,26 @@ When establishing new patterns or approaches, update relevant steering files in 
 
 **Root Cause Principle**: Most "template issues" are actually data flow issues upstream. Fix the data source, not the template.
 
+**Violation Consolidation Rule**: When multiple similar violations exist (e.g., 25 nodes with generic captions), consolidate them during AI ANALYSIS, not in the template.
+
+- ❌ WRONG: Create 25 individual violations, then consolidate in template
+- ✅ CORRECT: Create 1 consolidated violation during analysis with count and examples
+
+**Example:**
+```json
+{
+  "rule_id": "1.1.4",
+  "activity_id": "Multiple",
+  "activity_caption": "25 nodes with generic captions",
+  "issue": "25 nodes use generic captions (Assign, Branch, Wait) that don't describe their purpose",
+  "current_state": "Generic captions: 17 Assign nodes, 6 Branch nodes, 2 Wait nodes",
+  "recommendation": "Update all node captions to be descriptive...",
+  "code_example": "Current: <caption>Assign</caption>\nExpected: <caption>ParseInputFile</caption>"
+}
+```
+
+This prevents duplicate action items and keeps reports clean.
+
 ### Data Flow Debugging
 
 When reports have missing data, trace the pipeline from source to destination:
@@ -855,34 +875,45 @@ python ReusableTools/IPA_CodingStandards/preprocess_coding_standards.py <lpd> <c
 
 Creates: `lpd_structure.json`, `metrics_summary.json`, `project_standards.json`, and 5 domain JSON files
 
-**Phase 1-5 (AI Analysis - Direct):**
+**Phase 1-5 (AI Analysis - Incremental with Auto rule_name):**
 
-AI analyzes each domain JSON file directly (no incremental scripts needed):
-- Phase 1: Naming conventions (`domain_naming.json`)
-- Phase 2: JavaScript ES5 compliance (`domain_javascript.json`)
-- Phase 3: SQL queries (`domain_sql.json`)
-- Phase 4: Error handling (`domain_errorhandling.json`)
-- Phase 5: Process structure (`domain_structure.json`)
+AI analyzes each domain JSON file, then merge scripts automatically add `rule_name`:
+- Phase 1: Naming conventions - `build_naming_analysis.py` (analyze → AI → merge)
+- Phase 2: JavaScript ES5 - `build_javascript_analysis.py` (analyze → AI → merge)
+- Phase 3: SQL queries - `build_sql_analysis.py` (analyze → AI → merge)
+- Phase 4: Error handling - `build_errorhandling_analysis.py` (analyze → AI → merge)
+- Phase 5: Process structure - `build_structure_analysis.py` (direct AI, auto-adds rule_name)
 
-Each phase reads the domain JSON + `project_standards.json` and writes an analysis JSON.
+**CRITICAL ANALYSIS RULES:**
+
+1. **Read Complete Context**: Each merge script automatically adds `rule_name` field by mapping `rule_id` to project standards. This prevents KeyError in Phase 6.
+
+2. **SQL Analysis Verification** (Phase 3): Before flagging pagination violations, MUST verify:
+   - Read COMPLETE `lpd_structure.json` (not just domain SQL file)
+   - Check Start node properties for `limit` and `offset` variables
+   - Search for offset increment logic (`offset += limit` or `offset + parseInt(limit)`)
+   - Understand Compass API pattern: InitQuery → GetStatus → GetResult loop
+   - Compass API queries use stateful pagination (query ID + offset), NOT SQL LIMIT clause
+   - **FALSE POSITIVE**: Flagging Compass API queries for missing LIMIT clause (pagination is in the loop, not the query)
+
+3. **Consolidate Similar Violations**: When multiple similar violations exist (e.g., 25 generic node captions), create ONE consolidated violation during analysis, not 25 individual ones.
 
 **Phase 6 (Report Assembly - Python Only):**
 
 ```bash
-python ReusableTools/IPA_CodingStandards/merge_violations.py Temp/<ProcessName>
-# Then use existing build_ipa_data_helper.py and template
+python ReusableTools/IPA_CodingStandards/assemble_coding_standards_report.py <client> <rice> <process>
 ```
 
 **Key Benefits:**
 
 - ✅ No context accumulation (domain files already small ~200-400 lines)
 - ✅ No crashes (stable execution)
-- ✅ Simpler than Client Handover (no incremental chunking scripts needed)
+- ✅ Automatic rule_name mapping (prevents KeyError in build_ipa_data_helper)
 - ✅ Project standards integration (client-specific rules override defaults)
 - ✅ One process at a time (generates ONE Excel report per process)
 
-**Why This Works:**
+**Root Cause Fix (2026-03-08):**
 
-`organize_by_domain.py` already chunks data into 5 small domain files during Phase 0. Each domain file is small enough for direct AI analysis without additional chunking.
+Previously, AI-generated violations lacked `rule_name` field, causing KeyError in `build_ipa_data_helper.py`. Fixed by updating all merge scripts to automatically add `rule_name` from project standards mapping. This ensures violations are always complete before report assembly.
 
 **Reference**: See `.kiro/steering/11_IPA_Report_Generation.md` for complete workflow documentation and `.kiro/skills/ipa-coding-standards/` for skill implementation.
