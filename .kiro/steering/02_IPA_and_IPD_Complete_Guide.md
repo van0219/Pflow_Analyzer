@@ -137,6 +137,7 @@ Comprehensive reference for Infor Process Automation (IPA) and Infor Process Des
 
 - **Email (EMAIL)**: Send email notifications
 - **SMS**: Send SMS messages
+- **MsgBuilder**: Build HTML/text messages (often used inside Landmark Transaction loops)
 - **ION Outbox**: Send ION BODs
 - **ION Notification**: ION notifications
 - **ION Alert**: ION alerts with escalation
@@ -267,6 +268,34 @@ When working with file operations:
 - **Translation**: Multi-language support
 - **Logging**: Custom logging capabilities
 - **Lookup**: xref table integration
+
+### Default Value Pattern for MsgBuilder
+
+**Use Case**: Display "None" when optional fields are blank in HTML messages
+
+**Pattern**: Add Assign node BEFORE MsgBuilder inside loop to set default values
+
+**ES5-Compliant Implementation**:
+
+```javascript
+// Set "None" for blank line comments
+function setDefaultValue(value) {
+    if (!value || typeof value !== "string") {
+        return "None";
+    }
+    var trimmed = value.trim();
+    return trimmed === "" ? "None" : value;
+}
+
+ReqLineCommentText = setDefaultValue(ReqLineCommentText);
+```
+
+**Key Points**:
+
+- Place Assign node BEFORE MsgBuilder inside Landmark Transaction loop
+- Handles null, undefined, empty string, and whitespace-only values
+- ES5-compliant (no arrow functions, let/const, or template literals)
+- Reusable pattern for any optional field in messages
 
 ## Error Handling
 
@@ -483,6 +512,52 @@ When working with file operations:
 | MsgBuilder | com.lawson.bpm.processflow.workFlow.flowGraph.FgaMsgBuilder | Message builder |
 
 ### Production-Verified WEBRN Patterns
+
+### MsgBuilder HTML Table Pattern
+
+**Use Case**: Build HTML email messages with complex table layouts inside Landmark Transaction loops
+
+**Architecture**: MsgBuilder node inside Landmark Transaction that iterates through records
+
+**HTML Table Structure with Rowspan/Colspan**:
+
+```html
+<tr>
+    <td rowspan="5"><!RQLine></td>
+    <td><!Item></td>
+    <td><!ReqLine_Description></td>
+    <td rowspan="5" align="center"><!Quantity></td>
+    <td rowspan="5" align="center"><!UOM></td>
+    <td rowspan="5"><!UnitCostAmountStr></td>
+    <td rowspan="5"><!LineTotalAmountStr></td>
+</tr>
+<tr>
+    <td colspan="2"><b>Line Comments</b></td>
+</tr>
+<tr>
+    <td colspan="2"><!ReqLineCommentText></td>
+</tr>
+<tr>
+    <td colspan="2"><b>Distribution Account</b></td>
+</tr>
+<tr>
+    <td colspan="2"><!ReqLineDistribAccount></td>
+</tr>
+```
+
+**Key Implementation Notes**:
+
+- First row contains all column headers with rowspan for columns that span multiple rows
+- Line No., Qty, UOM, Unit Cost, Line Total use `rowspan="5"` to span all detail rows
+- Item and Description only appear in first row
+- Subsequent rows use `colspan="2"` to span Item and Description columns
+- Use `align="center"` for numeric columns (Qty, UOM)
+- Total of 5 rows per line item (1 header + 4 detail rows)
+- Variables use `<!variableName>` syntax from Landmark Transaction loop
+
+**Default Value Pattern**: Use Assign node BEFORE MsgBuilder to set "None" for blank fields (see Variables and JavaScript section)
+
+**Production Context**: Approval workflow emails with line item details, comments, and distribution accounts
 
 ### OAuth2 Token Acquisition Pattern
 
