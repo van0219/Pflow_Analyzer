@@ -462,6 +462,12 @@ transformImport(ImportFile, FileName);
 
 **Keyword Detection Rules:**
 
+🏗️ **IPA / LPD WORK** - Keywords: `IPA`, `LPD`, `.lpd`, `process flow`, `build IPA`, `design IPA`, `build process`, `design process`
+
+Load: `02_IPA_and_IPD_Complete_Guide.md` IMMEDIATELY — BEFORE any extraction, analysis, or design work begins.
+
+**CRITICAL**: This is a BLOCKING REQUIREMENT. Seeing any of these keywords means you MUST load `02_IPA_and_IPD_Complete_Guide.md` as the very first action, before reading files, before extracting data, before proposing any design. Failure to load this guide first leads to incorrect node choices (e.g., proposing ACCFIL for SFTP operations).
+
 📊 **WORK UNIT ANALYSIS** - Keywords: `wu`, `log`, `work unit`, `error`
 
 Load: `03_Work_Unit_Analysis.md`, `05_WU_Report_Generation.md`

@@ -207,12 +207,45 @@ SFTP → FTP (Get) → FSM File Storage → ACCFIL → FSM File Storage → FTP 
 FSM File Storage → ACCFIL → FSM File Storage
 ```
 
+### SFTP Bulk-Get with Wildcard Pattern
+
+**Use Case**: Download multiple files matching a pattern from SFTP to FSM File Storage in one operation, then enumerate and process them individually.
+
+**Pattern**:
+```text
+FTP (Get, wildcard, RemoteSource=true, RemoteTarget=false) → ACCFIL (list files) → LOOP → ACCFIL (read each file)
+```
+
+**Step 1 — FTP node (bulk download)**:
+- `SourceFile` = `<!SourceDir>/<!FilenameFormat>` where `FilenameFormat` = wildcard e.g. `ASTNHDH3APACH_Citizens*`
+- `TargetFile` = `<!SourceDir>` (FSM File Storage destination folder)
+- `RemoteSource = true`, `RemoteTarget = false`
+- `executionMode = 1` (Get)
+- Downloads ALL matching files from SFTP to FSM File Storage in one call
+
+**Step 2 — ACCFIL node (list files)**:
+- `function = list files`
+- `filePathName` = FSM File Storage folder (same as FTP TargetFile)
+- `dataSource` = `/<!FilenameFormat>` (wildcard filter)
+- Returns newline-separated list of filenames in `outputData`
+
+**Step 3 — LOOP + ACCFIL (read each)**:
+- ForEach loop iterates over `ListFiles_outputData`
+- ACCFIL read inside loop: `filePathName = <!SourceDir>/<!Filename>` — no `configurationName` needed
+- Push content to array: `aFileDataArray.push(ReadFile_outputData)` — **do NOT assign the return value**
+
+**Key Rules**:
+- `Array.push()` returns the new array length (a number), NOT the array. Never do `aArray = aArray.push(x)` — this overwrites the array variable with a number. Use `aArray.push(x)` as a standalone statement.
+- ACCFIL nodes do NOT require a `configurationName`. By default, ACCFIL always reads from/writes to FSM File Storage. The `configurationName` field can be left blank.
+
 ### Common Mistakes to Avoid
 
 When working with file operations:
 
-- ❌ "ACCFIL reads from SFTP" → ✅ "ACCFIL reads from FSM File Storage (File Channel transferred from SFTP)"
+- ❌ "ACCFIL reads from SFTP" → ✅ "ACCFIL reads from FSM File Storage (File Channel or FTP node transferred from SFTP first)"
 - ❌ "FTP node reads from File Storage" → ✅ "FTP node reads from SFTP server and transfers to File Storage"
+- ❌ `aArray = aArray.push(x)` → ✅ `aArray.push(x)` (push returns length, not array)
+- ❌ Flagging blank ACCFIL configurationName as an error → ✅ blank configurationName is valid; ACCFIL defaults to FSM File Storage
 
 ## Data Access Architecture
 
@@ -268,6 +301,22 @@ When working with file operations:
 - **Translation**: Multi-language support
 - **Logging**: Custom logging capabilities
 - **Lookup**: xref table integration
+
+### Variable Visibility Pattern in ASSGN Nodes
+
+IPA work unit logs do NOT show variable values from JavaScript blocks — only ASSGN node property assignments are visible in the WU log output.
+
+**Pattern**: To make a variable's value visible in WU logs after a JavaScript block runs, add a self-assignment property on the same ASSGN node:
+
+```
+FilenameAggregated = FilenameAggregated
+vPaymentDate       = vPaymentDate
+aOutputLineArray   = aOutputLineArray
+```
+
+This is a no-op in terms of logic, but IPA logs the property assignment, making the variable value inspectable in the work unit log. This is especially useful for variables set inside JavaScript blocks that would otherwise be invisible during debugging.
+
+**When to use**: Any variable computed inside a JS block that you want to verify during testing or troubleshooting.
 
 ### Default Value Pattern for MsgBuilder
 

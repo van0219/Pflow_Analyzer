@@ -1,0 +1,707 @@
+Workunit 165,610 started @ 03/20/2026 07:15:14.589 PM
+	Landmark version: 2026.02.05.
+	Service name: (blank)
+	Process name: RHR_EDI_Outbound_Transformation
+	Process version: 1
+	JVM Name: BG_LPA
+	Host Name:tam-pa-202-89e8-i-0ce74b16562c689e8
+	Auto Restart: Disabled
+Activity name:Start type:START id:1 started @ 03/20/2026 07:15:14.589 PM
+	 Executing Start Activity...
+	 UniqueIDArray = 
+	 DBExportFilterStr = 
+	 ProcessStatus = 1
+	 CarrierName = USFOOD
+	 Direction = 1
+	 EDIUniqueID = 
+	 UpdatedData = 
+	 InsertedSegment = 
+	 RetryCount = 0
+	 JobName = TRANSLATEOUTBOUND
+Activity name:Start id:1 completed @ 03/20/2026 07:15:14.590 PM
+
+Activity name:Wait7030 type:Timer id:1 started @ 03/20/2026 07:15:14.590 PM
+	 Timer Wait7030: Executing Timer activity node
+	 Timer Wait7030: Process will proceed in 15 seconds.
+Activity name:Wait7030 id:1 completed @ 03/20/2026 07:15:29.590 PM
+	 Timer Wait7030: Proceeding with the process
+	 Wait7030_errorCode = 0
+	 Wait7030_informationCode = 0
+	 Wait7030_returnMessage = Timer Wait7030: Created Timer Queue record for and the process will proceed in 15 seconds.
+	 Wait7030_outputData = 
+
+Activity name:Assign9270 type:ASSGN id:1 started @ 03/20/2026 07:15:29.590 PM
+	 Evaluating JavaScript expression /**** Transforms EDI 850 Purchase Order - USFood FINAL CLIENT SPECIFICATION
+ * 
+ * BASELINE FSM OUT-OF-THE-BOX:
+ * - N1*BY exists
+ * - N1*SF does NOT exist
+ * - REF*ZZ does NOT exist
+ * - REF*OS does NOT exist
+ * - REF*DP does NOT exist
+ * 
+ * REQUIRED MODIFICATIONS:
+ * 1. Insert N1*SF (after DTM*002 or before N1*ST)
+ * 2. Remove N1*BY (all occurrences)
+ * 3. Insert REF*ZZ*ECROSHOR and REF*OS*INFOR (after BEG, before PER)
+ * 4. Insert REF*DP*00 (after last N4 in Ship-To loop, before first PO1)
+ * 5. Modify PER (remove EM, keep/add TM with default 4079962369)
+ * 6. Modify PO1 (replace blank pos5 with UM, replace VC with VN)
+ * 7. Recalculate SE01 when ANY modification occurs
+ * 
+ * NET STRUCTURAL CHANGE: +3 segments (+1 N1*SF, +3 REF, -1 N1*BY)
+ * 
+ * CONFIGURATION:
+ * - N1*SF: Pt. Orange / 91 / 5Z
+ * - REF*ZZ: ECROSHOR
+ * - REF*OS: INFOR
+ * - REF*DP: 00
+ * - PER default phone: 4079962369
+ * 
+ * Rules:
+ * - Never throw errors - always return original EDI on any failure
+ * - Multi-ST transaction support maintained
+ * - Non-850 transactions pass through unchanged
+ * - SE01 recalculated only when modifications occur
+ * - ES5 compliant (no let/const, no arrow functions, no template literals)
+ * 
+ * Input: ediString - EDI document string with ~ delimiters
+ * Output: Modified EDI string or original if any error occurs
+ */
+function Transform(ediString) {
+    try {
+        if (!ediString) {
+            return ediString;
+        }
+
+        // Configuration
+        var segmentQualifier = 'SF';
+        var companyName = 'Pt. Orange';
+        var idQualifier = '91';
+        var idCode = '5Z';
+        var defaultPhone = '4079962369';
+        
+        var elementSeparator = ediString.charAt(3);
+        var hasTrailingTerminator = ediString.charAt(ediString.length - 1) === '~';
+        
+        var InsertedN1SF = 'N1' + elementSeparator +
+            segmentQualifier + elementSeparator +
+            companyName + elementSeparator +
+            idQualifier + elementSeparator +
+            idCode;
+        
+        var RefZZ = 'REF' + elementSeparator + 'ZZ' + elementSeparator + 'ECROSHOR';
+        var RefOS = 'REF' + elementSeparator + 'OS' + elementSeparator + 'INFOR';
+        var RefDP = 'REF' + elementSeparator + 'DP' + elementSeparator + '00';
+        
+        var segments = ediString.split('~');
+        var result = [];
+        var transactionBuffer = [];
+        var insideTransaction = false;
+        var i;
+        var j;
+        var k;
+        var segment;
+        var parts;
+        var tag;
+
+        for (i = 0; i < segments.length; i++) {
+            segment = segments[i];
+            if (!segment) {
+                continue;
+            }
+            
+            segment = segment.replace(/^\s+/, '').replace(/\s+$/, '');
+            parts = segment.split(elementSeparator);
+            tag = parts[0];
+
+            // Detect start of 850 - begin buffering
+            if (tag === 'ST' && parts[1] === '850') {
+                insideTransaction = true;
+                transactionBuffer = [];
+                transactionBuffer.push(segment);
+                continue;
+            }
+
+            // Buffer transaction segments
+            if (insideTransaction) {
+                transactionBuffer.push(segment);
+
+                // Detect end of transaction - process buffer
+                if (tag === 'SE') {
+                    insideTransaction = false;
+
+                    // PHASE 1: SCAN - Detect DTM*002, N1*ST, N1*SF
+                    var hasDTM002 = false;
+                    var hasN1ST = false;
+                    var hasN1SF = false;
+                    var dtm002Index = -1;
+                    var n1stIndex = -1;
+                    var txParts;
+                    var txTag;
+
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+
+                        if (txTag === 'DTM' && txParts[1] === '002' && !hasDTM002) {
+                            hasDTM002 = true;
+                            dtm002Index = j;
+                        }
+                        if (txTag === 'N1' && txParts.length > 1 && txParts[1] === 'ST' && !hasN1ST) {
+                            hasN1ST = true;
+                            n1stIndex = j;
+                        }
+                        if (txTag === 'N1' && txParts.length > 1 && txParts[1] === 'SF') {
+                            hasN1SF = true;
+                        }
+                    }
+
+                    // PHASE 2: INSERT N1*SF
+                    var inserted = false;
+                    if (!hasN1SF && (hasDTM002 || hasN1ST)) {
+                        if (hasDTM002) {
+                            transactionBuffer.splice(dtm002Index + 1, 0, InsertedN1SF);
+                            inserted = true;
+                        } else if (hasN1ST) {
+                            transactionBuffer.splice(n1stIndex, 0, InsertedN1SF);
+                            inserted = true;
+                        }
+                    }
+
+                    // PHASE 3: NEW MODIFICATIONS
+                    var modifiedTransaction = inserted;
+
+                    // 3A: REMOVE N1*BY (reverse iteration for safe removal)
+                    for (j = transactionBuffer.length - 1; j >= 0; j--) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        
+                        if (txTag === 'N1' && txParts.length > 1 && txParts[1] === 'BY') {
+                            transactionBuffer.splice(j, 1);
+                            modifiedTransaction = true;
+                        }
+                    }
+
+                    // 3B: INSERT REF*ZZ and REF*OS (immediately after BEG)
+                    var hasREFZZ = false;
+                    var hasREFOS = false;
+                    var begIndex = -1;
+
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        
+                        if (txTag === 'BEG') {
+                            begIndex = j;
+                        }
+                        if (txTag === 'REF' && txParts.length > 1 && txParts[1] === 'ZZ') {
+                            hasREFZZ = true;
+                        }
+                        if (txTag === 'REF' && txParts.length > 1 && txParts[1] === 'OS') {
+                            hasREFOS = true;
+                        }
+                    }
+
+                    // Insert REF*ZZ and REF*OS immediately after BEG
+                    if (begIndex !== -1) {
+                        var headerInsertIndex = begIndex + 1;
+                        
+                        if (!hasREFZZ) {
+                            transactionBuffer.splice(headerInsertIndex, 0, RefZZ);
+                            headerInsertIndex++;
+                            modifiedTransaction = true;
+                        }
+                        if (!hasREFOS) {
+                            transactionBuffer.splice(headerInsertIndex, 0, RefOS);
+                            modifiedTransaction = true;
+                        }
+                    }
+
+                    // 3C: INSERT REF*DP*00 (after last N4, before first PO1)
+                    var hasREFDP = false;
+                    var lastN4Index = -1;
+                    var firstPO1Index = -1;
+
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        
+                        if (txTag === 'N4') {
+                            lastN4Index = j;
+                        }
+                        if (txTag === 'PO1' && firstPO1Index === -1) {
+                            firstPO1Index = j;
+                        }
+                        if (txTag === 'REF' && txParts.length > 1 && txParts[1] === 'DP') {
+                            hasREFDP = true;
+                        }
+                    }
+
+                    if (!hasREFDP) {
+                        if (lastN4Index !== -1) {
+                            // Insert after last N4
+                            transactionBuffer.splice(lastN4Index + 1, 0, RefDP);
+                            modifiedTransaction = true;
+                        } else if (firstPO1Index !== -1) {
+                            // Insert before first PO1
+                            transactionBuffer.splice(firstPO1Index, 0, RefDP);
+                            modifiedTransaction = true;
+                        }
+                    }
+
+                    // 3D: MODIFY PER SEGMENTS (remove EM, keep/add TM with safety guard)
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        
+                        if (txTag === 'PER' && txParts.length >= 3) {  // Safety guard
+                            var newParts = [txParts[0], txParts[1], txParts[2]];
+                            var hasTM = false;
+                            
+                            // Scan for TM and EM qualifiers (step by 2 for qualifier/value pairs)
+                            for (k = 3; k < txParts.length; k += 2) {
+                                if (txParts[k] === 'TM' && k + 1 < txParts.length) {
+                                    newParts.push(txParts[k]);
+                                    newParts.push(txParts[k + 1]);
+                                    hasTM = true;
+                                }
+                                // Skip EM qualifier and value
+                            }
+                            
+                            // If no TM found, add default
+                            if (!hasTM) {
+                                newParts.push('TM');
+                                newParts.push(defaultPhone);
+                            }
+                            
+                            transactionBuffer[j] = newParts.join(elementSeparator);
+                            modifiedTransaction = true;
+                        }
+                    }
+
+                    // 3E: MODIFY PO1 SEGMENTS (clean rebuild with VC/VN extraction)
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        
+                        if (txTag === 'PO1') {
+                            // Capture core PO1 elements (positions 1-4)
+                            var assignedID = txParts[1];
+                            var quantity = txParts[2];
+                            var uom = txParts[3];
+                            var unitPrice = txParts[4];
+                            
+                            // Find VC or VN qualifier and extract vendor number
+                            var vendorNumber = null;
+                            for (k = 5; k < txParts.length; k++) {
+                                if ((txParts[k] === 'VC' || txParts[k] === 'VN') && k + 1 < txParts.length) {
+                                    vendorNumber = txParts[k + 1];
+                                    break;
+                                }
+                            }
+                            
+                            // Only rebuild if VC or VN found
+                            if (vendorNumber !== null) {
+                                // Rebuild PO1: PO1*id*qty*uom*price*UM*VN*vendorNumber
+                                var rebuiltPO1 = [
+                                    'PO1',
+                                    assignedID,
+                                    quantity,
+                                    uom,
+                                    unitPrice,
+                                    'UM',
+                                    'VN',
+                                    vendorNumber
+                                ];
+                                
+                                transactionBuffer[j] = rebuiltPO1.join(elementSeparator);
+                                modifiedTransaction = true;
+                            }
+                            // If neither VC nor VN found, leave original PO1 intact
+                        }
+                    }
+
+                    // PHASE 4: SE01 RECALCULATION
+                    if (modifiedTransaction) {
+                        var seIndex = transactionBuffer.length - 1;
+                        var seParts = transactionBuffer[seIndex].split(elementSeparator);
+                        if (seParts.length >= 2) {
+                            seParts[1] = String(transactionBuffer.length);
+                            transactionBuffer[seIndex] = seParts.join(elementSeparator);
+                        }
+                    }
+
+                    // PHASE 5: OUTPUT - Add processed transaction to result
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        result.push(transactionBuffer[j]);
+                    }
+                    
+                    transactionBuffer = [];
+                }
+            } else {
+                // Outside transaction - add directly to result
+                result.push(segment);
+            }
+        }
+
+        var output = result.join('~');
+        return hasTrailingTerminator ? output + '~' : output;
+        
+    } catch (e) {
+        // Fail-safe: return original EDI unchanged on any error
+        return ediString;
+    }
+}; to value 
+function Transform(ediString) {
+    try {
+        if (!ediString) {
+            return ediString;
+        }
+        var segmentQualifier = "SF";
+        var companyName = "Pt. Orange";
+        var idQualifier = "91";
+        var idCode = "5Z";
+        var defaultPhone = "4079962369";
+        var elementSeparator = ediString.charAt(3);
+        var hasTrailingTerminator = ediString.charAt(ediString.length - 1) === "~";
+        var InsertedN1SF = "N1" + elementSeparator + segmentQualifier + elementSeparator + companyName + elementSeparator + idQualifier + elementSeparator + idCode;
+        var RefZZ = "REF" + elementSeparator + "ZZ" + elementSeparator + "ECROSHOR";
+        var RefOS = "REF" + elementSeparator + "OS" + elementSeparator + "INFOR";
+        var RefDP = "REF" + elementSeparator + "DP" + elementSeparator + "00";
+        var segments = ediString.split("~");
+        var result = [];
+        var transactionBuffer = [];
+        var insideTransaction = false;
+        var i;
+        var j;
+        var k;
+        var segment;
+        var parts;
+        var tag;
+        for (i = 0; i < segments.length; i++) {
+            segment = segments[i];
+            if (!segment) {
+                continue;
+            }
+            segment = segment.replace(/^\s+/, "").replace(/\s+$/, "");
+            parts = segment.split(elementSeparator);
+            tag = parts[0];
+            if (tag === "ST" && parts[1] === "850") {
+                insideTransaction = true;
+                transactionBuffer = [];
+                transactionBuffer.push(segment);
+                continue;
+            }
+            if (insideTransaction) {
+                transactionBuffer.push(segment);
+                if (tag === "SE") {
+                    insideTransaction = false;
+                    var hasDTM002 = false;
+                    var hasN1ST = false;
+                    var hasN1SF = false;
+                    var dtm002Index = -1;
+                    var n1stIndex = -1;
+                    var txParts;
+                    var txTag;
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        if (txTag === "DTM" && txParts[1] === "002" && !hasDTM002) {
+                            hasDTM002 = true;
+                            dtm002Index = j;
+                        }
+                        if (txTag === "N1" && txParts.length > 1 && txParts[1] === "ST" && !hasN1ST) {
+                            hasN1ST = true;
+                            n1stIndex = j;
+                        }
+                        if (txTag === "N1" && txParts.length > 1 && txParts[1] === "SF") {
+                            hasN1SF = true;
+                        }
+                    }
+                    var inserted = false;
+                    if (!hasN1SF && (hasDTM002 || hasN1ST)) {
+                        if (hasDTM002) {
+                            transactionBuffer.splice(dtm002Index + 1, 0, InsertedN1SF);
+                            inserted = true;
+                        } else {
+                            if (hasN1ST) {
+                                transactionBuffer.splice(n1stIndex, 0, InsertedN1SF);
+                                inserted = true;
+                            }
+                        }
+                    }
+                    var modifiedTransaction = inserted;
+                    for (j = transactionBuffer.length - 1; j >= 0; j--) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        if (txTag === "N1" && txParts.length > 1 && txParts[1] === "BY") {
+                            transactionBuffer.splice(j, 1);
+                            modifiedTransaction = true;
+                        }
+                    }
+                    var hasREFZZ = false;
+                    var hasREFOS = false;
+                    var begIndex = -1;
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        if (txTag === "BEG") {
+                            begIndex = j;
+                        }
+                        if (txTag === "REF" && txParts.length > 1 && txParts[1] === "ZZ") {
+                            hasREFZZ = true;
+                        }
+                        if (txTag === "REF" && txParts.length > 1 && txParts[1] === "OS") {
+                            hasREFOS = true;
+                        }
+                    }
+                    if (begIndex !== -1) {
+                        var headerInsertIndex = begIndex + 1;
+                        if (!hasREFZZ) {
+                            transactionBuffer.splice(headerInsertIndex, 0, RefZZ);
+                            headerInsertIndex++;
+                            modifiedTransaction = true;
+                        }
+                        if (!hasREFOS) {
+                            transactionBuffer.splice(headerInsertIndex, 0, RefOS);
+                            modifiedTransaction = true;
+                        }
+                    }
+                    var hasREFDP = false;
+                    var lastN4Index = -1;
+                    var firstPO1Index = -1;
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        if (txTag === "N4") {
+                            lastN4Index = j;
+                        }
+                        if (txTag === "PO1" && firstPO1Index === -1) {
+                            firstPO1Index = j;
+                        }
+                        if (txTag === "REF" && txParts.length > 1 && txParts[1] === "DP") {
+                            hasREFDP = true;
+                        }
+                    }
+                    if (!hasREFDP) {
+                        if (lastN4Index !== -1) {
+                            transactionBuffer.splice(lastN4Index + 1, 0, RefDP);
+                            modifiedTransaction = true;
+                        } else {
+                            if (firstPO1Index !== -1) {
+                                transactionBuffer.splice(firstPO1Index, 0, RefDP);
+                                modifiedTransaction = true;
+                            }
+                        }
+                    }
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        if (txTag === "PER" && txParts.length >= 3) {
+                            var newParts = [txParts[0], txParts[1], txParts[2]];
+                            var hasTM = false;
+                            for (k = 3; k < txParts.length; k += 2) {
+                                if (txParts[k] === "TM" && k + 1 < txParts.length) {
+                                    newParts.push(txParts[k]);
+                                    newParts.push(txParts[k + 1]);
+                                    hasTM = true;
+                                }
+                            }
+                            if (!hasTM) {
+                                newParts.push("TM");
+                                newParts.push(defaultPhone);
+                            }
+                            transactionBuffer[j] = newParts.join(elementSeparator);
+                            modifiedTransaction = true;
+                        }
+                    }
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        txParts = transactionBuffer[j].split(elementSeparator);
+                        txTag = txParts[0];
+                        if (txTag === "PO1") {
+                            var assignedID = txParts[1];
+                            var quantity = txParts[2];
+                            var uom = txParts[3];
+                            var unitPrice = txParts[4];
+                            var vendorNumber = null;
+                            for (k = 5; k < txParts.length; k++) {
+                                if ((txParts[k] === "VC" || txParts[k] === "VN") && k + 1 < txParts.length) {
+                                    vendorNumber = txParts[k + 1];
+                                    break;
+                                }
+                            }
+                            if (vendorNumber !== null) {
+                                var rebuiltPO1 = ["PO1", assignedID, quantity, uom, unitPrice, "UM", "VN", vendorNumber];
+                                transactionBuffer[j] = rebuiltPO1.join(elementSeparator);
+                                modifiedTransaction = true;
+                            }
+                        }
+                    }
+                    if (modifiedTransaction) {
+                        var seIndex = transactionBuffer.length - 1;
+                        var seParts = transactionBuffer[seIndex].split(elementSeparator);
+                        if (seParts.length >= 2) {
+                            seParts[1] = String(transactionBuffer.length);
+                            transactionBuffer[seIndex] = seParts.join(elementSeparator);
+                        }
+                    }
+                    for (j = 0; j < transactionBuffer.length; j++) {
+                        result.push(transactionBuffer[j]);
+                    }
+                    transactionBuffer = [];
+                }
+            } else {
+                result.push(segment);
+            }
+        }
+        var output = result.join("~");
+        return hasTrailingTerminator ? output + "~" : output;
+    }
+    catch (e) {
+        return ediString;
+    }
+}
+
+Activity name:Assign9270 id:1 completed @ 03/20/2026 07:15:29.591 PM
+
+Activity name:GetUSFoods type:LM id:1 started @ 03/20/2026 07:15:29.591 PM
+	 Landmark:GetUSFoods Executing transaction: _dataArea="<!appProdline>" & _module="edi" & _objectName="EDIDataExchange" & _actionName="Find" & _actionOperator="NONE" & _actionType="MultipleRecordQuery" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _filterString=CarrierName="<!CarrierName>" and Direction="<!Direction>" and ProcessStatus="<!ProcessStatus>" & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & EDIDataExchange
+	 Landmark:GetUSFoods Executing transaction: _dataArea="ROSENUAT_PRD_FSM" & _module="edi" & _objectName="EDIDataExchange" & _actionName="Find" & _actionOperator="NONE" & _actionType="MultipleRecordQuery" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _filterString=CarrierName="USFOOD" and Direction="1" and ProcessStatus="1" & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & EDIDataExchange
+	 Landmark:GetUSFoods Retrieving page 1 started @ 03/20/2026 07:15:29.591 PM
+	 Use data views: false
+	 Landmark:GetUSFoods Retrieving page 1 completed @ 03/20/2026 07:15:29.603 PM
+	 Landmark:GetUSFoods transaction complete:true, 
+ response message:null
+	 GetUSFoods_complete = true
+	 GetUSFoods_recordCount = 1
+	 GetUSFoods_hasNext = false
+	 GetUSFoods_hasPrevious = false
+	 GetUSFoods_resultsHeader = EDIDataExchange
+	 GetUSFoods_currentPage = 1
+	 GetUSFoods_recordCount = 1
+	 GetUSFoods_currentPage = 1
+Activity name:GetUSFoods id:1 completed @ 03/20/2026 07:15:29.604 PM
+	 GetUSFoods_errorCode = 0
+	 GetUSFoods_informationCode = 0
+	 GetUSFoods_returnMessage = 
+	 GetUSFoods_outputData = 4d82190b-3980-7f00-0010-e1eb69ae3b74
+	 LandmarkGetUSFoods: Executing loop 1 of 1 (Page 1)
+	 GetUSFoods_EDIDataExchange = 4d82190b-3980-7f00-0010-e1eb69ae3b74
+
+Activity name:GatherUniqueIDs type:ASSGN id:1 started @ 03/20/2026 07:15:29.604 PM
+	 Evaluating JavaScript expression UniqueIDArray.push(GetUSFoods_EDIDataExchange);; to value 1
+	 UniqueIDArray = 4d82190b-3980-7f00-0010-e1eb69ae3b74
+Activity name:GatherUniqueIDs id:1 completed @ 03/20/2026 07:15:29.604 PM
+
+Activity name:Branch4320 type:BRANCH id:1 started @ 03/20/2026 07:15:29.604 PM
+	 Evaluating rule: GetUSFoods_recordCount != 0 to node Assign2640
+	 Next activity: Assign2640
+Activity name:Branch4320 id:1 completed @ 03/20/2026 07:15:29.604 PM
+
+Activity name:Assign2640 type:ASSGN id:1 started @ 03/20/2026 07:15:29.604 PM
+	 Evaluating JavaScript expression // Create the DBExport addition filter string
+
+for (i = 0; i < UniqueIDArray.length; i++) {
+    if (i == 0) {
+        DBExportFilterStr = " EDIDataExchange = " + '"' + UniqueIDArray[i] + '"';
+    } else {
+        DBExportFilterStr += " or EDIDataExchange = " + '"' + UniqueIDArray[i] + '"';
+    }
+}; to value  EDIDataExchange = "4d82190b-3980-7f00-0010-e1eb69ae3b74"
+Activity name:Assign2640 id:1 completed @ 03/20/2026 07:15:29.604 PM
+
+Activity name:EDIData type:LM id:1 started @ 03/20/2026 07:15:29.604 PM
+	 Landmark:EDIData Executing transaction: _dataArea="<!appProdline>" & _module="edi" & _objectName="EDIDataExchange" & _actionName="Find" & _actionOperator="NONE" & _actionType="MultipleRecordQuery" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _filterString=CarrierName="<!CarrierName>" and Direction="<!Direction>" and ProcessStatus="<!ProcessStatus>" and (<!DBExportFilterStr>) & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & EDIDataExchange & Data
+	 Landmark:EDIData Executing transaction: _dataArea="ROSENUAT_PRD_FSM" & _module="edi" & _objectName="EDIDataExchange" & _actionName="Find" & _actionOperator="NONE" & _actionType="MultipleRecordQuery" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _filterString=CarrierName="USFOOD" and Direction="1" and ProcessStatus="1" and ( EDIDataExchange = "4d82190b-3980-7f00-0010-e1eb69ae3b74") & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & EDIDataExchange & Data
+	 Landmark:EDIData Retrieving page 1 started @ 03/20/2026 07:15:29.604 PM
+	 Use data views: false
+	 Landmark:EDIData Retrieving page 1 completed @ 03/20/2026 07:15:29.612 PM
+	 Landmark:EDIData transaction complete:true, 
+ response message:null
+	 EDIData_complete = true
+	 EDIData_recordCount = 1
+	 EDIData_hasNext = false
+	 EDIData_hasPrevious = false
+	 EDIData_resultsHeader = EDIDataExchange,Data
+	 EDIData_currentPage = 1
+	 EDIData_recordCount = 1
+	 EDIData_currentPage = 1
+Activity name:EDIData id:1 completed @ 03/20/2026 07:15:29.612 PM
+	 EDIData_errorCode = 0
+	 EDIData_informationCode = 0
+	 EDIData_returnMessage = 
+	 EDIData_outputData = 4d82190b-3980-7f00-0010-e1eb69ae3b74,ISA*00*          *00*          *ZZ*ECROSHOR       *01*621418185      *260320*1915*U*00200*000000012*0*P*|~GS*PO*ECROSHOR*621418185*20260320*1915*12*X*004010~ST*850*1000~BEG*00*SA*555**20260320~PER*BD*Lopes, Renan O.*TE*4079960340*EM*rlopes@rosenhotels.com~DTM*002*20260321~N1*ST*205 Warehouse*91*40624793~N2*5029~N3*9700 International Drive~N4*Orlando*FL*32819*US~N1*BY*205 Warehouse*91*40624793~PO1*1*1*CA*67.68**IN*17030*VC*9204425~PID*F****CHEESE BLEND FONTINA GRUYERE GOUDA SHREDDED 2.5#        4/CS~PO1*2*1*CA*26.11**IN*3002*VC*3032182~PID*F****PC MUSTARD HEINZ 0.2 OZ         1000/CS~PO1*3*11*CA*26.9**IN*3277*VC*2292472~PID*F****JUICE TROPICANA APPLE 10.OZ        24/CS~PO1*4*2*CA*17.24**IN*8568*VC*1144034~PID*F****SPOON TEA PLASTIC HEAVY WEIGHT BULK BLACK        1000/CS~CTT*4~SE*19*1000~ST*850*1001~BEG*00*SA*1424**20260320~PER*BD*Lopes, Renan O.*TE*4079960340*EM*rlopes@rosenhotels.com~DTM*002*20260321~N1*ST*206 Warehouse*91*50624790~N2*6029~N3*9840 International Drive~N4*Orlando*FL*32819*US~N1*BY*206 Warehouse*91*50624790~PO1*1*3*CA*54.64**IN*9727*VC*8850171~PID*F****BREAD ROLL SCHIACCIATA SLICED ROSEMARY BAKED WHITE 5.6 OZ~CTT*1~SE*13*1001~ST*850*1002~BEG*00*SA*2699**20260320~PER*BD*Hornsey, Anthony*TE*4079283686*EM*THornsey@RosenHotels.com~DTM*002*20260323~N1*ST*307 Warehouse*91*70624796~N2*7902~N3*9939 Universal Blvd~N4*Orlando*FL*32819*US~N1*BY*307 Warehouse*91*70624796~PO1*1*1*CA*84.66**IN*2428*VC*8329674~PID*F****PEPPERONI SLICED BULK 16CT 12.5#BAG       2/CS~CTT*1~SE*13*1002~GE*3*12~IEA*1*000000012~
+	 LandmarkEDIData: Executing loop 1 of 1 (Page 1)
+	 EDIData_Data = ISA*00*          *00*          *ZZ*ECROSHOR       *01*621418185      *260320*1915*U*00200*000000012*0*P*|~GS*PO*ECROSHOR*621418185*20260320*1915*12*X*004010~ST*850*1000~BEG*00*SA*555**20260320~PER*BD*Lopes, Renan O.*TE*4079960340*EM*rlopes@rosenhotels.com~DTM*002*20260321~N1*ST*205 Warehouse*91*40624793~N2*5029~N3*9700 International Drive~N4*Orlando*FL*32819*US~N1*BY*205 Warehouse*91*40624793~PO1*1*1*CA*67.68**IN*17030*VC*9204425~PID*F****CHEESE BLEND FONTINA GRUYERE GOUDA SHREDDED 2.5#        4/CS~PO1*2*1*CA*26.11**IN*3002*VC*3032182~PID*F****PC MUSTARD HEINZ 0.2 OZ         1000/CS~PO1*3*11*CA*26.9**IN*3277*VC*2292472~PID*F****JUICE TROPICANA APPLE 10.OZ        24/CS~PO1*4*2*CA*17.24**IN*8568*VC*1144034~PID*F****SPOON TEA PLASTIC HEAVY WEIGHT BULK BLACK        1000/CS~CTT*4~SE*19*1000~ST*850*1001~BEG*00*SA*1424**20260320~PER*BD*Lopes, Renan O.*TE*4079960340*EM*rlopes@rosenhotels.com~DTM*002*20260321~N1*ST*206 Warehouse*91*50624790~N2*6029~N3*9840 International Drive~N4*Orlando*FL*32819*US~N1*BY*206 Warehouse*91*50624790~PO1*1*3*CA*54.64**IN*9727*VC*8850171~PID*F****BREAD ROLL SCHIACCIATA SLICED ROSEMARY BAKED WHITE 5.6 OZ~CTT*1~SE*13*1001~ST*850*1002~BEG*00*SA*2699**20260320~PER*BD*Hornsey, Anthony*TE*4079283686*EM*THornsey@RosenHotels.com~DTM*002*20260323~N1*ST*307 Warehouse*91*70624796~N2*7902~N3*9939 Universal Blvd~N4*Orlando*FL*32819*US~N1*BY*307 Warehouse*91*70624796~PO1*1*1*CA*84.66**IN*2428*VC*8329674~PID*F****PEPPERONI SLICED BULK 16CT 12.5#BAG       2/CS~CTT*1~SE*13*1002~GE*3*12~IEA*1*000000012~
+	 EDIData_EDIDataExchange = 4d82190b-3980-7f00-0010-e1eb69ae3b74
+
+Activity name:Assign8770 type:ASSGN id:1 started @ 03/20/2026 07:15:29.612 PM
+	 EDIUniqueID = 4d82190b-3980-7f00-0010-e1eb69ae3b74
+	 UpdatedData = ISA*00*          *00*          *ZZ*ECROSHOR       *01*621418185      *260320*1915*U*00200*000000012*0*P*|~GS*PO*ECROSHOR*621418185*20260320*1915*12*X*004010~ST*850*1000~BEG*00*SA*555**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*205 Warehouse*91*40624793~N2*5029~N3*9700 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*67.68*UM*VN*9204425~PID*F****CHEESE BLEND FONTINA GRUYERE GOUDA SHREDDED 2.5#        4/CS~PO1*2*1*CA*26.11*UM*VN*3032182~PID*F****PC MUSTARD HEINZ 0.2 OZ         1000/CS~PO1*3*11*CA*26.9*UM*VN*2292472~PID*F****JUICE TROPICANA APPLE 10.OZ        24/CS~PO1*4*2*CA*17.24*UM*VN*1144034~PID*F****SPOON TEA PLASTIC HEAVY WEIGHT BULK BLACK        1000/CS~CTT*4~SE*22*1000~ST*850*1001~BEG*00*SA*1424**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*206 Warehouse*91*50624790~N2*6029~N3*9840 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*3*CA*54.64*UM*VN*8850171~PID*F****BREAD ROLL SCHIACCIATA SLICED ROSEMARY BAKED WHITE 5.6 OZ~CTT*1~SE*16*1001~ST*850*1002~BEG*00*SA*2699**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Hornsey, Anthony*TM*4079962369~DTM*002*20260323~N1*SF*Pt. Orange*91*5Z~N1*ST*307 Warehouse*91*70624796~N2*7902~N3*9939 Universal Blvd~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*84.66*UM*VN*8329674~PID*F****PEPPERONI SLICED BULK 16CT 12.5#BAG       2/CS~CTT*1~SE*16*1002~GE*3*12~IEA*1*000000012~
+Activity name:Assign8770 id:1 completed @ 03/20/2026 07:15:29.613 PM
+
+Activity name:Update type:LM id:1 started @ 03/20/2026 07:15:29.613 PM
+	 Landmark:Update Executing transaction: _dataArea="<!appProdline>" & _module="edi" & _objectName="EDIDataExchange" & _actionName="Update" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _filterString=CarrierName="<!CarrierName>" and Direction="<!Direction>" and ProcessStatus="<!ProcessStatus>" & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & EDIDataExchange="<!EDIUniqueID>" & Data="<!UpdatedData>"
+	 Landmark:Update Executing transaction: _dataArea="ROSENUAT_PRD_FSM" & _module="edi" & _objectName="EDIDataExchange" & _actionName="Update" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _filterString=CarrierName="USFOOD" and Direction="1" and ProcessStatus="1" & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & EDIDataExchange="4d82190b-3980-7f00-0010-e1eb69ae3b74" & Data="ISA*00*          *00*          *ZZ*ECROSHOR       *01*621418185      *260320*1915*U*00200*000000012*0*P*|~GS*PO*ECROSHOR*621418185*20260320*1915*12*X*004010~ST*850*1000~BEG*00*SA*555**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*205 Warehouse*91*40624793~N2*5029~N3*9700 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*67.68*UM*VN*9204425~PID*F****CHEESE BLEND FONTINA GRUYERE GOUDA SHREDDED 2.5#        4/CS~PO1*2*1*CA*26.11*UM*VN*3032182~PID*F****PC MUSTARD HEINZ 0.2 OZ         1000/CS~PO1*3*11*CA*26.9*UM*VN*2292472~PID*F****JUICE TROPICANA APPLE 10.OZ        24/CS~PO1*4*2*CA*17.24*UM*VN*1144034~PID*F****SPOON TEA PLASTIC HEAVY WEIGHT BULK BLACK        1000/CS~CTT*4~SE*22*1000~ST*850*1001~BEG*00*SA*1424**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*206 Warehouse*91*50624790~N2*6029~N3*9840 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*3*CA*54.64*UM*VN*8850171~PID*F****BREAD ROLL SCHIACCIATA SLICED ROSEMARY BAKED WHITE 5.6 OZ~CTT*1~SE*16*1001~ST*850*1002~BEG*00*SA*2699**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Hornsey, Anthony*TM*4079962369~DTM*002*20260323~N1*SF*Pt. Orange*91*5Z~N1*ST*307 Warehouse*91*70624796~N2*7902~N3*9939 Universal Blvd~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*84.66*UM*VN*8329674~PID*F****PEPPERONI SLICED BULK 16CT 12.5#BAG       2/CS~CTT*1~SE*16*1002~GE*3*12~IEA*1*000000012~"
+	 Landmark:Update Retrieving page 1 started @ 03/20/2026 07:15:29.613 PM
+	 Use data views: true
+	 Landmark:Update Retrieving page 1 completed @ 03/20/2026 07:15:29.670 PM
+	 Landmark:Update transaction complete:true, 
+ response message:EDI Data Exchange updated
+	 Update_complete = true
+	 Update_recordCount = 1
+	 Update_hasNext = false
+	 Update_hasPrevious = false
+	 Update_resultsHeader = EDIDataExchange,Data
+	 Update_currentPage = 1
+	 Update_recordCount = 1
+	 Update_currentPage = 1
+Activity name:Update id:1 completed @ 03/20/2026 07:15:29.670 PM
+	 Update_errorCode = 0
+	 Update_informationCode = 0
+	 Update_returnMessage = EDI Data Exchange updated
+	 Update_outputData = 4d82190b-3980-7f00-0010-e1eb69ae3b74,ISA*00*          *00*          *ZZ*ECROSHOR       *01*621418185      *260320*1915*U*00200*000000012*0*P*|~GS*PO*ECROSHOR*621418185*20260320*1915*12*X*004010~ST*850*1000~BEG*00*SA*555**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*205 Warehouse*91*40624793~N2*5029~N3*9700 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*67.68*UM*VN*9204425~PID*F****CHEESE BLEND FONTINA GRUYERE GOUDA SHREDDED 2.5#        4/CS~PO1*2*1*CA*26.11*UM*VN*3032182~PID*F****PC MUSTARD HEINZ 0.2 OZ         1000/CS~PO1*3*11*CA*26.9*UM*VN*2292472~PID*F****JUICE TROPICANA APPLE 10.OZ        24/CS~PO1*4*2*CA*17.24*UM*VN*1144034~PID*F****SPOON TEA PLASTIC HEAVY WEIGHT BULK BLACK        1000/CS~CTT*4~SE*22*1000~ST*850*1001~BEG*00*SA*1424**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*206 Warehouse*91*50624790~N2*6029~N3*9840 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*3*CA*54.64*UM*VN*8850171~PID*F****BREAD ROLL SCHIACCIATA SLICED ROSEMARY BAKED WHITE 5.6 OZ~CTT*1~SE*16*1001~ST*850*1002~BEG*00*SA*2699**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Hornsey, Anthony*TM*4079962369~DTM*002*20260323~N1*SF*Pt. Orange*91*5Z~N1*ST*307 Warehouse*91*70624796~N2*7902~N3*9939 Universal Blvd~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*84.66*UM*VN*8329674~PID*F****PEPPERONI SLICED BULK 16CT 12.5#BAG       2/CS~CTT*1~SE*16*1002~GE*3*12~IEA*1*000000012~
+	 LandmarkUpdate: Executing loop 1 of 1 (Page 1)
+	 Update_Data = ISA*00*          *00*          *ZZ*ECROSHOR       *01*621418185      *260320*1915*U*00200*000000012*0*P*|~GS*PO*ECROSHOR*621418185*20260320*1915*12*X*004010~ST*850*1000~BEG*00*SA*555**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*205 Warehouse*91*40624793~N2*5029~N3*9700 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*67.68*UM*VN*9204425~PID*F****CHEESE BLEND FONTINA GRUYERE GOUDA SHREDDED 2.5#        4/CS~PO1*2*1*CA*26.11*UM*VN*3032182~PID*F****PC MUSTARD HEINZ 0.2 OZ         1000/CS~PO1*3*11*CA*26.9*UM*VN*2292472~PID*F****JUICE TROPICANA APPLE 10.OZ        24/CS~PO1*4*2*CA*17.24*UM*VN*1144034~PID*F****SPOON TEA PLASTIC HEAVY WEIGHT BULK BLACK        1000/CS~CTT*4~SE*22*1000~ST*850*1001~BEG*00*SA*1424**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Lopes, Renan O.*TM*4079962369~DTM*002*20260321~N1*SF*Pt. Orange*91*5Z~N1*ST*206 Warehouse*91*50624790~N2*6029~N3*9840 International Drive~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*3*CA*54.64*UM*VN*8850171~PID*F****BREAD ROLL SCHIACCIATA SLICED ROSEMARY BAKED WHITE 5.6 OZ~CTT*1~SE*16*1001~ST*850*1002~BEG*00*SA*2699**20260320~REF*ZZ*ECROSHOR~REF*OS*INFOR~PER*BD*Hornsey, Anthony*TM*4079962369~DTM*002*20260323~N1*SF*Pt. Orange*91*5Z~N1*ST*307 Warehouse*91*70624796~N2*7902~N3*9939 Universal Blvd~N4*Orlando*FL*32819*US~REF*DP*00~PO1*1*1*CA*84.66*UM*VN*8329674~PID*F****PEPPERONI SLICED BULK 16CT 12.5#BAG       2/CS~CTT*1~SE*16*1002~GE*3*12~IEA*1*000000012~
+	 Update_EDIDataExchange = 4d82190b-3980-7f00-0010-e1eb69ae3b74
+
+Activity name:Wait4580 type:Timer id:1 started @ 03/20/2026 07:15:29.671 PM
+	 Timer Wait4580: Executing Timer activity node
+	 Timer Wait4580: Process will proceed in 5 seconds.
+Activity name:Wait4580 id:1 completed @ 03/20/2026 07:15:34.671 PM
+	 Timer Wait4580: Proceeding with the process
+	 Wait4580_errorCode = 0
+	 Wait4580_informationCode = 0
+	 Wait4580_returnMessage = Timer Wait4580: Created Timer Queue record for and the process will proceed in 5 seconds.
+	 Wait4580_outputData = 
+
+Activity name:RunJob type:LM id:1 started @ 03/20/2026 07:15:34.671 PM
+	 Landmark:RunJob Executing transaction: _dataArea="<!appProdline>" & _module="la" & _objectName="BatchTask" & _actionName="Run" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & ParamBatchTask="<!JobName>"
+	 Landmark:RunJob Executing transaction: _dataArea="ROSENUAT_PRD_FSM" & _module="la" & _objectName="BatchTask" & _actionName="Run" & _actionOperator="NONE" & _actionType="CreateUpdateDelete" & _runAsUser="" & _authenticatedUser="" & _pageSize="30" & _relationName="" & _setName="" & _asOfDate="" & _effectiveDate="" & ParamBatchTask="TRANSLATEOUTBOUND"
+	 Landmark:RunJob Retrieving page 1 started @ 03/20/2026 07:15:34.671 PM
+	 Use data views: true
+	 RunJob_actionGroupID = 8ecf1690-b980-e392-0000-002069ae3b28
+	 Landmark:RunJob Retrieving page 1 completed @ 03/20/2026 07:15:34.755 PM
+	 Landmark:RunJob transaction complete:true, 
+ response message:Run Job Submitted
+	 RunJob_complete = true
+	 RunJob_recordCount = 1
+	 RunJob_hasNext = false
+	 RunJob_hasPrevious = false
+	 RunJob_resultsHeader = ParamBatchTask
+	 RunJob_currentPage = 1
+	 RunJob_recordCount = 1
+	 RunJob_currentPage = 1
+Activity name:RunJob id:1 completed @ 03/20/2026 07:15:34.755 PM
+	 RunJob_errorCode = 0
+	 RunJob_informationCode = 0
+	 RunJob_returnMessage = Run Job Submitted
+	 RunJob_outputData = TRANSLATEOUTBOUND
+	 LandmarkRunJob: Executing loop 1 of 1 (Page 1)
+	 RunJob_ParamBatchTask = TRANSLATEOUTBOUND
+
+Activity name:End type:END id:1 started @ 03/20/2026 07:15:34.755 PM
+	 Activity End: Executing End activity
+	 [Metrics - Workunit] WU Total Cpu:[96 ms] WU Total User:[100 ms] WU Total Duration:[20351 ms] WU Total Alloc:[31.79 MiB]
+	 [Metrics - Top list: Memory] WUDuration:[20351 ms] [#1 - |Update|Landmark|1x|9.09 MiB|26 ms|30 ms|57 ms] [#2 - |RunJob|Landmark|1x|7.58 MiB|25 ms|20 ms|84 ms] [#3 - |End|End|1x|3.02 MiB|10 ms|10 ms|33 ms] [#4 - |GetUSFoods|Landmark|1x|1.94 MiB|6 ms|0 ms|13 ms] [#5 - |EDIData|Landmark|1x|1.45 MiB|3 ms|10 ms|8 ms]
